@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
 import { 
   Fuel, 
   TrendingUp, 
@@ -14,21 +15,6 @@ import {
 } from "lucide-react";
 
 const Index = () => {
-  const handleLogin = () => {
-    alert("Функция входа в разработке");
-  };
-
-  const handleStartGame = () => {
-    alert("Игра скоро будет доступна! Следите за обновлениями.");
-  };
-
-  const handleLearnMore = () => {
-    alert("Подробная информация об игре появится в ближайшее время");
-  };
-
-  const handleRegister = () => {
-    alert("Регистрация откроется очень скоро!");
-  };
 
   return (
     <div className="min-h-screen gradient-hero">
@@ -40,8 +26,12 @@ const Index = () => {
             <h1 className="text-2xl font-bold">Oil Tycoon</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={handleLogin}>Войти</Button>
-            <Button className="gradient-gold shadow-gold" onClick={handleStartGame}>Начать игру</Button>
+            <Link to="/auth">
+              <Button variant="ghost">Войти</Button>
+            </Link>
+            <Link to="/dashboard">
+              <Button className="gradient-gold shadow-gold">Начать игру</Button>
+            </Link>
           </div>
         </nav>
       </header>
@@ -64,14 +54,18 @@ const Index = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4" onClick={handleStartGame}>
-              <Zap className="mr-2 h-5 w-5" />
-              Начать с 1000₽
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4" onClick={handleLearnMore}>
-              <BarChart3 className="mr-2 h-5 w-5" />
-              Узнать больше
-            </Button>
+            <Link to="/auth">
+              <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
+                <Zap className="mr-2 h-5 w-5" />
+                Начать с 1000₽
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+                <BarChart3 className="mr-2 h-5 w-5" />
+                Узнать больше
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -175,9 +169,11 @@ const Index = () => {
                   Бонусы за активность
                 </div>
               </div>
-              <Button size="lg" className="gradient-gold shadow-gold w-full text-lg" onClick={handleRegister}>
-                Зарегистрироваться и начать
-              </Button>
+              <Link to="/auth">
+                <Button size="lg" className="gradient-gold shadow-gold w-full text-lg">
+                  Зарегистрироваться и начать
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
