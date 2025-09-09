@@ -113,9 +113,11 @@ const Dashboard = () => {
                 <Wallet className="h-5 w-5 text-primary" />
                 <span className="font-semibold">₽{balance.toLocaleString()}</span>
               </div>
-              <Button variant="ghost" size="sm">
-                <Settings className="h-4 w-4" />
-              </Button>
+              <Link to="/settings">
+                <Button variant="ghost" size="sm">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </Link>
               <Link to="/">
                 <Button variant="ghost" size="sm">
                   <LogOut className="h-4 w-4" />
