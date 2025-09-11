@@ -96,11 +96,6 @@ export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Zap className="h-3 w-3" />
                     <span>{formatCurrency(Number(player.daily_income))}/день</span>
-                    {player.player_type === 'bot' && (
-                      <Badge variant="outline" className="text-xs px-1 py-0">
-                        Бот
-                      </Badge>
-                    )}
                   </div>
                 </div>
               </div>
