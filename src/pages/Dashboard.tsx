@@ -823,9 +823,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-      </div>
-    </div>
-  );
+        {/* My Wells */}
+        {wells.length > 0 && (
           <div className="space-y-6">
             <h2 className="text-3xl font-bold">Мои скважины</h2>
             
