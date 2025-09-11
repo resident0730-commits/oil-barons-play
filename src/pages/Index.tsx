@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +22,28 @@ import {
 const Index = () => {
   const { user } = useAuth();
   const { profile, wells, loading } = useGameData();
+  
+  // Динамическая статистика игры
+  const [gameStats, setGameStats] = useState({
+    activePlayers: 1247,
+    totalIncome: 2847392,
+    totalWells: 1057,
+    averageIncome: 15842
+  });
+
+  // Обновление статистики каждую секунду
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGameStats(prev => ({
+        activePlayers: prev.activePlayers + Math.floor(Math.random() * 3) - 1, // ±1
+        totalIncome: prev.totalIncome + Math.floor(Math.random() * 1000) + 500, // +500-1500
+        totalWells: prev.totalWells + Math.floor(Math.random() * 2), // +0-1
+        averageIncome: prev.averageIncome + Math.floor(Math.random() * 100) - 50 // ±50
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen gradient-hero">
@@ -195,19 +218,19 @@ const Index = () => {
           <h2 className="text-3xl font-bold mb-8">Статистика игры</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">1,247</div>
+              <div className="text-3xl font-bold text-primary">{gameStats.activePlayers.toLocaleString()}</div>
               <div className="text-muted-foreground">Активных игроков</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">₽2,847,392</div>
+              <div className="text-3xl font-bold text-primary">₽{gameStats.totalIncome.toLocaleString()}</div>
               <div className="text-muted-foreground">Общий доход</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">1,057</div>
+              <div className="text-3xl font-bold text-primary">{gameStats.totalWells.toLocaleString()}</div>
               <div className="text-muted-foreground">Скважин в игре</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">₽15,842</div>
+              <div className="text-3xl font-bold text-primary">₽{gameStats.averageIncome.toLocaleString()}</div>
               <div className="text-muted-foreground">Средний доход</div>
             </div>
           </div>
