@@ -143,28 +143,30 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.85) 0%, hsl(25, 20%, 8% / 0.8) 30%, hsl(30, 25%, 12% / 0.75) 70%, hsl(35, 30%, 18% / 0.7) 100%);
+    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.9) 0%, hsl(25, 20%, 8% / 0.85) 30%, hsl(30, 25%, 12% / 0.8) 70%, hsl(35, 30%, 18% / 0.75) 100%);
     z-index: -1;
   }
 
   /* Enhanced text visibility for hero page */
   .hero-luxury-background .text-muted-foreground {
-    color: hsl(45, 95%, 85%) !important;
+    color: hsl(45, 95%, 92%) !important;
+    text-shadow: 2px 2px 6px hsl(0, 0%, 0% / 0.8);
   }
 
   .hero-luxury-background h1, 
   .hero-luxury-background h2 {
-    color: hsl(45, 95%, 95%) !important;
-    text-shadow: 2px 2px 4px hsl(25, 20%, 8% / 0.8);
+    color: hsl(45, 95%, 98%) !important;
+    text-shadow: 3px 3px 6px hsl(0, 0%, 0% / 0.9);
   }
 
   .hero-luxury-background p {
-    color: hsl(45, 95%, 90%) !important;
-    text-shadow: 1px 1px 2px hsl(25, 20%, 8% / 0.7);
+    color: hsl(45, 95%, 95%) !important;
+    text-shadow: 2px 2px 4px hsl(0, 0%, 0% / 0.8);
+    font-weight: 500;
   }
 
   .hero-luxury-background .bg-gradient-to-r {
-    background: linear-gradient(135deg, hsl(48, 100%, 75%) 0%, hsl(45, 100%, 65%) 50%, hsl(42, 85%, 45%) 100%) !important;
+    background: linear-gradient(135deg, hsl(48, 100%, 85%) 0%, hsl(45, 100%, 75%) 50%, hsl(42, 85%, 65%) 100%) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
   }
