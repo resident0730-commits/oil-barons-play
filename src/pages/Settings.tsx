@@ -9,11 +9,14 @@ import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData } from "@/hooks/useGameData";
+import { AdminPromotion } from "@/components/admin/AdminPromotion";
 
 const Settings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const { profile } = useGameData();
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -154,6 +157,34 @@ const Settings = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Admin Promotion - only show if not already admin */}
+        {!isAdmin && (
+          <div className="mt-8">
+            <AdminPromotion />
+          </div>
+        )}
+
+        {/* Show admin panel link if user is admin */}
+        {isAdmin && (
+          <div className="mt-8">
+            <Card className="border-primary/50 bg-primary/5">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                    <span className="font-medium">Вы администратор</span>
+                  </div>
+                  <Link to="/admin">
+                    <Button variant="default" size="sm">
+                      Админ-панель
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </main>
     </div>
   );
