@@ -14,7 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          balance: number
+          created_at: string
+          daily_income: number
+          id: string
+          nickname: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          daily_income?: number
+          id?: string
+          nickname: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          daily_income?: number
+          id?: string
+          nickname?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wells: {
+        Row: {
+          created_at: string
+          daily_income: number
+          id: string
+          level: number
+          updated_at: string
+          user_id: string
+          well_type: string
+        }
+        Insert: {
+          created_at?: string
+          daily_income: number
+          id?: string
+          level?: number
+          updated_at?: string
+          user_id: string
+          well_type: string
+        }
+        Update: {
+          created_at?: string
+          daily_income?: number
+          id?: string
+          level?: number
+          updated_at?: string
+          user_id?: string
+          well_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
