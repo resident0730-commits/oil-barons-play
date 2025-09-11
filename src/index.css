@@ -155,6 +155,7 @@ All colors MUST be HSL.
   }
 }
 
+@layer components {
   /* Hero luxury background for main page */
   .hero-luxury-background {
     background-image: url('./assets/hero-oil-luxury.jpg');
