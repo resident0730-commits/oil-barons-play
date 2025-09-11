@@ -11,7 +11,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData } from "@/hooks/useGameData";
-import { AdminPromotion } from "@/components/admin/AdminPromotion";
 
 const Settings = () => {
   const { toast } = useToast();
@@ -157,13 +156,6 @@ const Settings = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Admin Promotion - only show if not already admin */}
-        {!isAdmin && (
-          <div className="mt-8">
-            <AdminPromotion />
-          </div>
-        )}
 
         {/* Show admin panel link if user is admin */}
         {isAdmin && (
