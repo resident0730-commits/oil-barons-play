@@ -274,8 +274,15 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="container mx-auto px-4 py-8 mt-16 border-t border-border">
-        <div className="text-center text-muted-foreground">
-          <p>&copy; 2024 Oil Tycoon. Инвестиционная игра для развлечения.</p>
+        <div className="text-center space-y-4">
+          <div>
+            <Link to="/requisites" className="text-muted-foreground hover:text-foreground underline">
+              Банковские реквизиты для пополнения
+            </Link>
+          </div>
+          <div className="text-muted-foreground">
+            <p>&copy; 2024 Oil Tycoon. Инвестиционная игра для развлечения.</p>
+          </div>
         </div>
       </footer>
     </div>
