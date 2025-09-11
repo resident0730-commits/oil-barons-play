@@ -20,7 +20,8 @@ import {
   Factory,
   Gem,
   CreditCard,
-  Shield
+  Shield,
+  Trophy
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -294,6 +295,11 @@ const Dashboard = () => {
               <Link to="/settings">
                 <Button variant="ghost" size="sm">
                   <Settings className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/leaderboard">
+                <Button variant="ghost" size="sm">
+                  <Trophy className="h-4 w-4" />
                 </Button>
               </Link>
               {isAdmin && (

@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData } from "@/hooks/useGameData";
+import { Leaderboard } from "@/components/Leaderboard";
 import { 
   Fuel, 
   TrendingUp, 
@@ -214,25 +215,51 @@ const Index = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-8">Статистика игры</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">{gameStats.activePlayers.toLocaleString()}</div>
-              <div className="text-muted-foreground">Активных игроков</div>
+        <div className="py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Игровая статистика
+            </h2>
+            <div className="grid md:grid-cols-4 gap-6">
+              <Card className="text-center">
+                <CardContent className="pt-6">
+                  <Users className="h-8 w-8 mx-auto mb-4 text-primary" />
+                  <div className="text-2xl font-bold">{gameStats.activePlayers.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Активных игроков</p>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="pt-6">
+                  <TrendingUp className="h-8 w-8 mx-auto mb-4 text-green-500" />
+                  <div className="text-2xl font-bold">₽{gameStats.totalIncome.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Общий доход</p>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="pt-6">
+                  <Zap className="h-8 w-8 mx-auto mb-4 text-blue-500" />
+                  <div className="text-2xl font-bold">{gameStats.totalWells.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Скважин пробурено</p>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="pt-6">
+                  <BarChart3 className="h-8 w-8 mx-auto mb-4 text-purple-500" />
+                  <div className="text-2xl font-bold">₽{gameStats.averageIncome.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Средний доход</p>
+                </CardContent>
+              </Card>
             </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">₽{gameStats.totalIncome.toLocaleString()}</div>
-              <div className="text-muted-foreground">Общий доход</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">{gameStats.totalWells.toLocaleString()}</div>
-              <div className="text-muted-foreground">Скважин в игре</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">₽{gameStats.averageIncome.toLocaleString()}</div>
-              <div className="text-muted-foreground">Средний доход</div>
-            </div>
+          </div>
+        </div>
+
+        {/* Leaderboard Section */}
+        <div className="py-20 px-4 bg-muted/50">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Топ игроков
+            </h2>
+            <Leaderboard maxEntries={15} />
           </div>
         </div>
 
