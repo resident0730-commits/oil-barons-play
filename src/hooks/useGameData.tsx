@@ -69,7 +69,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Стартовая скважина", 
-    baseIncome: 6, 
+    baseIncome: 7, 
     price: 2000, 
     maxLevel: 10, 
     icon: "🔸", 
@@ -78,7 +78,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Средняя скважина", 
-    baseIncome: 12, 
+    baseIncome: 21, 
     price: 5500, 
     maxLevel: 15, 
     icon: "⚡", 
@@ -87,7 +87,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Промышленная скважина", 
-    baseIncome: 28, 
+    baseIncome: 60, 
     price: 15000, 
     maxLevel: 20, 
     icon: "🏭", 
@@ -96,7 +96,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Супер скважина", 
-    baseIncome: 70, 
+    baseIncome: 170, 
     price: 42000, 
     maxLevel: 25, 
     icon: "💎", 
@@ -105,7 +105,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Премиум скважина", 
-    baseIncome: 180, 
+    baseIncome: 493, 
     price: 120000, 
     maxLevel: 30, 
     icon: "👑", 
@@ -114,7 +114,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Элитная скважина", 
-    baseIncome: 450, 
+    baseIncome: 1488, 
     price: 350000, 
     maxLevel: 35, 
     icon: "💠", 
@@ -123,7 +123,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Легендарная скважина", 
-    baseIncome: 1200, 
+    baseIncome: 4329, 
     price: 1000000, 
     maxLevel: 40, 
     icon: "🌟", 
@@ -132,7 +132,7 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Космическая скважина", 
-    baseIncome: 3500, 
+    baseIncome: 13151, 
     price: 3000000, 
     maxLevel: 50, 
     icon: "🚀", 
@@ -155,7 +155,7 @@ export const wellPackages: WellPackage[] = [
     icon: "🎯",
     image: starterPackageImg,
     rarity: 'starter',
-    totalDailyIncome: 15 // 3*3 + 1*6
+    totalDailyIncome: 16 // 3*3 + 1*7
   },
   {
     name: "Пакет роста",
@@ -171,7 +171,7 @@ export const wellPackages: WellPackage[] = [
     icon: "📈",
     image: growthPackageImg,
     rarity: 'growth',
-    totalDailyIncome: 52 // 2*6 + 2*12 + 1*28
+    totalDailyIncome: 116 // 2*7 + 2*21 + 1*60
   },
   {
     name: "Бизнес пакет",
@@ -187,7 +187,7 @@ export const wellPackages: WellPackage[] = [
     icon: "💼",
     image: businessPackageImg,
     rarity: 'business',
-    totalDailyIncome: 404 // 3*28 + 2*70 + 1*180
+    totalDailyIncome: 1013 // 3*60 + 2*170 + 1*493
   },
   {
     name: "Империя",
@@ -203,7 +203,7 @@ export const wellPackages: WellPackage[] = [
     icon: "👑",
     image: empirePackageImg,
     rarity: 'empire',
-    totalDailyIncome: 2460 // 2*180 + 2*450 + 1*1200
+    totalDailyIncome: 8291 // 2*493 + 2*1488 + 1*4329
   }
 ];
 
