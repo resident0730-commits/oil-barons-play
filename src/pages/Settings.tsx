@@ -136,7 +136,12 @@ const Settings = () => {
                   </div>
                 </div>
                 <Separator />
-                <div className="flex items-center justify-end gap-3">
+                <div className="flex items-center justify-between">
+                  <Link to="/requisites">
+                    <Button variant="outline">
+                      Банковские реквизиты
+                    </Button>
+                  </Link>
                   <Button 
                     type="submit" 
                     className="gradient-gold shadow-gold"
