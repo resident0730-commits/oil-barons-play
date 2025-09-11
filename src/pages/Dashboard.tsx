@@ -36,17 +36,44 @@ const Dashboard = () => {
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 
   const getWellIcon = (wellTypeName: string) => {
-    switch (wellTypeName) {
-      case "Стартовая скважина":
-        return <Zap className="h-5 w-5 text-yellow-500" />;
-      case "Средняя скважина":
-        return <Fuel className="h-5 w-5 text-orange-500" />;
-      case "Промышленная скважина":
-        return <Factory className="h-5 w-5 text-blue-500" />;
-      case "Супер скважина":
-        return <Gem className="h-5 w-5 text-purple-500" />;
-      default:
-        return <Fuel className="h-5 w-5" />;
+    const wellType = wellTypes.find(wt => wt.name === wellTypeName);
+    if (!wellType) return <Fuel className="h-5 w-5" />;
+    
+    return (
+      <div className="relative">
+        <img 
+          src={wellType.image} 
+          alt={wellType.name}
+          className="w-12 h-12 rounded-lg object-cover border-2 border-primary/20"
+        />
+        <div className={`absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${getRarityColor(wellType.rarity)}`}>
+          {wellType.icon}
+        </div>
+      </div>
+    );
+  };
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case 'common': return 'bg-slate-500 text-white';
+      case 'uncommon': return 'bg-green-500 text-white';
+      case 'rare': return 'bg-blue-500 text-white';
+      case 'epic': return 'bg-purple-500 text-white';
+      case 'legendary': return 'bg-orange-500 text-white';
+      case 'mythic': return 'bg-red-500 text-white glow-gold';
+      default: return 'bg-gray-500 text-white';
+    }
+  };
+
+  const getRarityBadgeColor = (rarity: string) => {
+    switch (rarity) {
+      case 'common': return 'bg-slate-100 text-slate-800 border-slate-300';
+      case 'uncommon': return 'bg-green-100 text-green-800 border-green-300';
+      case 'rare': return 'bg-blue-100 text-blue-800 border-blue-300';
+      case 'epic': return 'bg-purple-100 text-purple-800 border-purple-300';
+      case 'legendary': return 'bg-orange-100 text-orange-800 border-orange-300';
+      case 'mythic': return 'bg-red-100 text-red-800 border-red-300';
+      default: return 'bg-gray-100 text-gray-800 border-gray-300';
     }
   };
 
@@ -317,31 +344,51 @@ const Dashboard = () => {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {wellTypes.map((wellType, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      {getWellIcon(wellType.name)}
-                      <span className="text-sm">{wellType.name}</span>
+              <Card key={index} className="hover:shadow-lg transition-all duration-300 hover:scale-105">
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="relative">
+                      <img 
+                        src={wellType.image} 
+                        alt={wellType.name}
+                        className="w-20 h-20 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
+                      />
+                      <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
+                        {wellType.icon}
+                      </div>
                     </div>
-                    <Badge variant={profile.balance >= wellType.price ? "default" : "secondary"}>
-                      ₽{wellType.price.toLocaleString()}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Доход в день:</p>
-                    <p className="text-lg font-semibold text-primary">₽{wellType.baseIncome}</p>
+                    <div className="text-center">
+                      <CardTitle className="text-sm font-medium mb-1">{wellType.name}</CardTitle>
+                      <Badge 
+                        variant="outline" 
+                        className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
+                      >
+                        {wellType.rarity}
+                      </Badge>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Макс. уровень:</p>
-                    <p className="text-sm">{wellType.maxLevel}</p>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-0">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Цена:</span>
+                      <Badge variant={profile.balance >= wellType.price ? "default" : "secondary"}>
+                        ₽{wellType.price.toLocaleString()}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Доход/день:</span>
+                      <span className="font-semibold text-primary">₽{wellType.baseIncome.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Макс. уровень:</span>
+                      <span className="text-muted-foreground">{wellType.maxLevel}</span>
+                    </div>
                   </div>
                   <Button 
-                    className="w-full gradient-gold shadow-gold" 
+                    className="w-full gradient-gold shadow-gold hover-gold" 
                     onClick={() => handleBuyWell(wellType)}
                     disabled={profile.balance < wellType.price}
                   >
@@ -361,40 +408,54 @@ const Dashboard = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {wells.map((well) => {
-                const upgradeCost = Math.round((wellTypes.find(wt => wt.name === well.well_type)?.price || 1000) * 0.5 * well.level);
-                const canUpgrade = well.level < 20 && profile.balance >= upgradeCost;
+                const wellType = wellTypes.find(wt => wt.name === well.well_type);
+                const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * well.level);
+                const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
                 
                 return (
-                  <Card key={well.id}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                  <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
                           {getWellIcon(well.well_type)}
-                          <span className="text-sm">{well.well_type}</span>
+                          <div>
+                            <CardTitle className="text-sm">{well.well_type}</CardTitle>
+                            {wellType && (
+                              <Badge 
+                                variant="outline" 
+                                className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
+                              >
+                                {wellType.rarity}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                         <Badge variant="outline">Ур. {well.level}</Badge>
-                      </CardTitle>
+                      </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 pt-0">
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Доход в день:</p>
-                        <p className="text-lg font-semibold text-primary">₽{well.daily_income}</p>
+                        <p className="text-lg font-semibold text-primary">₽{well.daily_income.toLocaleString()}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Прогресс уровня:</p>
-                        <Progress value={(well.level / 20) * 100} className="h-2" />
+                        <Progress value={(well.level / (wellType?.maxLevel || 20)) * 100} className="h-2" />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {well.level}/{wellType?.maxLevel || 20}
+                        </p>
                       </div>
-                      {well.level < 20 && (
+                      {well.level < (wellType?.maxLevel || 20) && (
                         <Button 
                           variant="outline"
-                          className="w-full" 
+                          className="w-full hover-gold" 
                           onClick={() => handleUpgradeWell(well.id)}
                           disabled={!canUpgrade}
                         >
                           Улучшить за ₽{upgradeCost.toLocaleString()}
                         </Button>
                       )}
-                      {well.level >= 20 && (
+                      {well.level >= (wellType?.maxLevel || 20) && (
                         <Badge variant="secondary" className="w-full justify-center">
                           Максимальный уровень
                         </Badge>

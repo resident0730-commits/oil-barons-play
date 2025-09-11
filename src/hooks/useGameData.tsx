@@ -2,12 +2,24 @@ import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
+// Import well images
+import starterWellImg from '@/assets/wells/starter-well.jpg';
+import mediumWellImg from '@/assets/wells/medium-well.jpg';
+import industrialWellImg from '@/assets/wells/industrial-well.jpg';
+import superWellImg from '@/assets/wells/super-well.jpg';
+import premiumWellImg from '@/assets/wells/premium-well.jpg';
+import eliteWellImg from '@/assets/wells/elite-well.jpg';
+import legendaryWellImg from '@/assets/wells/legendary-well.jpg';
+import cosmicWellImg from '@/assets/wells/cosmic-well.jpg';
+
 export interface WellType {
   name: string;
   baseIncome: number;
   price: number;
   maxLevel: number;
   icon: string;
+  image: string;
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic';
 }
 
 export interface UserWell {
@@ -26,10 +38,78 @@ export interface UserProfile {
 }
 
 export const wellTypes: WellType[] = [
-  { name: "Стартовая скважина", baseIncome: 50, price: 500, maxLevel: 5, icon: "🔸" },
-  { name: "Средняя скважина", baseIncome: 150, price: 1500, maxLevel: 10, icon: "⚡" },
-  { name: "Промышленная скважина", baseIncome: 500, price: 5000, maxLevel: 15, icon: "🏭" },
-  { name: "Супер скважина", baseIncome: 1500, price: 15000, maxLevel: 20, icon: "💎" }
+  { 
+    name: "Стартовая скважина", 
+    baseIncome: 50, 
+    price: 500, 
+    maxLevel: 5, 
+    icon: "🔸", 
+    image: starterWellImg,
+    rarity: 'common'
+  },
+  { 
+    name: "Средняя скважина", 
+    baseIncome: 150, 
+    price: 1500, 
+    maxLevel: 10, 
+    icon: "⚡", 
+    image: mediumWellImg,
+    rarity: 'common'
+  },
+  { 
+    name: "Промышленная скважина", 
+    baseIncome: 500, 
+    price: 5000, 
+    maxLevel: 15, 
+    icon: "🏭", 
+    image: industrialWellImg,
+    rarity: 'uncommon'
+  },
+  { 
+    name: "Супер скважина", 
+    baseIncome: 1500, 
+    price: 15000, 
+    maxLevel: 20, 
+    icon: "💎", 
+    image: superWellImg,
+    rarity: 'rare'
+  },
+  { 
+    name: "Премиум скважина", 
+    baseIncome: 4000, 
+    price: 40000, 
+    maxLevel: 25, 
+    icon: "👑", 
+    image: premiumWellImg,
+    rarity: 'epic'
+  },
+  { 
+    name: "Элитная скважина", 
+    baseIncome: 10000, 
+    price: 100000, 
+    maxLevel: 30, 
+    icon: "💠", 
+    image: eliteWellImg,
+    rarity: 'epic'
+  },
+  { 
+    name: "Легендарная скважина", 
+    baseIncome: 25000, 
+    price: 250000, 
+    maxLevel: 35, 
+    icon: "🌟", 
+    image: legendaryWellImg,
+    rarity: 'legendary'
+  },
+  { 
+    name: "Космическая скважина", 
+    baseIncome: 60000, 
+    price: 600000, 
+    maxLevel: 40, 
+    icon: "🚀", 
+    image: cosmicWellImg,
+    rarity: 'mythic'
+  }
 ];
 
 export function useGameData() {
