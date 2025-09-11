@@ -8,11 +8,11 @@ import { Link } from "react-router-dom";
 const Requisites = () => {
   const { toast } = useToast();
 
-  const bankDetails = {
-    beneficiary: "ООО «Нефтяной Магнат»",
-    inn: "7708123456",
-    kpp: "771001001",
-    account: "40702810401000012345",
+  const ipDetails = {
+    beneficiary: "ИП Иванов Иван Иванович",
+    inn: "770812345678",
+    ogrnip: "315774600012345",
+    account: "40802810401000012345",
     bank: "ПАО Сбербанк",
     bik: "044525225",
     corAccount: "30101810400000000225",
@@ -79,13 +79,13 @@ const Requisites = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <RequisiteRow label="Получатель" value={bankDetails.beneficiary} />
-              <RequisiteRow label="ИНН" value={bankDetails.inn} />
-              <RequisiteRow label="КПП" value={bankDetails.kpp} />
-              <RequisiteRow label="Расчётный счёт" value={bankDetails.account} />
-              <RequisiteRow label="Банк получателя" value={bankDetails.bank} />
-              <RequisiteRow label="БИК" value={bankDetails.bik} />
-              <RequisiteRow label="Корр. счёт" value={bankDetails.corAccount} />
+              <RequisiteRow label="Получатель" value={ipDetails.beneficiary} />
+              <RequisiteRow label="ИНН" value={ipDetails.inn} />
+              <RequisiteRow label="ОГРНИП" value={ipDetails.ogrnip} />
+              <RequisiteRow label="Расчётный счёт" value={ipDetails.account} />
+              <RequisiteRow label="Банк получателя" value={ipDetails.bank} />
+              <RequisiteRow label="БИК" value={ipDetails.bik} />
+              <RequisiteRow label="Корр. счёт" value={ipDetails.corAccount} />
             </CardContent>
           </Card>
 
