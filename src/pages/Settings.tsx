@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { hasSupabase, invokeEdgeFunction } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData } from "@/hooks/useGameData";
 
@@ -30,7 +30,7 @@ const Settings = () => {
       toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
       return;
     }
-    if (!hasSupabase) {
+    if (!supabase) {
       toast({ variant: "destructive", title: "Supabase не подключён", description: "Нажмите зелёную кнопку Supabase вверху справа и подключите проект" });
       return;
     }
@@ -38,9 +38,11 @@ const Settings = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await invokeEdgeFunction('create-payment', {
-        amount: value,
-        currency: 'RUB'
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          amount: value,
+          currency: 'RUB'
+        }
       });
 
       if (error) {
