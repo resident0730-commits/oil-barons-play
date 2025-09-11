@@ -7,17 +7,12 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
 
 const Settings = () => {
   const { toast } = useToast();
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
-
-  const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL,
-    import.meta.env.VITE_SUPABASE_ANON_KEY
-  );
 
   const handleTopUp = async (e: React.FormEvent) => {
     e.preventDefault();
