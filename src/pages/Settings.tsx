@@ -7,10 +7,17 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
 
 const Settings = () => {
   const { toast } = useToast();
   const [amount, setAmount] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
 
   const handleTopUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,17 +27,41 @@ const Settings = () => {
       return;
     }
 
-    // Шаг 1: после добавления Stripe Secret Key создадим Edge Function и откроем Checkout в новой вкладке
-    toast({
-      title: "Подготовка оплаты",
-      description: "После добавления Stripe ключа откроется окно оплаты в новой вкладке",
-    });
+    if (value < 100) {
+      toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
+      return;
+    }
 
-    // TODO: заменить на вызов supabase.functions.invoke('create-payment', { body: { amount: value, currency: 'RUB' } })
-    // Пример:
-    // const { data, error } = await supabase.functions.invoke('create-payment', { body: { amount: value, currency: 'RUB' } });
-    // if (error) { toast({ variant: 'destructive', title: 'Ошибка оплаты', description: error.message }); return; }
-    // window.open(data.url, '_blank');
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { amount: value, currency: 'RUB' }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+        toast({
+          title: "Переход к оплате",
+          description: "Окно Stripe Checkout открыто в новой вкладке",
+        });
+      } else {
+        throw new Error("Не удалось получить ссылку на оплату");
+      }
+    } catch (error: any) {
+      console.error("Payment error:", error);
+      toast({
+        variant: "destructive",
+        title: "Ошибка оплаты",
+        description: error.message || "Не удалось создать платёж",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -91,7 +122,13 @@ const Settings = () => {
                 </div>
                 <Separator />
                 <div className="flex items-center justify-end gap-3">
-                  <Button type="submit" className="gradient-gold shadow-gold">Оплатить</Button>
+                  <Button 
+                    type="submit" 
+                    className="gradient-gold shadow-gold"
+                    disabled={loading}
+                  >
+                    {loading ? "Подготовка..." : "Оплатить"}
+                  </Button>
                 </div>
               </form>
             </CardContent>
