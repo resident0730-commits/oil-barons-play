@@ -28,11 +28,13 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
+import { useLeaderboard } from "@/hooks/useLeaderboard";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
   const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome } = useGameData();
+  const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [topUpAmount, setTopUpAmount] = useState("");
@@ -411,13 +413,19 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => navigate('/leaderboard')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Рейтинг</CardTitle>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">#42</div>
+              <div className="text-2xl font-bold">
+                {leaderboardLoading ? "..." : profile?.nickname ? `#${getPlayerRank(profile.nickname) || "?"}` : "#?"}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Нажмите для просмотра</p>
             </CardContent>
           </Card>
         </div>

@@ -48,9 +48,14 @@ export const useLeaderboard = () => {
     }
   };
 
+  const getPlayerRank = (playerNickname: string): number => {
+    const position = leaderboard.findIndex(player => player.nickname === playerNickname);
+    return position !== -1 ? position + 1 : 0;
+  };
+
   useEffect(() => {
     fetchLeaderboard();
   }, []);
 
-  return { leaderboard, loading, refetch: fetchLeaderboard };
+  return { leaderboard, loading, refetch: fetchLeaderboard, getPlayerRank };
 };
