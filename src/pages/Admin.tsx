@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
+import { BalanceManager } from '@/components/admin/BalanceManager';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -59,6 +60,12 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Статистика</h2>
             <AdminStats />
+          </div>
+
+          {/* Balance Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Управление балансом</h2>
+            <BalanceManager />
           </div>
 
           {/* User Management */}
