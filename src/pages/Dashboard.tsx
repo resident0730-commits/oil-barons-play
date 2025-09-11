@@ -99,6 +99,17 @@ const Dashboard = () => {
   }, [profile?.daily_income, addIncome]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
+    if (profile.balance < wellType.price) {
+      // Если недостаточно средств, открываем диалог пополнения
+      setIsTopUpOpen(true);
+      toast({
+        title: "Недостаточно средств",
+        description: `Для покупки "${wellType.name}" нужно ₽${wellType.price.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
     const result = await buyWell(wellType);
     if (result.success) {
       toast({
@@ -115,6 +126,21 @@ const Dashboard = () => {
   };
 
   const handleUpgradeWell = async (wellId: string) => {
+    const well = wells.find(w => w.id === wellId);
+    const wellType = wellTypes.find(wt => wt.name === well?.well_type);
+    const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * (well?.level || 1));
+    
+    if (profile.balance < upgradeCost) {
+      // Если недостаточно средств, открываем диалог пополнения
+      setIsTopUpOpen(true);
+      toast({
+        title: "Недостаточно средств",
+        description: `Для улучшения нужно ₽${upgradeCost.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
     const result = await upgradeWell(wellId);
     if (result.success) {
       toast({
@@ -374,7 +400,10 @@ const Dashboard = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Цена:</span>
-                      <Badge variant={profile.balance >= wellType.price ? "default" : "secondary"}>
+                      <Badge 
+                        variant={profile.balance >= wellType.price ? "default" : "destructive"}
+                        className={profile.balance >= wellType.price ? "" : "animate-pulse"}
+                      >
                         ₽{wellType.price.toLocaleString()}
                       </Badge>
                     </div>
@@ -388,12 +417,15 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <Button 
-                    className="w-full gradient-gold shadow-gold hover-gold" 
+                    className={`w-full shadow-gold hover-gold ${
+                      profile.balance >= wellType.price 
+                        ? 'gradient-gold' 
+                        : 'gradient-amber border-2 border-orange-400'
+                    }`}
                     onClick={() => handleBuyWell(wellType)}
-                    disabled={profile.balance < wellType.price}
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Купить
+                    {profile.balance >= wellType.price ? 'Купить' : 'Пополнить и купить'}
                   </Button>
                 </CardContent>
               </Card>
@@ -448,11 +480,17 @@ const Dashboard = () => {
                       {well.level < (wellType?.maxLevel || 20) && (
                         <Button 
                           variant="outline"
-                          className="w-full hover-gold" 
+                          className={`w-full hover-gold ${
+                            profile.balance >= upgradeCost 
+                              ? '' 
+                              : 'border-orange-400 text-orange-600'
+                          }`}
                           onClick={() => handleUpgradeWell(well.id)}
-                          disabled={!canUpgrade}
                         >
-                          Улучшить за ₽{upgradeCost.toLocaleString()}
+                          {profile.balance >= upgradeCost 
+                            ? `Улучшить за ₽${upgradeCost.toLocaleString()}` 
+                            : `Пополнить (₽${upgradeCost.toLocaleString()})`
+                          }
                         </Button>
                       )}
                       {well.level >= (wellType?.maxLevel || 20) && (
