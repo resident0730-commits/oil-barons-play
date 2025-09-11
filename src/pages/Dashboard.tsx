@@ -160,7 +160,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
       <header className="border-b border-border">
         <div className="container mx-auto px-4 py-4">
@@ -170,10 +170,16 @@ const Dashboard = () => {
               <h1 className="text-2xl font-bold">Oil Tycoon</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsTopUpOpen(true)}
+                aria-label="Пополнить баланс"
+                className="flex items-center space-x-2"
+              >
                 <Wallet className="h-5 w-5 text-primary" />
                 <span className="font-semibold">₽{profile.balance.toLocaleString()}</span>
-              </div>
+              </Button>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <User className="h-4 w-4" />
                 <span>{profile.nickname}</span>
