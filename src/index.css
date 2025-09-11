@@ -106,7 +106,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-image: url('./assets/oil-background.jpg');
+    background-image: url('./assets/oil-daylight-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -122,7 +122,28 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.85) 0%, hsl(25, 20%, 8% / 0.75) 30%, hsl(30, 25%, 12% / 0.65) 70%, hsl(35, 30%, 18% / 0.55) 100%);
+    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.4) 0%, hsl(30, 25%, 12% / 0.3) 50%, hsl(35, 30%, 18% / 0.2) 100%);
+    z-index: -1;
+  }
+
+  /* Hero luxury background for main page */
+  .hero-luxury-background {
+    background-image: url('./assets/hero-oil-luxury.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+
+  .hero-luxury-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.7) 0%, hsl(25, 20%, 8% / 0.6) 30%, hsl(30, 25%, 12% / 0.5) 70%, hsl(35, 30%, 18% / 0.4) 100%);
     z-index: -1;
   }
 
