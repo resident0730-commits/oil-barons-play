@@ -3,14 +3,14 @@ import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
 // Import well images
-import starterWellImg from '@/assets/wells/starter-well.jpg';
-import mediumWellImg from '@/assets/wells/medium-well.jpg';
-import industrialWellImg from '@/assets/wells/industrial-well.jpg';
-import superWellImg from '@/assets/wells/super-well.jpg';
-import premiumWellImg from '@/assets/wells/premium-well.jpg';
-import eliteWellImg from '@/assets/wells/elite-well.jpg';
-import legendaryWellImg from '@/assets/wells/legendary-well.jpg';
-import cosmicWellImg from '@/assets/wells/cosmic-well.jpg';
+import starterWellImg from '@/assets/wells/starter-well-art.jpg';
+import mediumWellImg from '@/assets/wells/medium-well-art.jpg';
+import industrialWellImg from '@/assets/wells/industrial-well-art.jpg';
+import superWellImg from '@/assets/wells/super-well-art.jpg';
+import premiumWellImg from '@/assets/wells/premium-well-art.jpg';
+import eliteWellImg from '@/assets/wells/elite-well-art.jpg';
+import legendaryWellImg from '@/assets/wells/legendary-well-art.jpg';
+import cosmicWellImg from '@/assets/wells/cosmic-well-art.jpg';
 
 export interface WellType {
   name: string;
