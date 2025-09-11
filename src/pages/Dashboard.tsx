@@ -199,23 +199,25 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-shadow group"
+            onClick={() => setIsTopUpOpen(true)}
+          >
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Баланс</CardTitle>
+              <div className="flex items-center space-x-1">
+                <Wallet className="h-4 w-4 text-muted-foreground" />
+                <Plus className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground mt-1">Нажмите для пополнения</p>
+            </CardContent>
+          </Card>
+
           <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
-            <DialogTrigger asChild>
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow group">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Баланс</CardTitle>
-                  <div className="flex items-center space-x-1">
-                    <Wallet className="h-4 w-4 text-muted-foreground" />
-                    <Plus className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
-                  <p className="text-xs text-muted-foreground mt-1">Нажмите для пополнения</p>
-                </CardContent>
-              </Card>
-            </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-card border-border">
               <DialogHeader>
                 <DialogTitle className="flex items-center">
                   <CreditCard className="h-5 w-5 mr-2 text-primary" />
