@@ -139,7 +139,7 @@ const Settings = () => {
                 <div className="flex items-center justify-between">
                   <Link to="/requisites">
                     <Button variant="outline">
-                      Банковские реквизиты
+                      Информация
                     </Button>
                   </Link>
                   <Button 

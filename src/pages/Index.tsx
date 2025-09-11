@@ -277,7 +277,7 @@ const Index = () => {
         <div className="text-center space-y-4">
           <div>
             <Link to="/requisites" className="text-muted-foreground hover:text-foreground underline">
-              Банковские реквизиты для пополнения
+              Информация о компании
             </Link>
           </div>
           <div className="text-muted-foreground">
