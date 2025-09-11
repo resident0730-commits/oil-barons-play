@@ -19,15 +19,18 @@ import {
   Zap,
   Factory,
   Gem,
-  CreditCard
+  CreditCard,
+  Shield
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome } = useGameData();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -293,6 +296,13 @@ const Dashboard = () => {
                   <Settings className="h-4 w-4" />
                 </Button>
               </Link>
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button variant="ghost" size="sm" className="text-primary">
+                    <Shield className="h-4 w-4" />
+                  </Button>
+                </Link>
+              )}
               <Button variant="ghost" size="sm" onClick={handleSignOut}>
                 <LogOut className="h-4 w-4" />
               </Button>
