@@ -8,9 +8,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { hasSupabase, invokeEdgeFunction } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { useGameData } from "@/hooks/useGameData";
 
 const Settings = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const { profile } = useGameData();
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -90,12 +94,21 @@ const Settings = () => {
               <CardTitle className="flex items-center"><ShieldCheck className="h-5 w-5 mr-2 text-primary" />Профиль и безопасность</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <p>Управляйте настройками аккаунта и безопасностью. (Скоро)</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Изменение пароля</li>
-                <li>Двухфакторная аутентификация</li>
-                <li>Управление сессиями</li>
-              </ul>
+              <p>Управляйте настройками аккаунта и безопасностью.</p>
+              {profile && (
+                <div className="space-y-2">
+                  <p><strong>Никнейм:</strong> {profile.nickname}</p>
+                  <p><strong>Email:</strong> {user?.email}</p>
+                  <p><strong>Суммарный доход в день:</strong> ₽{profile.total_daily_income.toLocaleString()}</p>
+                </div>
+              )}
+              <div className="pt-2">
+                <Link to="/profile">
+                  <Button variant="outline" size="sm">
+                    Управление профилем
+                  </Button>
+                </Link>
+              </div>
             </CardContent>
           </Card>
 

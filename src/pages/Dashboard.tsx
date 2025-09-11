@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,92 +11,110 @@ import {
   Settings,
   LogOut,
   Plus,
-  BarChart3
+  BarChart3,
+  User,
+  Zap,
+  Factory,
+  Gem
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { useGameData, wellTypes } from "@/hooks/useGameData";
 
 const Dashboard = () => {
-  const [balance, setBalance] = useState(1000);
-  const [dailyIncome, setDailyIncome] = useState(0);
-  const [wells, setWells] = useState<Array<{id: number, name: string, level: number, income: number, price: number}>>([]);
+  const { user, signOut } = useAuth();
+  const { profile, wells, loading, buyWell, upgradeWell, addIncome } = useGameData();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const wellTypes = [
-    { name: "Стартовая скважина", baseIncome: 50, price: 500, maxLevel: 5 },
-    { name: "Средняя скважина", baseIncome: 150, price: 1500, maxLevel: 10 },
-    { name: "Промышленная скважина", baseIncome: 500, price: 5000, maxLevel: 15 },
-    { name: "Супер скважина", baseIncome: 1500, price: 15000, maxLevel: 20 }
-  ];
+  const getWellIcon = (wellTypeName: string) => {
+    switch (wellTypeName) {
+      case "Стартовая скважина":
+        return <Zap className="h-5 w-5 text-yellow-500" />;
+      case "Средняя скважина":
+        return <Fuel className="h-5 w-5 text-orange-500" />;
+      case "Промышленная скважина":
+        return <Factory className="h-5 w-5 text-blue-500" />;
+      case "Супер скважина":
+        return <Gem className="h-5 w-5 text-purple-500" />;
+      default:
+        return <Fuel className="h-5 w-5" />;
+    }
+  };
 
-  const buyWell = (wellType: typeof wellTypes[0]) => {
-    if (balance >= wellType.price) {
-      const newWell = {
-        id: Date.now(),
-        name: wellType.name,
-        level: 1,
-        income: wellType.baseIncome,
-        price: wellType.price
-      };
-      
-      setBalance(prev => prev - wellType.price);
-      setWells(prev => [...prev, newWell]);
-      setDailyIncome(prev => prev + wellType.baseIncome);
-      
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
+
+  // Simulate income generation every 10 seconds
+  useEffect(() => {
+    if (!profile?.total_daily_income) return;
+
+    const interval = setInterval(() => {
+      const income = Math.round(profile.total_daily_income / 8640); // Income every 10 seconds
+      if (income > 0) {
+        addIncome(income);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [profile?.total_daily_income, addIncome]);
+
+  const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
+    const result = await buyWell(wellType);
+    if (result.success) {
       toast({
         title: "Скважина куплена!",
         description: `${wellType.name} добавлена к вашему бизнесу`,
       });
     } else {
       toast({
-        title: "Недостаточно средств",
-        description: "Накопите больше денег для покупки",
+        title: "Ошибка покупки",
+        description: result.error,
         variant: "destructive"
       });
     }
   };
 
-  const upgradeWell = (wellId: number) => {
-    setWells(prev => prev.map(well => {
-      if (well.id === wellId && well.level < 20) {
-        const upgradeCost = well.price * 0.5 * well.level;
-        if (balance >= upgradeCost) {
-          setBalance(prevBalance => prevBalance - upgradeCost);
-          setDailyIncome(prevIncome => prevIncome + well.income * 0.3);
-          
-          toast({
-            title: "Скважина улучшена!",
-            description: `${well.name} теперь уровень ${well.level + 1}`,
-          });
-          
-          return {
-            ...well,
-            level: well.level + 1,
-            income: Math.round(well.income * 1.3)
-          };
-        } else {
-          toast({
-            title: "Недостаточно средств",
-            description: "Накопите больше денег для улучшения",
-            variant: "destructive"
-          });
-        }
-      }
-      return well;
-    }));
+  const handleUpgradeWell = async (wellId: string) => {
+    const result = await upgradeWell(wellId);
+    if (result.success) {
+      toast({
+        title: "Скважина улучшена!",
+        description: "Доходность увеличена!",
+      });
+    } else {
+      toast({
+        title: "Ошибка улучшения",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
   };
 
-  // Симуляция ежедневного дохода каждые 10 секунд (для демо)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (dailyIncome > 0) {
-        const income = Math.round(dailyIncome / 8640); // Доход каждые 10 секунд
-        setBalance(prev => prev + income);
-      }
-    }, 10000);
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
-    return () => clearInterval(interval);
-  }, [dailyIncome]);
+  if (loading || !user || !profile) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Fuel className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
+          <p>Загрузка игры...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,18 +129,25 @@ const Dashboard = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <Wallet className="h-5 w-5 text-primary" />
-                <span className="font-semibold">₽{balance.toLocaleString()}</span>
+                <span className="font-semibold">₽{profile.balance.toLocaleString()}</span>
               </div>
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <User className="h-4 w-4" />
+                <span>{profile.nickname}</span>
+              </div>
+              <Link to="/profile">
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
               <Link to="/settings">
                 <Button variant="ghost" size="sm">
                   <Settings className="h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/">
-                <Button variant="ghost" size="sm">
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </Link>
+              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
@@ -137,7 +162,7 @@ const Dashboard = () => {
               <Wallet className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{balance.toLocaleString()}</div>
+              <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
             </CardContent>
           </Card>
           
@@ -147,7 +172,7 @@ const Dashboard = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{dailyIncome.toLocaleString()}</div>
+              <div className="text-2xl font-bold">₽{profile.total_daily_income.toLocaleString()}</div>
             </CardContent>
           </Card>
 
@@ -187,8 +212,11 @@ const Dashboard = () => {
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    {wellType.name}
-                    <Badge variant={balance >= wellType.price ? "default" : "secondary"}>
+                    <div className="flex items-center space-x-2">
+                      {getWellIcon(wellType.name)}
+                      <span className="text-sm">{wellType.name}</span>
+                    </div>
+                    <Badge variant={profile.balance >= wellType.price ? "default" : "secondary"}>
                       ₽{wellType.price.toLocaleString()}
                     </Badge>
                   </CardTitle>
@@ -204,8 +232,8 @@ const Dashboard = () => {
                   </div>
                   <Button 
                     className="w-full gradient-gold shadow-gold" 
-                    onClick={() => buyWell(wellType)}
-                    disabled={balance < wellType.price}
+                    onClick={() => handleBuyWell(wellType)}
+                    disabled={profile.balance < wellType.price}
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Купить
@@ -223,21 +251,24 @@ const Dashboard = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {wells.map((well) => {
-                const upgradeCost = Math.round(well.price * 0.5 * well.level);
-                const canUpgrade = well.level < 20 && balance >= upgradeCost;
+                const upgradeCost = Math.round(well.purchase_price * 0.5 * well.level);
+                const canUpgrade = well.level < 20 && profile.balance >= upgradeCost;
                 
                 return (
                   <Card key={well.id}>
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
-                        {well.name}
+                        <div className="flex items-center space-x-2">
+                          {getWellIcon(well.well_type)}
+                          <span className="text-sm">{well.well_type}</span>
+                        </div>
                         <Badge variant="outline">Ур. {well.level}</Badge>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Доход в день:</p>
-                        <p className="text-lg font-semibold text-primary">₽{well.income}</p>
+                        <p className="text-lg font-semibold text-primary">₽{well.income_per_day}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Прогресс уровня:</p>
@@ -247,7 +278,7 @@ const Dashboard = () => {
                         <Button 
                           variant="outline"
                           className="w-full" 
-                          onClick={() => upgradeWell(well.id)}
+                          onClick={() => handleUpgradeWell(well.id)}
                           disabled={!canUpgrade}
                         >
                           Улучшить за ₽{upgradeCost.toLocaleString()}
