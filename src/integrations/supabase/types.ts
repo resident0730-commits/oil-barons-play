@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      bot_players: {
+        Row: {
+          balance: number
+          created_at: string
+          daily_income: number
+          id: string
+          nickname: string
+          updated_at: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          daily_income?: number
+          id?: string
+          nickname: string
+          updated_at?: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          daily_income?: number
+          id?: string
+          nickname?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           balance: number
@@ -109,7 +136,16 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      leaderboard: {
+        Row: {
+          balance: number | null
+          created_at: string | null
+          daily_income: number | null
+          nickname: string | null
+          player_type: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_user_statistics: {
