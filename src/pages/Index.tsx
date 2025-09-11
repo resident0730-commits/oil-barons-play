@@ -275,9 +275,12 @@ const Index = () => {
       {/* Footer */}
       <footer className="container mx-auto px-4 py-8 mt-16 border-t border-border">
         <div className="text-center space-y-4">
-          <div>
+          <div className="flex justify-center space-x-6">
             <Link to="/requisites" className="text-muted-foreground hover:text-foreground underline">
               Информация о компании
+            </Link>
+            <Link to="/terms" className="text-muted-foreground hover:text-foreground underline">
+              Пользовательское соглашение
             </Link>
           </div>
           <div className="text-muted-foreground">
