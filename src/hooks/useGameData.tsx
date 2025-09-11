@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { hasSupabase, supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface WellType {
   name: string;
@@ -14,8 +14,7 @@ export interface UserWell {
   id: string;
   well_type: string;
   level: number;
-  income_per_day: number;
-  purchase_price: number;
+  daily_income: number;
 }
 
 export interface UserProfile {
@@ -23,7 +22,7 @@ export interface UserProfile {
   user_id: string;
   nickname: string;
   balance: number;
-  total_daily_income: number;
+  daily_income: number;
 }
 
 export const wellTypes: WellType[] = [
@@ -41,7 +40,7 @@ export function useGameData() {
 
   // Load user data
   useEffect(() => {
-    if (!hasSupabase || !user) {
+    if (!user) {
       setLoading(false);
       return;
     }
@@ -50,12 +49,12 @@ export function useGameData() {
   }, [user]);
 
   const loadGameData = async () => {
-    if (!hasSupabase || !user) return;
+    if (!user) return;
 
     try {
       // Load profile
       const { data: profileData } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .single();
@@ -66,7 +65,7 @@ export function useGameData() {
 
       // Load wells
       const { data: wellsData } = await supabase
-        .from('user_wells')
+        .from('wells')
         .select('*')
         .eq('user_id', user.id);
 
@@ -81,7 +80,7 @@ export function useGameData() {
   };
 
   const buyWell = async (wellType: WellType) => {
-    if (!hasSupabase || !user || !profile) return { success: false, error: 'Не авторизован' };
+    if (!user || !profile) return { success: false, error: 'Не авторизован' };
 
     if (profile.balance < wellType.price) {
       return { success: false, error: 'Недостаточно средств' };
@@ -90,13 +89,12 @@ export function useGameData() {
     try {
       // Insert new well
       const { data: newWell, error: wellError } = await supabase
-        .from('user_wells')
+        .from('wells')
         .insert({
           user_id: user.id,
           well_type: wellType.name,
           level: 1,
-          income_per_day: wellType.baseIncome,
-          purchase_price: wellType.price
+          daily_income: wellType.baseIncome
         })
         .select()
         .single();
@@ -105,13 +103,13 @@ export function useGameData() {
 
       // Update profile balance and daily income
       const newBalance = profile.balance - wellType.price;
-      const newDailyIncome = profile.total_daily_income + wellType.baseIncome;
+      const newDailyIncome = profile.daily_income + wellType.baseIncome;
 
       const { error: profileError } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .update({
           balance: newBalance,
-          total_daily_income: newDailyIncome
+          daily_income: newDailyIncome
         })
         .eq('user_id', user.id);
 
@@ -122,7 +120,7 @@ export function useGameData() {
       setProfile(prev => prev ? {
         ...prev,
         balance: newBalance,
-        total_daily_income: newDailyIncome
+        daily_income: newDailyIncome
       } : null);
 
       return { success: true };
@@ -132,27 +130,27 @@ export function useGameData() {
   };
 
   const upgradeWell = async (wellId: string) => {
-    if (!hasSupabase || !user || !profile) return { success: false, error: 'Не авторизован' };
+    if (!user || !profile) return { success: false, error: 'Не авторизован' };
 
     const well = wells.find(w => w.id === wellId);
     if (!well || well.level >= 20) return { success: false, error: 'Нельзя улучшить' };
 
-    const upgradeCost = Math.round(well.purchase_price * 0.5 * well.level);
+    const upgradeCost = Math.round(wellTypes.find(wt => wt.name === well.well_type)?.price || 1000 * 0.5 * well.level);
     if (profile.balance < upgradeCost) {
       return { success: false, error: 'Недостаточно средств' };
     }
 
     try {
       const newLevel = well.level + 1;
-      const newIncome = Math.round(well.income_per_day * 1.3);
-      const incomeIncrease = newIncome - well.income_per_day;
+      const newIncome = Math.round(well.daily_income * 1.3);
+      const incomeIncrease = newIncome - well.daily_income;
 
       // Update well
       const { error: wellError } = await supabase
-        .from('user_wells')
+        .from('wells')
         .update({
           level: newLevel,
-          income_per_day: newIncome
+          daily_income: newIncome
         })
         .eq('id', wellId);
 
@@ -160,13 +158,13 @@ export function useGameData() {
 
       // Update profile
       const newBalance = profile.balance - upgradeCost;
-      const newDailyIncome = profile.total_daily_income + incomeIncrease;
+      const newDailyIncome = profile.daily_income + incomeIncrease;
 
       const { error: profileError } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .update({
           balance: newBalance,
-          total_daily_income: newDailyIncome
+          daily_income: newDailyIncome
         })
         .eq('user_id', user.id);
 
@@ -175,13 +173,13 @@ export function useGameData() {
       // Update local state
       setWells(prev => prev.map(w => 
         w.id === wellId 
-          ? { ...w, level: newLevel, income_per_day: newIncome }
+          ? { ...w, level: newLevel, daily_income: newIncome }
           : w
       ));
       setProfile(prev => prev ? {
         ...prev,
         balance: newBalance,
-        total_daily_income: newDailyIncome
+        daily_income: newDailyIncome
       } : null);
 
       return { success: true };
@@ -191,13 +189,13 @@ export function useGameData() {
   };
 
   const addIncome = async (amount: number) => {
-    if (!hasSupabase || !user || !profile) return;
+    if (!user || !profile) return;
 
     try {
       const newBalance = profile.balance + amount;
 
       const { error } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .update({ balance: newBalance })
         .eq('user_id', user.id);
 

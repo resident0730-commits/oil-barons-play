@@ -99,7 +99,7 @@ const Settings = () => {
                 <div className="space-y-2">
                   <p><strong>Никнейм:</strong> {profile.nickname}</p>
                   <p><strong>Email:</strong> {user?.email}</p>
-                  <p><strong>Суммарный доход в день:</strong> ₽{profile.total_daily_income.toLocaleString()}</p>
+                  <p><strong>Суммарный доход в день:</strong> ₽{profile.daily_income.toLocaleString()}</p>
                 </div>
               )}
               <div className="pt-2">

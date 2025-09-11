@@ -52,17 +52,17 @@ const Dashboard = () => {
 
   // Simulate income generation every 10 seconds
   useEffect(() => {
-    if (!profile?.total_daily_income) return;
+    if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      const income = Math.round(profile.total_daily_income / 8640); // Income every 10 seconds
+      const income = Math.round(profile.daily_income / 8640); // Income every 10 seconds
       if (income > 0) {
         addIncome(income);
       }
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [profile?.total_daily_income, addIncome]);
+  }, [profile?.daily_income, addIncome]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
     const result = await buyWell(wellType);
@@ -172,7 +172,7 @@ const Dashboard = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{profile.total_daily_income.toLocaleString()}</div>
+              <div className="text-2xl font-bold">₽{profile.daily_income.toLocaleString()}</div>
             </CardContent>
           </Card>
 
@@ -251,7 +251,7 @@ const Dashboard = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {wells.map((well) => {
-                const upgradeCost = Math.round(well.purchase_price * 0.5 * well.level);
+                const upgradeCost = Math.round((wellTypes.find(wt => wt.name === well.well_type)?.price || 1000) * 0.5 * well.level);
                 const canUpgrade = well.level < 20 && profile.balance >= upgradeCost;
                 
                 return (
@@ -268,7 +268,7 @@ const Dashboard = () => {
                     <CardContent className="space-y-4">
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Доход в день:</p>
-                        <p className="text-lg font-semibold text-primary">₽{well.income_per_day}</p>
+                        <p className="text-lg font-semibold text-primary">₽{well.daily_income}</p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-2">Прогресс уровня:</p>
