@@ -53,6 +53,19 @@ serve(async (req) => {
       }
     }
 
+    // Build base URL for redirects (origin -> referer -> env -> fallback)
+    const originHeader = req.headers.get("origin");
+    const refererHeader = req.headers.get("referer");
+    let baseUrl = originHeader ?? "";
+    if (!baseUrl && refererHeader) {
+      try {
+        baseUrl = new URL(refererHeader).origin;
+      } catch (_) {
+        // ignore parse error
+      }
+    }
+    baseUrl = baseUrl || Deno.env.get("PUBLIC_SITE_URL") || Deno.env.get("FRONTEND_URL") || "https://lovable.dev";
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -70,8 +83,8 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${req.headers.get("origin")}/dashboard?payment=success`,
-      cancel_url: `${req.headers.get("origin")}/settings?payment=cancelled`,
+      success_url: `${baseUrl}/dashboard?payment=success`,
+      cancel_url: `${baseUrl}/settings?payment=cancelled`,
     });
 
     return new Response(
