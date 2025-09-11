@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -20,10 +19,13 @@ serve(async (req) => {
       throw new Error("Укажите корректную сумму");
     }
 
-    // Initialize Stripe
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-      apiVersion: "2023-10-16",
-    });
+    // Get YooKassa credentials
+    const shopId = Deno.env.get("YOOKASSA_SHOP_ID");
+    const secretKey = Deno.env.get("YOOKASSA_SECRET_KEY");
+    
+    if (!shopId || !secretKey) {
+      throw new Error("Платежная система не настроена");
+    }
 
     // Create Supabase client
     const supabaseClient = createClient(
@@ -34,26 +36,16 @@ serve(async (req) => {
     // Get authenticated user
     const authHeader = req.headers.get("Authorization");
     let userEmail = "guest@example.com";
-    let customerId = undefined;
 
     if (authHeader) {
       const token = authHeader.replace("Bearer ", "");
       const { data } = await supabaseClient.auth.getUser(token);
       if (data.user?.email) {
         userEmail = data.user.email;
-        
-        // Check if customer exists
-        const customers = await stripe.customers.list({ 
-          email: userEmail, 
-          limit: 1 
-        });
-        if (customers.data.length > 0) {
-          customerId = customers.data[0].id;
-        }
       }
     }
 
-    // Build base URL for redirects (origin -> referer -> env -> fallback)
+    // Build base URL for redirects
     const originHeader = req.headers.get("origin");
     const refererHeader = req.headers.get("referer");
     let baseUrl = originHeader ?? "";
@@ -66,29 +58,57 @@ serve(async (req) => {
     }
     baseUrl = baseUrl || Deno.env.get("PUBLIC_SITE_URL") || Deno.env.get("FRONTEND_URL") || "https://lovable.dev";
 
-    // Create checkout session
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      customer_email: customerId ? undefined : userEmail,
-      line_items: [
-        {
-          price_data: {
-            currency: currency.toLowerCase(),
-            product_data: { 
-              name: "Пополнение баланса Oil Tycoon"
-            },
-            unit_amount: Math.round(amount * 100), // Convert to kopecks
-          },
-          quantity: 1,
+    // Create YooKassa payment
+    const paymentData = {
+      amount: {
+        value: amount.toFixed(2),
+        currency: currency
+      },
+      confirmation: {
+        type: "redirect",
+        return_url: `${baseUrl}/dashboard?payment=success`
+      },
+      capture: true,
+      description: "Пополнение баланса Oil Tycoon",
+      receipt: {
+        customer: {
+          email: userEmail
         },
-      ],
-      mode: "payment",
-      success_url: `${baseUrl}/dashboard?payment=success`,
-      cancel_url: `${baseUrl}/settings?payment=cancelled`,
+        items: [{
+          description: "Пополнение игрового баланса",
+          quantity: "1.00",
+          amount: {
+            value: amount.toFixed(2),
+            currency: currency
+          },
+          vat_code: 1
+        }]
+      }
+    };
+
+    const response = await fetch('https://api.yookassa.ru/v3/payments', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${btoa(`${shopId}:${secretKey}`)}`,
+        'Content-Type': 'application/json',
+        'Idempotence-Key': crypto.randomUUID()
+      },
+      body: JSON.stringify(paymentData)
     });
 
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('YooKassa error:', errorData);
+      throw new Error('Ошибка создания платежа');
+    }
+
+    const payment = await response.json();
+
     return new Response(
-      JSON.stringify({ url: session.url }), 
+      JSON.stringify({ 
+        url: payment.confirmation.confirmation_url,
+        paymentId: payment.id
+      }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
