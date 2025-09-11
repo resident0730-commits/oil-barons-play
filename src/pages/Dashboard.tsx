@@ -718,10 +718,10 @@ const Dashboard = () => {
                 </Card>
               );
             })}
-          </div>
-        </div>
+           </div>
+         </div>
 
-        {/* Marketplace */}
+         {/* Duplicate sections removed */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-bold">Магазин скважин</h2>
@@ -912,14 +912,14 @@ const Dashboard = () => {
                         <Badge variant="secondary" className="w-full justify-center">
                           Максимальный уровень
                         </Badge>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                       )}
+                     </CardContent>
+                   </Card>
+                 );
+               })}
+             </div>
+           </div>
+         )}
       </div>
     </div>
   );
