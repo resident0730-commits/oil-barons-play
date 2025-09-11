@@ -442,6 +442,10 @@ const Dashboard = () => {
                 const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
                 const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
                 
+                // Расчет нового дохода после улучшения
+                const newDailyIncome = Math.round(well.daily_income * 1.15);
+                const incomeIncrease = newDailyIncome - well.daily_income;
+                
                 return (
                   <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
                     <CardHeader className="pb-3">
@@ -501,6 +505,27 @@ const Dashboard = () => {
                           className="w-20"
                         />
                       </div>
+
+                      {/* Upgrade Preview */}
+                      {canUpgrade && (
+                        <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-3">
+                          <div className="text-xs font-medium text-primary mb-2">Предварительный просмотр улучшения:</div>
+                          <div className="space-y-1 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Новый доход/день:</span>
+                              <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Увеличение:</span>
+                              <span className="font-bold text-green-600">+₽{incomeIncrease.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between text-xs border-t border-primary/20 pt-1">
+                              <span className="text-muted-foreground">Стоимость:</span>
+                              <span className="font-semibold text-orange-600">₽{upgradeCost.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       
                       <Button 
                         onClick={() => handleUpgradeWell(well.id)}
