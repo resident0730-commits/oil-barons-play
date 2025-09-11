@@ -92,8 +92,8 @@ const Dashboard = () => {
 
   // Зачисление тестового баланса (только один раз)
   useEffect(() => {
-    if (profile && profile.balance < 5000000) {
-      addIncome(5000000 - profile.balance);
+    if (profile && profile.balance < 50000000) {
+      addIncome(50000000 - profile.balance);
     }
   }, [profile]);
 

@@ -60,8 +60,8 @@ export interface WellPackage {
 export const wellTypes: WellType[] = [
   { 
     name: "Мини-скважина", 
-    baseIncome: 1, 
-    price: 250, 
+    baseIncome: 25, 
+    price: 6250, 
     maxLevel: 5, 
     icon: "🌱", 
     image: miniWellImg,
@@ -69,8 +69,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Стартовая скважина", 
-    baseIncome: 2, 
-    price: 1000, 
+    baseIncome: 55, 
+    price: 15000, 
     maxLevel: 10, 
     icon: "🔸", 
     image: starterWellImg,
@@ -78,8 +78,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Средняя скважина", 
-    baseIncome: 6, 
-    price: 3000, 
+    baseIncome: 140, 
+    price: 50000, 
     maxLevel: 15, 
     icon: "⚡", 
     image: mediumWellImg,
@@ -87,8 +87,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Промышленная скважина", 
-    baseIncome: 22, 
-    price: 10000, 
+    baseIncome: 450, 
+    price: 180000, 
     maxLevel: 20, 
     icon: "🏭", 
     image: industrialWellImg,
@@ -96,8 +96,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Супер скважина", 
-    baseIncome: 74, 
-    price: 30000, 
+    baseIncome: 1350, 
+    price: 500000, 
     maxLevel: 25, 
     icon: "💎", 
     image: superWellImg,
@@ -105,8 +105,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Премиум скважина", 
-    baseIncome: 274, 
-    price: 100000, 
+    baseIncome: 4200, 
+    price: 1500000, 
     maxLevel: 30, 
     icon: "👑", 
     image: premiumWellImg,
@@ -114,8 +114,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Элитная скважина", 
-    baseIncome: 1055, 
-    price: 350000, 
+    baseIncome: 13500, 
+    price: 4500000, 
     maxLevel: 35, 
     icon: "💠", 
     image: eliteWellImg,
@@ -123,8 +123,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Легендарная скважина", 
-    baseIncome: 3945, 
-    price: 1200000, 
+    baseIncome: 42000, 
+    price: 14000000, 
     maxLevel: 40, 
     icon: "🌟", 
     image: legendaryWellImg,
@@ -132,8 +132,8 @@ export const wellTypes: WellType[] = [
   },
   { 
     name: "Космическая скважина", 
-    baseIncome: 14250, 
-    price: 4000000, 
+    baseIncome: 130000, 
+    price: 42000000, 
     maxLevel: 50, 
     icon: "🚀", 
     image: cosmicWellImg,
@@ -149,13 +149,13 @@ export const wellPackages: WellPackage[] = [
       { type: "Мини-скважина", count: 3 },
       { type: "Стартовая скважина", count: 1 }
     ],
-    originalPrice: 1750,
-    discountedPrice: 1200,
-    discount: 31,
+    originalPrice: 33750,
+    discountedPrice: 25000,
+    discount: 26,
     icon: "🎯",
     image: starterPackageImg,
     rarity: 'starter',
-    totalDailyIncome: 5 // 3*1 + 1*2
+    totalDailyIncome: 130 // 3*25 + 1*55
   },
   {
     name: "Пакет роста",
@@ -165,13 +165,13 @@ export const wellPackages: WellPackage[] = [
       { type: "Средняя скважина", count: 2 },
       { type: "Промышленная скважина", count: 1 }
     ],
-    originalPrice: 18000,
-    discountedPrice: 14000,
+    originalPrice: 410000,
+    discountedPrice: 320000,
     discount: 22,
     icon: "📈",
     image: growthPackageImg,
     rarity: 'growth',
-    totalDailyIncome: 38 // 2*2 + 2*6 + 1*22
+    totalDailyIncome: 840 // 2*55 + 2*140 + 1*450
   },
   {
     name: "Бизнес пакет",
@@ -181,13 +181,13 @@ export const wellPackages: WellPackage[] = [
       { type: "Супер скважина", count: 2 },
       { type: "Премиум скважина", count: 1 }
     ],
-    originalPrice: 190000,
-    discountedPrice: 145000,
+    originalPrice: 3040000,
+    discountedPrice: 2300000,
     discount: 24,
     icon: "💼",
     image: businessPackageImg,
     rarity: 'business',
-    totalDailyIncome: 488 // 3*22 + 2*74 + 1*274
+    totalDailyIncome: 8550 // 3*450 + 2*1350 + 1*4200
   },
   {
     name: "Империя",
@@ -197,13 +197,13 @@ export const wellPackages: WellPackage[] = [
       { type: "Элитная скважина", count: 2 },
       { type: "Легендарная скважина", count: 1 }
     ],
-    originalPrice: 2250000,
-    discountedPrice: 1650000,
+    originalPrice: 55000000,
+    discountedPrice: 40000000,
     discount: 27,
     icon: "👑",
     image: empirePackageImg,
     rarity: 'empire',
-    totalDailyIncome: 8503 // 2*274 + 2*1055 + 1*3945
+    totalDailyIncome: 136400 // 2*4200 + 2*13500 + 1*42000
   }
 ];
 
