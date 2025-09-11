@@ -13,6 +13,12 @@ import eliteWellImg from '@/assets/wells/elite-well-art.jpg';
 import legendaryWellImg from '@/assets/wells/legendary-well-art.jpg';
 import cosmicWellImg from '@/assets/wells/cosmic-well-art.jpg';
 
+// Import package images
+import starterPackageImg from '@/assets/packages/starter-package.jpg';
+import growthPackageImg from '@/assets/packages/growth-package.jpg';
+import businessPackageImg from '@/assets/packages/business-package.jpg';
+import empirePackageImg from '@/assets/packages/empire-package.jpg';
+
 export interface WellType {
   name: string;
   baseIncome: number;
@@ -46,7 +52,9 @@ export interface WellPackage {
   discountedPrice: number;
   discount: number;
   icon: string;
+  image: string;
   rarity: 'starter' | 'growth' | 'business' | 'empire';
+  totalDailyIncome: number;
 }
 
 export const wellTypes: WellType[] = [
@@ -145,7 +153,9 @@ export const wellPackages: WellPackage[] = [
     discountedPrice: 1200,
     discount: 31,
     icon: "🎯",
-    rarity: 'starter'
+    image: starterPackageImg,
+    rarity: 'starter',
+    totalDailyIncome: 75 // 3*15 + 1*30
   },
   {
     name: "Пакет роста",
@@ -159,7 +169,9 @@ export const wellPackages: WellPackage[] = [
     discountedPrice: 14000,
     discount: 22,
     icon: "📈",
-    rarity: 'growth'
+    image: growthPackageImg,
+    rarity: 'growth',
+    totalDailyIncome: 385 // 2*30 + 2*75 + 1*175
   },
   {
     name: "Бизнес пакет",
@@ -173,7 +185,9 @@ export const wellPackages: WellPackage[] = [
     discountedPrice: 145000,
     discount: 24,
     icon: "💼",
-    rarity: 'business'
+    image: businessPackageImg,
+    rarity: 'business',
+    totalDailyIncome: 1525 // 3*175 + 2*375 + 1*750
   },
   {
     name: "Империя",
@@ -187,7 +201,9 @@ export const wellPackages: WellPackage[] = [
     discountedPrice: 1650000,
     discount: 27,
     icon: "👑",
-    rarity: 'empire'
+    image: empirePackageImg,
+    rarity: 'empire',
+    totalDailyIncome: 6800 // 2*750 + 2*1400 + 1*2500
   }
 ];
 
