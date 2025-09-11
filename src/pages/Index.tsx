@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useGameData } from "@/hooks/useGameData";
 import { 
   Fuel, 
   TrendingUp, 
@@ -11,10 +13,14 @@ import {
   Coins, 
   BarChart3,
   Zap,
-  Target
+  Target,
+  Wallet,
+  User
 } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+  const { profile, wells, loading } = useGameData();
 
   return (
     <div className="min-h-screen gradient-hero">
@@ -26,12 +32,26 @@ const Index = () => {
             <h1 className="text-2xl font-bold">Oil Tycoon</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Link to="/auth">
-              <Button variant="ghost">Войти</Button>
-            </Link>
-            <Link to="/dashboard">
-              <Button className="gradient-gold shadow-gold">Начать игру</Button>
-            </Link>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span>{profile?.nickname || 'Игрок'}</span>
+                </div>
+                <Link to="/dashboard">
+                  <Button className="gradient-gold shadow-gold">В игру</Button>
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="ghost">Войти</Button>
+                </Link>
+                <Link to="/dashboard">
+                  <Button className="gradient-gold shadow-gold">Начать игру</Button>
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>
@@ -54,12 +74,21 @@ const Index = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth">
-              <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
-                <Zap className="mr-2 h-5 w-5" />
-                Начать с 1000₽
-              </Button>
-            </Link>
+            {user ? (
+              <Link to="/dashboard">
+                <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
+                  <Zap className="mr-2 h-5 w-5" />
+                  Продолжить игру
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/auth">
+                <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
+                  <Zap className="mr-2 h-5 w-5" />
+                  Начать с 1000₽
+                </Button>
+              </Link>
+            )}
             <Link to="/about">
               <Button size="lg" variant="outline" className="text-lg px-8 py-4">
                 <BarChart3 className="mr-2 h-5 w-5" />
@@ -68,6 +97,47 @@ const Index = () => {
             </Link>
           </div>
         </div>
+
+        {/* Player Progress Section - показывается только для авторизованных игроков */}
+        {user && profile && (
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-center mb-8">Ваш прогресс</h2>
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Баланс</CardTitle>
+                  <Wallet className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
+                  <p className="text-xs text-muted-foreground">Доступно для инвестиций</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Ежедневный доход</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₽{profile.daily_income.toLocaleString()}</div>
+                  <p className="text-xs text-muted-foreground">Пассивный доход</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Скважины</CardTitle>
+                  <Fuel className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{wells.length}</div>
+                  <p className="text-xs text-muted-foreground">Нефтяных активов</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
@@ -169,9 +239,9 @@ const Index = () => {
                   Бонусы за активность
                 </div>
               </div>
-              <Link to="/auth">
+              <Link to={user ? "/dashboard" : "/auth"}>
                 <Button size="lg" className="gradient-gold shadow-gold w-full text-lg">
-                  Зарегистрироваться и начать
+                  {user ? "Продолжить игру" : "Зарегистрироваться и начать"}
                 </Button>
               </Link>
             </CardContent>
