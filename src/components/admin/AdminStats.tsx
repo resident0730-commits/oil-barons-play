@@ -89,7 +89,7 @@ export function AdminStats() {
     },
     {
       title: 'Общий баланс',
-      value: `$${Number(stats.total_balance).toLocaleString()}`,
+      value: `₽${Number(stats.total_balance).toLocaleString()}`,
       icon: DollarSign,
       className: 'text-emerald-600'
     }

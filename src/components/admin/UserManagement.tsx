@@ -232,8 +232,8 @@ export function UserManagement() {
             {filteredUsers.map((userProfile) => (
               <TableRow key={userProfile.id}>
                 <TableCell className="font-medium">{userProfile.nickname}</TableCell>
-                <TableCell>${Number(userProfile.balance).toLocaleString()}</TableCell>
-                <TableCell>${Number(userProfile.daily_income).toLocaleString()}</TableCell>
+                <TableCell>₽{Number(userProfile.balance).toLocaleString()}</TableCell>
+                <TableCell>₽{Number(userProfile.daily_income).toLocaleString()}</TableCell>
                 <TableCell>{getRoleBadge(userProfile.user_roles)}</TableCell>
                 <TableCell>
                   {userProfile.is_banned ? (
