@@ -126,6 +126,35 @@ All colors MUST be HSL.
     z-index: -1;
   }
 
+  /* Ensure proper mobile touch targets */
+  button, input, select, textarea {
+    @apply touch-manipulation;
+  }
+
+  /* Prevent text selection on mobile for better UX */
+  .prevent-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Better mobile scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide scrollbars on mobile for cleaner look */
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      scrollbar-width: none;
+    }
+  }
+}
+
   /* Hero luxury background for main page */
   .hero-luxury-background {
     background-image: url('./assets/hero-oil-luxury.jpg');
