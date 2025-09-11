@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { 
   Fuel, 
   TrendingUp, 
@@ -15,7 +18,8 @@ import {
   User,
   Zap,
   Factory,
-  Gem
+  Gem,
+  CreditCard
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -27,6 +31,9 @@ const Dashboard = () => {
   const { profile, wells, loading, buyWell, upgradeWell, addIncome } = useGameData();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [topUpAmount, setTopUpAmount] = useState("");
+  const [topUpLoading, setTopUpLoading] = useState(false);
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 
   const getWellIcon = (wellTypeName: string) => {
     switch (wellTypeName) {
@@ -96,6 +103,42 @@ const Dashboard = () => {
     }
   };
 
+  const handleTopUp = async () => {
+    const value = parseFloat(topUpAmount);
+    if (!value || value <= 0) {
+      toast({ variant: "destructive", title: "Укажите сумму в ₽", description: "Введите положительное число" });
+      return;
+    }
+
+    if (value < 100) {
+      toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
+      return;
+    }
+
+    setTopUpLoading(true);
+
+    try {
+      // Имитация успешного пополнения (в реальном приложении здесь будет платежная система)
+      setTimeout(() => {
+        addIncome(value);
+        toast({
+          title: "Баланс пополнен!",
+          description: `Добавлено ${value} ₽ к вашему балансу`,
+        });
+        setTopUpAmount("");
+        setIsTopUpOpen(false);
+        setTopUpLoading(false);
+      }, 1500);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка пополнения",
+        description: "Попробуйте позже"
+      });
+      setTopUpLoading(false);
+    }
+  };
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -156,15 +199,74 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Баланс</CardTitle>
-              <Wallet className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
-            </CardContent>
-          </Card>
+          <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
+            <DialogTrigger asChild>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow group">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Баланс</CardTitle>
+                  <div className="flex items-center space-x-1">
+                    <Wallet className="h-4 w-4 text-muted-foreground" />
+                    <Plus className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
+                  <p className="text-xs text-muted-foreground mt-1">Нажмите для пополнения</p>
+                </CardContent>
+              </Card>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center">
+                  <CreditCard className="h-5 w-5 mr-2 text-primary" />
+                  Пополнение баланса
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="amount">Сумма пополнения (₽)</Label>
+                  <Input
+                    id="amount"
+                    type="number"
+                    placeholder="Минимум 100 ₽"
+                    value={topUpAmount}
+                    onChange={(e) => setTopUpAmount(e.target.value)}
+                    min="100"
+                  />
+                </div>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setTopUpAmount("500")}
+                    className="flex-1"
+                  >
+                    500 ₽
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setTopUpAmount("1000")}
+                    className="flex-1"
+                  >
+                    1000 ₽
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setTopUpAmount("5000")}
+                    className="flex-1"
+                  >
+                    5000 ₽
+                  </Button>
+                </div>
+                <Button
+                  onClick={handleTopUp}
+                  disabled={topUpLoading}
+                  className="w-full gradient-gold shadow-gold"
+                >
+                  {topUpLoading ? "Обработка..." : "Пополнить баланс"}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

@@ -8,82 +8,85 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 17% 7%;
-    --foreground: 0 0% 98%;
+    --background: 25 30% 8%;
+    --foreground: 43 50% 95%;
 
-    --card: 220 17% 9%;
-    --card-foreground: 0 0% 98%;
+    --card: 25 25% 12%;
+    --card-foreground: 43 50% 95%;
 
-    --popover: 220 17% 9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 25 25% 12%;
+    --popover-foreground: 43 50% 95%;
 
     --primary: 43 96% 56%;
-    --primary-foreground: 220 17% 7%;
+    --primary-foreground: 25 30% 8%;
 
-    --secondary: 220 17% 13%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 25 20% 18%;
+    --secondary-foreground: 43 50% 95%;
 
-    --muted: 220 17% 13%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 25 20% 18%;
+    --muted-foreground: 25 15% 65%;
 
-    --accent: 220 17% 17%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 35 40% 25%;
+    --accent-foreground: 43 50% 95%;
 
     --destructive: 0 62.8% 55%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 43 50% 95%;
 
-    --border: 220 17% 17%;
-    --input: 220 17% 17%;
+    --border: 25 20% 22%;
+    --input: 25 20% 22%;
     --ring: 43 96% 56%;
 
     --radius: 0.75rem;
 
     /* Oil Tycoon specific colors */
     --oil-gold: 43 96% 56%;
-    --oil-black: 220 17% 7%;
+    --oil-dark: 25 30% 8%;
+    --oil-bronze: 35 40% 35%;
     --oil-silver: 0 0% 75%;
     --oil-success: 142 76% 36%;
     --oil-warning: 25 95% 53%;
     --oil-danger: 0 62.8% 55%;
 
-    /* Gradients */
+    /* Rich oil-themed gradients */
     --gradient-gold: linear-gradient(135deg, hsl(43, 96%, 56%) 0%, hsl(38, 92%, 50%) 100%);
-    --gradient-oil: linear-gradient(135deg, hsl(220, 17%, 7%) 0%, hsl(220, 17%, 13%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220, 17%, 7%) 0%, hsl(220, 17%, 9%) 50%, hsl(43, 96%, 12%) 100%);
+    --gradient-oil: linear-gradient(135deg, hsl(25, 30%, 8%) 0%, hsl(25, 25%, 12%) 50%, hsl(35, 40%, 18%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(25, 30%, 8%) 0%, hsl(35, 40%, 12%) 30%, hsl(43, 60%, 15%) 70%, hsl(43, 96%, 20%) 100%);
+    --gradient-rich: linear-gradient(135deg, hsl(25, 30%, 6%) 0%, hsl(35, 40%, 10%) 25%, hsl(43, 80%, 12%) 75%, hsl(43, 96%, 18%) 100%);
 
-    /* Shadows */
-    --shadow-gold: 0 10px 30px -10px hsl(43 96% 56% / 0.3);
-    --shadow-oil: 0 25px 50px -12px hsl(220 17% 7% / 0.6);
+    /* Elegant shadows */
+    --shadow-gold: 0 10px 30px -10px hsl(43 96% 56% / 0.4);
+    --shadow-oil: 0 25px 50px -12px hsl(25 30% 8% / 0.8);
+    --shadow-rich: 0 20px 40px -15px hsl(43 80% 20% / 0.6);
 
-    --sidebar-background: 220 17% 9%;
-    --sidebar-foreground: 0 0% 98%;
+    --sidebar-background: 25 25% 12%;
+    --sidebar-foreground: 43 50% 95%;
     --sidebar-primary: 43 96% 56%;
-    --sidebar-primary-foreground: 220 17% 7%;
-    --sidebar-accent: 220 17% 13%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 220 17% 17%;
+    --sidebar-primary-foreground: 25 30% 8%;
+    --sidebar-accent: 25 20% 18%;
+    --sidebar-accent-foreground: 43 50% 95%;
+    --sidebar-border: 25 20% 22%;
     --sidebar-ring: 43 96% 56%;
   }
 
   .dark {
-    --background: 220 17% 7%;
-    --foreground: 0 0% 98%;
-    --card: 220 17% 9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 220 17% 9%;
-    --popover-foreground: 0 0% 98%;
+    --background: 25 30% 8%;
+    --foreground: 43 50% 95%;
+    --card: 25 25% 12%;
+    --card-foreground: 43 50% 95%;
+    --popover: 25 25% 12%;
+    --popover-foreground: 43 50% 95%;
     --primary: 43 96% 56%;
-    --primary-foreground: 220 17% 7%;
-    --secondary: 220 17% 13%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 220 17% 13%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 220 17% 17%;
-    --accent-foreground: 0 0% 98%;
+    --primary-foreground: 25 30% 8%;
+    --secondary: 25 20% 18%;
+    --secondary-foreground: 43 50% 95%;
+    --muted: 25 20% 18%;
+    --muted-foreground: 25 15% 65%;
+    --accent: 35 40% 25%;
+    --accent-foreground: 43 50% 95%;
     --destructive: 0 62.8% 55%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 17% 17%;
-    --input: 220 17% 17%;
+    --destructive-foreground: 43 50% 95%;
+    --border: 25 20% 22%;
+    --input: 25 20% 22%;
     --ring: 43 96% 56%;
   }
 }
@@ -95,6 +98,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    background: var(--gradient-rich);
+    min-height: 100vh;
   }
 
   .gradient-gold {
@@ -109,12 +114,20 @@ All colors MUST be HSL.
     background: var(--gradient-hero);
   }
 
+  .gradient-rich {
+    background: var(--gradient-rich);
+  }
+
   .shadow-gold {
     box-shadow: var(--shadow-gold);
   }
 
   .shadow-oil {
     box-shadow: var(--shadow-oil);
+  }
+
+  .shadow-rich {
+    box-shadow: var(--shadow-rich);
   }
 }
 
