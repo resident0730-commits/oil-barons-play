@@ -40,72 +40,72 @@ export interface UserProfile {
 export const wellTypes: WellType[] = [
   { 
     name: "Стартовая скважина", 
-    baseIncome: 50, 
-    price: 500, 
-    maxLevel: 5, 
+    baseIncome: 30, 
+    price: 1000, 
+    maxLevel: 10, 
     icon: "🔸", 
     image: starterWellImg,
     rarity: 'common'
   },
   { 
     name: "Средняя скважина", 
-    baseIncome: 150, 
-    price: 1500, 
-    maxLevel: 10, 
+    baseIncome: 75, 
+    price: 3000, 
+    maxLevel: 15, 
     icon: "⚡", 
     image: mediumWellImg,
     rarity: 'common'
   },
   { 
     name: "Промышленная скважина", 
-    baseIncome: 500, 
-    price: 5000, 
-    maxLevel: 15, 
+    baseIncome: 175, 
+    price: 10000, 
+    maxLevel: 20, 
     icon: "🏭", 
     image: industrialWellImg,
     rarity: 'uncommon'
   },
   { 
     name: "Супер скважина", 
-    baseIncome: 1500, 
-    price: 15000, 
-    maxLevel: 20, 
+    baseIncome: 375, 
+    price: 30000, 
+    maxLevel: 25, 
     icon: "💎", 
     image: superWellImg,
     rarity: 'rare'
   },
   { 
     name: "Премиум скважина", 
-    baseIncome: 4000, 
-    price: 40000, 
-    maxLevel: 25, 
+    baseIncome: 750, 
+    price: 100000, 
+    maxLevel: 30, 
     icon: "👑", 
     image: premiumWellImg,
     rarity: 'epic'
   },
   { 
     name: "Элитная скважина", 
-    baseIncome: 10000, 
-    price: 100000, 
-    maxLevel: 30, 
+    baseIncome: 1400, 
+    price: 350000, 
+    maxLevel: 35, 
     icon: "💠", 
     image: eliteWellImg,
     rarity: 'epic'
   },
   { 
     name: "Легендарная скважина", 
-    baseIncome: 25000, 
-    price: 250000, 
-    maxLevel: 35, 
+    baseIncome: 2500, 
+    price: 1200000, 
+    maxLevel: 40, 
     icon: "🌟", 
     image: legendaryWellImg,
     rarity: 'legendary'
   },
   { 
     name: "Космическая скважина", 
-    baseIncome: 60000, 
-    price: 600000, 
-    maxLevel: 40, 
+    baseIncome: 4000, 
+    price: 4000000, 
+    maxLevel: 50, 
     icon: "🚀", 
     image: cosmicWellImg,
     rarity: 'mythic'
@@ -213,16 +213,21 @@ export function useGameData() {
     if (!user || !profile) return { success: false, error: 'Не авторизован' };
 
     const well = wells.find(w => w.id === wellId);
-    if (!well || well.level >= 20) return { success: false, error: 'Нельзя улучшить' };
+    const wellType = wellTypes.find(wt => wt.name === well?.well_type);
+    
+    if (!well || !wellType || well.level >= wellType.maxLevel) {
+      return { success: false, error: 'Нельзя улучшить' };
+    }
 
-    const upgradeCost = Math.round(wellTypes.find(wt => wt.name === well.well_type)?.price || 1000 * 0.5 * well.level);
+    const upgradeCost = Math.round((wellType.price * 0.3 * well.level));
     if (profile.balance < upgradeCost) {
       return { success: false, error: 'Недостаточно средств' };
     }
 
     try {
       const newLevel = well.level + 1;
-      const newIncome = Math.round(well.daily_income * 1.3);
+      // Каждый уровень увеличивает доход на 15%
+      const newIncome = Math.round(well.daily_income * 1.15);
       const incomeIncrease = newIncome - well.daily_income;
 
       // Update well

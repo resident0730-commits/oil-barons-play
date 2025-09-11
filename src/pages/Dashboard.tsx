@@ -128,7 +128,7 @@ const Dashboard = () => {
   const handleUpgradeWell = async (wellId: string) => {
     const well = wells.find(w => w.id === wellId);
     const wellType = wellTypes.find(wt => wt.name === well?.well_type);
-    const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * (well?.level || 1));
+    const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * (well?.level || 1));
     
     if (profile.balance < upgradeCost) {
       // Если недостаточно средств, открываем диалог пополнения
@@ -441,7 +441,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {wells.map((well) => {
                 const wellType = wellTypes.find(wt => wt.name === well.well_type);
-                const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * well.level);
+                const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * well.level);
                 const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
                 
                 return (
