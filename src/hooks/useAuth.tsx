@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { hasSupabase, supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AuthContextType {
   user: User | null;
@@ -21,11 +21,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!hasSupabase) {
-      setLoading(false);
-      return;
-    }
-
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -34,32 +29,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signUp = async (email: string, password: string, nickname: string) => {
-    if (!hasSupabase) throw new Error('Supabase не подключён');
-    
     return await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/`,
         data: { nickname }
       }
     });
   };
 
   const signIn = async (email: string, password: string) => {
-    if (!hasSupabase) throw new Error('Supabase не подключён');
-    
     return await supabase.auth.signInWithPassword({
       email,
       password
@@ -67,19 +57,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    if (!hasSupabase) throw new Error('Supabase не подключён');
-    
     await supabase.auth.signOut();
   };
 
   const updatePassword = async (password: string) => {
-    if (!hasSupabase) throw new Error('Supabase не подключён');
-    
     return await supabase.auth.updateUser({ password });
   };
 
   const updateProfile = async (data: { nickname?: string }) => {
-    if (!hasSupabase || !user) throw new Error('Не авторизован');
+    if (!user) throw new Error('Не авторизован');
     
     // Update auth metadata
     const authResult = await supabase.auth.updateUser({
@@ -89,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Update profile table
     if (data.nickname) {
       const profileResult = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .update({ nickname: data.nickname })
         .eq('user_id', user.id);
       
