@@ -3,6 +3,7 @@ import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
 // Import well images
+import miniWellImg from '@/assets/wells/mini-well-art.jpg';
 import starterWellImg from '@/assets/wells/starter-well-art.jpg';
 import mediumWellImg from '@/assets/wells/medium-well-art.jpg';
 import industrialWellImg from '@/assets/wells/industrial-well-art.jpg';
@@ -37,7 +38,27 @@ export interface UserProfile {
   daily_income: number;
 }
 
+export interface WellPackage {
+  name: string;
+  description: string;
+  wells: { type: string; count: number }[];
+  originalPrice: number;
+  discountedPrice: number;
+  discount: number;
+  icon: string;
+  rarity: 'starter' | 'growth' | 'business' | 'empire';
+}
+
 export const wellTypes: WellType[] = [
+  { 
+    name: "Мини-скважина", 
+    baseIncome: 15, 
+    price: 250, 
+    maxLevel: 5, 
+    icon: "🌱", 
+    image: miniWellImg,
+    rarity: 'common'
+  },
   { 
     name: "Стартовая скважина", 
     baseIncome: 30, 
@@ -109,6 +130,64 @@ export const wellTypes: WellType[] = [
     icon: "🚀", 
     image: cosmicWellImg,
     rarity: 'mythic'
+  }
+];
+
+export const wellPackages: WellPackage[] = [
+  {
+    name: "Стартовый пакет",
+    description: "Идеально для новичков",
+    wells: [
+      { type: "Мини-скважина", count: 3 },
+      { type: "Стартовая скважина", count: 1 }
+    ],
+    originalPrice: 1750,
+    discountedPrice: 1200,
+    discount: 31,
+    icon: "🎯",
+    rarity: 'starter'
+  },
+  {
+    name: "Пакет роста",
+    description: "Для активного развития",
+    wells: [
+      { type: "Стартовая скважина", count: 2 },
+      { type: "Средняя скважина", count: 2 },
+      { type: "Промышленная скважина", count: 1 }
+    ],
+    originalPrice: 18000,
+    discountedPrice: 14000,
+    discount: 22,
+    icon: "📈",
+    rarity: 'growth'
+  },
+  {
+    name: "Бизнес пакет",
+    description: "Для серьезного бизнеса",
+    wells: [
+      { type: "Промышленная скважина", count: 3 },
+      { type: "Супер скважина", count: 2 },
+      { type: "Премиум скважина", count: 1 }
+    ],
+    originalPrice: 190000,
+    discountedPrice: 145000,
+    discount: 24,
+    icon: "💼",
+    rarity: 'business'
+  },
+  {
+    name: "Империя",
+    description: "Для нефтяных магнатов",
+    wells: [
+      { type: "Премиум скважина", count: 2 },
+      { type: "Элитная скважина", count: 2 },
+      { type: "Легендарная скважина", count: 1 }
+    ],
+    originalPrice: 2250000,
+    discountedPrice: 1650000,
+    discount: 27,
+    icon: "👑",
+    rarity: 'empire'
   }
 ];
 
@@ -273,6 +352,69 @@ export function useGameData() {
     }
   };
 
+  const buyPackage = async (wellPackage: WellPackage) => {
+    if (!user || !profile) return { success: false, error: 'Не авторизован' };
+
+    if (profile.balance < wellPackage.discountedPrice) {
+      return { success: false, error: 'Недостаточно средств' };
+    }
+
+    try {
+      let totalDailyIncome = 0;
+      const newWells = [];
+
+      // Создаем скважины из пакета
+      for (const packageWell of wellPackage.wells) {
+        const wellType = wellTypes.find(wt => wt.name === packageWell.type);
+        if (!wellType) continue;
+
+        for (let i = 0; i < packageWell.count; i++) {
+          const { data: newWell, error: wellError } = await supabase
+            .from('wells')
+            .insert({
+              user_id: user.id,
+              well_type: wellType.name,
+              level: 1,
+              daily_income: wellType.baseIncome
+            })
+            .select()
+            .single();
+
+          if (wellError) throw wellError;
+          
+          newWells.push(newWell);
+          totalDailyIncome += wellType.baseIncome;
+        }
+      }
+
+      // Обновляем профиль
+      const newBalance = profile.balance - wellPackage.discountedPrice;
+      const newDailyIncome = profile.daily_income + totalDailyIncome;
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          balance: newBalance,
+          daily_income: newDailyIncome
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Обновляем локальное состояние
+      setWells(prev => [...prev, ...newWells]);
+      setProfile(prev => prev ? {
+        ...prev,
+        balance: newBalance,
+        daily_income: newDailyIncome
+      } : null);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
   const addIncome = async (amount: number) => {
     if (!user || !profile) return;
 
@@ -297,6 +439,7 @@ export function useGameData() {
     wells,
     loading,
     buyWell,
+    buyPackage,
     upgradeWell,
     addIncome,
     reload: loadGameData

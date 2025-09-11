@@ -24,11 +24,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { useGameData, wellTypes } from "@/hooks/useGameData";
+import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
-  const { profile, wells, loading, buyWell, upgradeWell, addIncome } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome } = useGameData();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [topUpAmount, setTopUpAmount] = useState("");
@@ -128,6 +128,32 @@ const Dashboard = () => {
       toast({
         title: "Скважина куплена!",
         description: `${wellType.name} добавлена к вашему бизнесу`,
+      });
+    } else {
+      toast({
+        title: "Ошибка покупки",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleBuyPackage = async (wellPackage: typeof wellPackages[0]) => {
+    if (profile.balance < wellPackage.discountedPrice) {
+      setIsTopUpOpen(true);
+      toast({
+        title: "Недостаточно средств",
+        description: `Для покупки пакета "${wellPackage.name}" нужно ₽${wellPackage.discountedPrice.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const result = await buyPackage(wellPackage);
+    if (result.success) {
+      toast({
+        title: "Пакет куплен!",
+        description: `${wellPackage.name} добавлен к вашему бизнесу`,
       });
     } else {
       toast({
@@ -371,6 +397,90 @@ const Dashboard = () => {
               <div className="text-2xl font-bold">#42</div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Package Deals */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold">Выгодные пакеты</h2>
+            <Badge variant="secondary" className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border-orange-300">
+              <Gem className="h-4 w-4 mr-1" />
+              Со скидкой до 31%
+            </Badge>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {wellPackages.map((wellPackage, index) => {
+              const getPackageRarityColor = (rarity: string) => {
+                switch (rarity) {
+                  case 'starter': return 'from-green-500 to-emerald-600';
+                  case 'growth': return 'from-blue-500 to-indigo-600';
+                  case 'business': return 'from-purple-500 to-violet-600';
+                  case 'empire': return 'from-yellow-500 to-orange-600';
+                  default: return 'from-gray-500 to-slate-600';
+                }
+              };
+
+              return (
+                <Card key={index} className="relative hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden border-2">
+                  <div className={`absolute top-0 right-0 bg-gradient-to-br ${getPackageRarityColor(wellPackage.rarity)} text-white px-3 py-1 rounded-bl-lg`}>
+                    <span className="text-xs font-bold">-{wellPackage.discount}%</span>
+                  </div>
+                  
+                  <CardHeader className="pb-3">
+                    <div className="flex flex-col items-center space-y-3">
+                      <div className="text-4xl">{wellPackage.icon}</div>
+                      <div className="text-center">
+                        <CardTitle className="text-lg font-bold mb-1">{wellPackage.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground">{wellPackage.description}</p>
+                      </div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4 pt-0">
+                    <div className="space-y-2">
+                      {wellPackage.wells.map((packageWell, wellIndex) => (
+                        <div key={wellIndex} className="flex justify-between text-sm bg-secondary/20 rounded px-2 py-1">
+                          <span>{packageWell.type}</span>
+                          <span className="font-semibold">x{packageWell.count}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="space-y-2 pt-2 border-t">
+                      <div className="flex justify-between text-sm line-through text-muted-foreground">
+                        <span>Обычная цена:</span>
+                        <span>₽{wellPackage.originalPrice.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-lg font-bold">
+                        <span>Цена пакета:</span>
+                        <Badge 
+                          variant={profile.balance >= wellPackage.discountedPrice ? "default" : "destructive"}
+                          className={`text-sm ${profile.balance >= wellPackage.discountedPrice ? "" : "animate-pulse"}`}
+                        >
+                          ₽{wellPackage.discountedPrice.toLocaleString()}
+                        </Badge>
+                      </div>
+                      <div className="text-center text-sm font-semibold text-green-600">
+                        Экономия: ₽{(wellPackage.originalPrice - wellPackage.discountedPrice).toLocaleString()}
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => handleBuyPackage(wellPackage)}
+                      disabled={profile.balance < wellPackage.discountedPrice}
+                      className={`w-full ${profile.balance >= wellPackage.discountedPrice 
+                        ? `bg-gradient-to-r ${getPackageRarityColor(wellPackage.rarity)} hover:opacity-90` 
+                        : 'opacity-50'
+                      }`}
+                    >
+                      {profile.balance >= wellPackage.discountedPrice ? "Купить пакет" : "Недостаточно средств"}
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
 
         {/* Marketplace */}
