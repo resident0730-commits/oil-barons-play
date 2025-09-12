@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { ComponentType } from 'react';
 import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -271,6 +272,16 @@ export function useGameData() {
 
       if (wellsData) {
         setWells(wellsData);
+      }
+
+      // Load boosters
+      const { data: boostersData } = await supabase
+        .from('user_boosters')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (boostersData) {
+        setBoosters(boostersData);
       }
     } catch (error) {
       console.error('Error loading game data:', error);
@@ -590,14 +601,23 @@ export function useGameData() {
   };
 
   const recalculateDailyIncome = async () => {
-    if (!user || !wells.length) return;
+    if (!user) return;
 
     try {
+      // Fetch fresh wells and boosters to avoid stale state
+      const [{ data: wellsData }, { data: boostersData }] = await Promise.all([
+        supabase.from('wells').select('*').eq('user_id', user.id),
+        supabase.from('user_boosters').select('*').eq('user_id', user.id)
+      ]);
+
+      const safeWells = wellsData || [];
+      const safeBoosters = boostersData || [];
+
       // Calculate base income from wells
-      const baseIncome = wells.reduce((total, well) => total + well.daily_income, 0);
+      const baseIncome = safeWells.reduce((total, well) => total + well.daily_income, 0);
       
       // Apply booster multiplier
-      const multiplier = getActiveBoosterMultiplier();
+      const multiplier = calculateBoosterMultiplier(safeBoosters);
       const totalIncome = Math.round(baseIncome * multiplier);
 
       // Update profile with new daily income
@@ -608,7 +628,9 @@ export function useGameData() {
 
       if (error) throw error;
 
-      // Update local state
+      // Update local state for UI consistency
+      setWells(safeWells);
+      setBoosters(safeBoosters);
       setProfile(prev => prev ? { ...prev, daily_income: totalIncome } : null);
     } catch (error) {
       console.error('Error recalculating daily income:', error);
