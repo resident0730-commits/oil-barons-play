@@ -555,8 +555,14 @@ export function useGameData() {
       if (balanceError) throw balanceError;
 
       // Reload data and recalculate daily income
+      console.log('Booster purchased, reloading data...');
       await loadGameData();
-      await recalculateDailyIncome();
+      
+      // Небольшая задержка, чтобы убедиться что данные загрузились
+      setTimeout(async () => {
+        await recalculateDailyIncome();
+        console.log('Daily income recalculated');
+      }, 100);
 
       return { success: true };
     } catch (error) {
@@ -569,32 +575,44 @@ export function useGameData() {
     if (!userBoosters.length) return 1;
 
     let multiplier = 1;
+    console.log('Calculating booster multiplier for boosters:', userBoosters);
     
     userBoosters.forEach(booster => {
       // Check if booster is still active
       const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+      console.log(`Booster ${booster.booster_type} level ${booster.level} active:`, isActive);
       
       if (isActive) {
         switch (booster.booster_type) {
           case 'worker_crew':
-            multiplier += (booster.level * 0.10); // 10% per level
+            const workerBonus = booster.level * 0.10;
+            multiplier += workerBonus; // 10% per level
+            console.log(`Worker crew bonus: +${workerBonus * 100}%`);
             break;
           case 'geological_survey':
-            multiplier += (booster.level * 0.15); // 15% per level
+            const geoBonus = booster.level * 0.15;
+            multiplier += geoBonus; // 15% per level
+            console.log(`Geological survey bonus: +${geoBonus * 100}%`);
             break;
           case 'advanced_equipment':
-            multiplier += (booster.level * 0.25); // 25% per level
+            const equipmentBonus = booster.level * 0.25;
+            multiplier += equipmentBonus; // 25% per level
+            console.log(`Advanced equipment bonus: +${equipmentBonus * 100}%`);
             break;
           case 'turbo_boost':
             multiplier += 0.50; // 50% flat bonus
+            console.log('Turbo boost bonus: +50%');
             break;
           case 'automation':
-            multiplier += (booster.level * 0.20); // 20% per level
+            const autoBonus = booster.level * 0.20;
+            multiplier += autoBonus; // 20% per level
+            console.log(`Automation bonus: +${autoBonus * 100}%`);
             break;
         }
       }
     });
 
+    console.log('Final multiplier:', multiplier);
     return multiplier;
   };
 
@@ -606,6 +624,8 @@ export function useGameData() {
     if (!user) return;
 
     try {
+      console.log('Recalculating daily income...');
+      
       // Fetch fresh wells and boosters to avoid stale state
       const [{ data: wellsData }, { data: boostersData }] = await Promise.all([
         supabase.from('wells').select('*').eq('user_id', user.id),
@@ -615,12 +635,19 @@ export function useGameData() {
       const safeWells = wellsData || [];
       const safeBoosters = boostersData || [];
 
+      console.log('Wells count:', safeWells.length);
+      console.log('Boosters:', safeBoosters);
+
       // Calculate base income from wells
       const baseIncome = safeWells.reduce((total, well) => total + well.daily_income, 0);
+      console.log('Base income from wells:', baseIncome);
       
       // Apply booster multiplier
       const multiplier = calculateBoosterMultiplier(safeBoosters);
+      console.log('Booster multiplier:', multiplier);
+      
       const totalIncome = Math.round(baseIncome * multiplier);
+      console.log('Final daily income:', totalIncome);
 
       // Update profile with new daily income
       const { error } = await supabase
@@ -634,6 +661,8 @@ export function useGameData() {
       setWells(safeWells);
       setBoosters(safeBoosters);
       setProfile(prev => prev ? { ...prev, daily_income: totalIncome } : null);
+      
+      console.log('Daily income updated successfully');
     } catch (error) {
       console.error('Error recalculating daily income:', error);
     }
