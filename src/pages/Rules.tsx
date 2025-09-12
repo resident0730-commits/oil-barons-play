@@ -1,12 +1,30 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Coins, Gift, Zap, Trophy, Shield, Heart, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Coins, Gift, Zap, Trophy, Shield, Heart, Sparkles, ArrowLeft, Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Rules() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
+        {/* Navigation Header */}
+        <div className="flex items-center justify-between">
+          <Link to="/">
+            <Button variant="ghost" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              На главную
+            </Button>
+          </Link>
+          <Link to="/dashboard">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              В игру
+            </Button>
+          </Link>
+        </div>
+
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold gradient-text">Правила игры</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -239,11 +257,11 @@ export default function Rules() {
               <div>
                 <h4 className="font-semibold mb-3">Временные бустеры:</h4>
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-orange-100 dark:bg-orange-900/20 rounded">
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">⚡ Турбо режим</span>
                     <div className="text-right">
                       <Badge variant="outline">3,000 монет</Badge>
-                      <div className="text-xs text-orange-600">+50% на 24 часа</div>
+                      <div className="text-xs text-muted-foreground">+50% на 24 часа</div>
                     </div>
                   </div>
                 </div>
