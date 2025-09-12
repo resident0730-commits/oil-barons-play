@@ -106,23 +106,70 @@ export default function Rules() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold mb-3">Типы скважин:</h4>
+                <h4 className="font-semibold mb-3">Доступные скважины:</h4>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Стартовая</span>
-                    <Badge variant="outline">500 монет</Badge>
+                    <span className="text-sm">🌱 Мини-скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">1,000 монет</Badge>
+                      <div className="text-xs text-green-600">+100₽/день</div>
+                    </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Средняя</span>
-                    <Badge variant="outline">1,500 монет</Badge>
+                    <span className="text-sm">🔸 Стартовая скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">2,000 монет</Badge>
+                      <div className="text-xs text-green-600">+220₽/день</div>
+                    </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Премиум</span>
-                    <Badge variant="outline">5,000 монет</Badge>
+                    <span className="text-sm">⚡ Средняя скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">3,000 монет</Badge>
+                      <div className="text-xs text-green-600">+360₽/день</div>
+                    </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Элитная</span>
-                    <Badge variant="outline">15,000 монет</Badge>
+                    <span className="text-sm">🏭 Промышленная</span>
+                    <div className="text-right">
+                      <Badge variant="outline">5,000 монет</Badge>
+                      <div className="text-xs text-green-600">+650₽/день</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">💎 Супер скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">8,000 монет</Badge>
+                      <div className="text-xs text-green-600">+1,120₽/день</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">👑 Премиум скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">12,000 монет</Badge>
+                      <div className="text-xs text-green-600">+1,800₽/день</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">💠 Элитная скважина</span>
+                    <div className="text-right">
+                      <Badge variant="outline">18,000 монет</Badge>
+                      <div className="text-xs text-green-600">+2,880₽/день</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">🌟 Легендарная</span>
+                    <div className="text-right">
+                      <Badge variant="outline">27,000 монет</Badge>
+                      <div className="text-xs text-green-600">+4,590₽/день</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">🚀 Космическая</span>
+                    <div className="text-right">
+                      <Badge variant="outline">40,000 монет</Badge>
+                      <div className="text-xs text-green-600">+7,200₽/день</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -130,10 +177,11 @@ export default function Rules() {
               <div>
                 <h4 className="font-semibold mb-3">Особенности:</h4>
                 <ul className="space-y-2 text-sm">
-                  <li>• Улучшение повышает доходность</li>
-                  <li>• Каждая скважина приносит доход каждый день</li>
+                  <li>• Улучшение повышает доходность скважин в день</li>
+                  <li>• Каждая скважина приносит доход ежедневно</li>
                   <li>• Более дорогие скважины = больше дохода</li>
                   <li>• Доход накапливается автоматически</li>
+                  <li>• Максимальный уровень зависит от типа скважины</li>
                 </ul>
               </div>
             </div>
@@ -150,24 +198,96 @@ export default function Rules() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              Экономьте на покупке сразу нескольких скважин! Пакеты дают скидку до 30%.
+              Экономьте на покупке сразу нескольких скважин! Пакеты дают скидку до 24%.
             </p>
             
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Стартовый пакет</h4>
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  🎯 Стартовый пакет
+                </h4>
                 <p className="text-sm text-muted-foreground mb-2">
-                  3 стартовые скважины со скидкой 20%
+                  3 мини-скважины + 1 стартовая скважина
                 </p>
-                <Badge variant="secondary">1,200 монет вместо 1,500</Badge>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>Обычная цена:</span>
+                    <span className="line-through">5,000 монет</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Со скидкой:</span>
+                    <Badge variant="secondary">3,800 монет (-24%)</Badge>
+                  </div>
+                  <div className="text-green-600 text-xs">
+                    Доход: +520₽/день
+                  </div>
+                </div>
               </div>
               
               <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2">Бизнес пакет</h4>
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  📈 Пакет роста
+                </h4>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Микс скважин разных типов со скидкой 25%
+                  2 стартовые + 2 средние + 1 промышленная скважина
                 </p>
-                <Badge variant="secondary">От 5,000 монет</Badge>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>Обычная цена:</span>
+                    <span className="line-through">16,000 монет</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Со скидкой:</span>
+                    <Badge variant="secondary">12,500 монет (-22%)</Badge>
+                  </div>
+                  <div className="text-green-600 text-xs">
+                    Доход: +1,450₽/день
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-secondary/20 rounded-lg p-4">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  💼 Бизнес пакет
+                </h4>
+                <p className="text-sm text-muted-foreground mb-2">
+                  3 промышленные + 2 супер + 1 премиум скважина
+                </p>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>Обычная цена:</span>
+                    <span className="line-through">55,000 монет</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Со скидкой:</span>
+                    <Badge variant="secondary">42,000 монет (-24%)</Badge>
+                  </div>
+                  <div className="text-green-600 text-xs">
+                    Доход: +6,040₽/день
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-secondary/20 rounded-lg p-4">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  👑 Империя пакет
+                </h4>
+                <p className="text-sm text-muted-foreground mb-2">
+                  2 премиум + 2 элитные + 1 легендарная скважина
+                </p>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>Обычная цена:</span>
+                    <span className="line-through">96,000 монет</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Со скидкой:</span>
+                    <Badge variant="secondary">72,000 монет (-25%)</Badge>
+                  </div>
+                  <div className="text-green-600 text-xs">
+                    Доход: +13,950₽/день
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -177,7 +297,7 @@ export default function Rules() {
         <Card className="border-green-200 dark:border-green-800">
           <CardHeader>
             <CardTitle className="text-green-700 dark:text-green-300">
-              🎯 Справедливая игра
+              🎯 Честная игровая система
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -187,13 +307,13 @@ export default function Rules() {
                 <li>✅ Никаких обязательных платежей - все доступно бесплатно</li>
                 <li>✅ Ежедневные бонусы для всех игроков</li>
                 <li>✅ Прозрачная система доходов</li>
-                <li>✅ Возможность получить лучшие скважины через игру</li>
+                <li>✅ Возможность получить любые скважины через игру</li>
                 <li>✅ Никаких скрытых комиссий или ограничений</li>
               </ul>
             </div>
             
             <p className="text-sm text-muted-foreground text-center">
-              Игра создана для удовольствия, а не для выкачивания денег. 
+              Игра создана для развлечения и стратегического планирования. 
               Наслаждайтесь честной игрой! 🎮
             </p>
           </CardContent>
