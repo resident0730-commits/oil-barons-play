@@ -492,10 +492,10 @@ const Dashboard = () => {
             {/* Game Sections */}
             <div className="space-y-8">
               <div className="text-center">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+                <h2 className="text-4xl font-bold heading-contrast mb-2">
                   Игровые разделы
                 </h2>
-                <p className="text-muted-foreground">Управляйте своей нефтяной империей</p>
+                <p className="subtitle-contrast">Управляйте своей нефтяной империей</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -548,11 +548,11 @@ const Dashboard = () => {
         {/* Wells Section */}
         {activeSection === 'wells' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between section-toolbar">
               <Button 
                 variant="ghost" 
                 onClick={() => setActiveSection('overview')}
-                className="text-primary"
+                className="text-foreground bg-background/60 hover:bg-background/80 border border-border rounded-lg px-3"
               >
                 ← Назад к обзору
               </Button>
@@ -712,11 +712,11 @@ const Dashboard = () => {
         {/* Shop Section */}
         {activeSection === 'shop' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between section-toolbar">
               <Button 
                 variant="ghost" 
                 onClick={() => setActiveSection('overview')}
-                className="text-primary"
+                className="text-foreground bg-background/60 hover:bg-background/80 border border-border rounded-lg px-3"
               >
                 ← Назад к обзору
               </Button>
@@ -944,11 +944,11 @@ const Dashboard = () => {
         {/* Boosters Section */}
         {activeSection === 'boosters' && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between section-toolbar">
               <Button 
                 variant="ghost" 
                 onClick={() => setActiveSection('overview')}
-                className="text-primary"
+                className="text-foreground bg-background/60 hover:bg-background/80 border border-border rounded-lg px-3"
               >
                 ← Назад к обзору
               </Button>

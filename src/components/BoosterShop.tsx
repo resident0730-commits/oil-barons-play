@@ -197,8 +197,8 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">Магазин улучшений</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-2xl font-bold heading-contrast mb-2">Магазин улучшений</h2>
+        <p className="subtitle-contrast">
           Покупайте бустеры для увеличения доходности ваших скважин
         </p>
         

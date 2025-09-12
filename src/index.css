@@ -298,4 +298,13 @@ All colors MUST be HSL.
     color: hsl(var(--foreground)) !important;
     text-shadow: 0 2px 8px hsl(var(--background) / 0.85);
   }
+
+  .subtitle-contrast {
+    color: hsl(var(--foreground) / 0.9) !important;
+    text-shadow: 0 1px 6px hsl(var(--background) / 0.8);
+  }
+
+  .section-toolbar {
+    @apply bg-card/70 backdrop-blur-md border border-primary/20 rounded-xl px-4 py-3 shadow-oil;
+  }
 }
