@@ -740,14 +740,17 @@ const Dashboard = () => {
                           <img 
                             src={wellType.image} 
                             alt={wellType.name}
-                            className="w-20 h-20 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
+                            className="w-32 h-32 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
                           />
                           <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
                             {wellType.icon}
                           </div>
                         </div>
                         <div className="text-center">
-                          <CardTitle className="text-sm font-medium mb-1">{wellType.name}</CardTitle>
+                          <CardTitle className="text-lg font-medium mb-2">{wellType.name}</CardTitle>
+                          <p className="text-sm text-muted-foreground mb-3 px-2 leading-relaxed">
+                            {wellType.description}
+                          </p>
                           <Badge 
                             variant="outline" 
                             className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
