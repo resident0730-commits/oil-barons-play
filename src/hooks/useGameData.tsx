@@ -63,7 +63,7 @@ export interface BoosterType {
   id: string;
   name: string;
   description: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: string;
   effect: string;
   maxLevel: number;
   baseCost: number;
