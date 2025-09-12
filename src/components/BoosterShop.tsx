@@ -26,6 +26,18 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   const { toast } = useToast();
   const [selectedBooster, setSelectedBooster] = useState<BoosterType | null>(null);
 
+  // Early return if profile is not loaded yet
+  if (loading || !profile) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Загрузка магазина улучшений...</p>
+        </div>
+      </div>
+    );
+  }
+
   const availableBoosters: BoosterType[] = [
     {
       id: 'worker_crew',
@@ -138,6 +150,15 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   };
 
   const handleBuyBooster = async (booster: BoosterType) => {
+    if (!profile) {
+      toast({
+        title: "Ошибка",
+        description: "Профиль не загружен",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const currentLevel = getBoosterLevel(booster.id);
     if (currentLevel >= booster.maxLevel) {
       toast({
@@ -248,9 +269,9 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                     </div>
                     <Button 
                       onClick={() => handleBuyBooster(booster)}
-                      disabled={loading || profile.balance < cost}
+                      disabled={loading || !profile || profile.balance < cost}
                       className="w-full"
-                      variant={profile.balance >= cost ? "default" : "outline"}
+                      variant={profile && profile.balance >= cost ? "default" : "outline"}
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       {booster.duration ? 'Активировать' : 'Улучшить'}
