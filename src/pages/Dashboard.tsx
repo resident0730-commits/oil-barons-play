@@ -38,6 +38,7 @@ const Dashboard = () => {
   const { isAdmin } = useUserRole();
   const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
+  const { stats, loading: statsLoading, upsertToday } = useDailyStats(user?.id);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [topUpAmount, setTopUpAmount] = useState("");
@@ -126,6 +127,18 @@ const Dashboard = () => {
 
     return () => clearInterval(interval);
   }, [profile?.daily_income, addIncome]);
+
+  // Auto-update daily stats
+  useEffect(() => {
+    if (profile && wells && wells.length > 0) {
+      const dailyIncomeSum = wells.reduce((sum, w) => sum + w.daily_income, 0);
+      upsertToday({
+        balance: profile.balance,
+        wellsCount: wells.length,
+        dailyIncome: dailyIncomeSum
+      });
+    }
+  }, [profile?.balance, wells, upsertToday]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
     if (profile.balance < wellType.price) {
@@ -438,14 +451,35 @@ const Dashboard = () => {
           <h2 className="text-3xl font-bold">Статистика</h2>
           <Card>
             <CardContent className="pt-6">
-              {/* Автозапись статистики за сегодня */}
-              {/* The hook will handle creating/updating today's row */}
-              {(() => {
-                const dailyIncomeSum = wells.reduce((sum, w) => sum + w.daily_income, 0);
-                // Только для типовой корректной инициализации, вызов в useEffect ниже
-                return null;
-              })()}
-              <DailyStatsSection />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Динамика по дням</h3>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      if (profile && wells) {
+                        const dailyIncomeSum = wells.reduce((sum, w) => sum + w.daily_income, 0);
+                        upsertToday({
+                          balance: profile.balance,
+                          wellsCount: wells.length,
+                          dailyIncome: dailyIncomeSum
+                        });
+                      }
+                    }}
+                  >
+                    Обновить данные за сегодня
+                  </Button>
+                </div>
+                
+                {statsLoading ? (
+                  <div className="flex justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                ) : (
+                  <DailyStatsChart stats={stats} />
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>

@@ -11,15 +11,15 @@ export default function DailyStatsChart({ stats }: Props) {
     () =>
       stats.map((s) => ({
         date: new Date(s.date).toLocaleDateString(undefined, { day: "2-digit", month: "2-digit" }),
-        balance: Number(s.balance_end ?? 0),
-        income: Number(s.daily_income_total ?? 0),
-        wells: Number(s.wells_count ?? 0),
+        balance: Number(s.balance ?? 0),
+        income: Number(s.income ?? 0),
+        wells: Number(s.wells ?? 0),
       })),
     [stats]
   );
 
   if (!stats?.length) {
-    return <div className="text-sm text-muted-foreground">Пока нет данных для графика. Обновите статистику за сегодня.</div>;
+    return <div className="text-sm text-muted-foreground">Нет данных для отображения статистики.</div>;
   }
 
   return (
