@@ -499,10 +499,15 @@ const Dashboard = () => {
                     const wellType = wellTypes.find(wt => wt.name === well.well_type);
                     const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * well.level);
                     const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
-                    const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
-                    
-                    const newDailyIncome = Math.round(well.daily_income * 1.15);
-                    const incomeIncrease = newDailyIncome - well.daily_income;
+                      const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
+                      
+                      const newDailyIncome = Math.round(well.daily_income * 1.15);
+                      const incomeIncrease = newDailyIncome - well.daily_income;
+                      
+                      const boosterMultiplier = Math.max(1, getActiveBoosterMultiplier());
+                      const boostedDaily = Math.round(well.daily_income * boosterMultiplier);
+                      const boosterBonus = boostedDaily - well.daily_income;
+                      const boosterPercent = Math.round((boosterMultiplier - 1) * 100);
                     
                     return (
                       <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
@@ -522,23 +527,46 @@ const Dashboard = () => {
                                 )}
                               </div>
                             </div>
-                            <Badge variant="outline">Ур. {well.level}</Badge>
+                            <div className="flex items-center gap-2">
+                              {boosterMultiplier > 1 && (
+                                <Badge variant="secondary" className="flex items-center gap-1">
+                                  <Sparkles className="h-3 w-3" />
+                                  Бустеры активны
+                                </Badge>
+                              )}
+                              <Badge variant="outline">Ур. {well.level}</Badge>
+                            </div>
                           </div>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-0">
                           <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">День:</span>
+                              <span className="text-muted-foreground">День (база):</span>
                               <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Месяц:</span>
+                              <span className="text-muted-foreground">Месяц (база):</span>
                               <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Год:</span>
+                              <span className="text-muted-foreground">Год (база):</span>
                               <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
                             </div>
+                            {boosterMultiplier > 1 && (
+                              <>
+                                <div className="flex justify-between text-sm items-center">
+                                  <span className="flex items-center gap-1 text-primary">
+                                    <Sparkles className="h-4 w-4" />
+                                    Бонус бустеров (+{boosterPercent}%)
+                                  </span>
+                                  <span className="font-semibold text-primary">+₽{boosterBonus.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-muted-foreground">Итого/день:</span>
+                                  <span className="font-bold">₽{boostedDaily.toLocaleString()}</span>
+                                </div>
+                              </>
+                            )}
                             <div className="flex justify-between text-sm border-t border-border pt-2">
                               <span className="text-muted-foreground font-medium">Годовой %:</span>
                               <Badge 
