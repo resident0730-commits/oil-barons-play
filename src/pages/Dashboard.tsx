@@ -556,7 +556,7 @@ const Dashboard = () => {
               >
                 ← Назад к обзору
               </Button>
-              <h2 className="text-3xl font-bold">Мои скважины ({wells.length})</h2>
+              <h2 className="text-3xl font-bold heading-contrast">Мои скважины ({wells.length})</h2>
               <div></div>
             </div>
             
@@ -715,7 +715,7 @@ const Dashboard = () => {
               >
                 ← Назад к обзору
               </Button>
-              <h2 className="text-3xl font-bold">Магазин скважин</h2>
+              <h2 className="text-3xl font-bold heading-contrast">Магазин скважин</h2>
               <Badge variant="secondary">
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Доступно для покупки
@@ -944,7 +944,7 @@ const Dashboard = () => {
               >
                 ← Назад к обзору
               </Button>
-              <h2 className="text-3xl font-bold">Магазин бустеров</h2>
+              <h2 className="text-3xl font-bold heading-contrast">Магазин бустеров</h2>
               <div></div>
             </div>
             <BoosterShop />
