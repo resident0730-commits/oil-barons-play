@@ -29,6 +29,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import DailyStatsChart from "@/components/dashboard/DailyStatsChart";
+import { useDailyStats } from "@/hooks/useDailyStats";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -430,119 +433,141 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* Статистика */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold">Статистика</h2>
+          <Card>
+            <CardContent className="pt-6">
+              {/* Автозапись статистики за сегодня */}
+              {/* The hook will handle creating/updating today's row */}
+              {(() => {
+                const dailyIncomeSum = wells.reduce((sum, w) => sum + w.daily_income, 0);
+                // Только для типовой корректной инициализации, вызов в useEffect ниже
+                return null;
+              })()}
+              <DailyStatsSection />
+            </CardContent>
+          </Card>
+        </div>
+
         {/* My Wells */}
         {wells.length > 0 && (
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold">Мои скважины</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {wells.map((well) => {
-                const wellType = wellTypes.find(wt => wt.name === well.well_type);
-                const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * well.level);
-                const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
-                const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
-                
-                // Расчет нового дохода после улучшения
-                const newDailyIncome = Math.round(well.daily_income * 1.15);
-                const incomeIncrease = newDailyIncome - well.daily_income;
-                
-                return (
-                  <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          {getWellIcon(well.well_type)}
-                          <div>
-                            <CardTitle className="text-sm">{well.well_type}</CardTitle>
-                            {wellType && (
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="wells">
+              <AccordionTrigger className="text-3xl font-bold">
+                Мои скважины
+                <span className="ml-2 text-sm text-muted-foreground">({wells.length})</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {wells.map((well) => {
+                    const wellType = wellTypes.find(wt => wt.name === well.well_type);
+                    const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * well.level);
+                    const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
+                    const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
+                    
+                    const newDailyIncome = Math.round(well.daily_income * 1.15);
+                    const incomeIncrease = newDailyIncome - well.daily_income;
+                    
+                    return (
+                      <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              {getWellIcon(well.well_type)}
+                              <div>
+                                <CardTitle className="text-sm">{well.well_type}</CardTitle>
+                                {wellType && (
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
+                                  >
+                                    {wellType.rarity}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            <Badge variant="outline">Ур. {well.level}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4 pt-0">
+                          <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">День:</span>
+                              <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Месяц:</span>
+                              <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Год:</span>
+                              <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between text-sm border-t border-border pt-2">
+                              <span className="text-muted-foreground font-medium">Годовой %:</span>
                               <Badge 
-                                variant="outline" 
-                                className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
+                                variant="secondary" 
+                                className={`font-bold ${
+                                  yearlyPercent >= 100 ? 'bg-green-100 text-green-800' : 
+                                  yearlyPercent >= 50 ? 'bg-yellow-100 text-yellow-800' : 
+                                  'bg-red-100 text-red-800'
+                                }`}
                               >
-                                {wellType.rarity}
+                                {formatProfitPercent(yearlyPercent)}
                               </Badge>
-                            )}
+                            </div>
                           </div>
-                        </div>
-                        <Badge variant="outline">Ур. {well.level}</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4 pt-0">
-                      <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">День:</span>
-                          <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Месяц:</span>
-                          <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Год:</span>
-                          <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm border-t border-border pt-2">
-                          <span className="text-muted-foreground font-medium">Годовой %:</span>
-                          <Badge 
-                            variant="secondary" 
-                            className={`font-bold ${
-                              yearlyPercent >= 100 ? 'bg-green-100 text-green-800' : 
-                              yearlyPercent >= 50 ? 'bg-yellow-100 text-yellow-800' : 
-                              'bg-red-100 text-red-800'
-                            }`}
-                          >
-                            {formatProfitPercent(yearlyPercent)}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-muted-foreground">
-                          Уровень {well.level}/{wellType?.maxLevel || 20}
-                        </div>
-                        <Progress 
-                          value={(well.level / (wellType?.maxLevel || 20)) * 100} 
-                          className="w-20"
-                        />
-                      </div>
+                          
+                          <div className="flex items-center justify-between">
+                            <div className="text-sm text-muted-foreground">
+                              Уровень {well.level}/{wellType?.maxLevel || 20}
+                            </div>
+                            <Progress 
+                              value={(well.level / (wellType?.maxLevel || 20)) * 100} 
+                              className="w-20"
+                            />
+                          </div>
 
-                      {/* Upgrade Preview */}
-                      {canUpgrade && (
-                        <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-3">
-                          <div className="text-xs font-medium text-primary mb-2">Предварительный просмотр улучшения:</div>
-                          <div className="space-y-1 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Новый доход/день:</span>
-                              <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
+                          {canUpgrade && (
+                            <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-3">
+                              <div className="text-xs font-medium text-primary mb-2">Предварительный просмотр улучшения:</div>
+                              <div className="space-y-1 text-sm">
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Новый доход/день:</span>
+                                  <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Увеличение:</span>
+                                  <span className="font-bold text-green-600">+₽{incomeIncrease.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-xs border-t border-primary/20 pt-1">
+                                  <span className="text-muted-foreground">Стоимость:</span>
+                                  <span className="font-semibold text-orange-600">₽{upgradeCost.toLocaleString()}</span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Увеличение:</span>
-                              <span className="font-bold text-green-600">+₽{incomeIncrease.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between text-xs border-t border-primary/20 pt-1">
-                              <span className="text-muted-foreground">Стоимость:</span>
-                              <span className="font-semibold text-orange-600">₽{upgradeCost.toLocaleString()}</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <Button 
-                        onClick={() => handleUpgradeWell(well.id)}
-                        disabled={!canUpgrade}
-                        className={`w-full ${canUpgrade ? 'gradient-gold hover-gold shadow-gold' : 'opacity-50'}`}
-                      >
-                        <Zap className="h-4 w-4 mr-2" />
-                        {canUpgrade ? `Улучшить (₽${upgradeCost.toLocaleString()})` : 
-                         well.level >= (wellType?.maxLevel || 20) ? 'Макс. уровень' : 'Недостаточно средств'}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
+                          )}
+                          
+                          <Button 
+                            onClick={() => handleUpgradeWell(well.id)}
+                            disabled={!canUpgrade}
+                            className={`w-full ${canUpgrade ? 'gradient-gold hover-gold shadow-gold' : 'opacity-50'}`}
+                          >
+                            <Zap className="h-4 w-4 mr-2" />
+                            {canUpgrade ? `Улучшить (₽${upgradeCost.toLocaleString()})` : 
+                              well.level >= (wellType?.maxLevel || 20) ? 'Макс. уровень' : 'Недостаточно средств'}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         )}
+
 
         {/* Marketplace */}
         <div className="space-y-6">
