@@ -79,11 +79,18 @@ export default function Rules() {
             
             <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
               <h4 className="font-semibold text-green-700 dark:text-green-300 mb-2">
-                💡 Важно: Все скважины можно купить за игровую валюту!
+                🎮 Два пути к успеху
               </h4>
-              <p className="text-sm text-green-600 dark:text-green-400">
-                Вы можете получить любую скважину, просто играя каждый день и собирая бонусы.
-              </p>
+              <div className="space-y-2 text-sm text-green-600 dark:text-green-400">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">Бесплатная игра:</span>
+                  <span>Ежедневные бонусы 100 монет каждые 24 часа</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">Быстрый путь:</span>
+                  <span>Пополнение реальными деньгами для ускорения</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -303,6 +303,9 @@ const Index = () => {
       <footer className="container mx-auto px-4 py-8 mt-16 border-t border-border">
         <div className="text-center space-y-4">
           <div className="flex justify-center space-x-6">
+            <Link to="/rules" className="text-muted-foreground hover:text-foreground underline">
+              Правила игры
+            </Link>
             <Link to="/requisites" className="text-muted-foreground hover:text-foreground underline">
               Информация о компании
             </Link>
