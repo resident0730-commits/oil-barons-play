@@ -269,16 +269,22 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
           const isActive = isBoosterActive(booster.id);
 
           return (
-            <Card key={booster.id} className={`relative ${isActive ? 'ring-2 ring-primary' : ''}`}>
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <img src={booster.icon} alt={booster.name} className="h-16 w-16 object-cover rounded-lg" />
-                    <CardTitle className="text-lg">{booster.name}</CardTitle>
+            <Card key={booster.id} className={`relative hover:shadow-lg transition-all duration-300 hover:scale-105 ${isActive ? 'ring-2 ring-primary' : ''}`}>
+              <CardHeader className="pb-3">
+                <div className="flex flex-col items-center space-y-3">
+                  <div className="relative">
+                    <img 
+                      src={booster.icon} 
+                      alt={booster.name}
+                      className="w-32 h-32 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
+                    />
+                    <Badge className={`absolute -top-2 -right-2 ${getRarityColor(booster.rarity)}`}>
+                      {getRarityText(booster.rarity)}
+                    </Badge>
                   </div>
-                  <Badge className={getRarityColor(booster.rarity)}>
-                    {getRarityText(booster.rarity)}
-                  </Badge>
+                  <div className="text-center">
+                    <CardTitle className="text-lg font-medium mb-2">{booster.name}</CardTitle>
+                  </div>
                 </div>
               </CardHeader>
               
