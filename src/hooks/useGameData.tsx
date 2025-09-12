@@ -22,6 +22,7 @@ import empirePackageImg from '@/assets/packages/empire-package.jpg';
 
 export interface WellType {
   name: string;
+  description: string;
   baseIncome: number;
   price: number;
   maxLevel: number;
@@ -84,7 +85,8 @@ export interface UserBooster {
 
 export const wellTypes: WellType[] = [
   { 
-    name: "Мини-скважина", 
+    name: "Мини-скважина",
+    description: "Ваш первый шаг в нефтяную империю! Компактная скважина с базовой системой добычи, идеальная для изучения основ нефтяного бизнеса.", 
     baseIncome: 100, 
     price: 1000, 
     maxLevel: 5, 
@@ -93,7 +95,8 @@ export const wellTypes: WellType[] = [
     rarity: 'common'
   },
   { 
-    name: "Стартовая скважина", 
+    name: "Стартовая скважина",
+    description: "Надёжная рабочая лошадка нефтедобычи. Проверенные технологии и стабильная производительность обеспечивают постоянный поток нефти.", 
     baseIncome: 220, 
     price: 2000, 
     maxLevel: 10, 
@@ -102,7 +105,8 @@ export const wellTypes: WellType[] = [
     rarity: 'common'
   },
   { 
-    name: "Средняя скважина", 
+    name: "Средняя скважина",
+    description: "Баланс мощности и эффективности! Усовершенствованная система бурения позволяет добывать нефть с больших глубин и увеличенной производительностью.", 
     baseIncome: 360, 
     price: 3000, 
     maxLevel: 15, 
@@ -111,7 +115,8 @@ export const wellTypes: WellType[] = [
     rarity: 'common'
   },
   { 
-    name: "Промышленная скважина", 
+    name: "Промышленная скважина",
+    description: "Серьёзная промышленная установка с мощным буровым оборудованием. Способна работать в сложных геологических условиях и приносить солидную прибыль.", 
     baseIncome: 650, 
     price: 5000, 
     maxLevel: 20, 
@@ -120,7 +125,8 @@ export const wellTypes: WellType[] = [
     rarity: 'uncommon'
   },
   { 
-    name: "Супер скважина", 
+    name: "Супер скважина",
+    description: "Технологический прорыв в нефтедобыче! Инновационные алмазные буры и системы очистки обеспечивают невероятную эффективность добычи.", 
     baseIncome: 1120, 
     price: 8000, 
     maxLevel: 25, 
@@ -129,7 +135,8 @@ export const wellTypes: WellType[] = [
     rarity: 'rare'
   },
   { 
-    name: "Премиум скважина", 
+    name: "Премиум скважина",
+    description: "Элитное оборудование для королей нефти! Золотые компоненты, кристаллические фильтры и роботизированная система управления максимизируют добычу.", 
     baseIncome: 1800, 
     price: 12000, 
     maxLevel: 30, 
@@ -138,7 +145,8 @@ export const wellTypes: WellType[] = [
     rarity: 'epic'
   },
   { 
-    name: "Элитная скважина", 
+    name: "Элитная скважина",
+    description: "Эксклюзивная технология добычи с квантовыми резонаторами! Способна извлекать нефть из самых труднодоступных месторождений с феноменальной скоростью.", 
     baseIncome: 2880, 
     price: 18000, 
     maxLevel: 35, 
@@ -147,7 +155,8 @@ export const wellTypes: WellType[] = [
     rarity: 'epic'
   },
   { 
-    name: "Легендарная скважина", 
+    name: "Легендарная скважина",
+    description: "Легендарное произведение инженерного искусства! Использует магические кристаллы для усиления добычи и создаёт поистине невероятные объёмы нефти.", 
     baseIncome: 4590, 
     price: 27000, 
     maxLevel: 40, 
@@ -156,7 +165,8 @@ export const wellTypes: WellType[] = [
     rarity: 'legendary'
   },
   { 
-    name: "Космическая скважина", 
+    name: "Космическая скважина",
+    description: "Футуристическая установка из другого измерения! Антигравитационные буры, нано-фильтры и энергия звёзд позволяют добывать нефть с космической скоростью!", 
     baseIncome: 7200, 
     price: 40000, 
     maxLevel: 50, 

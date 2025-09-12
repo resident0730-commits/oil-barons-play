@@ -68,9 +68,9 @@ const Dashboard = () => {
         <img 
           src={wellType.image} 
           alt={wellType.name}
-          className="w-12 h-12 rounded-lg object-cover border-2 border-primary/20"
+          className="w-16 h-16 rounded-lg object-cover border-2 border-primary/20"
         />
-        <div className={`absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${getRarityColor(wellType.rarity)}`}>
+        <div className={`absolute -top-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
           {wellType.icon}
         </div>
       </div>
@@ -579,22 +579,27 @@ const Dashboard = () => {
                   return (
                     <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
                       <CardHeader className="pb-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start space-x-4">
                             {getWellIcon(well.well_type)}
-                            <div>
-                              <CardTitle className="text-sm">{well.well_type}</CardTitle>
+                            <div className="flex-1">
+                              <CardTitle className="text-lg mb-2">{well.well_type}</CardTitle>
                               {wellType && (
-                                <Badge 
-                                  variant="outline" 
-                                  className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
-                                >
-                                  {wellType.rarity}
-                                </Badge>
+                                <>
+                                  <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                                    {wellType.description}
+                                  </p>
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
+                                  >
+                                    {wellType.rarity}
+                                  </Badge>
+                                </>
                               )}
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-col items-end gap-2">
                             {isBoostersActive && (
                               <Badge variant="secondary" className="flex items-center gap-1">
                                 <Sparkles className="h-3 w-3" />
