@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData } from "@/hooks/useGameData";
+import { useGameStatistics } from "@/hooks/useGameStatistics";
 import { Leaderboard } from "@/components/Leaderboard";
 import { 
   Fuel, 
@@ -23,28 +24,7 @@ import {
 const Index = () => {
   const { user } = useAuth();
   const { profile, wells, loading } = useGameData();
-  
-  // Динамическая статистика игры
-  const [gameStats, setGameStats] = useState({
-    activePlayers: 1247,
-    totalProfit: 2847392,
-    totalWells: 1057,
-    averageProfit: 15842
-  });
-
-  // Обновление статистики каждую секунду
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGameStats(prev => ({
-        activePlayers: prev.activePlayers + Math.floor(Math.random() * 3) - 1, // ±1
-        totalProfit: prev.totalProfit + Math.floor(Math.random() * 1000) + 500, // +500-1500
-        totalWells: prev.totalWells + Math.floor(Math.random() * 2), // +0-1
-        averageProfit: prev.averageProfit + Math.floor(Math.random() * 100) - 50 // ±50
-      }));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const { statistics } = useGameStatistics();
 
   return (
     <div className="min-h-screen hero-luxury-background">
@@ -109,7 +89,7 @@ const Index = () => {
               <Link to="/auth">
                 <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
                   <Zap className="mr-2 h-5 w-5" />
-                  Начать с 1000₽
+                  Начать с 1000 OC
                 </Button>
               </Link>
             )}
@@ -133,7 +113,7 @@ const Index = () => {
                   <Wallet className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{profile.balance.toLocaleString()} OC</div>
                   <p className="text-xs text-muted-foreground">Доступно для инвестиций</p>
                 </CardContent>
               </Card>
@@ -144,7 +124,7 @@ const Index = () => {
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₽{profile.daily_income.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{profile.daily_income.toLocaleString()} OC</div>
                   <p className="text-xs text-muted-foreground">Прибыль от операций</p>
                 </CardContent>
               </Card>
@@ -220,32 +200,25 @@ const Index = () => {
             <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Игровая статистика
             </h2>
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-3 gap-6">
               <Card className="text-center">
                 <CardContent className="pt-6">
                   <Users className="h-8 w-8 mx-auto mb-4 text-primary" />
-                  <div className="text-2xl font-bold">{gameStats.activePlayers.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{statistics.active_players?.toLocaleString() || '1,247'}</div>
                   <p className="text-sm text-muted-foreground">Активных игроков</p>
                 </CardContent>
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <TrendingUp className="h-8 w-8 mx-auto mb-4 text-green-500" />
-                  <div className="text-2xl font-bold">₽{gameStats.totalProfit.toLocaleString()}</div>
-                  <p className="text-sm text-muted-foreground">Общая прибыль</p>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="pt-6">
                   <Zap className="h-8 w-8 mx-auto mb-4 text-blue-500" />
-                  <div className="text-2xl font-bold">{gameStats.totalWells.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{statistics.total_wells?.toLocaleString() || '1,057'}</div>
                   <p className="text-sm text-muted-foreground">Скважин пробурено</p>
                 </CardContent>
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
                   <BarChart3 className="h-8 w-8 mx-auto mb-4 text-purple-500" />
-                  <div className="text-2xl font-bold">₽{gameStats.averageProfit.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{statistics.average_profit?.toLocaleString() || '15,842'} OC</div>
                   <p className="text-sm text-muted-foreground">Средняя прибыль</p>
                 </CardContent>
               </Card>
@@ -278,7 +251,7 @@ const Index = () => {
               <div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <Coins className="h-4 w-4 mr-1" />
-                  Минимум 1000₽
+                  Минимум 1000 OC
                 </div>
                 <div className="flex items-center">
                   <Target className="h-4 w-4 mr-1" />
