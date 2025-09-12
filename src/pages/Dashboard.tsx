@@ -123,7 +123,10 @@ const Dashboard = () => {
     if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      const income = Math.round(profile.daily_income / 8640); // Income every 10 seconds
+      // Начисляем доход каждые 10 секунд
+      // В дне 86400 секунд, значит 8640 интервалов по 10 секунд
+      // Поэтому делим дневной доход на 8640
+      const income = Math.round(profile.daily_income / 8640);
       if (income > 0) {
         addIncome(income);
       }
@@ -504,9 +507,9 @@ const Dashboard = () => {
                       const newDailyIncome = Math.round(well.daily_income * 1.15);
                       const incomeIncrease = newDailyIncome - well.daily_income;
                       
-                      const boosterMultiplier = Math.max(1, getActiveBoosterMultiplier());
-                      const boostedDaily = Math.round(well.daily_income * boosterMultiplier);
-                      const boosterBonus = boostedDaily - well.daily_income;
+                      // Бустеры уже применены в daily_income скважины, не применяем дважды
+                      const boosterMultiplier = getActiveBoosterMultiplier();
+                      const isBoostersActive = boosterMultiplier > 1;
                       const boosterPercent = Math.round((boosterMultiplier - 1) * 100);
                     
                     return (
@@ -528,10 +531,10 @@ const Dashboard = () => {
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              {boosterMultiplier > 1 && (
+                              {isBoostersActive && (
                                 <Badge variant="secondary" className="flex items-center gap-1">
                                   <Sparkles className="h-3 w-3" />
-                                  Бустеры активны
+                                  Бустеры +{boosterPercent}%
                                 </Badge>
                               )}
                               <Badge variant="outline">Ур. {well.level}</Badge>
@@ -540,33 +543,31 @@ const Dashboard = () => {
                         </CardHeader>
                         <CardContent className="space-y-4 pt-0">
                           <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
+                            {isBoostersActive ? (
+                              <>
+                                <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                                  <Sparkles className="h-3 w-3" />
+                                  Доходность уже включает бонус бустеров (+{boosterPercent}%)
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-muted-foreground">День (с бустерами):</span>
+                                  <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">День:</span>
+                                <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
+                              </div>
+                            )}
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">День (база):</span>
-                              <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Месяц (база):</span>
+                              <span className="text-muted-foreground">Месяц:</span>
                               <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Год (база):</span>
+                              <span className="text-muted-foreground">Год:</span>
                               <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
                             </div>
-                            {boosterMultiplier > 1 && (
-                              <>
-                                <div className="flex justify-between text-sm items-center">
-                                  <span className="flex items-center gap-1 text-primary">
-                                    <Sparkles className="h-4 w-4" />
-                                    Бонус бустеров (+{boosterPercent}%)
-                                  </span>
-                                  <span className="font-semibold text-primary">+₽{boosterBonus.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between text-sm">
-                                  <span className="text-muted-foreground">Итого/день:</span>
-                                  <span className="font-bold">₽{boostedDaily.toLocaleString()}</span>
-                                </div>
-                              </>
-                            )}
                             <div className="flex justify-between text-sm border-t border-border pt-2">
                               <span className="text-muted-foreground font-medium">Годовой %:</span>
                               <Badge 

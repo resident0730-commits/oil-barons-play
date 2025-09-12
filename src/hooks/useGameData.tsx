@@ -312,11 +312,12 @@ export function useGameData() {
 
       if (wellError) throw wellError;
 
-      // Update profile balance and daily income with booster multiplier
+      // Update profile balance and daily income (wells уже содержат базовую доходность)
       const newBalance = profile.balance - wellType.price;
+      const currentWellsIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
+      const newTotalIncome = currentWellsIncome + wellType.baseIncome;
       const multiplier = getActiveBoosterMultiplier();
-      const totalDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0) + wellType.baseIncome;
-      const boostedDailyIncome = Math.round(totalDailyIncome * multiplier);
+      const boostedDailyIncome = Math.round(newTotalIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -374,13 +375,13 @@ export function useGameData() {
 
       if (wellError) throw wellError;
 
-      // Update profile balance and daily income with booster multiplier
+      // Update profile balance and daily income (wells уже содержат базовую доходность)
       const newBalance = profile.balance - upgradeCost;
-      const multiplier = getActiveBoosterMultiplier();
-      const totalDailyIncome = wells.reduce((sum, w) => 
+      const currentTotalIncome = wells.reduce((sum, w) => 
         w.id === wellId ? sum + newIncome : sum + w.daily_income, 0
       );
-      const boostedDailyIncome = Math.round(totalDailyIncome * multiplier);
+      const multiplier = getActiveBoosterMultiplier();
+      const boostedDailyIncome = Math.round(currentTotalIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -445,11 +446,12 @@ export function useGameData() {
         }
       }
 
-      // Обновляем профиль с учетом бустеров
+      // Обновляем профиль (wells уже содержат базовую доходность)
       const newBalance = profile.balance - wellPackage.discountedPrice;
-      const multiplier = getActiveBoosterMultiplier();
       const currentDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
-      const boostedDailyIncome = Math.round((currentDailyIncome + totalDailyIncome) * multiplier);
+      const totalNewIncome = currentDailyIncome + totalDailyIncome;
+      const multiplier = getActiveBoosterMultiplier();
+      const boostedDailyIncome = Math.round(totalNewIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
