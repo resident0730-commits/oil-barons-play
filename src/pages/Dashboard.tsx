@@ -151,7 +151,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки "${wellType.name}" нужно ₽${wellType.price.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        description: `Для покупки "${wellType.name}" нужно ${wellType.price.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -177,7 +177,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки пакета "${wellPackage.name}" нужно ₽${wellPackage.discountedPrice.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        description: `Для покупки пакета "${wellPackage.name}" нужно ${wellPackage.discountedPrice.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -208,7 +208,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для улучшения нужно ₽${upgradeCost.toLocaleString()}. У вас ₽${profile.balance.toLocaleString()}`,
+        description: `Для улучшения нужно ${upgradeCost.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -232,12 +232,12 @@ const Dashboard = () => {
   const handleTopUp = async () => {
     const value = parseFloat(topUpAmount);
     if (!value || value <= 0) {
-      toast({ variant: "destructive", title: "Укажите сумму в ₽", description: "Введите положительное число" });
+      toast({ variant: "destructive", title: "Укажите сумму оилкоинов", description: "Введите положительное число" });
       return;
     }
 
     if (value < 100) {
-      toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
+      toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 OC" });
       return;
     }
 
@@ -333,7 +333,7 @@ const Dashboard = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <Wallet className="h-5 w-5 text-primary mr-2 transition-transform duration-300 group-hover:scale-110" />
-                <span className="font-bold text-lg relative z-10">₽{profile.balance.toLocaleString()}</span>
+                <span className="font-bold text-lg relative z-10">{profile.balance.toLocaleString()} OC</span>
                 <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Button>
               
@@ -420,7 +420,7 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
-                    ₽{profile.balance.toLocaleString()}
+                    {profile.balance.toLocaleString()} OC
                   </div>
                   <p className="text-sm text-muted-foreground font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Нажмите для пополнения
@@ -441,7 +441,7 @@ const Dashboard = () => {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <div className="text-3xl font-bold bg-gradient-to-r from-emerald-500 to-green-400 bg-clip-text text-transparent">
-                    ₽{profile.daily_income.toLocaleString()}
+                    {profile.daily_income.toLocaleString()} OC
                   </div>
                 </CardContent>
               </Card>
@@ -508,7 +508,7 @@ const Dashboard = () => {
                   badgeVariant="secondary"
                   onClick={() => setActiveSection('wells')}
                   stats={[
-                    { label: 'Общий доход', value: `₽${profile.daily_income.toLocaleString()}/день` },
+                    { label: 'Общий доход', value: `${profile.daily_income.toLocaleString()} OC/день` },
                     { label: 'Скважины', value: wells.length }
                   ]}
                 />
@@ -615,22 +615,22 @@ const Dashboard = () => {
                               </div>
                               <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">День (с бустерами):</span>
-                                <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
+                                <span className="font-semibold text-primary">{well.daily_income.toLocaleString()} OC</span>
                               </div>
                             </>
                           ) : (
                             <div className="flex justify-between text-sm">
                               <span className="text-muted-foreground">День:</span>
-                              <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
+                              <span className="font-semibold text-primary">{well.daily_income.toLocaleString()} OC</span>
                             </div>
                           )}
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Месяц:</span>
-                            <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{monthlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Год:</span>
-                            <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{yearlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm border-t border-border pt-2">
                             <span className="text-muted-foreground font-medium">Годовой %:</span>
@@ -663,15 +663,15 @@ const Dashboard = () => {
                             <div className="space-y-1 text-sm">
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Новая прибыль/день:</span>
-                                <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
+                                <span className="font-semibold text-green-600">{newDailyIncome.toLocaleString()} OC</span>
                               </div>
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Увеличение:</span>
-                                <span className="font-bold text-green-600">+₽{incomeIncrease.toLocaleString()}</span>
+                                <span className="font-bold text-green-600">+{incomeIncrease.toLocaleString()} OC</span>
                               </div>
                               <div className="flex justify-between text-xs border-t border-primary/20 pt-1">
                                 <span className="text-muted-foreground">Стоимость:</span>
-                                <span className="font-semibold text-orange-600">₽{upgradeCost.toLocaleString()}</span>
+                                <span className="font-semibold text-orange-600">{upgradeCost.toLocaleString()} OC</span>
                               </div>
                             </div>
                           </div>
@@ -683,7 +683,7 @@ const Dashboard = () => {
                           className={`w-full ${canUpgrade ? 'gradient-gold hover-gold shadow-gold' : 'opacity-50'}`}
                         >
                           <Zap className="h-4 w-4 mr-2" />
-                          {canUpgrade ? `Улучшить (₽${upgradeCost.toLocaleString()})` : 
+                          {canUpgrade ? `Улучшить (${upgradeCost.toLocaleString()} OC)` : 
                             well.level >= (wellType?.maxLevel || 20) ? 'Макс. уровень' : 'Недостаточно средств'}
                         </Button>
                       </CardContent>
@@ -760,22 +760,22 @@ const Dashboard = () => {
                             variant={profile.balance >= wellType.price ? "default" : "destructive"}
                             className={profile.balance >= wellType.price ? "" : "animate-pulse"}
                           >
-                            ₽{wellType.price.toLocaleString()}
+                            {wellType.price.toLocaleString()} OC
                           </Badge>
                         </div>
                         
                         <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">День:</span>
-                            <span className="font-semibold text-primary">₽{wellType.baseIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-primary">{wellType.baseIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Месяц:</span>
-                            <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{monthlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Год:</span>
-                            <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{yearlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm border-t border-border pt-2">
                             <span className="text-muted-foreground font-medium">Годовой %:</span>
@@ -877,15 +877,15 @@ const Dashboard = () => {
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">День:</span>
-                            <span className="font-semibold text-primary">₽{wellPackage.totalDailyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-primary">{wellPackage.totalDailyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Месяц:</span>
-                            <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{monthlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Год:</span>
-                            <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
+                            <span className="font-semibold text-accent-foreground">{yearlyIncome.toLocaleString()} OC</span>
                           </div>
                           <div className="flex justify-between text-sm border-t border-border pt-2">
                             <span className="text-muted-foreground font-medium">Годовой %:</span>
@@ -904,12 +904,12 @@ const Dashboard = () => {
 
                         <div className="space-y-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-muted-foreground line-through">₽{wellPackage.originalPrice.toLocaleString()}</span>
+                            <span className="text-sm text-muted-foreground line-through">{wellPackage.originalPrice.toLocaleString()} OC</span>
                             <Badge 
                               variant={profile.balance >= wellPackage.discountedPrice ? "default" : "destructive"}
                               className={`text-lg font-bold ${profile.balance >= wellPackage.discountedPrice ? "" : "animate-pulse"}`}
                             >
-                              ₽{wellPackage.discountedPrice.toLocaleString()}
+                              {wellPackage.discountedPrice.toLocaleString()} OC
                             </Badge>
                           </div>
                           <Button 
@@ -973,11 +973,11 @@ const Dashboard = () => {
                 </p>
               </div>
               <div>
-                <Label htmlFor="amount">Сумма пополнения (₽)</Label>
+                <Label htmlFor="amount">Сумма пополнения (OC)</Label>
                 <Input
                   id="amount"
                   type="number"
-                  placeholder="Минимум 100 ₽"
+                  placeholder="Минимум 100 OC"
                   value={topUpAmount}
                   onChange={(e) => setTopUpAmount(e.target.value)}
                   min="100"
@@ -989,21 +989,21 @@ const Dashboard = () => {
                   onClick={() => setTopUpAmount("500")}
                   className="flex-1"
                 >
-                  500 ₽
+                  500 OC
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setTopUpAmount("1000")}
                   className="flex-1"
                 >
-                  1000 ₽
+                  1000 OC
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setTopUpAmount("5000")}
                   className="flex-1"
                 >
-                  5000 ₽
+                  5000 OC
                 </Button>
               </div>
               <Button

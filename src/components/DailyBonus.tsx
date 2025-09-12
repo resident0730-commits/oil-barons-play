@@ -85,7 +85,7 @@ export function DailyBonus() {
 
       toast({
         title: "Ежедневный бонус получен!",
-        description: `+${bonusAmount} монет добавлено на баланс`,
+        description: `+${bonusAmount} оилкоинов добавлено на баланс`,
       });
 
       setCanClaim(false);
@@ -126,7 +126,7 @@ export function DailyBonus() {
               +{bonusAmount}
             </div>
             <p className="text-sm text-muted-foreground font-medium">
-              Игровых монет каждый день
+              Оилкоинов каждый день
             </p>
           </div>
           

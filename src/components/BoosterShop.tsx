@@ -173,7 +173,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     if (profile.balance < cost) {
       toast({
         title: "Недостаточно средств",
-        description: `Нужно ${cost.toLocaleString()} монет`,
+        description: `Нужно ${cost.toLocaleString()} оилкоинов`,
         variant: "destructive"
       });
       return;
@@ -319,7 +319,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Стоимость:</span>
-                      <span className="font-bold">{cost.toLocaleString()} монет</span>
+                      <span className="font-bold">{cost.toLocaleString()} OC</span>
                     </div>
                     <Button 
                       onClick={() => handleBuyBooster(booster)}
