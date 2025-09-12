@@ -1,29 +1,76 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, TrendingUp, Wallet, Factory, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData, wellTypes } from "@/hooks/useGameData";
-import { useDailyStats } from "@/hooks/useDailyStats";
+import { supabase } from "@/integrations/supabase/client";
 import DailyStatsChart from "@/components/dashboard/DailyStatsChart";
 
 const Statistics = () => {
   const { user } = useAuth();
   const { profile, wells } = useGameData();
-  const { stats, loading: statsLoading, upsertToday } = useDailyStats(user?.id);
+  const [stats, setStats] = useState<{ date: string; balance: number; income: number; wells: number }[]>([]);
+  const [statsLoading, setStatsLoading] = useState<boolean>(false);
 
-  // Record today's snapshot for real statistics
+  const fetchStats = useCallback(async () => {
+    if (!user?.id) {
+      setStats([]);
+      return;
+    }
+
+    try {
+      setStatsLoading(true);
+      const start = new Date();
+      start.setDate(start.getDate() - 6);
+      const startDate = start.toISOString().slice(0, 10);
+
+      const { data, error } = await (supabase as any)
+        .from('daily_stats')
+        .select('date,balance_end,daily_income_total,wells_count')
+        .eq('user_id', user.id)
+        .gte('date', startDate)
+        .order('date', { ascending: true });
+
+      if (error) throw error;
+
+      const mapped = (data || []).map((row: any) => ({
+        date: row.date,
+        balance: Number(row.balance_end ?? 0),
+        income: Number(row.daily_income_total ?? 0),
+        wells: Number(row.wells_count ?? 0),
+      }));
+      setStats(mapped);
+    } catch (e) {
+      console.error('Failed to fetch daily stats', e);
+    } finally {
+      setStatsLoading(false);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  const recordToday = useCallback(async () => {
+    if (!user?.id || !profile) return;
+
+    const dailyIncomeSum = wells.reduce((sum, w) => sum + (w.daily_income || 0), 0);
+    await (supabase as any).rpc('record_daily_stats', {
+      p_user_id: user.id,
+      p_balance_end: profile.balance,
+      p_daily_income_total: dailyIncomeSum,
+      p_wells_count: wells.length,
+    });
+    fetchStats();
+  }, [user?.id, profile, wells, fetchStats]);
+
   useEffect(() => {
     if (profile && wells.length > 0) {
-      const todaySnapshot = {
-        balance: profile.balance,
-        wellsCount: wells.length,
-        dailyIncome: profile.daily_income,
-      };
-      upsertToday(todaySnapshot);
+      recordToday();
     }
-  }, [profile, wells, upsertToday]);
+  }, [profile, wells, recordToday]);
 
   const totalWellsValue = wells.reduce((sum, well) => {
     const wellType = wellTypes.find(wt => wt.name === well.well_type);
