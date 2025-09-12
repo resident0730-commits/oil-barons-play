@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Requisites from "./pages/Requisites";
 import Terms from "./pages/Terms";
+import Rules from "./pages/Rules";
 import Admin from "./pages/Admin";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/requisites" element={<Requisites />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/rules" element={<Rules />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/about" element={<About />} />

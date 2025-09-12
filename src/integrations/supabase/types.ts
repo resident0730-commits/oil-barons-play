@@ -41,6 +41,42 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_stats: {
+        Row: {
+          balance_end: number
+          balance_start: number
+          created_at: string
+          daily_income_total: number
+          date: string
+          id: string
+          investments_made: number
+          user_id: string
+          wells_count: number
+        }
+        Insert: {
+          balance_end?: number
+          balance_start?: number
+          created_at?: string
+          daily_income_total?: number
+          date?: string
+          id?: string
+          investments_made?: number
+          user_id: string
+          wells_count?: number
+        }
+        Update: {
+          balance_end?: number
+          balance_start?: number
+          created_at?: string
+          daily_income_total?: number
+          date?: string
+          id?: string
+          investments_made?: number
+          user_id?: string
+          wells_count?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           balance: number
@@ -51,6 +87,7 @@ export type Database = {
           daily_income: number
           id: string
           is_banned: boolean
+          last_bonus_claim: string | null
           nickname: string
           updated_at: string
           user_id: string
@@ -64,6 +101,7 @@ export type Database = {
           daily_income?: number
           id?: string
           is_banned?: boolean
+          last_bonus_claim?: string | null
           nickname: string
           updated_at?: string
           user_id: string
@@ -77,6 +115,7 @@ export type Database = {
           daily_income?: number
           id?: string
           is_banned?: boolean
+          last_bonus_claim?: string | null
           nickname?: string
           updated_at?: string
           user_id?: string
@@ -165,6 +204,17 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      record_daily_stats: {
+        Args: {
+          p_balance_end?: number
+          p_balance_start?: number
+          p_daily_income_total?: number
+          p_investments_made?: number
+          p_user_id: string
+          p_wells_count?: number
+        }
+        Returns: undefined
       }
     }
     Enums: {

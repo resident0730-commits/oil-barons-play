@@ -28,12 +28,12 @@ export function DailyBonus() {
       // Получаем профиль пользователя
       const { data: profile } = await supabase
         .from('profiles')
-        .select('last_bonus_claim')
+        .select('*')
         .eq('user_id', user.id)
         .single();
 
       if (profile) {
-        const lastClaim = profile.last_bonus_claim ? new Date(profile.last_bonus_claim) : null;
+        const lastClaim = (profile as any).last_bonus_claim ? new Date((profile as any).last_bonus_claim) : null;
         const now = new Date();
         const tomorrow = new Date();
         
@@ -63,11 +63,20 @@ export function DailyBonus() {
     if (!user || !canClaim) return;
 
     try {
+      // Сначала получаем текущий баланс
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!currentProfile) return;
+
       // Обновляем баланс и время последнего бонуса
       const { error } = await supabase
         .from('profiles')
         .update({
-          balance: supabase.sql`balance + ${bonusAmount}`,
+          balance: currentProfile.balance + bonusAmount,
           last_bonus_claim: new Date().toISOString()
         })
         .eq('user_id', user.id);

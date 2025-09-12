@@ -21,13 +21,15 @@ import {
   Gem,
   CreditCard,
   Shield,
-  Trophy
+  Trophy,
+  BookOpen
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
+import { DailyBonus } from "@/components/DailyBonus";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -312,6 +314,11 @@ const Dashboard = () => {
                   <Trophy className="h-4 w-4" />
                 </Button>
               </Link>
+              <Link to="/rules">
+                <Button variant="ghost" size="sm">
+                  <BookOpen className="h-4 w-4" />
+                </Button>
+              </Link>
               {isAdmin && (
                 <Link to="/admin">
                   <Button variant="ghost" size="sm" className="text-primary">
@@ -328,6 +335,9 @@ const Dashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Daily Bonus */}
+        <DailyBonus />
+        
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card 
