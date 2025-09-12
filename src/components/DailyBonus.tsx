@@ -102,31 +102,50 @@ export function DailyBonus() {
   if (!user) return null;
 
   return (
-    <Card className="gradient-border">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Gift className="h-4 w-4" />
+    <Card className="relative overflow-hidden bg-gradient-to-br from-card/90 via-card/95 to-card/90 border-primary/30 shadow-luxury animate-fade-in">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/3"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+      
+      <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-3">
+        <CardTitle className="text-lg font-playfair font-semibold flex items-center gap-3 text-foreground">
+          <div className="relative">
+            <Gift className="h-6 w-6 text-primary drop-shadow-sm" />
+            <div className="absolute -inset-1 bg-primary/20 blur-sm rounded-full"></div>
+          </div>
           Ежедневный бонус
         </CardTitle>
-        <Coins className="h-4 w-4 text-yellow-500" />
+        <div className="relative">
+          <Coins className="h-6 w-6 text-accent animate-gold-glow" />
+        </div>
       </CardHeader>
-      <CardContent>
+      
+      <CardContent className="relative z-10">
         <div className="flex items-center justify-between">
-          <div>
-            <div className="text-2xl font-bold">{bonusAmount}</div>
-            <p className="text-xs text-muted-foreground">
+          <div className="space-y-1">
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              +{bonusAmount}
+            </div>
+            <p className="text-sm text-muted-foreground font-medium">
               Игровых монет каждый день
             </p>
           </div>
+          
           <div className="text-right">
             {canClaim ? (
-              <Button onClick={claimBonus} variant="gold" size="sm">
-                Получить
+              <Button 
+                onClick={claimBonus} 
+                className="relative overflow-hidden bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-primary/25 hover:shadow-lg hover-scale"
+                size="lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <span className="relative z-10">Получить</span>
               </Button>
             ) : (
-              <div className="text-center">
-                <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                <div className="text-xs text-muted-foreground">
+              <div className="text-center space-y-2 px-4 py-3 bg-gradient-to-br from-muted/50 to-secondary/30 rounded-lg border border-primary/20">
+                <div className="relative">
+                  <Clock className="h-5 w-5 mx-auto text-muted-foreground animate-pulse" />
+                </div>
+                <div className="text-sm font-medium text-muted-foreground">
                   {timeUntilNext || 'Загрузка...'}
                 </div>
               </div>
