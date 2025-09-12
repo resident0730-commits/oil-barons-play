@@ -301,15 +301,17 @@ export function useGameData() {
 
       if (wellError) throw wellError;
 
-      // Update profile balance and daily income
+      // Update profile balance and daily income with booster multiplier
       const newBalance = profile.balance - wellType.price;
-      const newDailyIncome = profile.daily_income + wellType.baseIncome;
+      const multiplier = getActiveBoosterMultiplier();
+      const totalDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0) + wellType.baseIncome;
+      const boostedDailyIncome = Math.round(totalDailyIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           balance: newBalance,
-          daily_income: newDailyIncome
+          daily_income: boostedDailyIncome
         })
         .eq('user_id', user.id);
 
@@ -320,7 +322,7 @@ export function useGameData() {
       setProfile(prev => prev ? {
         ...prev,
         balance: newBalance,
-        daily_income: newDailyIncome
+        daily_income: boostedDailyIncome
       } : null);
 
       return { success: true };
@@ -361,15 +363,19 @@ export function useGameData() {
 
       if (wellError) throw wellError;
 
-      // Update profile
+      // Update profile balance and daily income with booster multiplier
       const newBalance = profile.balance - upgradeCost;
-      const newDailyIncome = profile.daily_income + incomeIncrease;
+      const multiplier = getActiveBoosterMultiplier();
+      const totalDailyIncome = wells.reduce((sum, w) => 
+        w.id === wellId ? sum + newIncome : sum + w.daily_income, 0
+      );
+      const boostedDailyIncome = Math.round(totalDailyIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           balance: newBalance,
-          daily_income: newDailyIncome
+          daily_income: boostedDailyIncome
         })
         .eq('user_id', user.id);
 
@@ -384,7 +390,7 @@ export function useGameData() {
       setProfile(prev => prev ? {
         ...prev,
         balance: newBalance,
-        daily_income: newDailyIncome
+        daily_income: boostedDailyIncome
       } : null);
 
       return { success: true };
@@ -428,15 +434,17 @@ export function useGameData() {
         }
       }
 
-      // Обновляем профиль
+      // Обновляем профиль с учетом бустеров
       const newBalance = profile.balance - wellPackage.discountedPrice;
-      const newDailyIncome = profile.daily_income + totalDailyIncome;
+      const multiplier = getActiveBoosterMultiplier();
+      const currentDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
+      const boostedDailyIncome = Math.round((currentDailyIncome + totalDailyIncome) * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           balance: newBalance,
-          daily_income: newDailyIncome
+          daily_income: boostedDailyIncome
         })
         .eq('user_id', user.id);
 
@@ -447,7 +455,7 @@ export function useGameData() {
       setProfile(prev => prev ? {
         ...prev,
         balance: newBalance,
-        daily_income: newDailyIncome
+        daily_income: boostedDailyIncome
       } : null);
 
       return { success: true };
@@ -533,13 +541,77 @@ export function useGameData() {
 
       if (balanceError) throw balanceError;
 
-      // Reload data
+      // Reload data and recalculate daily income
       await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error) {
       console.error('Error buying booster:', error);
       return { success: false, error: 'Ошибка при покупке бустера' };
+    }
+  };
+
+  const calculateBoosterMultiplier = (userBoosters: UserBooster[]) => {
+    if (!userBoosters.length) return 1;
+
+    let multiplier = 1;
+    
+    userBoosters.forEach(booster => {
+      // Check if booster is still active
+      const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+      
+      if (isActive) {
+        switch (booster.booster_type) {
+          case 'worker_crew':
+            multiplier += (booster.level * 0.10); // 10% per level
+            break;
+          case 'geological_survey':
+            multiplier += (booster.level * 0.15); // 15% per level
+            break;
+          case 'advanced_equipment':
+            multiplier += (booster.level * 0.25); // 25% per level
+            break;
+          case 'turbo_boost':
+            multiplier += 0.50; // 50% flat bonus
+            break;
+          case 'automation':
+            multiplier += (booster.level * 0.20); // 20% per level
+            break;
+        }
+      }
+    });
+
+    return multiplier;
+  };
+
+  const getActiveBoosterMultiplier = () => {
+    return calculateBoosterMultiplier(boosters);
+  };
+
+  const recalculateDailyIncome = async () => {
+    if (!user || !wells.length) return;
+
+    try {
+      // Calculate base income from wells
+      const baseIncome = wells.reduce((total, well) => total + well.daily_income, 0);
+      
+      // Apply booster multiplier
+      const multiplier = getActiveBoosterMultiplier();
+      const totalIncome = Math.round(baseIncome * multiplier);
+
+      // Update profile with new daily income
+      const { error } = await supabase
+        .from('profiles')
+        .update({ daily_income: totalIncome })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setProfile(prev => prev ? { ...prev, daily_income: totalIncome } : null);
+    } catch (error) {
+      console.error('Error recalculating daily income:', error);
     }
   };
 
@@ -553,6 +625,8 @@ export function useGameData() {
     upgradeWell,
     addIncome,
     buyBooster,
+    getActiveBoosterMultiplier,
+    recalculateDailyIncome,
     reload: loadGameData
   };
 }

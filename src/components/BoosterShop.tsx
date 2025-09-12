@@ -22,7 +22,7 @@ interface BoosterShopProps {
 }
 
 export function BoosterShop({ onClose }: BoosterShopProps) {
-  const { profile, boosters, buyBooster, loading } = useGameData();
+  const { profile, boosters, buyBooster, loading, getActiveBoosterMultiplier } = useGameData();
   const { toast } = useToast();
   const [selectedBooster, setSelectedBooster] = useState<BoosterType | null>(null);
 
@@ -201,6 +201,60 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
         <p className="text-muted-foreground">
           Покупайте бустеры для увеличения доходности ваших скважин
         </p>
+        
+        {/* Current Booster Effects */}
+        {boosters.length > 0 && (
+          <div className="mt-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              Активные улучшения
+            </h3>
+            <div className="grid md:grid-cols-2 gap-2 text-sm">
+              {boosters.map(booster => {
+                const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+                if (!isActive) return null;
+                
+                let effectText = '';
+                switch (booster.booster_type) {
+                  case 'worker_crew':
+                    effectText = `+${booster.level * 10}% от бригады (Ур.${booster.level})`;
+                    break;
+                  case 'geological_survey':
+                    effectText = `+${booster.level * 15}% от исследований (Ур.${booster.level})`;
+                    break;
+                  case 'advanced_equipment':
+                    effectText = `+${booster.level * 25}% от оборудования (Ур.${booster.level})`;
+                    break;
+                  case 'turbo_boost':
+                    effectText = `+50% турбо режим`;
+                    break;
+                  case 'automation':
+                    effectText = `+${booster.level * 20}% от автоматизации (Ур.${booster.level})`;
+                    break;
+                }
+                
+                return (
+                  <div key={booster.id} className="flex justify-between items-center p-2 bg-background/50 rounded">
+                    <span className="text-muted-foreground">{effectText}</span>
+                    {booster.expires_at && (
+                      <span className="text-xs text-orange-600">
+                        До {new Date(booster.expires_at).toLocaleTimeString()}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+              <div className="col-span-full mt-2 pt-2 border-t border-primary/20">
+                <div className="flex justify-between items-center font-semibold">
+                  <span>Общий бонус:</span>
+                  <span className="text-primary">
+                    +{Math.round((getActiveBoosterMultiplier() - 1) * 100)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

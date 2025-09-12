@@ -39,7 +39,7 @@ import { BoosterShop } from "@/components/BoosterShop";
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   
   const { toast } = useToast();
