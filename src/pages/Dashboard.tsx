@@ -32,6 +32,7 @@ import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
 import { DailyBonus } from "@/components/DailyBonus";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -228,23 +229,40 @@ const Dashboard = () => {
     setTopUpLoading(true);
 
     try {
-      // Имитация успешного пополнения (в реальном приложении здесь будет платежная система)
-      setTimeout(() => {
-        addIncome(value);
+      // Создаем платеж через YooKassa
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          amount: value,
+          currency: 'RUB'
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.confirmation_url) {
+        // Перенаправляем пользователя на страницу оплаты
+        window.open(data.confirmation_url, '_blank');
+        
         toast({
-          title: "Баланс пополнен!",
-          description: `Добавлено ${value} ₽ к вашему балансу`,
+          title: "Переход к оплате",
+          description: "Откроется новая вкладка для оплаты. После успешной оплаты баланс будет пополнен автоматически.",
         });
+        
         setTopUpAmount("");
         setIsTopUpOpen(false);
-        setTopUpLoading(false);
-      }, 1500);
+      } else {
+        throw new Error('Не удалось получить ссылку на оплату');
+      }
     } catch (error) {
+      console.error('Payment error:', error);
       toast({
         variant: "destructive",
-        title: "Ошибка пополнения",
-        description: "Попробуйте позже"
+        title: "Ошибка создания платежа",
+        description: "Попробуйте позже или обратитесь в поддержку"
       });
+    } finally {
       setTopUpLoading(false);
     }
   };
@@ -366,6 +384,14 @@ const Dashboard = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
+                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
+                    💰 Быстрое пополнение реальными деньгами
+                  </h4>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                    Пополните баланс реальными деньгами для мгновенного получения игровой валюты и быстрого развития вашей нефтяной империи!
+                  </p>
+                </div>
                 <div>
                   <Label htmlFor="amount">Сумма пополнения (₽)</Label>
                   <Input
