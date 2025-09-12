@@ -15,11 +15,11 @@ import { useGameData, BoosterType } from '@/hooks/useGameData';
 import { useToast } from '@/hooks/use-toast';
 
 // Import booster images
-import workerCrewIcon from '@/assets/boosters/worker-crew.png';
-import geologicalSurveyIcon from '@/assets/boosters/geological-survey.png';
-import advancedEquipmentIcon from '@/assets/boosters/advanced-equipment.png';
-import turboBoostIcon from '@/assets/boosters/turbo-boost.png';
-import automationIcon from '@/assets/boosters/automation.png';
+import workerCrewImg from '@/assets/boosters/worker-crew.png';
+import geologicalSurveyImg from '@/assets/boosters/geological-survey.png';
+import advancedEquipmentImg from '@/assets/boosters/advanced-equipment.png';
+import turboBoostImg from '@/assets/boosters/turbo-boost.png';
+import automationImg from '@/assets/boosters/automation.png';
 
 interface BoosterShopProps {
   onClose?: () => void;
@@ -47,7 +47,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       id: 'worker_crew',
       name: 'Квалифицированная бригада',
       description: 'Опытные рабочие увеличивают доходность всех скважин',
-      icon: workerCrewIcon,
+      icon: workerCrewImg,
       effect: '+10% к доходности всех скважин',
       maxLevel: 5,
       baseCost: 5000,
@@ -60,7 +60,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       id: 'geological_survey',
       name: 'Геологические исследования',
       description: 'Детальное изучение месторождений повышает эффективность',
-      icon: geologicalSurveyIcon,
+      icon: geologicalSurveyImg,
       effect: '+15% к доходности скважин',
       maxLevel: 3,
       baseCost: 8000,
@@ -73,7 +73,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       id: 'advanced_equipment',
       name: 'Современное оборудование',
       description: 'Передовые технологии для максимальной добычи',
-      icon: advancedEquipmentIcon,
+      icon: advancedEquipmentImg,
       effect: '+25% к доходности скважин',
       maxLevel: 3,
       baseCost: 15000,
@@ -86,7 +86,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       id: 'turbo_boost',
       name: 'Турбо режим',
       description: 'Временное увеличение добычи на 24 часа',
-      icon: turboBoostIcon,
+      icon: turboBoostImg,
       effect: '+50% к доходности на 24 часа',
       maxLevel: 1,
       baseCost: 3000,
@@ -99,7 +99,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       id: 'automation',
       name: 'Автоматизация',
       description: 'Скважины работают эффективнее без постоянного контроля',
-      icon: automationIcon,
+      icon: automationImg,
       effect: '+20% к базовой доходности',
       maxLevel: 2,
       baseCost: 20000,
@@ -273,7 +273,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
-                    <img src={booster.icon} alt={booster.name} className="h-8 w-8" />
+                    <img src={booster.icon} alt={booster.name} className="h-16 w-16 object-cover rounded-lg" />
                     <CardTitle className="text-lg">{booster.name}</CardTitle>
                   </div>
                   <Badge className={getRarityColor(booster.rarity)}>
@@ -347,7 +347,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle className="flex items-center gap-2">
-                        <img src={booster.icon} alt={booster.name} className="h-5 w-5" />
+                        <img src={booster.icon} alt={booster.name} className="h-8 w-8 object-cover rounded" />
                         {booster.name}
                       </DialogTitle>
                       <DialogDescription>
