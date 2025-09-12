@@ -17,30 +17,19 @@ export const useLeaderboard = () => {
     try {
       setLoading(true);
       
-      // Get real players
-      const { data: players, error: playersError } = await supabase
-        .from('profiles')
-        .select('nickname, balance, daily_income, created_at')
-        .eq('is_banned', false);
+      // Use the new security invoker function instead of view
+      const { data, error } = await supabase
+        .rpc('get_leaderboard');
       
-      if (playersError) throw playersError;
+      if (error) throw error;
       
-      // Get bot players
-      const { data: bots, error: botsError } = await supabase
-        .from('bot_players')
-        .select('nickname, balance, daily_income, created_at');
+      // Type the data correctly
+      const typedData: LeaderboardEntry[] = (data || []).map((item: any) => ({
+        ...item,
+        player_type: item.player_type as 'player' | 'bot'
+      }));
       
-      if (botsError) throw botsError;
-      
-      // Combine and sort by balance
-      const combined: LeaderboardEntry[] = [
-        ...(players?.map(p => ({ ...p, player_type: 'player' as const })) || []),
-        ...(bots?.map(b => ({ ...b, player_type: 'bot' as const })) || [])
-      ];
-      
-      combined.sort((a, b) => Number(b.balance) - Number(a.balance));
-      
-      setLeaderboard(combined);
+      setLeaderboard(typedData);
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
     } finally {
