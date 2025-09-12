@@ -269,18 +269,18 @@ All colors MUST be HSL.
     transform: translateY(-2px);
     transition: all 0.3s ease;
   }
-+
-+  /* Dashboard light background */
-+  .dashboard-light-bg {
-+    position: relative;
-+    background-image: url('./assets/oil-daylight-background.jpg');
-+    background-size: cover;
-+    background-position: center;
-+    background-attachment: fixed;
-+  }
-+
-+  .dashboard-light-bg > * {
-+    position: relative;
-+    z-index: 1;
-+  }
- }
+
+  /* Dashboard light background */
+  .dashboard-light-bg {
+    position: relative;
+    background-image: url('./assets/oil-daylight-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .dashboard-light-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+}
