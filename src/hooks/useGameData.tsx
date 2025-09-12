@@ -57,6 +57,30 @@ export interface WellPackage {
   totalDailyIncome: number;
 }
 
+export interface BoosterType {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  effect: string;
+  maxLevel: number;
+  baseCost: number;
+  costMultiplier: number;
+  bonusPerLevel: number;
+  duration: number | null; // null = permanent, number = milliseconds
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'temporary';
+}
+
+export interface UserBooster {
+  id: string;
+  user_id: string;
+  booster_type: string;
+  level: number;
+  expires_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export const wellTypes: WellType[] = [
   { 
     name: "Мини-скважина", 
@@ -211,6 +235,7 @@ export function useGameData() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [wells, setWells] = useState<UserWell[]>([]);
+  const [boosters, setBoosters] = useState<UserBooster[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Load user data
@@ -450,14 +475,84 @@ export function useGameData() {
     }
   };
 
+  const buyBooster = async (boosterId: string, cost: number, duration: number | null) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    if (profile.balance < cost) {
+      return { success: false, error: 'Недостаточно средств' };
+    }
+
+    try {
+      // Check if booster already exists
+      const { data: existingBooster } = await supabase
+        .from('user_boosters')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('booster_type', boosterId)
+        .single();
+
+      let boosterQuery;
+      
+      if (existingBooster) {
+        // Update existing booster
+        const newLevel = existingBooster.level + 1;
+        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
+        
+        boosterQuery = supabase
+          .from('user_boosters')
+          .update({ 
+            level: newLevel,
+            expires_at: expiresAt,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingBooster.id);
+      } else {
+        // Create new booster
+        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
+        
+        boosterQuery = supabase
+          .from('user_boosters')
+          .insert({
+            user_id: user.id,
+            booster_type: boosterId,
+            level: 1,
+            expires_at: expiresAt
+          });
+      }
+
+      const { error: boosterError } = await boosterQuery;
+      if (boosterError) throw boosterError;
+
+      // Update user balance
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: profile.balance - cost })
+        .eq('user_id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      // Reload data
+      await loadGameData();
+
+      return { success: true };
+    } catch (error) {
+      console.error('Error buying booster:', error);
+      return { success: false, error: 'Ошибка при покупке бустера' };
+    }
+  };
+
   return {
     profile,
     wells,
+    boosters,
     loading,
     buyWell,
     buyPackage,
     upgradeWell,
     addIncome,
+    buyBooster,
     reload: loadGameData
   };
 }

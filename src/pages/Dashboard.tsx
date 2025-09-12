@@ -22,7 +22,8 @@ import {
   CreditCard,
   Shield,
   Trophy,
-  BookOpen
+  BookOpen,
+  Sparkles
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -33,6 +34,7 @@ import { DailyBonus } from "@/components/DailyBonus";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
+import { BoosterShop } from "@/components/BoosterShop";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -45,6 +47,7 @@ const Dashboard = () => {
   const [topUpAmount, setTopUpAmount] = useState("");
   const [topUpLoading, setTopUpLoading] = useState(false);
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
+  const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
 
   const getWellIcon = (wellTypeName: string) => {
     const wellType = wellTypes.find(wt => wt.name === wellTypeName);
@@ -337,6 +340,13 @@ const Dashboard = () => {
                   <BookOpen className="h-4 w-4" />
                 </Button>
               </Link>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setIsBoosterShopOpen(true)}
+              >
+                <Sparkles className="h-4 w-4" />
+              </Button>
               {isAdmin && (
                 <Link to="/admin">
                   <Button variant="ghost" size="sm" className="text-primary">
@@ -818,8 +828,18 @@ const Dashboard = () => {
               );
             })}
            </div>
-         </div>
+          </div>
 
+
+        {/* Booster Shop Modal */}
+        <Dialog open={isBoosterShopOpen} onOpenChange={setIsBoosterShopOpen}>
+          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Магазин улучшений</DialogTitle>
+            </DialogHeader>
+            <BoosterShop onClose={() => setIsBoosterShopOpen(false)} />
+          </DialogContent>
+        </Dialog>
 
       </div>
     </div>

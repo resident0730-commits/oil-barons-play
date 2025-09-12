@@ -122,6 +122,36 @@ export type Database = {
         }
         Relationships: []
       }
+      user_boosters: {
+        Row: {
+          booster_type: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          level: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booster_type: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          booster_type?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          level?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

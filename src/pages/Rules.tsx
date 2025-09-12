@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Coins, Gift, Zap, Trophy, Shield, Heart } from 'lucide-react';
+import { Coins, Gift, Zap, Trophy, Shield, Heart, Sparkles } from 'lucide-react';
 
 export default function Rules() {
   return (
@@ -182,6 +182,78 @@ export default function Rules() {
                   <li>• Более дорогие скважины = больше дохода</li>
                   <li>• Доход накапливается автоматически</li>
                   <li>• Максимальный уровень зависит от типа скважины</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Бустеры */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-purple-500" />
+              Система бустеров
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground">
+              Улучшения, которые повышают эффективность ваших скважин и дают дополнительные преимущества.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold mb-3">Постоянные бустеры:</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">👥 Квалифицированная бригада</span>
+                    <div className="text-right">
+                      <Badge variant="outline">5,000+ монет</Badge>
+                      <div className="text-xs text-green-600">+10% за уровень</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">📊 Геологические исследования</span>
+                    <div className="text-right">
+                      <Badge variant="outline">8,000+ монет</Badge>
+                      <div className="text-xs text-green-600">+15% за уровень</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">⚙️ Современное оборудование</span>
+                    <div className="text-right">
+                      <Badge variant="outline">15,000+ монет</Badge>
+                      <div className="text-xs text-green-600">+25% за уровень</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
+                    <span className="text-sm">✨ Автоматизация</span>
+                    <div className="text-right">
+                      <Badge variant="outline">20,000+ монет</Badge>
+                      <div className="text-xs text-green-600">+20% за уровень</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3">Временные бустеры:</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-2 bg-orange-100 dark:bg-orange-900/20 rounded">
+                    <span className="text-sm">⚡ Турбо режим</span>
+                    <div className="text-right">
+                      <Badge variant="outline">3,000 монет</Badge>
+                      <div className="text-xs text-orange-600">+50% на 24 часа</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <h4 className="font-semibold mb-3 mt-4">Особенности:</h4>
+                <ul className="space-y-1 text-sm">
+                  <li>• Постоянные бустеры можно улучшать до максимального уровня</li>
+                  <li>• Временные бустеры действуют ограниченное время</li>
+                  <li>• Эффекты бустеров суммируются</li>
+                  <li>• Доступ к бустерам через иконку ✨ в меню</li>
                 </ul>
               </div>
             </div>
