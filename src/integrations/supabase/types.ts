@@ -136,18 +136,19 @@ export type Database = {
       }
     }
     Views: {
-      leaderboard: {
-        Row: {
-          balance: number | null
-          created_at: string | null
-          daily_income: number | null
-          nickname: string | null
-          player_type: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
+      get_leaderboard: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          balance: number
+          created_at: string
+          daily_income: number
+          nickname: string
+          player_type: string
+        }[]
+      }
       get_user_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {
