@@ -23,7 +23,10 @@ import {
   Shield,
   Trophy,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Pickaxe,
+  Store,
+  Rocket
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -35,6 +38,12 @@ import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
+import { GameSection } from "@/components/GameSection";
+
+// Import hero images
+import myWellsHero from '@/assets/sections/my-wells-hero.jpg';
+import shopHero from '@/assets/sections/shop-hero.jpg';
+import boostersHero from '@/assets/sections/boosters-hero.jpg';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -48,6 +57,7 @@ const Dashboard = () => {
   const [topUpLoading, setTopUpLoading] = useState(false);
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters'>('overview');
 
   const getWellIcon = (wellTypeName: string) => {
     const wellType = wellTypes.find(wt => wt.name === wellTypeName);
@@ -294,9 +304,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <header className="border-b border-border">
+      <header className="border-b border-border/50 backdrop-blur-sm bg-background/80">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -343,13 +353,6 @@ const Dashboard = () => {
                   <BookOpen className="h-4 w-4" />
                 </Button>
               </Link>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setIsBoosterShopOpen(true)}
-              >
-                <Sparkles className="h-4 w-4" />
-              </Button>
               {isAdmin && (
                 <Link to="/admin">
                   <Button variant="ghost" size="sm" className="text-primary">
@@ -366,511 +369,156 @@ const Dashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Daily Bonus */}
         <DailyBonus />
         
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card 
-            className="cursor-pointer hover:shadow-lg transition-shadow group"
-            onClick={() => setIsTopUpOpen(true)}
-          >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Баланс</CardTitle>
-              <div className="flex items-center space-x-1">
-                <Wallet className="h-4 w-4 text-muted-foreground" />
-                <Plus className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+        {activeSection === 'overview' && (
+          <>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-shadow group bg-gradient-to-br from-primary/5 to-accent/5"
+                onClick={() => setIsTopUpOpen(true)}
+              >
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Баланс</CardTitle>
+                  <div className="flex items-center space-x-1">
+                    <Wallet className="h-4 w-4 text-muted-foreground" />
+                    <Plus className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
+                  <p className="text-xs text-muted-foreground mt-1">Нажмите для пополнения</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-green-500/5 to-emerald-500/5">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Доходность в день</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-green-500" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-green-600">₽{profile.daily_income.toLocaleString()}</div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-blue-500/5 to-cyan-500/5">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Скважины</CardTitle>
+                  <Fuel className="h-4 w-4 text-blue-500" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-blue-600">{wells.length}</div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-500/5 to-pink-500/5"
+                onClick={() => navigate('/leaderboard')}
+              >
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Рейтинг</CardTitle>
+                  <Trophy className="h-4 w-4 text-purple-500" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {leaderboardLoading ? "..." : profile?.nickname ? `#${getPlayerRank(profile.nickname) || "?"}` : "#?"}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Нажмите для просмотра</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Game Sections */}
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-2">
+                  Игровые разделы
+                </h2>
+                <p className="text-muted-foreground">Управляйте своей нефтяной империей</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">₽{profile.balance.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground mt-1">Нажмите для пополнения</p>
-            </CardContent>
-          </Card>
 
-          <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
-            <DialogContent className="bg-card border-border">
-              <DialogHeader>
-                <DialogTitle className="flex items-center">
-                  <CreditCard className="h-5 w-5 mr-2 text-primary" />
-                  Пополнение баланса
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
-                    💰 Быстрое пополнение реальными деньгами
-                  </h4>
-                  <p className="text-sm text-blue-600 dark:text-blue-400">
-                    Пополните баланс реальными деньгами для мгновенного получения игровой валюты и быстрого развития вашей нефтяной империи!
-                  </p>
-                </div>
-                <div>
-                  <Label htmlFor="amount">Сумма пополнения (₽)</Label>
-                  <Input
-                    id="amount"
-                    type="number"
-                    placeholder="Минимум 100 ₽"
-                    value={topUpAmount}
-                    onChange={(e) => setTopUpAmount(e.target.value)}
-                    min="100"
-                  />
-                </div>
-                <div className="flex space-x-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setTopUpAmount("500")}
-                    className="flex-1"
-                  >
-                    500 ₽
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setTopUpAmount("1000")}
-                    className="flex-1"
-                  >
-                    1000 ₽
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setTopUpAmount("5000")}
-                    className="flex-1"
-                  >
-                    5000 ₽
-                  </Button>
-                </div>
-                <Button
-                  onClick={handleTopUp}
-                  disabled={topUpLoading}
-                  className="w-full gradient-gold shadow-gold"
-                >
-                  {topUpLoading ? "Обработка..." : "Пополнить баланс"}
-                </Button>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <GameSection
+                  title="Мои скважины"
+                  description="Управление и улучшение"
+                  backgroundImage={myWellsHero}
+                  icon={<Pickaxe className="h-6 w-6 text-white" />}
+                  badge={wells.length > 0 ? `${wells.length} скважин` : undefined}
+                  badgeVariant="secondary"
+                  onClick={() => setActiveSection('wells')}
+                  stats={[
+                    { label: 'Общий доход', value: `₽${profile.daily_income.toLocaleString()}/день` },
+                    { label: 'Скважины', value: wells.length }
+                  ]}
+                />
+
+                <GameSection
+                  title="Магазин скважин"
+                  description="Покупка нового оборудования"
+                  backgroundImage={shopHero}
+                  icon={<Store className="h-6 w-6 text-white" />}
+                  badge="Новинки!"
+                  badgeVariant="default"
+                  onClick={() => setActiveSection('shop')}
+                  stats={[
+                    { label: 'Доступно', value: `${wellTypes.length} типов` },
+                    { label: 'Пакеты', value: `${wellPackages.length} предложений` }
+                  ]}
+                />
+
+                <GameSection
+                  title="Бустеры"
+                  description="Усиление производительности"
+                  backgroundImage={boostersHero}
+                  icon={<Rocket className="h-6 w-6 text-white" />}
+                  badge={boosters.length > 0 ? `+${Math.round((getActiveBoosterMultiplier() - 1) * 100)}%` : "Доступны"}
+                  badgeVariant="destructive"
+                  onClick={() => setActiveSection('boosters')}
+                  stats={[
+                    { label: 'Активных', value: boosters.filter(b => !b.expires_at || new Date(b.expires_at) > new Date()).length },
+                    { label: 'Бонус', value: `+${Math.round((getActiveBoosterMultiplier() - 1) * 100)}%` }
+                  ]}
+                />
               </div>
-            </DialogContent>
-          </Dialog>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Доходность скважин в день</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">₽{profile.daily_income.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Скважины</CardTitle>
-              <Fuel className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{wells.length}</div>
-            </CardContent>
-          </Card>
-
-          <Card 
-            className="cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => navigate('/leaderboard')}
-          >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Рейтинг</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {leaderboardLoading ? "..." : profile?.nickname ? `#${getPlayerRank(profile.nickname) || "?"}` : "#?"}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">Нажмите для просмотра</p>
-            </CardContent>
-          </Card>
-        </div>
-
-
-        {/* My Wells */}
-        {wells.length > 0 && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="wells">
-              <AccordionTrigger className="text-3xl font-bold">
-                Мои скважины
-                <span className="ml-2 text-sm text-muted-foreground">({wells.length})</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {wells.map((well) => {
-                    const wellType = wellTypes.find(wt => wt.name === well.well_type);
-                    const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * well.level);
-                    const canUpgrade = well.level < (wellType?.maxLevel || 20) && profile.balance >= upgradeCost;
-                      const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(well.daily_income, wellType?.price || 1000);
-                      
-                      const newDailyIncome = Math.round(well.daily_income * 1.15);
-                      const incomeIncrease = newDailyIncome - well.daily_income;
-                      
-                      // Бустеры уже применены в daily_income скважины, не применяем дважды
-                      const boosterMultiplier = getActiveBoosterMultiplier();
-                      const isBoostersActive = boosterMultiplier > 1;
-                      const boosterPercent = Math.round((boosterMultiplier - 1) * 100);
-                    
-                    return (
-                      <Card key={well.id} className="hover:shadow-lg transition-all duration-300">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              {getWellIcon(well.well_type)}
-                              <div>
-                                <CardTitle className="text-sm">{well.well_type}</CardTitle>
-                                {wellType && (
-                                  <Badge 
-                                    variant="outline" 
-                                    className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
-                                  >
-                                    {wellType.rarity}
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {isBoostersActive && (
-                                <Badge variant="secondary" className="flex items-center gap-1">
-                                  <Sparkles className="h-3 w-3" />
-                                  Бустеры +{boosterPercent}%
-                                </Badge>
-                              )}
-                              <Badge variant="outline">Ур. {well.level}</Badge>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4 pt-0">
-                          <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
-                            {isBoostersActive ? (
-                              <>
-                                <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                                  <Sparkles className="h-3 w-3" />
-                                  Доходность уже включает бонус бустеров (+{boosterPercent}%)
-                                </div>
-                                <div className="flex justify-between text-sm">
-                                  <span className="text-muted-foreground">День (с бустерами):</span>
-                                  <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">День:</span>
-                                <span className="font-semibold text-primary">₽{well.daily_income.toLocaleString()}</span>
-                              </div>
-                            )}
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Месяц:</span>
-                              <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Год:</span>
-                              <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm border-t border-border pt-2">
-                              <span className="text-muted-foreground font-medium">Годовой %:</span>
-                              <Badge 
-                                variant="secondary" 
-                                className={`font-bold ${
-                                  yearlyPercent >= 100 ? 'bg-green-100 text-green-800' : 
-                                  yearlyPercent >= 50 ? 'bg-yellow-100 text-yellow-800' : 
-                                  'bg-red-100 text-red-800'
-                                }`}
-                              >
-                                {formatProfitPercent(yearlyPercent)}
-                              </Badge>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center justify-between">
-                            <div className="text-sm text-muted-foreground">
-                              Уровень {well.level}/{wellType?.maxLevel || 20}
-                            </div>
-                            <Progress 
-                              value={(well.level / (wellType?.maxLevel || 20)) * 100} 
-                              className="w-20"
-                            />
-                          </div>
-
-                          {canUpgrade && (
-                            <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-3">
-                              <div className="text-xs font-medium text-primary mb-2">Предварительный просмотр улучшения:</div>
-                              <div className="space-y-1 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-muted-foreground">Новая прибыль/день:</span>
-                                  <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-muted-foreground">Увеличение:</span>
-                                  <span className="font-bold text-green-600">+₽{incomeIncrease.toLocaleString()}</span>
-                                </div>
-                                <div className="flex justify-between text-xs border-t border-primary/20 pt-1">
-                                  <span className="text-muted-foreground">Стоимость:</span>
-                                  <span className="font-semibold text-orange-600">₽{upgradeCost.toLocaleString()}</span>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                          
-                          <Button 
-                            onClick={() => handleUpgradeWell(well.id)}
-                            disabled={!canUpgrade}
-                            className={`w-full ${canUpgrade ? 'gradient-gold hover-gold shadow-gold' : 'opacity-50'}`}
-                          >
-                            <Zap className="h-4 w-4 mr-2" />
-                            {canUpgrade ? `Улучшить (₽${upgradeCost.toLocaleString()})` : 
-                              well.level >= (wellType?.maxLevel || 20) ? 'Макс. уровень' : 'Недостаточно средств'}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+            </div>
+          </>
         )}
 
-
-        {/* Marketplace */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold">Магазин скважин</h2>
-            <Badge variant="secondary">
-              <ShoppingCart className="h-4 w-4 mr-1" />
-              Доступно для покупки
-            </Badge>
+        {/* Wells Section */}
+        {activeSection === 'wells' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" onClick={() => setActiveSection('overview')} className="text-primary">← Назад</Button>
+              <h2 className="text-3xl font-bold">Мои скважины</h2>
+              <div></div>
+            </div>
+            <BoosterShop />
           </div>
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {wellTypes.map((wellType, index) => {
-              const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(wellType.baseIncome, wellType.price);
-              
-              return (
-                <Card key={index} className="hover:shadow-lg transition-all duration-300 hover:scale-105">
-                  <CardHeader className="pb-3">
-                    <div className="flex flex-col items-center space-y-3">
-                      <div className="relative">
-                        <img 
-                          src={wellType.image} 
-                          alt={wellType.name}
-                          className="w-20 h-20 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
-                        />
-                        <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
-                          {wellType.icon}
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <CardTitle className="text-sm font-medium mb-1">{wellType.name}</CardTitle>
-                        <Badge 
-                          variant="outline" 
-                          className={`text-xs capitalize ${getRarityBadgeColor(wellType.rarity)}`}
-                        >
-                          {wellType.rarity}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4 pt-0">
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Цена:</span>
-                        <Badge 
-                          variant={profile.balance >= wellType.price ? "default" : "destructive"}
-                          className={profile.balance >= wellType.price ? "" : "animate-pulse"}
-                        >
-                          ₽{wellType.price.toLocaleString()}
-                        </Badge>
-                      </div>
-                      
-                      <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">День:</span>
-                          <span className="font-semibold text-primary">₽{wellType.baseIncome.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Месяц:</span>
-                          <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Год:</span>
-                          <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm border-t border-border pt-2">
-                          <span className="text-muted-foreground font-medium">Годовой %:</span>
-                          <Badge 
-                            variant="secondary" 
-                            className={`font-bold ${
-                              yearlyPercent >= 100 ? 'bg-green-100 text-green-800' : 
-                              yearlyPercent >= 50 ? 'bg-yellow-100 text-yellow-800' : 
-                              'bg-red-100 text-red-800'
-                            }`}
-                          >
-                            {formatProfitPercent(yearlyPercent)}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Макс. уровень:</span>
-                        <span className="text-muted-foreground">{wellType.maxLevel}</span>
-                      </div>
-                    </div>
-                    <Button 
-                      className={`w-full shadow-gold hover-gold ${
-                        profile.balance >= wellType.price 
-                          ? 'gradient-gold' 
-                          : 'gradient-amber border-2 border-orange-400'
-                      }`}
-                      onClick={() => handleBuyWell(wellType)}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      {profile.balance >= wellType.price ? 'Купить' : 'Пополнить и купить'}
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
+        {/* Shop Section */}
+        {activeSection === 'shop' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" onClick={() => setActiveSection('overview')} className="text-primary">← Назад</Button>
+              <h2 className="text-3xl font-bold">Магазин скважин</h2>
+              <div></div>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Package Deals */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold">Выгодные пакеты</h2>
-            <Badge variant="secondary" className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border-orange-300">
-              <Gem className="h-4 w-4 mr-1" />
-              Со скидкой до 31%
-            </Badge>
+        {/* Boosters Section */}
+        {activeSection === 'boosters' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" onClick={() => setActiveSection('overview')} className="text-primary">← Назад</Button>
+              <h2 className="text-3xl font-bold">Бустеры</h2>
+              <div></div>
+            </div>
+            <BoosterShop />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {wellPackages.map((wellPackage, index) => {
-              const { monthlyIncome, yearlyIncome, yearlyPercent } = calculateProfitMetrics(wellPackage.totalDailyIncome, wellPackage.discountedPrice);
-              
-              const getPackageRarityColor = (rarity: string) => {
-                switch (rarity) {
-                  case 'starter': return 'from-green-500 to-emerald-600';
-                  case 'growth': return 'from-blue-500 to-indigo-600';
-                  case 'business': return 'from-purple-500 to-violet-600';
-                  case 'empire': return 'from-yellow-500 to-orange-600';
-                  default: return 'from-gray-500 to-slate-600';
-                }
-              };
-
-              return (
-                <Card key={index} className="relative hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden border-2">
-                  <div className={`absolute top-0 right-0 bg-gradient-to-br ${getPackageRarityColor(wellPackage.rarity)} text-white px-3 py-1 rounded-bl-lg`}>
-                    <span className="text-xs font-bold">-{wellPackage.discount}%</span>
-                  </div>
-                  
-                  <CardHeader className="pb-3">
-                    <div className="flex flex-col items-center space-y-3">
-                      <div className="relative">
-                        <img 
-                          src={wellPackage.image} 
-                          alt={wellPackage.name}
-                          className="w-20 h-20 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
-                        />
-                        <div className="absolute -top-2 -right-2 text-2xl">{wellPackage.icon}</div>
-                      </div>
-                      <div className="text-center">
-                        <CardTitle className="text-lg font-bold mb-1">{wellPackage.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{wellPackage.description}</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4 pt-0">
-                    <div className="space-y-2">
-                      {wellPackage.wells.map((packageWell, wellIndex) => (
-                        <div key={wellIndex} className="flex justify-between text-sm bg-secondary/20 rounded px-2 py-1">
-                          <span>{packageWell.type}</span>
-                          <span className="font-semibold">x{packageWell.count}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
-                      <div className="flex justify-between text-sm font-semibold text-center">
-                        <span className="text-muted-foreground">Общая доходность скважин в день:</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">День:</span>
-                        <span className="font-semibold text-primary">₽{wellPackage.totalDailyIncome.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Месяц:</span>
-                        <span className="font-semibold text-accent-foreground">₽{monthlyIncome.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Год:</span>
-                        <span className="font-semibold text-accent-foreground">₽{yearlyIncome.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm border-t border-border pt-2">
-                        <span className="text-muted-foreground font-medium">Годовой %:</span>
-                        <Badge 
-                          variant="secondary" 
-                          className={`font-bold ${
-                            yearlyPercent >= 100 ? 'bg-green-100 text-green-800' : 
-                            yearlyPercent >= 50 ? 'bg-yellow-100 text-yellow-800' : 
-                            'bg-red-100 text-red-800'
-                          }`}
-                        >
-                          {formatProfitPercent(yearlyPercent)}
-                        </Badge>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 pt-2 border-t">
-                      <div className="flex justify-between text-sm line-through text-muted-foreground">
-                        <span>Обычная цена:</span>
-                        <span>₽{wellPackage.originalPrice.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-lg font-bold">
-                        <span>Цена пакета:</span>
-                        <Badge 
-                          variant={profile.balance >= wellPackage.discountedPrice ? "default" : "destructive"}
-                          className={`text-sm ${profile.balance >= wellPackage.discountedPrice ? "" : "animate-pulse"}`}
-                        >
-                          ₽{wellPackage.discountedPrice.toLocaleString()}
-                        </Badge>
-                      </div>
-                      <div className="text-center text-sm font-semibold text-green-600">
-                        Экономия: ₽{(wellPackage.originalPrice - wellPackage.discountedPrice).toLocaleString()}
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => handleBuyPackage(wellPackage)}
-                      disabled={profile.balance < wellPackage.discountedPrice}
-                      className={`w-full ${profile.balance >= wellPackage.discountedPrice 
-                        ? `bg-gradient-to-r ${getPackageRarityColor(wellPackage.rarity)} hover:opacity-90` 
-                        : 'opacity-50'
-                      }`}
-                    >
-                      {profile.balance >= wellPackage.discountedPrice ? "Купить пакет" : "Недостаточно средств"}
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-           </div>
-          </div>
-
-
-        {/* Booster Shop Modal */}
-        <Dialog open={isBoosterShopOpen} onOpenChange={setIsBoosterShopOpen}>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Магазин улучшений</DialogTitle>
-              <DialogDescription>Покупайте и улучшайте бустеры для ускорения роста.</DialogDescription>
-            </DialogHeader>
-            <BoosterShop onClose={() => setIsBoosterShopOpen(false)} />
-          </DialogContent>
-        </Dialog>
-
+        )}
       </div>
     </div>
   );
