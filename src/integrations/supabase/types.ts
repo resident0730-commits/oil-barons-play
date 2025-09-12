@@ -77,6 +77,33 @@ export type Database = {
         }
         Relationships: []
       }
+      game_statistics: {
+        Row: {
+          created_at: string
+          current_value: number
+          daily_growth_rate: number
+          id: string
+          last_updated: string
+          stat_name: string
+        }
+        Insert: {
+          created_at?: string
+          current_value?: number
+          daily_growth_rate?: number
+          id?: string
+          last_updated?: string
+          stat_name: string
+        }
+        Update: {
+          created_at?: string
+          current_value?: number
+          daily_growth_rate?: number
+          id?: string
+          last_updated?: string
+          stat_name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           balance: number
@@ -244,6 +271,10 @@ export type Database = {
           p_user_id: string
           p_wells_count?: number
         }
+        Returns: undefined
+      }
+      update_daily_statistics: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
     }
