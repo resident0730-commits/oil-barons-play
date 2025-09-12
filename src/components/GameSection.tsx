@@ -41,7 +41,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
       
       {/* Lock Overlay */}
       {isLocked && (
@@ -62,8 +62,8 @@ export const GameSection: React.FC<GameSectionProps> = ({
                 {icon}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">{title}</h3>
-                <p className="text-sm text-white/80">{description}</p>
+                <h3 className="text-xl font-bold text-white drop-shadow-lg shadow-black">{title}</h3>
+                <p className="text-sm text-white/90 drop-shadow-md shadow-black">{description}</p>
               </div>
             </div>
             {badge && (
@@ -78,8 +78,8 @@ export const GameSection: React.FC<GameSectionProps> = ({
             <div className="grid grid-cols-2 gap-3 mb-4">
               {stats.map((stat, index) => (
                 <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                  <p className="text-xs text-white/70">{stat.label}</p>
-                  <p className="text-lg font-bold text-white">{stat.value}</p>
+                  <p className="text-xs text-white/80 drop-shadow-md">{stat.label}</p>
+                  <p className="text-lg font-bold text-white drop-shadow-lg">{stat.value}</p>
                 </div>
               ))}
             </div>
