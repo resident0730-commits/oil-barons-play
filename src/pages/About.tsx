@@ -39,13 +39,13 @@ const About = () => {
     },
     {
       icon: <Coins className="h-8 w-8 text-primary" />,
-      title: "Ежедневные бонусы",
+      title: "Бонусные программы",
       description: "Получайте дополнительные награды за активность в игре"
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-primary" />,
-      title: "Аналитика доходов",
-      description: "Подробная статистика и графики ваших доходов"
+      title: "Аналитика операций",
+      description: "Подробная статистика и графики ваших операций"
     }
   ];
 
@@ -62,13 +62,13 @@ const About = () => {
     },
     {
       step: "3",
-      title: "Получение дохода", 
-      description: "Каждая скважина приносит ежедневный пассивный доход"
+       title: "Стабильная прибыль", 
+       description: "Каждая скважина приносит стабильную прибыль от операций"
     },
     {
       step: "4",
       title: "Улучшения",
-      description: "Улучшайте скважины для увеличения доходности"
+      description: "Улучшайте скважины для увеличения прибыльности"
     },
     {
       step: "5",
@@ -109,7 +109,7 @@ const About = () => {
           
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Погрузитесь в мир нефтяного бизнеса. Стройте империю, управляйте активами, 
-            получайте пассивный доход и становитесь магнатом нефтяной индустрии.
+            получайте стабильную прибыль и становитесь магнатом нефтяной индустрии.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -200,15 +200,15 @@ const About = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <h4 className="font-semibold">Ежедневные начисления</h4>
+                  <h4 className="font-semibold">Регулярные начисления</h4>
                   <p className="text-sm text-muted-foreground">
-                    Доход от скважин начисляется каждые 24 часа реального времени
+                    Прибыль от скважин начисляется каждые 24 часа реального времени
                   </p>
                 </div>
                 <div className="space-y-2">
                   <h4 className="font-semibold">Бонусное время</h4>
                   <p className="text-sm text-muted-foreground">
-                    В демо-режиме доходы начисляются каждые 10 секунд для быстрого тестирования
+                    В демо-режиме прибыль начисляется каждые 10 секунд для быстрого тестирования
                   </p>
                 </div>
               </CardContent>
@@ -225,7 +225,7 @@ const About = () => {
                 <div className="space-y-2">
                   <h4 className="font-semibold">Диверсификация</h4>
                   <p className="text-sm text-muted-foreground">
-                    Покупайте скважины разных типов для стабильного дохода
+                    Покупайте скважины разных типов для стабильной прибыли
                   </p>
                 </div>
                 <div className="space-y-2">

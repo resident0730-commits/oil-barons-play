@@ -27,9 +27,9 @@ const Index = () => {
   // Динамическая статистика игры
   const [gameStats, setGameStats] = useState({
     activePlayers: 1247,
-    totalIncome: 2847392,
+    totalProfit: 2847392,
     totalWells: 1057,
-    averageIncome: 15842
+    averageProfit: 15842
   });
 
   // Обновление статистики каждую секунду
@@ -37,9 +37,9 @@ const Index = () => {
     const interval = setInterval(() => {
       setGameStats(prev => ({
         activePlayers: prev.activePlayers + Math.floor(Math.random() * 3) - 1, // ±1
-        totalIncome: prev.totalIncome + Math.floor(Math.random() * 1000) + 500, // +500-1500
+        totalProfit: prev.totalProfit + Math.floor(Math.random() * 1000) + 500, // +500-1500
         totalWells: prev.totalWells + Math.floor(Math.random() * 2), // +0-1
-        averageIncome: prev.averageIncome + Math.floor(Math.random() * 100) - 50 // ±50
+        averageProfit: prev.averageProfit + Math.floor(Math.random() * 100) - 50 // ±50
       }));
     }, 1000);
 
@@ -92,7 +92,7 @@ const Index = () => {
               Oil Tycoon
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Постройте нефтяную империю, инвестируйте в скважины и получайте пассивный доход. 
+              Постройте нефтяную империю, инвестируйте в скважины и получайте стабильную прибыль. 
               Станьте магнатом нефтяной индустрии!
             </p>
           </div>
@@ -140,12 +140,12 @@ const Index = () => {
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Ежедневный доход</CardTitle>
+                  <CardTitle className="text-sm font-medium">Доходность скважин</CardTitle>
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">₽{profile.daily_income.toLocaleString()}</div>
-                  <p className="text-xs text-muted-foreground">Пассивный доход</p>
+                  <p className="text-xs text-muted-foreground">Прибыль от операций</p>
                 </CardContent>
               </Card>
 
@@ -180,11 +180,11 @@ const Index = () => {
           <Card className="text-center">
             <CardHeader>
               <TrendingUp className="h-12 w-12 text-primary mx-auto mb-2" />
-              <CardTitle>Пассивный доход</CardTitle>
+              <CardTitle>Стабильная прибыль</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Получайте стабильную прибыль каждый день от ваших инвестиций
+                Получайте стабильную прибыль каждый день от ваших операций
               </p>
             </CardContent>
           </Card>
@@ -231,8 +231,8 @@ const Index = () => {
               <Card className="text-center">
                 <CardContent className="pt-6">
                   <TrendingUp className="h-8 w-8 mx-auto mb-4 text-green-500" />
-                  <div className="text-2xl font-bold">₽{gameStats.totalIncome.toLocaleString()}</div>
-                  <p className="text-sm text-muted-foreground">Общий доход</p>
+                  <div className="text-2xl font-bold">₽{gameStats.totalProfit.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Общая прибыль</p>
                 </CardContent>
               </Card>
               <Card className="text-center">
@@ -245,8 +245,8 @@ const Index = () => {
               <Card className="text-center">
                 <CardContent className="pt-6">
                   <BarChart3 className="h-8 w-8 mx-auto mb-4 text-purple-500" />
-                  <div className="text-2xl font-bold">₽{gameStats.averageIncome.toLocaleString()}</div>
-                  <p className="text-sm text-muted-foreground">Средний доход</p>
+                  <div className="text-2xl font-bold">₽{gameStats.averageProfit.toLocaleString()}</div>
+                  <p className="text-sm text-muted-foreground">Средняя прибыль</p>
                 </CardContent>
               </Card>
             </div>

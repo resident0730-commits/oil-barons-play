@@ -200,7 +200,7 @@ const Dashboard = () => {
     if (result.success) {
       toast({
         title: "Скважина улучшена!",
-        description: "Доходность увеличена!",
+                        description: "Доходность увеличена!",
       });
     } else {
       toast({
@@ -403,7 +403,7 @@ const Dashboard = () => {
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Ежедневный доход</CardTitle>
+              <CardTitle className="text-sm font-medium">Доходность скважин</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -523,7 +523,7 @@ const Dashboard = () => {
                               <div className="text-xs font-medium text-primary mb-2">Предварительный просмотр улучшения:</div>
                               <div className="space-y-1 text-sm">
                                 <div className="flex justify-between">
-                                  <span className="text-muted-foreground">Новый доход/день:</span>
+                                  <span className="text-muted-foreground">Новая прибыль/день:</span>
                                   <span className="font-semibold text-green-600">₽{newDailyIncome.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between">

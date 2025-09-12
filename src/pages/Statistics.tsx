@@ -56,7 +56,7 @@ const Statistics = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Дневной доход</CardTitle>
+              <CardTitle className="text-sm font-medium">Прибыльность</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -89,19 +89,19 @@ const Statistics = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Анализ доходности</CardTitle>
+              <CardTitle>Анализ прибыльности</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Средний доход с скважины:</span>
+                <span className="text-muted-foreground">Средняя прибыль с скважины:</span>
                 <span className="font-semibold">₽{averageWellIncome.toFixed(0)}/день</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Месячный доход:</span>
+                <span className="text-muted-foreground">Месячная прибыль:</span>
                 <span className="font-semibold">₽{((profile?.daily_income || 0) * 30).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Годовой доход:</span>
+                <span className="text-muted-foreground">Годовая прибыль:</span>
                 <span className="font-semibold">₽{((profile?.daily_income || 0) * 365).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
