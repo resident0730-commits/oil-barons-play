@@ -304,64 +304,91 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen dashboard-light-bg">
-      {/* Header */}
-      <header className="border-b border-border/50 backdrop-blur-sm bg-background/80">
-        <div className="container mx-auto px-4 py-4">
+      {/* Elegant Header */}
+      <header className="relative border-b border-primary/20 backdrop-blur-md bg-gradient-to-r from-card/95 via-card/90 to-card/95 shadow-luxury">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5"></div>
+        <div className="container mx-auto px-6 py-6 relative z-10">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <Fuel className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold">Oil Tycoon</h1>
+            <Link to="/" className="group flex items-center space-x-3 hover-scale">
+              <div className="relative">
+                <Fuel className="h-10 w-10 text-primary drop-shadow-lg transition-transform duration-300 group-hover:rotate-12" />
+                <div className="absolute -inset-2 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div className="space-y-1">
+                <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-primary via-oil-gold to-accent bg-clip-text text-transparent">
+                  Oil Tycoon
+                </h1>
+                <p className="text-xs text-muted-foreground font-medium tracking-wide">Нефтяная Империя</p>
+              </div>
             </Link>
-            <div className="flex items-center space-x-4">
+            
+            <div className="flex items-center space-x-6">
+              {/* Balance Display */}
               <Button
-                variant="ghost"
-                size="sm"
+                variant="outline"
+                size="lg"
                 onClick={() => setIsTopUpOpen(true)}
                 aria-label="Пополнить баланс"
-                className="flex items-center space-x-2"
+                className="group relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30 hover:border-primary/50 hover:shadow-primary/25 hover:shadow-lg transition-all duration-300"
               >
-                <Wallet className="h-5 w-5 text-primary" />
-                <span className="font-semibold">₽{profile.balance.toLocaleString()}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Wallet className="h-5 w-5 text-primary mr-2 transition-transform duration-300 group-hover:scale-110" />
+                <span className="font-playfair font-bold text-lg relative z-10">₽{profile.balance.toLocaleString()}</span>
+                <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Button>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <User className="h-4 w-4" />
-                <span>{profile.nickname}</span>
+              
+              {/* User Info */}
+              <div className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
+                <div className="relative">
+                  <User className="h-5 w-5 text-primary" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-card animate-pulse"></div>
+                </div>
+                <span className="font-playfair font-medium text-foreground">{profile.nickname}</span>
               </div>
-              <Link to="/profile">
-                <Button variant="ghost" size="sm">
-                  <User className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/settings">
-                <Button variant="ghost" size="sm">
-                  <Settings className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/statistics">
-                <Button variant="ghost" size="sm">
-                  <BarChart3 className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/leaderboard">
-                <Button variant="ghost" size="sm">
-                  <Trophy className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/rules">
-                <Button variant="ghost" size="sm">
-                  <BookOpen className="h-4 w-4" />
-                </Button>
-              </Link>
-              {isAdmin && (
-                <Link to="/admin">
-                  <Button variant="ghost" size="sm" className="text-primary">
-                    <Shield className="h-4 w-4" />
+
+              {/* Navigation Icons */}
+              <div className="flex items-center space-x-2">
+                <Link to="/profile">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <User className="h-4 w-4" />
                   </Button>
                 </Link>
-              )}
-              <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4" />
-              </Button>
+                <Link to="/statistics">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <BarChart3 className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/leaderboard">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <Trophy className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/rules">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <BookOpen className="h-4 w-4" />
+                  </Button>
+                </Link>
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="ghost" size="sm" className="hover:bg-primary/10 text-primary hover-scale glow-gold">
+                      <Shield className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                )}
+                <Link to="/settings">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleSignOut}
+                  className="hover:bg-destructive/10 hover:text-destructive transition-colors duration-200 hover-scale"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
