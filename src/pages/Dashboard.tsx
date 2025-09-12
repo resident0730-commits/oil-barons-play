@@ -200,7 +200,7 @@ const Dashboard = () => {
     if (result.success) {
       toast({
         title: "Скважина улучшена!",
-                        description: "Доходность увеличена!",
+                        description: "Доходность скважин в день увеличена!",
       });
     } else {
       toast({
@@ -403,7 +403,7 @@ const Dashboard = () => {
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Доходность скважин</CardTitle>
+              <CardTitle className="text-sm font-medium">Доходность скважин в день</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -719,7 +719,7 @@ const Dashboard = () => {
 
                     <div className="bg-secondary/20 rounded-lg p-3 space-y-2">
                       <div className="flex justify-between text-sm font-semibold text-center">
-                        <span className="text-muted-foreground">Общая доходность:</span>
+                        <span className="text-muted-foreground">Общая доходность скважин в день:</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">День:</span>
