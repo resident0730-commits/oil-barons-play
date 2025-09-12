@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { hasSupabase, supabase } from "@/lib/supabase";
 
 export interface DailyStat {
   date: string;
@@ -14,35 +15,74 @@ interface TodaySnapshot {
 }
 
 export function useDailyStats(userId?: string) {
-  const [stats] = useState<DailyStat[]>([]);
-  const loading = false;
-  const error = null;
+  const [stats, setStats] = useState<DailyStat[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Generate mock data for the last 7 days
-  const mockStats = useMemo(() => {
-    const data: DailyStat[] = [];
-    const today = new Date();
-    
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      
-      data.push({
-        date: date.toISOString().slice(0, 10),
-        balance: 1000000 + Math.random() * 500000 + i * 100000,
-        income: 10000 + Math.random() * 5000 + i * 1000,
-        wells: Math.floor(3 + Math.random() * 5 + i * 0.5),
-      });
+  const fetchStats = useCallback(async () => {
+    if (!userId || !hasSupabase) {
+      setStats([]);
+      return;
     }
-    
-    return data;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const start = new Date();
+      start.setDate(start.getDate() - 6); // last 7 days including today
+      const startDate = start.toISOString().slice(0, 10);
+
+      const { data, error } = await supabase
+        .from("daily_stats")
+        .select("date,balance_end,daily_income_total,wells_count")
+        .eq("user_id", userId)
+        .gte("date", startDate)
+        .order("date", { ascending: true });
+
+      if (error) throw error;
+
+      const mapped: DailyStat[] = (data || []).map((row: any) => ({
+        date: row.date,
+        balance: Number(row.balance_end ?? 0),
+        income: Number(row.daily_income_total ?? 0),
+        wells: Number(row.wells_count ?? 0),
+      }));
+
+      setStats(mapped);
+    } catch (e: any) {
+      console.error("Failed to fetch daily stats", e);
+      setError(e?.message || "Не удалось загрузить статистику");
+    } finally {
+      setLoading(false);
+    }
   }, [userId]);
 
-  const upsertToday = async (snapshot: TodaySnapshot) => {
-    // Mock implementation - in real app would save to database
-    console.log('Recording daily stats:', snapshot);
-    return { success: true } as const;
-  };
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
-  return { stats: mockStats, loading, error, upsertToday, refresh: () => {} } as const;
+  const upsertToday = useCallback(
+    async (snapshot: TodaySnapshot) => {
+      if (!userId || !hasSupabase) return { success: false } as const;
+      try {
+        const { error } = await supabase.rpc("record_daily_stats", {
+          p_user_id: userId,
+          p_balance_end: snapshot.balance,
+          p_daily_income_total: snapshot.dailyIncome,
+          p_wells_count: snapshot.wellsCount,
+        });
+        if (error) throw error;
+        await fetchStats();
+        return { success: true } as const;
+      } catch (e) {
+        console.error("Failed to upsert daily stats", e);
+        return { success: false } as const;
+      }
+    },
+    [userId, fetchStats]
+  );
+
+  return { stats, loading, error, upsertToday, refresh: fetchStats } as const;
 }
+
