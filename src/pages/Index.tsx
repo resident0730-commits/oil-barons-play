@@ -396,7 +396,7 @@ const Index = () => {
             <Separator className="bg-primary/20" />
             
             <div className="space-y-2 text-muted-foreground">
-              <p className="font-medium">&copy; 2024 Oil Tycoon. Все права защищены.</p>
+              <p className="font-medium">&copy; 2025 Oil Tycoon. Все права защищены.</p>
               <p className="text-sm">Инвестиционная игра для развлечения и обучения финансовой грамотности.</p>
             </div>
           </div>
