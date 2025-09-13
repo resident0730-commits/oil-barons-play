@@ -67,7 +67,7 @@ export const ShopSection = ({
               const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
 
               return (
-                <Card key={wellType.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${!canAfford ? 'opacity-60' : ''}`}>
+                <Card key={wellType.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 min-h-[400px] ${!canAfford ? 'opacity-60' : ''}`}>
                   <div className={`absolute top-0 left-0 w-full h-1 ${wellType.rarity === 'mythic' ? 'gradient-luxury' : 'gradient-gold'}`}></div>
                   
                   <CardHeader className="pb-3">
@@ -88,19 +88,21 @@ export const ShopSection = ({
                     </div>
                   </CardHeader>
 
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {wellType.description}
-                    </p>
+                  <CardContent className="space-y-4 flex-1 flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground line-clamp-4">
+                        {wellType.description}
+                      </p>
 
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="text-center p-2 bg-muted/50 rounded">
-                        <p className="font-medium">{metrics.monthlyIncome.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">в месяц</p>
-                      </div>
-                      <div className="text-center p-2 bg-primary/10 rounded">
-                        <p className="font-medium text-primary">{formatProfitPercent(metrics.yearlyPercent)}</p>
-                        <p className="text-xs text-muted-foreground">ROI/год</p>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="text-center p-2 bg-muted/50 rounded">
+                          <p className="font-medium">{metrics.monthlyIncome.toLocaleString()}</p>
+                          <p className="text-xs text-muted-foreground">в месяц</p>
+                        </div>
+                        <div className="text-center p-2 bg-primary/10 rounded">
+                          <p className="font-medium text-primary">{formatProfitPercent(metrics.yearlyPercent)}</p>
+                          <p className="text-xs text-muted-foreground">ROI/год</p>
+                        </div>
                       </div>
                     </div>
 
