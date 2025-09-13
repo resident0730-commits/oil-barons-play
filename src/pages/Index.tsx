@@ -80,10 +80,10 @@ const Index = () => {
             </h1>
             <div className="relative max-w-4xl mx-auto space-y-4">
               <p className="text-2xl md:text-3xl text-foreground/90 font-medium leading-relaxed">
-                Постройте нефтяную империю мечты
+                Постройте виртуальную нефтяную империю в симуляторе
               </p>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Инвестируйте в скважины, получайте стабильную прибыль и станьте магнатом нефтяной индустрии в самой захватывающей экономической игре!
+                Изучайте экономические принципы через игру! Управляйте виртуальными скважинами, изучайте бизнес-процессы и развивайте стратегическое мышление в безопасной игровой среде.
               </p>
             </div>
           </div>
@@ -100,7 +100,7 @@ const Index = () => {
               <Link to="/auth">
                 <Button size="lg" className="gradient-luxury shadow-luxury text-xl px-12 py-6 hover-scale animate-gold-glow">
                   <Coins className="mr-3 h-6 w-6" />
-                  Начать с 1000 OC
+                  Начать игру бесплатно
                 </Button>
               </Link>
             )}
@@ -131,7 +131,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="text-3xl font-bold text-primary">{profile.balance.toLocaleString()} OC</div>
-                  <p className="text-sm text-muted-foreground">Доступно для новых инвестиций</p>
+                  <p className="text-sm text-muted-foreground">Игровая валюта для развития</p>
                 </CardContent>
               </Card>
 
@@ -145,7 +145,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="text-3xl font-bold text-accent">{profile.daily_income.toLocaleString()} OC</div>
-                  <p className="text-sm text-muted-foreground">Пассивная прибыль от скважин</p>
+                  <p className="text-sm text-muted-foreground">Игровой доход от активности</p>
                 </CardContent>
               </Card>
 
@@ -184,7 +184,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Покупайте и улучшайте скважины различных классов для максимального дохода от добычи нефти
+                  Покупайте и развивайте виртуальные скважины различных классов для изучения экономических принципов
                 </p>
               </CardContent>
             </Card>
@@ -199,7 +199,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Получайте гарантированную ежедневную прибыль от всех ваших нефтяных активов и инвестиций
+                  Изучайте основы экономики через игровые механики и получайте стабильный прогресс в симуляторе
                 </p>
               </CardContent>
             </Card>
@@ -214,7 +214,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Приглашайте друзей и зарабатывайте до 10% от всех их инвестиций в нефтяные проекты
+                  Приглашайте друзей в игру и получайте бонусы за совместную игру в образовательном симуляторе
                 </p>
               </CardContent>
             </Card>
@@ -229,7 +229,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Соревнуйтесь с другими магнатами за звание лучшего нефтяного короля в рейтингах
+                  Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах симулятора
                 </p>
               </CardContent>
             </Card>
@@ -240,12 +240,12 @@ const Index = () => {
         <div className="py-24 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-3xl"></div>
           <div className="relative max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
-                Игровая статистика в реальном времени
-              </h2>
-              <p className="text-xl text-muted-foreground">Присоединяйтесь к растущему сообществу нефтяных магнатов</p>
-            </div>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
+                  Игровая статистика в реальном времени
+                </h2>
+                <p className="text-xl text-muted-foreground">Присоединяйтесь к растущему сообществу игроков в экономический симулятор</p>
+              </div>
             
             <div className="grid md:grid-cols-3 gap-8">
               <Card className="text-center group hover-scale backdrop-blur-md bg-card/90 border-primary/30 shadow-luxury relative overflow-hidden">
@@ -258,7 +258,7 @@ const Index = () => {
                     {statistics.active_players?.toLocaleString() || '1,247'}
                   </div>
                   <p className="text-lg text-muted-foreground font-medium">Активных игроков</p>
-                  <p className="text-sm text-muted-foreground/80 mt-2">Играют прямо сейчас</p>
+                  <p className="text-sm text-muted-foreground/80 mt-2">Изучают экономику прямо сейчас</p>
                 </CardContent>
               </Card>
               
@@ -271,8 +271,8 @@ const Index = () => {
                   <div className="text-4xl font-bold text-accent mb-2 font-playfair">
                     {statistics.total_wells?.toLocaleString() || '1,057'}
                   </div>
-                  <p className="text-lg text-muted-foreground font-medium">Скважин пробурено</p>
-                  <p className="text-sm text-muted-foreground/80 mt-2">И продолжают расти</p>
+                  <p className="text-lg text-muted-foreground font-medium">Игровых скважин</p>
+                  <p className="text-sm text-muted-foreground/80 mt-2">Созданы для обучения</p>
                 </CardContent>
               </Card>
               
@@ -299,9 +299,9 @@ const Index = () => {
           <div className="relative max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
-                Топ нефтяных магнатов
+                Топ игроков симулятора
               </h2>
-              <p className="text-xl text-muted-foreground">Элита игрового сообщества - станьте одним из них</p>
+              <p className="text-xl text-muted-foreground">Лучшие стратеги игрового сообщества - станьте одним из них</p>
             </div>
             <div className="bg-card/50 backdrop-blur-md rounded-2xl p-6 shadow-luxury border border-primary/20">
               <Leaderboard maxEntries={15} />
@@ -317,10 +317,10 @@ const Index = () => {
               <div className="absolute top-0 left-0 w-full h-2 gradient-luxury"></div>
               <CardHeader className="text-center py-12">
                 <CardTitle className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
-                  Готовы покорить нефтяной мир?
+                  Готовы изучать экономику через игру?
                 </CardTitle>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                  Присоединяйтесь к тысячам успешных инвесторов. Начните строить свою нефтяную империю уже сегодня и станьте частью элиты!
+                  Присоединяйтесь к тысячам игроков в образовательном симуляторе. Изучайте основы экономики и бизнеса в безопасной игровой среде!
                 </p>
               </CardHeader>
               <CardContent className="space-y-8 pb-12">
@@ -331,8 +331,8 @@ const Index = () => {
                       <Coins className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-primary">Стартовый капитал</div>
-                      <div className="text-sm text-muted-foreground">1000 OC для начала</div>
+                      <div className="text-lg font-bold text-primary">Стартовые ресурсы</div>
+                      <div className="text-sm text-muted-foreground">1000 игровых монет</div>
                     </div>
                   </div>
                   <div className="flex flex-col items-center space-y-3 p-4 rounded-xl bg-accent/5">
@@ -340,8 +340,8 @@ const Index = () => {
                       <Target className="h-8 w-8 text-accent" />
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-accent">Ежедневный доход</div>
-                      <div className="text-sm text-muted-foreground">Стабильная прибыль</div>
+                      <div className="text-lg font-bold text-accent">Обучение через игру</div>
+                      <div className="text-sm text-muted-foreground">Изучайте экономику</div>
                     </div>
                   </div>
                   <div className="flex flex-col items-center space-y-3 p-4 rounded-xl bg-primary/5">
@@ -349,15 +349,15 @@ const Index = () => {
                       <Award className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-primary">Бонусы</div>
-                      <div className="text-sm text-muted-foreground">За активность и достижения</div>
+                      <div className="text-lg font-bold text-primary">Игровые награды</div>
+                      <div className="text-sm text-muted-foreground">За активность в симуляторе</div>
                     </div>
                   </div>
                 </div>
                 <Link to={user ? "/dashboard" : "/auth"} className="block">
                   <Button size="lg" className="gradient-luxury shadow-luxury w-full md:w-auto text-xl px-16 py-6 hover-scale animate-gold-glow">
                     <Zap className="mr-3 h-6 w-6" />
-                    {user ? "Войти в империю" : "Создать империю сейчас"}
+                    {user ? "Продолжить игру" : "Начать обучение игрой"}
                   </Button>
                 </Link>
               </CardContent>
@@ -397,7 +397,7 @@ const Index = () => {
             
             <div className="space-y-2 text-muted-foreground">
               <p className="font-medium">&copy; 2025 Oil Tycoon. Все права защищены.</p>
-              <p className="text-sm">Инвестиционная игра для развлечения и обучения финансовой грамотности.</p>
+              <p className="text-sm">Образовательный экономический симулятор для изучения основ бизнеса. Возрастное ограничение: 18+</p>
             </div>
           </div>
         </div>
