@@ -13,6 +13,7 @@ import { AdminWellManager } from '@/components/admin/AdminWellManager';
 import { MoneyWithdrawal } from '@/components/admin/MoneyWithdrawal';
 import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
 import { TransferHistory } from '@/components/admin/TransferHistory';
+import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -84,6 +85,12 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Управление скважинами</h2>
             <AdminWellManager />
+          </div>
+
+          {/* Withdrawal Processing */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Обработка выводов</h2>
+            <WithdrawalProcessor />
           </div>
 
           {/* Transfer History */}

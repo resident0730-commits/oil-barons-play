@@ -21,6 +21,7 @@ interface Transfer {
   amount: number;
   description: string;
   transfer_type: string;
+  status?: string;
   created_at: string;
   from_nickname?: string;
   to_nickname?: string;
@@ -95,7 +96,15 @@ export function TransferHistory() {
 
   const getTransferType = (transfer: Transfer) => {
     if (transfer.transfer_type === 'withdrawal') {
-      return { label: 'Вывод', variant: 'destructive' as const };
+      if (transfer.status === 'completed') {
+        return { label: 'Вывод выполнен', variant: 'default' as const };
+      } else if (transfer.status === 'rejected') {
+        return { label: 'Вывод отклонен', variant: 'destructive' as const };
+      }
+      return { label: 'Заявка на вывод', variant: 'outline' as const };
+    }
+    if (transfer.description?.includes('✅ Выполнен вывод')) {
+      return { label: '✅ Реальный перевод', variant: 'default' as const };
     }
     if (transfer.from_user_id === user?.id && transfer.to_user_id === user?.id) {
       return { label: 'Самоперевод', variant: 'secondary' as const };

@@ -157,8 +157,10 @@ export type Database = {
           description: string | null
           from_user_id: string
           id: string
+          status: string
           to_user_id: string
           transfer_type: string
+          withdrawal_details: Json | null
         }
         Insert: {
           amount: number
@@ -167,8 +169,10 @@ export type Database = {
           description?: string | null
           from_user_id: string
           id?: string
+          status?: string
           to_user_id: string
           transfer_type?: string
+          withdrawal_details?: Json | null
         }
         Update: {
           amount?: number
@@ -177,8 +181,10 @@ export type Database = {
           description?: string | null
           from_user_id?: string
           id?: string
+          status?: string
           to_user_id?: string
           transfer_type?: string
+          withdrawal_details?: Json | null
         }
         Relationships: []
       }
@@ -474,6 +480,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      process_withdrawal: {
+        Args: { p_admin_id?: string; p_status: string; p_transfer_id: string }
         Returns: boolean
       }
       record_daily_stats: {

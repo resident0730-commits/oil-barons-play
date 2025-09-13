@@ -79,6 +79,12 @@ export function MoneyWithdrawal() {
           amount: withdrawAmount,
           description: `Вывод средств (${method}): ${details}${description ? ` - ${description}` : ''}`,
           transfer_type: 'withdrawal',
+          status: 'pending',
+          withdrawal_details: {
+            method: method,
+            details: details,
+            description: description
+          },
           created_by: user.id
         });
 
