@@ -87,7 +87,7 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                       </Link>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Реферралы</TooltipContent>
+                  <TooltipContent>Рефералы</TooltipContent>
                 </Tooltip>
 
                 <Tooltip>
