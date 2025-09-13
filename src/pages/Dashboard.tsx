@@ -348,7 +348,7 @@ const Dashboard = () => {
           <OverviewSection 
             profile={profile} 
             wells={wells} 
-            playerRank={getPlayerRank(profile.user_id)} 
+            playerRank={getPlayerRank(profile.nickname)} 
           />
         )}
 

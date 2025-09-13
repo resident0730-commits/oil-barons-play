@@ -136,29 +136,29 @@ export default function Rules() {
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Badge variant="secondary">10%</Badge>
-                    <span>От всех доходов рефералов навсегда</span>
+                    <span>От всех доходов рефферралов навсегда</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Badge variant="outline">5 рефералов</Badge>
+                    <Badge variant="outline">5 рефферралов</Badge>
                     <span>Бесплатная Starter Well</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Badge variant="outline">15 рефералов</Badge>
+                    <Badge variant="outline">15 рефферралов</Badge>
                     <span>Turbo Boost на 30 дней</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Badge variant="outline">50 рефералов</Badge>
+                    <Badge variant="outline">50 рефферралов</Badge>
                     <span>Premium Well бесплатно</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Badge variant="outline">100 рефералов</Badge>
+                    <Badge variant="outline">100 рефферралов</Badge>
                     <span>VIP статус с особыми привилегиями</span>
                   </li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">Для реферала (кого пригласили):</h4>
+                <h4 className="font-semibold mb-3">Для реферрала (кого пригласили):</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Badge variant="secondary">+50%</Badge>
@@ -179,7 +179,7 @@ export default function Rules() {
                     📋 Как использовать код?
                   </h5>
                   <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                    Введите реферальный код друга в разделе "Рефералы" в игре
+                    Введите реферральный код друга в разделе "Рефферралы" в игре
                   </p>
                 </div>
               </div>
@@ -267,11 +267,11 @@ export default function Rules() {
                 </h4>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Наставник (10 рефералов)</span>
+                    <span className="text-sm">Наставник (10 рефферралов)</span>
                     <Badge variant="outline">+25,000 OC</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Амбассадор (100 рефералов)</span>
+                    <span className="text-sm">Амбассадор (100 рефферралов)</span>
                     <Badge variant="outline">Статус +10%</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">

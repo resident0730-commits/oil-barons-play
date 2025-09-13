@@ -134,7 +134,7 @@ export default function Achievements() {
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Рефералы</p>
+                      <p>Рефферралы</p>
                     </TooltipContent>
                   </Tooltip>
 

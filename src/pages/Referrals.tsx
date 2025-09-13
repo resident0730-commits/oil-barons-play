@@ -134,7 +134,7 @@ export default function Referrals() {
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Рефералы</p>
+                      <p>Рефферралы</p>
                     </TooltipContent>
                   </Tooltip>
 

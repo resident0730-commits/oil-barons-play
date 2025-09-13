@@ -211,7 +211,7 @@ export const ReferralSystem = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Активных рефералов</CardTitle>
+            <CardTitle className="text-sm font-medium">Активных рефферралов</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -224,7 +224,7 @@ export const ReferralSystem = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Ваши рефералы</CardTitle>
+          <CardTitle>Ваши рефферралы</CardTitle>
         </CardHeader>
         <CardContent>
           {referrals.length === 0 ? (
@@ -236,7 +236,7 @@ export const ReferralSystem = () => {
               {referrals.map((referral) => (
                 <div key={referral.id} className="flex justify-between items-center p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">Реферал #{referral.id.slice(-8)}</p>
+                    <p className="font-medium">Реферрал #{referral.id.slice(-8)}</p>
                     <p className="text-sm text-muted-foreground">
                       Присоединился {new Date(referral.created_at).toLocaleDateString()}
                     </p>
@@ -261,19 +261,19 @@ export const ReferralSystem = () => {
         <CardContent>
           <div className="space-y-3">
             <div className="flex justify-between p-2 border rounded">
-              <span>5 рефералов</span>
+              <span>5 рефферралов</span>
               <Badge>Бесплатная Starter Well</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
-              <span>15 рефералов</span>
+              <span>15 рефферралов</span>
               <Badge>Turbo Boost на 30 дней</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
-              <span>50 рефералов</span>
+              <span>50 рефферралов</span>
               <Badge>Premium Well бесплатно</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
-              <span>100 рефералов</span>
+              <span>100 рефферралов</span>
               <Badge variant="secondary">VIP статус</Badge>
             </div>
           </div>
