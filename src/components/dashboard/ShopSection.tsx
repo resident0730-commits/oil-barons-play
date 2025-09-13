@@ -140,8 +140,15 @@ export const ShopSection = ({
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="p-3 bg-primary/10 rounded-lg">
-                          <Package className="h-8 w-8 text-primary" />
+                        <div className="relative">
+                          <img 
+                            src={wellPackage.image} 
+                            alt={wellPackage.name}
+                            className="w-20 h-20 rounded-lg object-cover border-2 border-primary/20"
+                          />
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs">
+                            {wellPackage.icon}
+                          </div>
                         </div>
                         <div>
                           <CardTitle className="text-xl">{wellPackage.name}</CardTitle>
