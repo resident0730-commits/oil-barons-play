@@ -328,7 +328,7 @@ export function useGameData() {
     const offlineIncome = Math.floor((profileData.daily_income / 24) * offlineHours);
     
     if (offlineIncome > 0) {
-      console.log(`Offline for ${offlineHours.toFixed(1)} hours, adding ${offlineIncome.toLocaleString()} OC`);
+      // Offline income calculated successfully
       
       // Add offline income to balance
       const newBalance = profileData.balance + offlineIncome;
@@ -611,13 +611,11 @@ export function useGameData() {
       if (balanceError) throw balanceError;
 
       // Reload data and recalculate daily income
-      console.log('Booster purchased, reloading data...');
       await loadGameData();
       
       // Небольшая задержка, чтобы убедиться что данные загрузились
       setTimeout(async () => {
         await recalculateDailyIncome();
-        console.log('Daily income recalculated');
       }, 100);
 
       return { success: true };
@@ -631,44 +629,35 @@ export function useGameData() {
     if (!userBoosters.length) return 1;
 
     let multiplier = 1;
-    console.log('Calculating booster multiplier for boosters:', userBoosters);
     
     userBoosters.forEach(booster => {
       // Check if booster is still active
       const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
-      console.log(`Booster ${booster.booster_type} level ${booster.level} active:`, isActive);
       
       if (isActive) {
         switch (booster.booster_type) {
           case 'worker_crew':
             const workerBonus = booster.level * 0.10;
             multiplier += workerBonus; // 10% per level
-            console.log(`Worker crew bonus: +${workerBonus * 100}%`);
             break;
           case 'geological_survey':
             const geoBonus = booster.level * 0.15;
             multiplier += geoBonus; // 15% per level
-            console.log(`Geological survey bonus: +${geoBonus * 100}%`);
             break;
           case 'advanced_equipment':
             const equipmentBonus = booster.level * 0.25;
             multiplier += equipmentBonus; // 25% per level
-            console.log(`Advanced equipment bonus: +${equipmentBonus * 100}%`);
             break;
           case 'turbo_boost':
             multiplier += 0.50; // 50% flat bonus
-            console.log('Turbo boost bonus: +50%');
             break;
           case 'automation':
             const autoBonus = booster.level * 0.20;
             multiplier += autoBonus; // 20% per level
-            console.log(`Automation bonus: +${autoBonus * 100}%`);
             break;
         }
       }
     });
-
-    console.log('Final multiplier:', multiplier);
     return multiplier;
   };
 

@@ -60,7 +60,7 @@ export const useLeaderboard = () => {
         schema: 'public',
         table: 'profiles'
       }, () => {
-        console.log('Profile updated, refreshing leaderboard...');
+        // Profile updated, refreshing leaderboard
         // Debounce updates to avoid too frequent refreshes
         setTimeout(fetchLeaderboard, 1000);
       })
