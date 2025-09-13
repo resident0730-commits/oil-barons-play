@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  CreditCard, 
-  DollarSign,
-  Eye
-} from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle, XCircle, Clock, CreditCard } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -34,38 +26,40 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-interface WithdrawalRequest {
+interface Withdrawal {
   id: string;
   from_user_id: string;
   amount: number;
   description: string;
+  created_at: string;
   status: string;
   withdrawal_details: any;
-  created_at: string;
   from_nickname?: string;
 }
 
 export function WithdrawalProcessor() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [processing, setProcessing] = useState<string | null>(null);
-  const [selectedWithdrawal, setSelectedWithdrawal] = useState<WithdrawalRequest | null>(null);
+  const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [processLoading, setProcessLoading] = useState<string | null>(null);
+  const [selectedWithdrawal, setSelectedWithdrawal] = useState<Withdrawal | null>(null);
   const [transferDetails, setTransferDetails] = useState('');
 
   const loadWithdrawals = async () => {
+    if (!user) return;
+
+    setLoading(true);
     try {
       const { data: withdrawalsData, error } = await supabase
         .from('money_transfers')
         .select('*')
         .eq('transfer_type', 'withdrawal')
-        .order('created_at', { ascending: false })
-        .limit(50);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Get profile names for each withdrawal
+      // Get user nicknames
       const withdrawalsWithNames = await Promise.all(
         (withdrawalsData || []).map(async (withdrawal) => {
           const { data: profile } = await supabase
@@ -91,49 +85,45 @@ export function WithdrawalProcessor() {
 
   useEffect(() => {
     loadWithdrawals();
-  }, []);
+  }, [user]);
 
-  const processWithdrawal = async (transferId: string, status: 'completed' | 'rejected') => {
+  const processWithdrawal = async (withdrawalId: string, status: 'completed' | 'rejected') => {
     if (!user) return;
 
-    setProcessing(transferId);
+    setProcessLoading(withdrawalId);
     try {
-      // Process the withdrawal
       const { error } = await supabase.rpc('process_withdrawal', {
-        p_transfer_id: transferId,
+        p_transfer_id: withdrawalId,
         p_status: status,
         p_admin_id: user.id
       });
 
       if (error) throw error;
 
-      // If completing withdrawal, simulate the actual transfer
+      // If completed, create a fake transfer record to show in history
       if (status === 'completed' && selectedWithdrawal) {
-        // Add a "completed" record to show the actual transfer happened
-        const { error: completeError } = await supabase
+        const withdrawalDetails = selectedWithdrawal.withdrawal_details && typeof selectedWithdrawal.withdrawal_details === 'object' ? selectedWithdrawal.withdrawal_details : {};
+        const { error: fakeTransferError } = await supabase
           .from('money_transfers')
           .insert({
-            from_user_id: user.id, // Admin as sender
-            to_user_id: selectedWithdrawal.from_user_id,
+            from_user_id: user.id, // Admin
+            to_user_id: selectedWithdrawal.from_user_id, // User who requested withdrawal
             amount: selectedWithdrawal.amount,
-            description: `✅ Выполнен вывод на ${selectedWithdrawal.withdrawal_details?.method || 'неизвестный способ'}: ${selectedWithdrawal.withdrawal_details?.details || 'реквизиты не указаны'}${transferDetails ? ` - ${transferDetails}` : ''}`,
+            description: `Обработка вывода: ${transferDetails || withdrawalDetails.details || 'Без деталей'}`,
             transfer_type: 'admin_transfer',
-            status: 'completed',
-            created_by: user.id
+            created_by: user.id,
+            status: 'completed'
           });
 
-        if (completeError) throw completeError;
+        if (fakeTransferError) console.error('Error creating fake transfer:', fakeTransferError);
       }
 
-      await loadWithdrawals();
-
       toast({
-        title: status === 'completed' ? "Вывод выполнен" : "Вывод отклонен",
-        description: status === 'completed' 
-          ? `Вывод ${selectedWithdrawal?.amount.toLocaleString()} ₽ успешно выполнен`
-          : "Заявка на вывод отклонена",
+        title: status === 'completed' ? "Вывод обработан" : "Вывод отклонен",
+        description: `Заявка на вывод ${status === 'completed' ? 'успешно обработана' : 'отклонена'}`,
       });
 
+      await loadWithdrawals();
       setSelectedWithdrawal(null);
       setTransferDetails('');
     } catch (error: any) {
@@ -144,176 +134,145 @@ export function WithdrawalProcessor() {
         variant: "destructive",
       });
     } finally {
-      setProcessing(null);
+      setProcessLoading(null);
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case 'rejected':
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      default:
+        return <Clock className="h-4 w-4 text-yellow-500" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'pending':
-        return <Badge variant="outline" className="flex items-center gap-1">
-          <Clock className="h-3 w-3" />
-          Ожидает
-        </Badge>;
       case 'completed':
-        return <Badge variant="default" className="flex items-center gap-1">
-          <CheckCircle className="h-3 w-3" />
-          Выполнен
-        </Badge>;
+        return <Badge variant="default" className="bg-green-500">Обработан</Badge>;
       case 'rejected':
-        return <Badge variant="destructive" className="flex items-center gap-1">
-          <XCircle className="h-3 w-3" />
-          Отклонен
-        </Badge>;
+        return <Badge variant="destructive">Отклонен</Badge>;
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return <Badge variant="secondary">Ожидает</Badge>;
     }
   };
 
-  if (loading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5" />
-            Обработка выводов
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5" />
-            Заявки на вывод ({withdrawals.filter(w => w.status === 'pending').length})
-          </CardTitle>
-          <Button variant="outline" size="sm" onClick={loadWithdrawals}>
-            Обновить
-          </Button>
-        </CardHeader>
-        <CardContent>
-          {withdrawals.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
-              Нет заявок на вывод
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Игрок</TableHead>
-                    <TableHead>Сумма</TableHead>
-                    <TableHead>Способ</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead>Дата</TableHead>
-                    <TableHead>Действия</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {withdrawals.map((withdrawal) => (
-                    <TableRow key={withdrawal.id}>
-                      <TableCell className="font-medium">
-                        {withdrawal.from_nickname}
-                      </TableCell>
-                      <TableCell>
-                        {withdrawal.amount.toLocaleString()} ₽
-                      </TableCell>
-                      <TableCell>
-                        {withdrawal.withdrawal_details?.method || 'Не указан'}
-                      </TableCell>
-                      <TableCell>
-                        {getStatusBadge(withdrawal.status)}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(withdrawal.created_at).toLocaleString('ru-RU')}
-                      </TableCell>
-                      <TableCell>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="flex items-center gap-2">
+          <CreditCard className="h-5 w-5" />
+          Обработка выводов ({withdrawals.filter(w => w.status === 'pending').length})
+        </CardTitle>
+        <Button variant="outline" size="sm" onClick={loadWithdrawals} disabled={loading}>
+          {loading ? "Загрузка..." : "Обновить"}
+        </Button>
+      </CardHeader>
+      <CardContent>
+        {withdrawals.length === 0 ? (
+          <p className="text-muted-foreground text-center py-8">
+            Нет заявок на вывод
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-12"></TableHead>
+                  <TableHead>Статус</TableHead>
+                  <TableHead>Игрок</TableHead>
+                  <TableHead>Сумма</TableHead>
+                  <TableHead>Способ</TableHead>
+                  <TableHead>Реквизиты</TableHead>
+                  <TableHead>Дата</TableHead>
+                  <TableHead>Действия</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {withdrawals.map((withdrawal) => (
+                  <TableRow key={withdrawal.id}>
+                    <TableCell>
+                      {getStatusIcon(withdrawal.status)}
+                    </TableCell>
+                    <TableCell>
+                      {getStatusBadge(withdrawal.status)}
+                    </TableCell>
+                    <TableCell>
+                      {withdrawal.from_nickname || 'Неизвестный'}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {withdrawal.amount.toLocaleString()} ₽
+                    </TableCell>
+                    <TableCell>
+                      {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.method || 'Не указан'}
+                    </TableCell>
+                    <TableCell className="max-w-xs truncate">
+                      {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.details || 'Не указаны'}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(withdrawal.created_at).toLocaleString('ru-RU')}
+                    </TableCell>
+                    <TableCell>
+                      {withdrawal.status === 'pending' && (
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button 
-                              variant="outline" 
-                              size="sm"
+                              size="sm" 
                               onClick={() => setSelectedWithdrawal(withdrawal)}
-                              className="flex items-center gap-1"
                             >
-                              <Eye className="h-3 w-3" />
-                              Детали
+                              Обработать
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="sm:max-w-[500px]">
+                          <DialogContent>
                             <DialogHeader>
-                              <DialogTitle className="flex items-center gap-2">
-                                <DollarSign className="h-5 w-5" />
-                                Обработка вывода
-                              </DialogTitle>
+                              <DialogTitle>Обработка вывода</DialogTitle>
                               <DialogDescription>
-                                Заявка от {withdrawal.from_nickname} на сумму {withdrawal.amount.toLocaleString()} ₽
+                                Игрок: {withdrawal.from_nickname}<br/>
+                                Сумма: {withdrawal.amount.toLocaleString()} ₽<br/>
+                                Способ: {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.method}<br/>
+                                Реквизиты: {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.details}
                               </DialogDescription>
                             </DialogHeader>
                             
-                            <div className="space-y-4">
-                              <div className="bg-secondary/20 p-4 rounded-lg space-y-2">
-                                <div><strong>Способ:</strong> {withdrawal.withdrawal_details?.method || 'Не указан'}</div>
-                                <div><strong>Реквизиты:</strong> {withdrawal.withdrawal_details?.details || 'Не указаны'}</div>
-                                {withdrawal.withdrawal_details?.description && (
-                                  <div><strong>Комментарий:</strong> {withdrawal.withdrawal_details.description}</div>
-                                )}
-                                <div><strong>Статус:</strong> {getStatusBadge(withdrawal.status)}</div>
-                              </div>
-
-                              {withdrawal.status === 'pending' && (
-                                <>
-                                  <div>
-                                    <Label htmlFor="transferDetails">Детали перевода (необязательно)</Label>
-                                    <Textarea
-                                      id="transferDetails"
-                                      placeholder="Номер транзакции, время выполнения и т.д."
-                                      value={transferDetails}
-                                      onChange={(e) => setTransferDetails(e.target.value)}
-                                      rows={3}
-                                    />
-                                  </div>
-                                </>
-                              )}
+                            <div>
+                              <Label htmlFor="transfer-details">Детали перевода (для истории)</Label>
+                              <Input
+                                id="transfer-details"
+                                placeholder="Например: Переведено на карту *1234"
+                                value={transferDetails}
+                                onChange={(e) => setTransferDetails(e.target.value)}
+                              />
                             </div>
 
-                            {withdrawal.status === 'pending' && (
-                              <DialogFooter className="gap-2">
-                                <Button
-                                  variant="destructive"
-                                  onClick={() => processWithdrawal(withdrawal.id, 'rejected')}
-                                  disabled={processing === withdrawal.id}
-                                >
-                                  Отклонить
-                                </Button>
-                                <Button
-                                  onClick={() => processWithdrawal(withdrawal.id, 'completed')}
-                                  disabled={processing === withdrawal.id}
-                                >
-                                  {processing === withdrawal.id ? "Обработка..." : "Выполнить"}
-                                </Button>
-                              </DialogFooter>
-                            )}
+                            <DialogFooter className="flex gap-2">
+                              <Button
+                                variant="destructive"
+                                onClick={() => processWithdrawal(withdrawal.id, 'rejected')}
+                                disabled={processLoading === withdrawal.id}
+                              >
+                                Отклонить
+                              </Button>
+                              <Button
+                                onClick={() => processWithdrawal(withdrawal.id, 'completed')}
+                                disabled={processLoading === withdrawal.id}
+                              >
+                                {processLoading === withdrawal.id ? "Обработка..." : "Одобрить"}
+                              </Button>
+                            </DialogFooter>
                           </DialogContent>
                         </Dialog>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

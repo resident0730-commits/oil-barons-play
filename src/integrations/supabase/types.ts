@@ -160,6 +160,7 @@ export type Database = {
           status: string
           to_user_id: string
           transfer_type: string
+          updated_at: string | null
           withdrawal_details: Json | null
         }
         Insert: {
@@ -172,6 +173,7 @@ export type Database = {
           status?: string
           to_user_id: string
           transfer_type?: string
+          updated_at?: string | null
           withdrawal_details?: Json | null
         }
         Update: {
@@ -184,6 +186,7 @@ export type Database = {
           status?: string
           to_user_id?: string
           transfer_type?: string
+          updated_at?: string | null
           withdrawal_details?: Json | null
         }
         Relationships: []

@@ -100,11 +100,9 @@ export function TransferHistory() {
         return { label: 'Вывод выполнен', variant: 'default' as const };
       } else if (transfer.status === 'rejected') {
         return { label: 'Вывод отклонен', variant: 'destructive' as const };
+      } else {
+        return { label: 'Заявка на вывод', variant: 'secondary' as const };
       }
-      return { label: 'Заявка на вывод', variant: 'outline' as const };
-    }
-    if (transfer.description?.includes('✅ Выполнен вывод')) {
-      return { label: '✅ Реальный перевод', variant: 'default' as const };
     }
     if (transfer.from_user_id === user?.id && transfer.to_user_id === user?.id) {
       return { label: 'Самоперевод', variant: 'secondary' as const };
