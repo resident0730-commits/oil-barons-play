@@ -228,14 +228,7 @@ export default function Achievements() {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Достижения</h1>
-          <p className="text-muted-foreground">
-            Выполняйте задания и получайте награды
-          </p>
-        </div>
-        
+      <div className="container mx-auto px-4 py-8">        
         <AchievementsSystem />
       </div>
     </div>
