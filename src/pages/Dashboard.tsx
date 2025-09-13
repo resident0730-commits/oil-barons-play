@@ -114,6 +114,29 @@ const Dashboard = () => {
     return `${Math.round(percent)}%`;
   };
 
+  // Check for offline income and show notification
+  useEffect(() => {
+    if (!profile || !profile.last_login) return;
+    
+    const now = new Date();
+    const lastLogin = new Date(profile.last_login);
+    const offlineTimeMs = now.getTime() - lastLogin.getTime();
+    
+    // If user was offline for more than 1 minute and has daily income
+    if (offlineTimeMs > 60000 && profile.daily_income > 0) {
+      const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24);
+      const offlineIncome = Math.floor((profile.daily_income / 24) * offlineHours);
+      
+      if (offlineIncome > 0) {
+        toast({
+          title: "Добро пожаловать!",
+          description: `Вы получили ${offlineIncome.toLocaleString()} OC за ${offlineHours.toFixed(1)} часов оффлайн дохода!`,
+          duration: 5000,
+        });
+      }
+    }
+  }, [profile?.last_login, toast]);
+
   // Зачисление тестового баланса (только один раз)
   useEffect(() => {
     if (profile && profile.balance < 5000000) {

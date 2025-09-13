@@ -44,6 +44,7 @@ export interface UserProfile {
   nickname: string;
   balance: number;
   daily_income: number;
+  last_login: string;
 }
 
 export interface WellPackage {
@@ -271,6 +272,17 @@ export function useGameData() {
         .maybeSingle();
 
       if (profileData) {
+        // Calculate and add offline income
+        if (profileData.last_login && profileData.daily_income > 0) {
+          await calculateOfflineIncome(profileData);
+        }
+
+        // Update last_login to current time
+        await supabase
+          .from('profiles')
+          .update({ last_login: new Date().toISOString() })
+          .eq('user_id', user.id);
+
         setProfile(profileData);
       }
 
@@ -297,6 +309,39 @@ export function useGameData() {
       console.error('Error loading game data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const calculateOfflineIncome = async (profileData: UserProfile) => {
+    if (!user) return;
+
+    const now = new Date();
+    const lastLogin = new Date(profileData.last_login);
+    const offlineTimeMs = now.getTime() - lastLogin.getTime();
+    
+    // Minimum 1 minute offline to get income
+    if (offlineTimeMs < 60000) return;
+    
+    const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24); // Max 24 hours
+    const offlineIncome = Math.floor((profileData.daily_income / 24) * offlineHours);
+    
+    if (offlineIncome > 0) {
+      console.log(`Offline for ${offlineHours.toFixed(1)} hours, adding ${offlineIncome.toLocaleString()} OC`);
+      
+      // Add offline income to balance
+      const newBalance = profileData.balance + offlineIncome;
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+        
+      if (!error) {
+        setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+        
+        // You can add a toast notification here if you have access to toast
+        console.log(`Welcome back! You earned ${offlineIncome.toLocaleString()} OC while offline (${offlineHours.toFixed(1)} hours)`);
+      }
     }
   };
 

@@ -115,6 +115,7 @@ export type Database = {
           id: string
           is_banned: boolean
           last_bonus_claim: string | null
+          last_login: string | null
           nickname: string
           updated_at: string
           user_id: string
@@ -129,6 +130,7 @@ export type Database = {
           id?: string
           is_banned?: boolean
           last_bonus_claim?: string | null
+          last_login?: string | null
           nickname: string
           updated_at?: string
           user_id: string
@@ -143,6 +145,7 @@ export type Database = {
           id?: string
           is_banned?: boolean
           last_bonus_claim?: string | null
+          last_login?: string | null
           nickname?: string
           updated_at?: string
           user_id?: string
