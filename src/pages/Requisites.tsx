@@ -2,16 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Fuel, ArrowLeft, CreditCard, Copy, Building2 } from "lucide-react";
+import { Fuel, ArrowLeft, CreditCard, Copy, Building2, Home, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Requisites = () => {
   const { toast } = useToast();
 
   const companyInfo = {
-    name: "ИП Индивидуальный предприниматель",
+    name: "Oil Tycoon",
     inn: "891151084170",
     ogrnip: "323890100010935",
+    email: "support@oiltycoon.ru",
+    address: "г. Москва, ул. Тверская, д. 15, офис 301",
   };
 
   const copyToClipboard = (text: string, label: string) => {
@@ -46,10 +48,16 @@ const Requisites = () => {
       <header className="border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/settings" className="flex items-center text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Назад к настройкам
-            </Link>
+            <div className="flex items-center space-x-4">
+              <Link to="/settings" className="flex items-center text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Настройки
+              </Link>
+              <Link to="/" className="flex items-center text-muted-foreground hover:text-foreground">
+                <Home className="h-4 w-4 mr-2" />
+                Главная
+              </Link>
+            </div>
             <div className="flex items-center space-x-2">
               <Fuel className="h-6 w-6 text-primary" />
               <span className="font-semibold">Oil Tycoon</span>
@@ -78,15 +86,24 @@ const Requisites = () => {
               <RequisiteRow label="Наименование" value={companyInfo.name} />
               <RequisiteRow label="ИНН" value={companyInfo.inn} />
               <RequisiteRow label="ОГРНИП" value={companyInfo.ogrnip} />
+              <RequisiteRow label="Email для связи" value={companyInfo.email} />
+              <RequisiteRow label="Адрес" value={companyInfo.address} />
             </CardContent>
           </Card>
 
-          <div className="text-center">
-            <Link to="/settings">
-              <Button variant="outline">
-                Вернуться к настройкам
-              </Button>
-            </Link>
+          <div className="text-center space-y-2">
+            <div className="flex justify-center space-x-3">
+              <Link to="/settings">
+                <Button variant="outline">
+                  Вернуться к настройкам
+                </Button>
+              </Link>
+              <Link to="/">
+                <Button>
+                  На главную
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </main>
