@@ -1,38 +1,13 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   Fuel, 
-  TrendingUp, 
-  Wallet, 
-  ShoppingCart, 
-  Settings,
-  LogOut,
-  Plus,
   BarChart3,
-  User,
+  ShoppingCart, 
   Zap,
-  Factory,
-  Gem,
-  CreditCard,
-  Shield,
-  Trophy,
-  BookOpen,
-  MessageSquare,
-  Sparkles,
-  Pickaxe,
-  Store,
-  Rocket,
-  Users,
-  Award
+  Sparkles
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -50,8 +25,6 @@ import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
 
 // Import hero images
-import myWellsHero from '@/assets/sections/my-wells-hero.jpg';
-import shopHero from '@/assets/sections/shop-hero.jpg';
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
 
 const Dashboard = () => {
@@ -150,11 +123,9 @@ const Dashboard = () => {
   // Проверка достижений при изменении профиля, скважин или бустеров
   useEffect(() => {
     if (profile && wells.length >= 0 && boosters) {
-      // Добавляем небольшую задержку для корректного обновления данных
       const timeoutId = setTimeout(() => {
         checkAchievements();
       }, 1000);
-
       return () => clearTimeout(timeoutId);
     }
   }, [profile?.balance, wells.length, boosters?.length, checkAchievements]);
@@ -162,7 +133,6 @@ const Dashboard = () => {
   // Инициализация стартового баланса для новых игроков
   useEffect(() => {
     if (profile && profile.balance === 0 && wells.length === 0) {
-      // Даем стартовый баланс только новым игрокам без скважин
       addIncome(1000);
     }
   }, [profile, wells]);
@@ -179,13 +149,11 @@ const Dashboard = () => {
     if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      // Начисляем доход каждые 10 секунд с учетом реферального бонуса
       const income = Math.round((profile.daily_income / 8640) * referralMultiplier);
       if (income > 0) {
         const earnedAmount = income - Math.round(profile.daily_income / 8640);
         addIncome(income);
         
-        // Обновляем реферальные начисления, если есть бонус
         if (earnedAmount > 0) {
           updateReferralEarnings(earnedAmount);
         }
@@ -197,7 +165,6 @@ const Dashboard = () => {
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
     if (profile.balance < wellType.price) {
-      // Если недостаточно средств, открываем диалог пополнения
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
@@ -254,7 +221,6 @@ const Dashboard = () => {
     const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * (well?.level || 1));
     
     if (profile.balance < upgradeCost) {
-      // Если недостаточно средств, открываем диалог пополнения
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
@@ -292,14 +258,13 @@ const Dashboard = () => {
         return;
       }
       rubAmount = customAmount;
-      ocAmount = customAmount; // 1 рубль = 1 OC
+      ocAmount = customAmount;
     } else {
       toast({ variant: "destructive", title: "Укажите сумму", description: "Выберите пакет или введите сумму" });
       return;
     }
 
     try {
-      // Создаем платеж через YooKassa
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
           amount: rubAmount,
@@ -332,6 +297,17 @@ const Dashboard = () => {
   };
 
   if (loading || !user || !profile) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Fuel className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
+          <p>Загрузка игры...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="min-h-screen dashboard-light-bg">
       <DashboardHeader 
         profile={profile} 
@@ -372,7 +348,7 @@ const Dashboard = () => {
           <OverviewSection 
             profile={profile} 
             wells={wells} 
-            playerRank={getPlayerRank(profile.balance)} 
+            playerRank={getPlayerRank(profile.user_id)} 
           />
         )}
 
@@ -402,18 +378,18 @@ const Dashboard = () => {
         )}
 
         {activeSection === 'boosters' && (
-          <GameSection
-            title="Бустеры и улучшения"
-            description="Временные и постоянные бонусы"
-            image={boostersHero}
-            icon={<Sparkles className="h-6 w-6" />}
-          >
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold heading-contrast">Бустеры и улучшения</h2>
+                <p className="text-muted-foreground subtitle-contrast">Временные и постоянные бонусы для увеличения дохода</p>
+              </div>
+            </div>
             <BoosterShop />
-          </GameSection>
+          </div>
         )}
       </main>
 
-      {/* Top Up Modal */}
       <TopUpModal
         isOpen={isTopUpOpen}
         onClose={() => setIsTopUpOpen(false)}
@@ -421,6 +397,7 @@ const Dashboard = () => {
         topUpLoading={false}
       />
     </div>
+  );
 };
 
 export default Dashboard;
