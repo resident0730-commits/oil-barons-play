@@ -58,6 +58,62 @@ const Dashboard = () => {
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters'>('overview');
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+
+  // Пакеты пополнения с бонусами
+  const topUpPackages = [
+    {
+      id: 'starter',
+      name: 'Стартовый',
+      rubAmount: 500,
+      baseOC: 500,
+      bonusOC: 0,
+      totalOC: 500,
+      badge: null,
+      popular: false
+    },
+    {
+      id: 'basic',
+      name: 'Базовый',
+      rubAmount: 1000,
+      baseOC: 1000,
+      bonusOC: 200,
+      totalOC: 1200,
+      badge: '+200 OC',
+      popular: false
+    },
+    {
+      id: 'premium',
+      name: 'Премиум',
+      rubAmount: 5000,
+      baseOC: 5000,
+      bonusOC: 2000,
+      totalOC: 7000,
+      badge: '+2000 OC',
+      popular: true
+    },
+    {
+      id: 'ultimate',
+      name: 'Ультимум',
+      rubAmount: 10000,
+      baseOC: 10000,
+      bonusOC: 5000,
+      totalOC: 15000,
+      badge: '+5000 OC',
+      popular: false
+    },
+    {
+      id: 'first_time',
+      name: 'Первое пополнение',
+      rubAmount: 10000,
+      baseOC: 10000,
+      bonusOC: 10000,
+      totalOC: 20000,
+      badge: 'x2 БОНУС',
+      popular: false,
+      firstTimeOnly: true
+    }
+  ];
 
   const getWellIcon = (wellTypeName: string) => {
     const wellType = wellTypes.find(wt => wt.name === wellTypeName);
@@ -253,15 +309,26 @@ const Dashboard = () => {
   };
 
   const handleTopUp = async () => {
-    const value = parseFloat(topUpAmount);
-    if (!value || value <= 0) {
-      toast({ variant: "destructive", title: "Укажите сумму оилкоинов", description: "Введите положительное число" });
-      return;
-    }
-
-    if (value < 100) {
-      toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 OC" });
-      return;
+    let rubAmount = 0;
+    let ocAmount = 0;
+    
+    if (selectedPackage) {
+      rubAmount = selectedPackage.rubAmount;
+      ocAmount = selectedPackage.totalOC;
+    } else {
+      const value = parseFloat(topUpAmount);
+      if (!value || value <= 0) {
+        toast({ variant: "destructive", title: "Укажите сумму", description: "Введите положительное число" });
+        return;
+      }
+      
+      if (value < 100) {
+        toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
+        return;
+      }
+      
+      rubAmount = value;
+      ocAmount = value; // 1 рубль = 1 OC
     }
 
     setTopUpLoading(true);
@@ -270,8 +337,9 @@ const Dashboard = () => {
       // Создаем платеж через YooKassa
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: {
-          amount: value,
-          currency: 'RUB'
+          amount: rubAmount,
+          currency: 'RUB',
+          oil_coins: ocAmount
         }
       });
 
@@ -285,10 +353,11 @@ const Dashboard = () => {
         
         toast({
           title: "Переход к оплате",
-          description: "Откроется новая вкладка для оплаты. После успешной оплаты баланс будет пополнен автоматически.",
+          description: `После успешной оплаты ${rubAmount}₽ вы получите ${ocAmount.toLocaleString()} OC!`,
         });
         
         setTopUpAmount("");
+        setSelectedPackage(null);
         setIsTopUpOpen(false);
       } else {
         throw new Error('Не удалось получить ссылку на оплату');
@@ -984,66 +1053,197 @@ const Dashboard = () => {
 
         {/* Dialogs */}
         <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
-          <DialogContent className="bg-card border-border">
-            <DialogHeader>
-              <DialogTitle className="flex items-center">
-                <CreditCard className="h-5 w-5 mr-2 text-primary" />
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-card via-card/95 to-card border border-primary/30 shadow-2xl">
+            <DialogHeader className="text-center pb-2">
+              <DialogTitle className="flex items-center justify-center text-2xl font-playfair">
+                <CreditCard className="h-6 w-6 mr-3 text-primary" />
                 Пополнение баланса
               </DialogTitle>
-              <DialogDescription>
-                Пополните баланс для развития нефтяной империи
+              <DialogDescription className="text-center space-y-2 mt-4">
+                <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-lg p-4 border border-primary/20">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <span className="text-lg font-bold text-primary">1 ₽ = 1 OC</span>
+                    <div className="w-6 h-6 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                      <Fuel className="w-3 h-3 text-white" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Развивайте свою нефтяную империю с выгодными пакетами пополнения!
+                  </p>
+                </div>
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
-                  💰 Быстрое пополнение реальными деньгами
-                </h4>
-                <p className="text-sm text-blue-600 dark:text-blue-400">
-                  Пополните баланс реальными деньгами для мгновенного получения игровой валюты и быстрого развития вашей нефтяной империи!
-                </p>
-              </div>
+            
+            <div className="space-y-6">
+              {/* Пакеты пополнения */}
               <div>
-                <Label htmlFor="amount">Сумма пополнения (OC)</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  placeholder="Минимум 100 OC"
-                  value={topUpAmount}
-                  onChange={(e) => setTopUpAmount(e.target.value)}
-                  min="100"
-                />
+                <h3 className="text-lg font-semibold mb-4 text-center">Выберите пакет пополнения</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {topUpPackages.filter(pkg => !pkg.firstTimeOnly || true).map((pkg) => (
+                    <Card 
+                      key={pkg.id}
+                      className={`relative cursor-pointer transition-all duration-300 hover:scale-105 border-2 ${
+                        selectedPackage?.id === pkg.id 
+                          ? 'border-primary shadow-primary/25 shadow-lg bg-gradient-to-br from-primary/5 to-accent/5' 
+                          : pkg.popular 
+                            ? 'border-accent hover:border-primary bg-gradient-to-br from-accent/5 to-primary/5'
+                            : 'border-border hover:border-primary/50'
+                      }`}
+                      onClick={() => setSelectedPackage(pkg)}
+                    >
+                      {pkg.popular && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                          <Badge className="bg-gradient-to-r from-accent to-primary text-white shadow-lg px-3 py-1">
+                            ⭐ ПОПУЛЯРНЫЙ
+                          </Badge>
+                        </div>
+                      )}
+                      
+                      {pkg.firstTimeOnly && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg px-3 py-1 animate-pulse">
+                            🎁 ТОЛЬКО РАЗ
+                          </Badge>
+                        </div>
+                      )}
+                      
+                      <CardHeader className="text-center pb-2">
+                        <CardTitle className="text-lg font-playfair">{pkg.name}</CardTitle>
+                        <div className="text-2xl font-bold text-primary">
+                          {pkg.rubAmount.toLocaleString()}₽
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="text-center space-y-3">
+                        <div className="space-y-1">
+                          <div className="text-sm text-muted-foreground">
+                            Базовая сумма: {pkg.baseOC.toLocaleString()} OC
+                          </div>
+                          {pkg.bonusOC > 0 && (
+                            <div className="text-sm font-semibold text-green-600">
+                              + Бонус: {pkg.bonusOC.toLocaleString()} OC
+                            </div>
+                          )}
+                          <div className="border-t pt-2">
+                            <div className="text-lg font-bold text-primary">
+                              Итого: {pkg.totalOC.toLocaleString()} OC
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {pkg.badge && (
+                          <Badge 
+                            variant="outline" 
+                            className={`${pkg.firstTimeOnly ? 'border-red-400 text-red-600' : 'border-green-400 text-green-600'} font-bold`}
+                          >
+                            {pkg.badge}
+                          </Badge>
+                        )}
+                        
+                        {pkg.bonusOC > 0 && (
+                          <div className="text-xs text-muted-foreground mt-2">
+                            Экономия: {((pkg.bonusOC / pkg.baseOC) * 100).toFixed(0)}%
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
-              <div className="flex space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setTopUpAmount("500")}
-                  className="flex-1"
-                >
-                  500 OC
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setTopUpAmount("1000")}
-                  className="flex-1"
-                >
-                  1000 OC
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setTopUpAmount("5000")}
-                  className="flex-1"
-                >
-                  5000 OC
-                </Button>
+              
+              {/* Ручной ввод суммы */}
+              <div className="border-t pt-4">
+                <div className="text-center mb-4">
+                  <span className="text-sm text-muted-foreground">или введите свою сумму</span>
+                </div>
+                
+                <div className="max-w-md mx-auto space-y-4">
+                  <div>
+                    <Label htmlFor="amount" className="text-sm font-medium">Сумма в рублях (минимум 100₽)</Label>
+                    <Input
+                      id="amount"
+                      type="number"
+                      placeholder="1000"
+                      value={topUpAmount}
+                      onChange={(e) => {
+                        setTopUpAmount(e.target.value);
+                        setSelectedPackage(null); // Reset package selection
+                      }}
+                      min="100"
+                      className="text-center text-lg font-semibold"
+                    />
+                    {topUpAmount && !selectedPackage && (
+                      <p className="text-sm text-center text-muted-foreground mt-2">
+                        Получите: {parseFloat(topUpAmount || "0").toLocaleString()} OC
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setTopUpAmount("500");
+                        setSelectedPackage(null);
+                      }}
+                      className="flex-1 text-sm"
+                      size="sm"
+                    >
+                      500₽
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setTopUpAmount("1500");
+                        setSelectedPackage(null);
+                      }}
+                      className="flex-1 text-sm"
+                      size="sm"
+                    >
+                      1500₽
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setTopUpAmount("3000");
+                        setSelectedPackage(null);
+                      }}
+                      className="flex-1 text-sm"
+                      size="sm"
+                    >
+                      3000₽
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <Button
-                onClick={handleTopUp}
-                disabled={topUpLoading}
-                className="w-full gradient-gold shadow-gold"
-              >
-                {topUpLoading ? "Обработка..." : "Пополнить баланс"}
-              </Button>
+              
+              {/* Кнопка оплаты */}
+              <div className="pt-4 border-t">
+                <Button
+                  onClick={handleTopUp}
+                  disabled={topUpLoading || (!selectedPackage && !topUpAmount)}
+                  className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-primary via-accent to-primary hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  {topUpLoading ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Обработка...
+                    </div>
+                  ) : selectedPackage ? (
+                    `Оплатить ${selectedPackage.rubAmount}₽ → ${selectedPackage.totalOC.toLocaleString()} OC`
+                  ) : topUpAmount ? (
+                    `Оплатить ${parseFloat(topUpAmount).toLocaleString()}₽ → ${parseFloat(topUpAmount).toLocaleString()} OC`
+                  ) : (
+                    'Выберите пакет или введите сумму'
+                  )}
+                </Button>
+                
+                {(selectedPackage || topUpAmount) && (
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    Безопасная оплата через YooKassa • Мгновенное зачисление
+                  </p>
+                )}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
