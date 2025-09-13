@@ -339,8 +339,7 @@ export function useGameData() {
       if (!error) {
         setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
         
-        // You can add a toast notification here if you have access to toast
-        console.log(`Welcome back! You earned ${offlineIncome.toLocaleString()} OC while offline (${offlineHours.toFixed(1)} hours)`);
+        // Offline income successfully added
       }
     }
   };
@@ -679,8 +678,6 @@ export function useGameData() {
     if (!user) return;
 
     try {
-      console.log('Recalculating daily income...');
-      
       // Fetch fresh wells and boosters to avoid stale state
       const [{ data: wellsData }, { data: boostersData }] = await Promise.all([
         supabase.from('wells').select('*').eq('user_id', user.id),
@@ -690,19 +687,12 @@ export function useGameData() {
       const safeWells = wellsData || [];
       const safeBoosters = boostersData || [];
 
-      console.log('Wells count:', safeWells.length);
-      console.log('Boosters:', safeBoosters);
-
       // Calculate base income from wells
       const baseIncome = safeWells.reduce((total, well) => total + well.daily_income, 0);
-      console.log('Base income from wells:', baseIncome);
       
       // Apply booster multiplier
       const multiplier = calculateBoosterMultiplier(safeBoosters);
-      console.log('Booster multiplier:', multiplier);
-      
       const totalIncome = Math.round(baseIncome * multiplier);
-      console.log('Final daily income:', totalIncome);
 
       // Update profile with new daily income
       const { error } = await supabase
@@ -717,7 +707,6 @@ export function useGameData() {
       setBoosters(safeBoosters);
       setProfile(prev => prev ? { ...prev, daily_income: totalIncome } : null);
       
-      console.log('Daily income updated successfully');
     } catch (error) {
       console.error('Error recalculating daily income:', error);
     }

@@ -195,12 +195,13 @@ const Dashboard = () => {
     }
   }, [profile?.last_login, toast]);
 
-  // Зачисление тестового баланса (только один раз)
+  // Инициализация стартового баланса для новых игроков
   useEffect(() => {
-    if (profile && profile.balance < 5000000) {
-      addIncome(5000000 - profile.balance);
+    if (profile && profile.balance === 0 && wells.length === 0) {
+      // Даем стартовый баланс только новым игрокам без скважин
+      addIncome(1000);
     }
-  }, [profile]);
+  }, [profile, wells]);
 
   // Redirect to auth if not logged in
   useEffect(() => {
