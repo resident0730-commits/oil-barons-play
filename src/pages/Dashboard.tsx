@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   Fuel, 
   TrendingUp, 
@@ -440,53 +441,118 @@ const Dashboard = () => {
               </div>
 
               {/* Navigation Icons */}
-              <div className="flex items-center space-x-2">
-                <Link to="/profile">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <User className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/statistics">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <BarChart3 className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/leaderboard">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <Trophy className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/rules">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <BookOpen className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/support">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <MessageSquare className="h-4 w-4" />
-                  </Button>
-                </Link>
-                {isAdmin && (
-                  <Link to="/admin">
-                    <Button variant="ghost" size="sm" className="hover:bg-primary/10 text-primary hover-scale glow-gold">
-                      <Shield className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                )}
-                <Link to="/settings">
-                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                    <Settings className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleSignOut}
-                  className="hover:bg-destructive/10 hover:text-destructive transition-colors duration-200 hover-scale"
-                >
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </div>
+              <TooltipProvider>
+                <div className="flex items-center space-x-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/profile">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <User className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Профиль</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/statistics">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <BarChart3 className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Статистика</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/leaderboard">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <Trophy className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Рейтинг игроков</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/rules">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <BookOpen className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Правила игры</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/support">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <MessageSquare className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Служба поддержки</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  {isAdmin && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/admin">
+                          <Button variant="ghost" size="sm" className="hover:bg-primary/10 text-primary hover-scale glow-gold">
+                            <Shield className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Админ панель</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/settings">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <Settings className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Настройки</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={handleSignOut}
+                        className="hover:bg-destructive/10 hover:text-destructive transition-colors duration-200 hover-scale"
+                      >
+                        <LogOut className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Выйти из аккаунта</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </TooltipProvider>
             </div>
           </div>
         </div>
