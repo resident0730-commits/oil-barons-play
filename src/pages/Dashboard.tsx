@@ -28,13 +28,17 @@ import {
   Sparkles,
   Pickaxe,
   Store,
-  Rocket
+  Rocket,
+  Users,
+  Award
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
+import { useAchievements } from "@/hooks/useAchievements";
+import { useReferrals } from "@/hooks/useReferrals";
 import { DailyBonus } from "@/components/DailyBonus";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -52,6 +56,8 @@ const Dashboard = () => {
   const { isAdmin } = useUserRole();
   const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
+  const { checkAchievements } = useAchievements();
+  const { referralMultiplier, updateReferralEarnings } = useReferrals();
   
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -195,6 +201,18 @@ const Dashboard = () => {
     }
   }, [profile?.last_login, toast]);
 
+  // Проверка достижений при изменении профиля, скважин или бустеров
+  useEffect(() => {
+    if (profile && wells.length >= 0 && boosters) {
+      // Добавляем небольшую задержку для корректного обновления данных
+      const timeoutId = setTimeout(() => {
+        checkAchievements();
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [profile?.balance, wells.length, boosters?.length, checkAchievements]);
+
   // Инициализация стартового баланса для новых игроков
   useEffect(() => {
     if (profile && profile.balance === 0 && wells.length === 0) {
@@ -215,17 +233,21 @@ const Dashboard = () => {
     if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      // Начисляем доход каждые 10 секунд
-      // В дне 86400 секунд, значит 8640 интервалов по 10 секунд
-      // Поэтому делим дневной доход на 8640
-      const income = Math.round(profile.daily_income / 8640);
+      // Начисляем доход каждые 10 секунд с учетом реферального бонуса
+      const income = Math.round((profile.daily_income / 8640) * referralMultiplier);
       if (income > 0) {
+        const earnedAmount = income - Math.round(profile.daily_income / 8640);
         addIncome(income);
+        
+        // Обновляем реферальные начисления, если есть бонус
+        if (earnedAmount > 0) {
+          updateReferralEarnings(earnedAmount);
+        }
       }
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [profile?.daily_income, addIncome]);
+  }, [profile?.daily_income, referralMultiplier, addIncome, updateReferralEarnings]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
     if (profile.balance < wellType.price) {
@@ -467,6 +489,32 @@ const Dashboard = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Статистика</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/referrals">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <Users className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Рефералы</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/achievements">
+                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                          <Award className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Достижения</p>
                     </TooltipContent>
                   </Tooltip>
 
