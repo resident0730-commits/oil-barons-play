@@ -14,6 +14,7 @@ import Requisites from "./pages/Requisites";
 import Terms from "./pages/Terms";
 import Offer from "./pages/Offer";
 import Rules from "./pages/Rules";
+import TelegramAvatar from "./pages/TelegramAvatar";
 import Admin from "./pages/Admin";
 import Leaderboard from "./pages/Leaderboard";
 import Support from "./pages/Support";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/about" element={<About />} />
+          <Route path="/telegram-avatar" element={<TelegramAvatar />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
