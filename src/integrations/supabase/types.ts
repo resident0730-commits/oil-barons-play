@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          requirement_type: string
+          requirement_value: number
+          reward_amount: number
+          reward_data: Json | null
+          reward_type: string
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          name: string
+          requirement_type: string
+          requirement_value: number
+          reward_amount?: number
+          reward_data?: Json | null
+          reward_type: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          requirement_type?: string
+          requirement_value?: number
+          reward_amount?: number
+          reward_data?: Json | null
+          reward_type?: string
+          title?: string
+        }
+        Relationships: []
+      }
       bot_players: {
         Row: {
           balance: number
@@ -117,6 +162,9 @@ export type Database = {
           last_bonus_claim: string | null
           last_login: string | null
           nickname: string
+          referral_bonus_expires_at: string | null
+          referral_code: string | null
+          referred_by: string | null
           updated_at: string
           user_id: string
         }
@@ -132,6 +180,9 @@ export type Database = {
           last_bonus_claim?: string | null
           last_login?: string | null
           nickname: string
+          referral_bonus_expires_at?: string | null
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
           user_id: string
         }
@@ -147,8 +198,44 @@ export type Database = {
           last_bonus_claim?: string | null
           last_login?: string | null
           nickname?: string
+          referral_bonus_expires_at?: string | null
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          bonus_earned: number
+          created_at: string
+          id: string
+          is_active: boolean
+          referral_code: string
+          referred_id: string
+          referrer_id: string
+          updated_at: string
+        }
+        Insert: {
+          bonus_earned?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          referral_code: string
+          referred_id: string
+          referrer_id: string
+          updated_at?: string
+        }
+        Update: {
+          bonus_earned?: number
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          referral_code?: string
+          referred_id?: string
+          referrer_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -196,6 +283,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          claimed: boolean
+          claimed_at: string | null
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          claimed?: boolean
+          claimed_at?: string | null
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          claimed?: boolean
+          claimed_at?: string | null
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_boosters: {
         Row: {
@@ -283,6 +405,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_referral_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_leaderboard: {
         Args: Record<PropertyKey, never>
         Returns: {
