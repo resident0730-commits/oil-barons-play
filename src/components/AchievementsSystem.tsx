@@ -197,7 +197,14 @@ export const AchievementsSystem = () => {
       case 'booster':
         return 'Бустер добавлен в инвентарь';
       case 'title':
-        return 'Новый титул разблокирован';
+        if (achievement.name === 'oil_king') {
+          return 'Статус "Нефтяной король"';
+        } else if (achievement.name === 'leader') {
+          return 'Статус "Лидер"';
+        } else if (achievement.name === 'ambassador') {
+          return 'Статус "Амбассадор"';
+        }
+        return 'Эксклюзивный статус';
       case 'discount':
         return `${achievement.reward_amount}% скидка активирована`;
       default:
