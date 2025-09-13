@@ -8,6 +8,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { BalanceManager } from '@/components/admin/BalanceManager';
+import { SupportManagement } from '@/components/admin/SupportManagement';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -72,6 +73,12 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Управление пользователями</h2>
             <UserManagement />
+          </div>
+
+          {/* Support Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Служба поддержки</h2>
+            <SupportManagement />
           </div>
         </div>
       </div>

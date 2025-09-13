@@ -152,6 +152,51 @@ export type Database = {
         }
         Relationships: []
       }
+      support_tickets: {
+        Row: {
+          admin_response: string | null
+          category: string
+          created_at: string
+          id: string
+          message: string
+          priority: string
+          resolved_at: string | null
+          responded_by: string | null
+          status: string
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          message: string
+          priority?: string
+          resolved_at?: string | null
+          responded_by?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          message?: string
+          priority?: string
+          resolved_at?: string | null
+          responded_by?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_boosters: {
         Row: {
           booster_type: string

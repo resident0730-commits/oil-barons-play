@@ -23,6 +23,7 @@ import {
   Shield,
   Trophy,
   BookOpen,
+  MessageSquare,
   Sparkles,
   Pickaxe,
   Store,
@@ -458,6 +459,11 @@ const Dashboard = () => {
                 <Link to="/rules">
                   <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
                     <BookOpen className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/support">
+                  <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
+                    <MessageSquare className="h-4 w-4" />
                   </Button>
                 </Link>
                 {isAdmin && (
