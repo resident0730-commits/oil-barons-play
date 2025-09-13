@@ -51,9 +51,9 @@ const Dashboard = () => {
         <img 
           src={wellType.image} 
           alt={wellType.name}
-          className="w-16 h-16 rounded-lg object-cover border-2 border-primary/20"
+          className="w-24 h-24 rounded-lg object-cover border-2 border-primary/20"
         />
-        <div className={`absolute -top-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
+        <div className={`absolute -top-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
           {wellType.icon}
         </div>
       </div>
