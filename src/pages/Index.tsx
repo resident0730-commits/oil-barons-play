@@ -385,6 +385,9 @@ const Index = () => {
               <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 Условия использования
               </Link>
+              <Link to="/offer" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
+                Публичная оферта
+              </Link>
               <Link to="/support" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 Поддержка
               </Link>

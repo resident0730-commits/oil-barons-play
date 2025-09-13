@@ -109,11 +109,18 @@ const Terms = () => {
           </Card>
 
           <div className="text-center">
-            <Link to="/">
-              <Button variant="outline">
-                Вернуться на главную
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/">
+                <Button variant="outline">
+                  Вернуться на главную
+                </Button>
+              </Link>
+              <Link to="/offer">
+                <Button variant="secondary">
+                  Публичная оферта
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </main>
