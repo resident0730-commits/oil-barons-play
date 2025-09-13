@@ -67,7 +67,7 @@ export const ShopSection = ({
               const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
 
               return (
-                <Card key={wellType.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 min-h-[400px] ${!canAfford ? 'opacity-60' : ''}`}>
+                <Card key={wellType.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${!canAfford ? "opacity-60" : ""}`}>
                   <div className={`absolute top-0 left-0 w-full h-1 ${wellType.rarity === 'mythic' ? 'gradient-luxury' : 'gradient-gold'}`}></div>
                   
                   <CardHeader className="pb-3">
@@ -90,7 +90,7 @@ export const ShopSection = ({
 
                   <CardContent className="space-y-4 flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground line-clamp-4">
+                      <p className="text-sm text-muted-foreground break-words leading-relaxed">
                         {wellType.description}
                       </p>
 
