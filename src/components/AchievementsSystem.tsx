@@ -219,18 +219,6 @@ export const AchievementsSystem = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-5 w-5" />
-            Достижения
-          </CardTitle>
-          <CardDescription>
-            Выполняйте задания и получайте награды
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
       <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
         <TabsList className="grid w-full grid-cols-5">
           {categories.map((category) => (
