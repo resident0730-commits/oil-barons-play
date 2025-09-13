@@ -149,6 +149,39 @@ export type Database = {
         }
         Relationships: []
       }
+      money_transfers: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string
+          description: string | null
+          from_user_id: string
+          id: string
+          to_user_id: string
+          transfer_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by: string
+          description?: string | null
+          from_user_id: string
+          id?: string
+          to_user_id: string
+          transfer_type?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          from_user_id?: string
+          id?: string
+          to_user_id?: string
+          transfer_type?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           balance: number
@@ -453,6 +486,16 @@ export type Database = {
           p_wells_count?: number
         }
         Returns: undefined
+      }
+      transfer_money: {
+        Args: {
+          p_admin_id?: string
+          p_amount: number
+          p_description?: string
+          p_from_user_id: string
+          p_to_user_id: string
+        }
+        Returns: boolean
       }
       update_daily_statistics: {
         Args: Record<PropertyKey, never>

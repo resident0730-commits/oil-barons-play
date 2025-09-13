@@ -9,6 +9,10 @@ import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { BalanceManager } from '@/components/admin/BalanceManager';
 import { SupportManagement } from '@/components/admin/SupportManagement';
+import { AdminWellManager } from '@/components/admin/AdminWellManager';
+import { MoneyWithdrawal } from '@/components/admin/MoneyWithdrawal';
+import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
+import { TransferHistory } from '@/components/admin/TransferHistory';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -36,23 +40,30 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-8">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Назад
-          </Button>
-          
-          <div className="flex items-center gap-3">
-            <Shield className="h-8 w-8 text-primary" />
-            <div>
-              <h1 className="text-3xl font-bold">Админ-панель</h1>
-              <p className="text-muted-foreground">Управление игрой и пользователями</p>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Назад
+            </Button>
+            
+            <div className="flex items-center gap-3">
+              <Shield className="h-8 w-8 text-primary" />
+              <div>
+                <h1 className="text-3xl font-bold">Админ-панель</h1>
+                <p className="text-muted-foreground">Управление игрой и пользователями</p>
+              </div>
             </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <MoneyWithdrawal />
+            <MoneyTransfer />
           </div>
         </div>
 
@@ -67,6 +78,18 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Управление балансом</h2>
             <BalanceManager />
+          </div>
+
+          {/* Admin Wells Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Управление скважинами</h2>
+            <AdminWellManager />
+          </div>
+
+          {/* Transfer History */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">История операций</h2>
+            <TransferHistory />
           </div>
 
           {/* User Management */}
