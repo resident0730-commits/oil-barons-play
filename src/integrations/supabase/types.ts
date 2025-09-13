@@ -165,6 +165,7 @@ export type Database = {
           referral_bonus_expires_at: string | null
           referral_code: string | null
           referred_by: string | null
+          status_titles: string[] | null
           updated_at: string
           user_id: string
         }
@@ -183,6 +184,7 @@ export type Database = {
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
+          status_titles?: string[] | null
           updated_at?: string
           user_id: string
         }
@@ -201,6 +203,7 @@ export type Database = {
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
+          status_titles?: string[] | null
           updated_at?: string
           user_id?: string
         }
@@ -405,6 +408,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_status_multiplier: {
+        Args: { user_titles: string[] }
+        Returns: number
+      }
       generate_referral_code: {
         Args: Record<PropertyKey, never>
         Returns: string

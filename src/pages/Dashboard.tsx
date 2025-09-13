@@ -45,6 +45,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import { GameSection } from "@/components/GameSection";
+import { StatusDisplay } from "@/components/StatusDisplay";
 
 // Import hero images
 import myWellsHero from '@/assets/sections/my-wells-hero.jpg';
@@ -609,6 +610,7 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-8 space-y-8">
         <DailyBonus />
+        <StatusDisplay />
         
         {activeSection === 'overview' && (
           <>

@@ -169,6 +169,27 @@ export const AchievementsSystem = () => {
         }
       }
 
+      // Handle title rewards - add status to profile
+      if (achievement.reward_type === 'title') {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('status_titles')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profile) {
+          const currentTitles = profile.status_titles || [];
+          const newTitles = [...currentTitles, achievement.name];
+          
+          await supabase
+            .from('profiles')
+            .update({ 
+              status_titles: newTitles
+            })
+            .eq('user_id', user.id);
+        }
+      }
+
       // Mark achievement as claimed
       await supabase
         .from('user_achievements')

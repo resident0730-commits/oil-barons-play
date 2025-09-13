@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { ComponentType } from 'react';
 import { useAuth } from './useAuth';
+import { useStatusBonuses } from './useStatusBonuses';
 import { supabase } from '@/integrations/supabase/client';
 
 // Import well images
@@ -245,6 +246,7 @@ export const wellPackages: WellPackage[] = [
 
 export function useGameData() {
   const { user } = useAuth();
+  const { statusMultiplier } = useStatusBonuses();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [wells, setWells] = useState<UserWell[]>([]);
   const [boosters, setBoosters] = useState<UserBooster[]>([]);
@@ -671,7 +673,8 @@ export function useGameData() {
   };
 
   const getActiveBoosterMultiplier = () => {
-    return calculateBoosterMultiplier(boosters);
+    const boosterMultiplier = calculateBoosterMultiplier(boosters);
+    return boosterMultiplier * statusMultiplier;
   };
 
   const recalculateDailyIncome = async () => {
@@ -690,9 +693,10 @@ export function useGameData() {
       // Calculate base income from wells
       const baseIncome = safeWells.reduce((total, well) => total + well.daily_income, 0);
       
-      // Apply booster multiplier
-      const multiplier = calculateBoosterMultiplier(safeBoosters);
-      const totalIncome = Math.round(baseIncome * multiplier);
+      // Apply booster and status multipliers
+      const boosterMultiplier = calculateBoosterMultiplier(safeBoosters);
+      const totalMultiplier = boosterMultiplier * statusMultiplier;
+      const totalIncome = Math.round(baseIncome * totalMultiplier);
 
       // Update profile with new daily income
       const { error } = await supabase
