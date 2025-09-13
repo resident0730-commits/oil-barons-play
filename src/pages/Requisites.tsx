@@ -12,7 +12,7 @@ const Requisites = () => {
     name: "Oil Tycoon",
     inn: "891151084170",
     ogrnip: "323890100010935",
-    email: "support@oiltycoon.ru",
+    email: "oiltycoon.help@gmail.com",
     address: "г. Москва, ул. Тверская, д. 15, офис 301",
   };
 
