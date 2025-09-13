@@ -15,6 +15,7 @@ import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
 import { TransferHistory } from '@/components/admin/TransferHistory';
 import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 
+// Admin component for managing game and users
 export default function Admin() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
