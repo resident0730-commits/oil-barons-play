@@ -198,15 +198,15 @@ export const AchievementsSystem = () => {
         return 'Бустер добавлен в инвентарь';
       case 'title':
         if (achievement.name === 'oil_king') {
-          return 'Статус "Нефтяной король"';
+          return 'Статус "Нефтяной король" (+5% доход от скважин)';
         } else if (achievement.name === 'leader') {
-          return 'Статус "Лидер"';
+          return 'Статус "Лидер" (+3% доход от скважин)';
         } else if (achievement.name === 'ambassador') {
-          return 'Статус "Амбассадор"';
+          return 'Статус "Амбассадор" (+10% реферальный бонус)';
         }
-        return 'Эксклюзивный статус';
+        return 'Эксклюзивный статус (+2% доход)';
       case 'discount':
-        return `${achievement.reward_amount}% скидка активирована`;
+        return `${achievement.reward_amount}% скидка на покупки`;
       default:
         return 'Награда получена';
     }
