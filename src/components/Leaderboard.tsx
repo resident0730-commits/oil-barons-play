@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Trophy, Medal, Award, Crown, Zap } from 'lucide-react';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,16 +27,25 @@ const getRankBadgeVariant = (position: number) => {
 };
 
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+  if (amount >= 1_000_000_000) {
+    return `${(amount / 1_000_000_000).toFixed(1)}B OC`;
+  }
+  if (amount >= 1_000_000) {
+    return `${(amount / 1_000_000).toFixed(1)}M OC`;
+  }
+  if (amount >= 1_000) {
+    return `${(amount / 1_000).toFixed(1)}K OC`;
+  }
+  return `${Math.floor(amount).toLocaleString('ru-RU')} OC`;
 };
 
 export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10 }) => {
-  const { leaderboard, loading } = useLeaderboard();
+  const { leaderboard, loading, refetch } = useLeaderboard();
+
+  // Manual refresh button functionality
+  const handleRefresh = () => {
+    refetch();
+  };
 
   if (loading) {
     return (
@@ -67,10 +77,22 @@ export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-yellow-500" />
-          Рейтинг игроков
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-yellow-500" />
+            Рейтинг игроков
+          </CardTitle>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={loading}
+            className="text-xs"
+          >
+            {loading ? "Обновление..." : "Обновить"}
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">Обновляется каждые 2 часа и в реальном времени</p>
       </CardHeader>
       <CardContent className="space-y-3">
         {topPlayers.map((player, index) => {

@@ -44,6 +44,31 @@ export const useLeaderboard = () => {
 
   useEffect(() => {
     fetchLeaderboard();
+    
+    // Auto-refresh every 2 hours
+    const interval = setInterval(fetchLeaderboard, 2 * 60 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Real-time updates for leaderboard
+  useEffect(() => {
+    const channel = supabase
+      .channel('leaderboard-updates')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        console.log('Profile updated, refreshing leaderboard...');
+        // Debounce updates to avoid too frequent refreshes
+        setTimeout(fetchLeaderboard, 1000);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return { leaderboard, loading, refetch: fetchLeaderboard, getPlayerRank };
