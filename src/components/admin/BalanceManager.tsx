@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Wallet, Plus, Search } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Wallet, Plus, Search, Settings } from 'lucide-react';
 
 export const BalanceManager = () => {
   const [nickname, setNickname] = useState('');
@@ -13,7 +14,13 @@ export const BalanceManager = () => {
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
+  
+  // Состояние для изменения собственного баланса
+  const [myNewBalance, setMyNewBalance] = useState('');
+  const [myBalanceLoading, setMyBalanceLoading] = useState(false);
+  
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const searchPlayers = async (searchTerm: string) => {
     if (!searchTerm.trim()) {
@@ -105,7 +112,103 @@ export const BalanceManager = () => {
     setSearchResults([]);
   };
 
+  // Функция для изменения собственного баланса
+  const handleSetMyBalance = async () => {
+    if (!myNewBalance || parseFloat(myNewBalance) < 0) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: "Укажите корректную сумму"
+      });
+      return;
+    }
+
+    try {
+      setMyBalanceLoading(true);
+      const newBalance = parseFloat(myNewBalance);
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user?.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Баланс изменён!",
+        description: `Ваш новый баланс: ${newBalance.toLocaleString()} ₽`
+      });
+
+      setMyNewBalance('');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка изменения баланса",
+        description: error.message || "Попробуйте позже"
+      });
+    } finally {
+      setMyBalanceLoading(false);
+    }
+  };
+
   return (
+    <div className="space-y-6">
+      {/* Карточка для изменения собственного баланса */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="h-5 w-5 text-primary" />
+            Изменить свой баланс (тестирование)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="myBalance">Установить новый баланс (₽)</Label>
+            <Input
+              id="myBalance"
+              type="number"
+              placeholder="Введите новый баланс..."
+              value={myNewBalance}
+              onChange={(e) => setMyNewBalance(e.target.value)}
+              min="0"
+            />
+          </div>
+
+          <div className="flex space-x-2">
+            <Button
+              variant="outline"
+              onClick={() => setMyNewBalance("100000")}
+              className="flex-1"
+            >
+              100,000 ₽
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setMyNewBalance("1000000")}
+              className="flex-1"
+            >
+              1,000,000 ₽
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setMyNewBalance("10000000")}
+              className="flex-1"
+            >
+              10,000,000 ₽
+            </Button>
+          </div>
+
+          <Button
+            onClick={handleSetMyBalance}
+            disabled={myBalanceLoading || !myNewBalance}
+            className="w-full gradient-primary"
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            {myBalanceLoading ? "Изменяем..." : "Изменить баланс"}
+          </Button>
+        </CardContent>
+      </Card>
+
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -208,5 +311,6 @@ export const BalanceManager = () => {
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 };
