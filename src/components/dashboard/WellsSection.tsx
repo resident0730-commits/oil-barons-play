@@ -2,8 +2,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Plus, Zap, Sparkles } from "lucide-react";
+import { Plus, Zap, Sparkles, List, Map } from "lucide-react";
 import { UserWell, UserProfile, wellTypes, UserBooster } from "@/hooks/useGameData";
+import { WellsMap } from "./WellsMap";
+import { useState } from "react";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -32,6 +34,7 @@ export const WellsSection = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
     !booster.expires_at || new Date(booster.expires_at) > new Date()
@@ -44,23 +47,46 @@ export const WellsSection = ({
           <p className="text-muted-foreground subtitle-contrast">Управляйте своими нефтяными активами</p>
         </div>
         <div className="section-toolbar">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">Общий доход:</span>
-              <Badge className="gradient-gold text-primary-foreground">
-                {profile.daily_income.toLocaleString()} OC/день
-              </Badge>
-              {hasActiveBoosters && (
-                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  +{Math.round((boosterMultiplier - 1) * 100)}%
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">Общий доход:</span>
+                <Badge className="gradient-gold text-primary-foreground">
+                  {profile.daily_income.toLocaleString()} OC/день
                 </Badge>
-              )}
+                {hasActiveBoosters && (
+                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    +{Math.round((boosterMultiplier - 1) * 100)}%
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-muted-foreground">Скважин:</span>
+                <Badge variant="outline">{wells.length}</Badge>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">Скважин:</span>
-              <Badge variant="outline">{wells.length}</Badge>
-            </div>
+            
+            {wells.length > 0 && (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                >
+                  <List className="h-4 w-4 mr-2" />
+                  Список
+                </Button>
+                <Button
+                  variant={viewMode === 'map' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('map')}
+                >
+                  <Map className="h-4 w-4 mr-2" />
+                  На карте
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -75,6 +101,18 @@ export const WellsSection = ({
             <p className="text-muted-foreground mb-4">Купите свою первую скважину в магазине</p>
           </CardContent>
         </Card>
+      ) : viewMode === 'map' ? (
+        <WellsMap
+          wells={wells}
+          getWellIcon={getWellIcon}
+          getRarityColor={getRarityColor}
+          calculateProfitMetrics={calculateProfitMetrics}
+          formatProfitPercent={formatProfitPercent}
+          boosters={boosters}
+          getActiveBoosterMultiplier={getActiveBoosterMultiplier}
+          onUpgradeWell={onUpgradeWell}
+          profile={profile}
+        />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {wells.map((well) => {
