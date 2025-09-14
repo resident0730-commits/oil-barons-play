@@ -83,7 +83,7 @@ export const WellsSection = ({
             const wellType = wellTypes.find(wt => wt.name === well.well_type);
             if (!wellType) return null;
 
-            const upgradeCost = Math.round((wellType.price * 0.3 * well.level));
+            const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
             const canUpgrade = well.level < wellType.maxLevel && profile.balance >= upgradeCost;
             const isMaxLevel = well.level >= wellType.maxLevel;
             const upgradeProgress = (well.level / wellType.maxLevel) * 100;

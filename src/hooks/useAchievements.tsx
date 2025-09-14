@@ -36,7 +36,7 @@ export const useAchievements = () => {
       const unlockedAchievementIds = new Set(userAchievements?.map(ua => ua.achievement_id) || []);
       const wellTypes = new Set(wells?.map(w => w.well_type) || []);
       const boosterTypes = new Set(boosters?.map(b => b.booster_type) || []);
-      const cosmicWells = wells?.filter(w => w.well_type === 'cosmic') || [];
+      const cosmicWells = wells?.filter(w => w.well_type === 'Космическая скважина') || [];
 
       const userStats = {
         balance: profile.balance || 0,
@@ -64,10 +64,11 @@ export const useAchievements = () => {
 
           // Auto-claim certain rewards
           if (achievement.reward_type === 'coins' && achievement.reward_amount > 0) {
+            const newBalance = Math.floor(profile.balance + achievement.reward_amount);
             await supabase
               .from('profiles')
               .update({ 
-                balance: profile.balance + achievement.reward_amount 
+                balance: newBalance
               })
               .eq('user_id', user.id);
 

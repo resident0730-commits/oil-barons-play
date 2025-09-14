@@ -352,7 +352,8 @@ export function useGameData() {
     if (offlineTimeMs < 60000) return;
     
     const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24); // Max 24 hours
-    const offlineIncome = Math.floor((profileData.daily_income / 24) * offlineHours);
+    const hourlyIncome = Math.floor(profileData.daily_income / 24);
+    const offlineIncome = hourlyIncome * Math.floor(offlineHours);
     
     if (offlineIncome > 0) {
       // Offline income calculated successfully
@@ -400,7 +401,7 @@ export function useGameData() {
       const currentWellsIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
       const newTotalIncome = currentWellsIncome + wellType.baseIncome;
       const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.round(newTotalIncome * multiplier);
+      const boostedDailyIncome = Math.floor(newTotalIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -436,7 +437,7 @@ export function useGameData() {
       return { success: false, error: 'Нельзя улучшить' };
     }
 
-    const upgradeCost = Math.round((wellType.price * 0.3 * well.level));
+    const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
     if (profile.balance < upgradeCost) {
       return { success: false, error: 'Недостаточно средств' };
     }
@@ -464,7 +465,7 @@ export function useGameData() {
         w.id === wellId ? sum + newIncome : sum + w.daily_income, 0
       );
       const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.round(currentTotalIncome * multiplier);
+      const boostedDailyIncome = Math.floor(currentTotalIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -534,7 +535,7 @@ export function useGameData() {
       const currentDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
       const totalNewIncome = currentDailyIncome + totalDailyIncome;
       const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.round(totalNewIncome * multiplier);
+      const boostedDailyIncome = Math.floor(totalNewIncome * multiplier);
 
       const { error: profileError } = await supabase
         .from('profiles')
@@ -655,7 +656,7 @@ export function useGameData() {
   const calculateBoosterMultiplier = (userBoosters: UserBooster[]) => {
     if (!userBoosters.length) return 1;
 
-    let multiplier = 1;
+    let totalBonus = 0;
     
     userBoosters.forEach(booster => {
       // Check if booster is still active
@@ -664,28 +665,26 @@ export function useGameData() {
       if (isActive) {
         switch (booster.booster_type) {
           case 'worker_crew':
-            const workerBonus = booster.level * 0.10;
-            multiplier += workerBonus; // 10% per level
+            totalBonus += booster.level * 10; // 10% per level
             break;
           case 'geological_survey':
-            const geoBonus = booster.level * 0.15;
-            multiplier += geoBonus; // 15% per level
+            totalBonus += booster.level * 15; // 15% per level
             break;
           case 'advanced_equipment':
-            const equipmentBonus = booster.level * 0.25;
-            multiplier += equipmentBonus; // 25% per level
+            totalBonus += booster.level * 25; // 25% per level
             break;
           case 'turbo_boost':
-            multiplier += 0.50; // 50% flat bonus
+            totalBonus += 50; // 50% flat bonus
             break;
           case 'automation':
-            const autoBonus = booster.level * 0.20;
-            multiplier += autoBonus; // 20% per level
+            totalBonus += booster.level * 20; // 20% per level
             break;
         }
       }
     });
-    return multiplier;
+    
+    // Convert percentage to multiplier and round to avoid floating point issues
+    return Math.round((1 + totalBonus / 100) * 1000) / 1000;
   };
 
   const getActiveBoosterMultiplier = () => {
@@ -716,7 +715,7 @@ export function useGameData() {
       // Apply booster and status multipliers
       const boosterMultiplier = calculateBoosterMultiplier(safeBoosters);
       const totalMultiplier = boosterMultiplier * statusMultiplier;
-      const totalIncome = Math.round(baseIncome * totalMultiplier);
+      const totalIncome = Math.floor(baseIncome * totalMultiplier);
 
       console.log('💰 Base income from wells:', baseIncome);
       console.log('🔢 Status multiplier:', statusMultiplier);

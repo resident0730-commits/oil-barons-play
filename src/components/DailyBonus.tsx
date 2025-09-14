@@ -11,7 +11,14 @@ export function DailyBonus() {
   const { toast } = useToast();
   const [canClaim, setCanClaim] = useState(false);
   const [timeUntilNext, setTimeUntilNext] = useState('');
-  const [bonusAmount] = useState(100); // Ежедневный бонус
+  const [bonusAmount, setBonusAmount] = useState(100); // Базовый ежедневный бонус
+  
+  // Динамический расчет бонуса на основе дохода игрока
+  const calculateDailyBonus = (dailyIncome: number) => {
+    const baseBonus = 100;
+    const incomeBonus = Math.floor(dailyIncome * 0.1); // 10% от дневного дохода
+    return Math.max(baseBonus, Math.min(incomeBonus, 10000)); // минимум 100, максимум 10000
+  };
 
   useEffect(() => {
     if (user) {
@@ -33,6 +40,9 @@ export function DailyBonus() {
         .single();
 
       if (profile) {
+        const dynamicBonus = calculateDailyBonus(profile.daily_income || 0);
+        setBonusAmount(dynamicBonus);
+        
         const lastClaim = (profile as any).last_bonus_claim ? new Date((profile as any).last_bonus_claim) : null;
         const now = new Date();
         const tomorrow = new Date();

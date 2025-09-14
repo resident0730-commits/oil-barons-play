@@ -36,7 +36,7 @@ const formatCurrency = (amount: number) => {
   if (amount >= 1_000) {
     return `${(amount / 1_000).toFixed(1)}K OC`;
   }
-  return `${Math.floor(amount).toLocaleString('ru-RU')} OC`;
+  return `${amount.toLocaleString('ru-RU')} OC`;
 };
 
 export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10 }) => {

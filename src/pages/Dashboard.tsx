@@ -114,7 +114,8 @@ const Dashboard = () => {
     // If user was offline for more than 1 minute and has daily income
     if (offlineTimeMs > 60000 && profile.daily_income > 0) {
       const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24);
-      const offlineIncome = Math.floor((profile.daily_income / 24) * offlineHours);
+      const hourlyIncome = Math.floor(profile.daily_income / 24);
+      const offlineIncome = hourlyIncome * Math.floor(offlineHours);
       
       if (offlineIncome > 0) {
         toast({
@@ -155,10 +156,10 @@ const Dashboard = () => {
     if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      const income = Math.round((profile.daily_income / 8640) * referralMultiplier);
-      if (income > 0) {
-        const earnedAmount = income - Math.round(profile.daily_income / 8640);
-        addIncome(income);
+      const incomePerInterval = Math.floor(profile.daily_income / 8640);
+      if (incomePerInterval > 0) {
+        const earnedAmount = Math.floor(incomePerInterval * referralMultiplier) - incomePerInterval;
+        addIncome(Math.floor(incomePerInterval * referralMultiplier));
         
         if (earnedAmount > 0) {
           updateReferralEarnings(earnedAmount);
@@ -224,7 +225,7 @@ const Dashboard = () => {
   const handleUpgradeWell = async (wellId: string) => {
     const well = wells.find(w => w.id === wellId);
     const wellType = wellTypes.find(wt => wt.name === well?.well_type);
-    const upgradeCost = Math.round((wellType?.price || 1000) * 0.3 * (well?.level || 1));
+    const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * Math.pow(1.2, (well?.level || 1) - 1));
     
     if (profile.balance < upgradeCost) {
       setIsTopUpOpen(true);

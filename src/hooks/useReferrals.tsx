@@ -42,11 +42,34 @@ export const useReferrals = () => {
     if (!user || earnedAmount <= 0) return;
 
     try {
-      // Используем новую функцию для обновления реферальных начислений
-      await supabase.rpc('update_referral_bonus', {
-        referrer_user_id: user.id,
-        earned_amount: earnedAmount
-      });
+      // Получаем профиль реферера
+      const { data: referrerProfile } = await supabase
+        .from('profiles')
+        .select('user_id, referred_by')
+        .eq('user_id', user.id)
+        .single();
+
+      if (referrerProfile && referrerProfile.referred_by) {
+        // Добавляем 10% от заработанного к балансу реферера
+        const bonusAmount = Math.floor(earnedAmount * 0.1);
+        
+        if (bonusAmount > 0) {
+          const { data: referrer } = await supabase
+            .from('profiles')
+            .select('balance')
+            .eq('user_id', referrerProfile.referred_by)
+            .single();
+
+          if (referrer) {
+            await supabase
+              .from('profiles')
+              .update({ 
+                balance: Math.floor(referrer.balance + bonusAmount)
+              })
+              .eq('user_id', referrerProfile.referred_by);
+          }
+        }
+      }
     } catch (error) {
       console.error('Error updating referral earnings:', error);
     }
