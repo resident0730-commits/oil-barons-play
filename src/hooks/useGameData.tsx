@@ -273,7 +273,10 @@ export function useGameData() {
         .eq('user_id', user.id)
         .maybeSingle();
 
+      console.log('🔍 Loading game data for user:', user.id);
+
       if (profileData) {
+        console.log('👤 Profile loaded:', profileData);
         // Calculate and add offline income
         if (profileData.last_login && profileData.daily_income > 0) {
           await calculateOfflineIncome(profileData);
@@ -294,6 +297,8 @@ export function useGameData() {
         .select('*')
         .eq('user_id', user.id);
 
+      console.log('🏭 Wells loaded:', wellsData?.length || 0, wellsData);
+
       if (wellsData) {
         setWells(wellsData);
       }
@@ -304,9 +309,17 @@ export function useGameData() {
         .select('*')
         .eq('user_id', user.id);
 
+      console.log('🚀 Boosters loaded:', boostersData?.length || 0, boostersData);
+
       if (boostersData) {
         setBoosters(boostersData);
       }
+
+      // Recalculate daily income to ensure it's accurate
+      setTimeout(() => {
+        recalculateDailyIncome();
+      }, 100);
+
     } catch (error) {
       console.error('Error loading game data:', error);
     } finally {
@@ -679,6 +692,10 @@ export function useGameData() {
       const safeWells = wellsData || [];
       const safeBoosters = boostersData || [];
 
+      console.log('🔍 Recalculating income for user:', user.id);
+      console.log('📊 Wells found:', safeWells.length, safeWells);
+      console.log('🚀 Boosters found:', safeBoosters.length, safeBoosters);
+
       // Calculate base income from wells
       const baseIncome = safeWells.reduce((total, well) => total + well.daily_income, 0);
       
@@ -686,6 +703,12 @@ export function useGameData() {
       const boosterMultiplier = calculateBoosterMultiplier(safeBoosters);
       const totalMultiplier = boosterMultiplier * statusMultiplier;
       const totalIncome = Math.round(baseIncome * totalMultiplier);
+
+      console.log('💰 Base income from wells:', baseIncome);
+      console.log('🔢 Status multiplier:', statusMultiplier);
+      console.log('🚀 Booster multiplier:', boosterMultiplier);
+      console.log('📈 Total multiplier:', totalMultiplier);
+      console.log('💎 Final total income:', totalIncome);
 
       // Update profile with new daily income
       const { error } = await supabase
