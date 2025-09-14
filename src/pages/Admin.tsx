@@ -14,6 +14,7 @@ import { MoneyWithdrawal } from '@/components/admin/MoneyWithdrawal';
 import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
 import { TransferHistory } from '@/components/admin/TransferHistory';
 import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
+import { BotManager } from '@/components/admin/BotManager';
 
 // Admin component for managing game and users
 export default function Admin() {
@@ -86,6 +87,12 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Управление скважинами</h2>
             <AdminWellManager />
+          </div>
+
+          {/* Bot Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Управление демо-счетами</h2>
+            <BotManager />
           </div>
 
           {/* Withdrawal Processing */}
