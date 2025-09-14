@@ -26,7 +26,7 @@ interface BoosterShopProps {
 }
 
 export function BoosterShop({ onClose }: BoosterShopProps) {
-  const { profile, boosters, buyBooster, loading, getActiveBoosterMultiplier } = useGameData();
+  const { profile, boosters, buyBooster, cancelBooster, loading, getActiveBoosterMultiplier } = useGameData();
   const { toast } = useToast();
   const [selectedBooster, setSelectedBooster] = useState<BoosterType | null>(null);
 
@@ -151,6 +151,52 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
       return new Date(userBooster.expires_at) > new Date();
     }
     return userBooster.level > 0;
+  };
+
+  const handleCancelBooster = async (booster: BoosterType) => {
+    if (!profile) {
+      toast({
+        title: "Ошибка",
+        description: "Профиль не загружен",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const currentLevel = getBoosterLevel(booster.id);
+    if (currentLevel === 0) {
+      toast({
+        title: "Бустер не куплен",
+        description: "У вас нет этого бустера для отмены",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Проверяем, что это не временный истекший бустер
+    const userBooster = boosters.find(b => b.booster_type === booster.id);
+    if (userBooster?.expires_at && new Date(userBooster.expires_at) <= new Date()) {
+      toast({
+        title: "Бустер истек",
+        description: "Нельзя отменить истекший временный бустер",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const result = await cancelBooster(booster.id);
+    if (result.success) {
+      toast({
+        title: "Бустер отменен!",
+        description: `${booster.name} ${currentLevel === 1 ? 'удален' : 'понижен до уровня ' + (currentLevel - 1)}. Возврат: ${result.refundAmount?.toLocaleString()} OC (50%)`,
+      });
+    } else {
+      toast({
+        title: "Ошибка отмены",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
   };
 
   const handleBuyBooster = async (booster: BoosterType) => {
@@ -322,24 +368,51 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                 </div>
 
                 {isMaxLevel ? (
-                  <Button disabled className="w-full">
-                    Максимальный уровень
-                  </Button>
+                  <div className="space-y-2">
+                    <Button disabled className="w-full">
+                      Максимальный уровень
+                    </Button>
+                    {currentLevel > 0 && (
+                      <Button 
+                        onClick={() => handleCancelBooster(booster)}
+                        disabled={loading}
+                        variant="destructive"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Отменить бустер (50% возврат)
+                      </Button>
+                    )}
+                  </div>
                 ) : (
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Стоимость:</span>
                       <span className="font-bold">{cost.toLocaleString()} OC</span>
                     </div>
-                    <Button 
-                      onClick={() => handleBuyBooster(booster)}
-                      disabled={loading || !profile || profile.balance < cost}
-                      className="w-full"
-                      variant={profile && profile.balance >= cost ? "default" : "outline"}
-                    >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      {booster.duration ? 'Активировать' : 'Улучшить'}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        onClick={() => handleBuyBooster(booster)}
+                        disabled={loading || !profile || profile.balance < cost}
+                        className="flex-1"
+                        variant={profile && profile.balance >= cost ? "default" : "outline"}
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        {booster.duration ? 'Активировать' : 'Улучшить'}
+                      </Button>
+                      {currentLevel > 0 && (
+                        <Button 
+                          onClick={() => handleCancelBooster(booster)}
+                          disabled={loading}
+                          variant="destructive"
+                          size="sm"
+                          className="px-3"
+                          title="Отменить бустер (50% возврат)"
+                        >
+                          ✕
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -378,8 +451,8 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                           </div>
                         )}
                         <div className="flex justify-between">
-                          <span>Тип эффекта:</span>
-                          <span>{booster.duration ? 'Временный' : 'Постоянный'}</span>
+                          <span>Возврат при отмене:</span>
+                          <span>50% от последнего уровня</span>
                         </div>
                       </div>
                     </div>

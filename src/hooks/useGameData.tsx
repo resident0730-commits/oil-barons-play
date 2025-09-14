@@ -741,6 +741,85 @@ export function useGameData() {
     }
   };
 
+  const cancelBooster = async (boosterId: string) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    const existingBooster = boosters.find(b => b.booster_type === boosterId);
+    if (!existingBooster) {
+      return { success: false, error: 'Бустер не найден' };
+    }
+
+    // Проверяем, что бустер еще активен
+    const isActive = !existingBooster.expires_at || new Date(existingBooster.expires_at) > new Date();
+    if (!isActive) {
+      return { success: false, error: 'Нельзя отменить истекший бустер' };
+    }
+
+    try {
+      // Рассчитываем возврат средств (50% от последней потраченной суммы)
+      const boosterTypes = [
+        { id: 'worker_crew', baseCost: 5000, costMultiplier: 1.8 },
+        { id: 'geological_survey', baseCost: 8000, costMultiplier: 2.0 },
+        { id: 'advanced_equipment', baseCost: 15000, costMultiplier: 2.2 },
+        { id: 'turbo_boost', baseCost: 3000, costMultiplier: 1.0 },
+        { id: 'automation', baseCost: 20000, costMultiplier: 2.5 }
+      ];
+
+      const boosterType = boosterTypes.find(bt => bt.id === boosterId);
+      if (!boosterType) {
+        return { success: false, error: 'Неизвестный тип бустера' };
+      }
+
+      // Рассчитываем стоимость последнего уровня
+      const lastLevelCost = Math.floor(boosterType.baseCost * Math.pow(boosterType.costMultiplier, existingBooster.level - 1));
+      const refundAmount = Math.floor(lastLevelCost * 0.5); // 50% возврат
+
+      // Удаляем бустер или понижаем уровень
+      if (existingBooster.level === 1) {
+        // Удаляем бустер полностью
+        const { error: deleteError } = await supabase
+          .from('user_boosters')
+          .delete()
+          .eq('id', existingBooster.id);
+
+        if (deleteError) throw deleteError;
+      } else {
+        // Понижаем уровень на 1
+        const { error: updateError } = await supabase
+          .from('user_boosters')
+          .update({ 
+            level: existingBooster.level - 1,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingBooster.id);
+
+        if (updateError) throw updateError;
+      }
+
+      // Возвращаем средства
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: profile.balance + refundAmount })
+        .eq('user_id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      // Перезагружаем данные и пересчитываем доход
+      await loadGameData();
+      
+      setTimeout(async () => {
+        await recalculateDailyIncome();
+      }, 100);
+
+      return { success: true, refundAmount };
+    } catch (error) {
+      console.error('Error canceling booster:', error);
+      return { success: false, error: 'Ошибка при отмене бустера' };
+    }
+  };
+
   return {
     profile,
     wells,
@@ -751,6 +830,7 @@ export function useGameData() {
     upgradeWell,
     addIncome,
     buyBooster,
+    cancelBooster,
     getActiveBoosterMultiplier,
     recalculateDailyIncome,
     reload: loadGameData

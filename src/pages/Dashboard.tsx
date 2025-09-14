@@ -35,7 +35,7 @@ import boostersHero from '@/assets/sections/boosters-hero.jpg';
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
