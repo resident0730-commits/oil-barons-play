@@ -2,10 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Plus, Zap, Sparkles, List, Map } from "lucide-react";
+import { Plus, Zap, Sparkles } from "lucide-react";
 import { UserWell, UserProfile, wellTypes, UserBooster } from "@/hooks/useGameData";
-import { WellsMap } from "./WellsMap";
-import { useState } from "react";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -34,7 +32,6 @@ export const WellsSection = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
     !booster.expires_at || new Date(booster.expires_at) > new Date()
@@ -66,27 +63,6 @@ export const WellsSection = ({
                 <Badge variant="outline">{wells.length}</Badge>
               </div>
             </div>
-            
-            {wells.length > 0 && (
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                >
-                  <List className="h-4 w-4 mr-2" />
-                  Список
-                </Button>
-                <Button
-                  variant={viewMode === 'map' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('map')}
-                >
-                  <Map className="h-4 w-4 mr-2" />
-                  На карте
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -101,18 +77,6 @@ export const WellsSection = ({
             <p className="text-muted-foreground mb-4">Купите свою первую скважину в магазине</p>
           </CardContent>
         </Card>
-      ) : viewMode === 'map' ? (
-        <WellsMap
-          wells={wells}
-          getWellIcon={getWellIcon}
-          getRarityColor={getRarityColor}
-          calculateProfitMetrics={calculateProfitMetrics}
-          formatProfitPercent={formatProfitPercent}
-          boosters={boosters}
-          getActiveBoosterMultiplier={getActiveBoosterMultiplier}
-          onUpgradeWell={onUpgradeWell}
-          profile={profile}
-        />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {wells.map((well) => {
