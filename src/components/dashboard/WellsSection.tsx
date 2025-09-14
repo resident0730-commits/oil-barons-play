@@ -2,8 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Plus, Zap } from "lucide-react";
-import { UserWell, UserProfile, wellTypes } from "@/hooks/useGameData";
+import { Plus, Zap, Sparkles } from "lucide-react";
+import { UserWell, UserProfile, wellTypes, UserBooster } from "@/hooks/useGameData";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -17,6 +17,8 @@ interface WellsSectionProps {
     yearlyPercent: number; 
   };
   formatProfitPercent: (percent: number) => string;
+  boosters: UserBooster[];
+  getActiveBoosterMultiplier: () => number;
 }
 
 export const WellsSection = ({ 
@@ -26,8 +28,14 @@ export const WellsSection = ({
   getWellIcon, 
   getRarityColor, 
   calculateProfitMetrics, 
-  formatProfitPercent 
+  formatProfitPercent,
+  boosters,
+  getActiveBoosterMultiplier
 }: WellsSectionProps) => {
+  const boosterMultiplier = getActiveBoosterMultiplier();
+  const hasActiveBoosters = boosters.some(booster => 
+    !booster.expires_at || new Date(booster.expires_at) > new Date()
+  );
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -42,6 +50,12 @@ export const WellsSection = ({
               <Badge className="gradient-gold text-primary-foreground">
                 {profile.daily_income.toLocaleString()} OC/день
               </Badge>
+              {hasActiveBoosters && (
+                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  +{Math.round((boosterMultiplier - 1) * 100)}%
+                </Badge>
+              )}
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-sm text-muted-foreground">Скважин:</span>
@@ -89,12 +103,23 @@ export const WellsSection = ({
                             Уровень {well.level}
                           </Badge>
                           <Badge variant="outline">{wellType.rarity}</Badge>
+                          {hasActiveBoosters && (
+                            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
+                              <Sparkles className="h-3 w-3 mr-1" />
+                              Усилено
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-lg text-primary">{well.daily_income.toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">OC/день</p>
+                      {hasActiveBoosters && (
+                        <p className="text-xs text-purple-300">
+                          Базовый: {Math.round(well.daily_income / boosterMultiplier).toLocaleString()}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardHeader>

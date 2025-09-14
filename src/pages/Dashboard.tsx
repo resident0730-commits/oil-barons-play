@@ -361,6 +361,8 @@ const Dashboard = () => {
             getRarityColor={getRarityColor}
             calculateProfitMetrics={calculateProfitMetrics}
             formatProfitPercent={formatProfitPercent}
+            boosters={boosters}
+            getActiveBoosterMultiplier={getActiveBoosterMultiplier}
           />
         )}
 
