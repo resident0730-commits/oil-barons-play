@@ -156,10 +156,15 @@ const Dashboard = () => {
     if (!profile?.daily_income) return;
 
     const interval = setInterval(() => {
-      const incomePerInterval = Math.floor(profile.daily_income / 8640);
-      if (incomePerInterval > 0) {
-        const earnedAmount = Math.floor(incomePerInterval * referralMultiplier) - incomePerInterval;
-        addIncome(Math.floor(incomePerInterval * referralMultiplier));
+      // Исправленная формула: дневной доход / (24 часа * 60 минут * 6 интервалов по 10 сек в минуте)
+      // Но используем более точную формулу: дневной доход за 10 секунд = daily_income / (24 * 60 * 6)
+      const incomePerInterval = profile.daily_income / 8640; // 24*60*6 = 8640
+      
+      if (incomePerInterval >= 0.01) { // Начисляем если доход хотя бы 0.01
+        const totalIncome = incomePerInterval * referralMultiplier;
+        const earnedAmount = totalIncome - incomePerInterval;
+        
+        addIncome(totalIncome);
         
         if (earnedAmount > 0) {
           updateReferralEarnings(earnedAmount);
