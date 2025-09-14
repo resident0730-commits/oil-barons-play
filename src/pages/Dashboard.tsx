@@ -6,7 +6,8 @@ import {
   ShoppingCart, 
   Zap,
   Sparkles,
-  Gift
+  Gift,
+  Calendar
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +21,7 @@ import { useSound } from "@/hooks/useSound";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import { CaseSystem } from "@/components/CaseSystem";
+import { DailyChest } from "@/components/DailyChest";
 import { GameSection } from "@/components/GameSection";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
@@ -43,7 +45,7 @@ const Dashboard = () => {
   const sounds = useSound();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily'>('overview');
 
   // Memoized utility functions for performance
   const getWellIcon = useCallback((wellTypeName: string) => {
@@ -331,7 +333,8 @@ const Dashboard = () => {
                 { id: 'wells', label: 'Скважины', icon: Fuel },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart },
                 { id: 'boosters', label: 'Бустеры', icon: Zap },
-                { id: 'cases', label: 'Кейсы', icon: Gift }
+                { id: 'cases', label: 'Кейсы', icon: Gift },
+                { id: 'daily', label: 'Ежедневно', icon: Calendar }
               ].map((section) => (
                 <Button
                   key={section.id}
@@ -398,6 +401,10 @@ const Dashboard = () => {
 
         {activeSection === 'cases' && (
           <CaseSystem />
+        )}
+
+        {activeSection === 'daily' && (
+          <DailyChest />
         )}
       </main>
 

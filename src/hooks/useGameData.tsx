@@ -46,6 +46,20 @@ export interface UserProfile {
   balance: number;
   daily_income: number;
   last_login: string;
+  created_at?: string;
+  updated_at?: string;
+  referral_code?: string;
+  referred_by?: string;
+  referral_bonus_expires_at?: string;
+  status_titles?: string[];
+  is_banned?: boolean;
+  ban_reason?: string;
+  banned_at?: string;
+  banned_by?: string;
+  last_bonus_claim?: string;
+  last_daily_chest_claim?: string;
+  daily_chest_streak?: number;
+  total_daily_chests_opened?: number;
 }
 
 export interface WellPackage {

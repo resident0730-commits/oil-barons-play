@@ -198,16 +198,19 @@ export type Database = {
           banned_at: string | null
           banned_by: string | null
           created_at: string
+          daily_chest_streak: number | null
           daily_income: number
           id: string
           is_banned: boolean
           last_bonus_claim: string | null
+          last_daily_chest_claim: string | null
           last_login: string | null
           nickname: string
           referral_bonus_expires_at: string | null
           referral_code: string | null
           referred_by: string | null
           status_titles: string[] | null
+          total_daily_chests_opened: number | null
           updated_at: string
           user_id: string
         }
@@ -217,16 +220,19 @@ export type Database = {
           banned_at?: string | null
           banned_by?: string | null
           created_at?: string
+          daily_chest_streak?: number | null
           daily_income?: number
           id?: string
           is_banned?: boolean
           last_bonus_claim?: string | null
+          last_daily_chest_claim?: string | null
           last_login?: string | null
           nickname: string
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
           status_titles?: string[] | null
+          total_daily_chests_opened?: number | null
           updated_at?: string
           user_id: string
         }
@@ -236,16 +242,19 @@ export type Database = {
           banned_at?: string | null
           banned_by?: string | null
           created_at?: string
+          daily_chest_streak?: number | null
           daily_income?: number
           id?: string
           is_banned?: boolean
           last_bonus_claim?: string | null
+          last_daily_chest_claim?: string | null
           last_login?: string | null
           nickname?: string
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
           status_titles?: string[] | null
+          total_daily_chests_opened?: number | null
           updated_at?: string
           user_id?: string
         }
