@@ -21,22 +21,22 @@ export interface DailyReward {
 
 const dailyRewards: DailyReward[] = [
   // День 1-7 (Первая неделя)
-  { day: 1, type: 'money', amount: 5000, name: 'Стартовый бонус', description: '5,000 OC', icon: <Coins className="h-6 w-6" />, rarity: 'common' },
-  { day: 2, type: 'money', amount: 7500, name: 'Ежедневная награда', description: '7,500 OC', icon: <Coins className="h-6 w-6" />, rarity: 'common' },
-  { day: 3, type: 'money', amount: 10000, name: 'Тройной бонус', description: '10,000 OC', icon: <Coins className="h-6 w-6" />, rarity: 'rare' },
-  { day: 4, type: 'money', amount: 15000, name: 'Четвертый день', description: '15,000 OC', icon: <Coins className="h-6 w-6" />, rarity: 'rare' },
-  { day: 5, type: 'money', amount: 20000, name: 'Пятничный бонус', description: '20,000 OC', icon: <Coins className="h-6 w-6" />, rarity: 'epic' },
-  { day: 6, type: 'money', amount: 30000, name: 'Выходной бонус', description: '30,000 OC', icon: <Coins className="h-6 w-6" />, rarity: 'epic' },
-  { day: 7, type: 'money', amount: 50000, name: 'Недельный джекпот!', description: '50,000 OC', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 1, type: 'money', amount: 100, name: 'Стартовый бонус', description: '100 OC', icon: <Coins className="h-6 w-6" />, rarity: 'common' },
+  { day: 2, type: 'money', amount: 150, name: 'Ежедневная награда', description: '150 OC', icon: <Coins className="h-6 w-6" />, rarity: 'common' },
+  { day: 3, type: 'money', amount: 200, name: 'Тройной бонус', description: '200 OC', icon: <Coins className="h-6 w-6" />, rarity: 'common' },
+  { day: 4, type: 'money', amount: 300, name: 'Четвертый день', description: '300 OC', icon: <Coins className="h-6 w-6" />, rarity: 'rare' },
+  { day: 5, type: 'money', amount: 400, name: 'Пятничный бонус', description: '400 OC', icon: <Coins className="h-6 w-6" />, rarity: 'rare' },
+  { day: 6, type: 'money', amount: 600, name: 'Выходной бонус', description: '600 OC', icon: <Coins className="h-6 w-6" />, rarity: 'epic' },
+  { day: 7, type: 'money', amount: 800, name: 'Недельный джекпот!', description: '800 OC', icon: <Crown className="h-6 w-6" />, rarity: 'epic' },
   
   // День 8-14 (Вторая неделя - увеличенные награды)
-  { day: 8, type: 'money', amount: 60000, name: 'Второй круг', description: '60,000 OC', icon: <Star className="h-6 w-6" />, rarity: 'epic' },
-  { day: 9, type: 'money', amount: 70000, name: 'Верный игрок', description: '70,000 OC', icon: <Star className="h-6 w-6" />, rarity: 'epic' },
-  { day: 10, type: 'money', amount: 90000, name: 'Десятый день', description: '90,000 OC', icon: <Star className="h-6 w-6" />, rarity: 'legendary' },
-  { day: 11, type: 'money', amount: 110000, name: 'Одиннадцать дней', description: '110,000 OC', icon: <Star className="h-6 w-6" />, rarity: 'legendary' },
-  { day: 12, type: 'money', amount: 130000, name: 'Дюжина дней', description: '130,000 OC', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
-  { day: 13, type: 'money', amount: 150000, name: 'Тринадцать дней', description: '150,000 OC', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
-  { day: 14, type: 'money', amount: 200000, name: 'Двойная неделя!', description: '200,000 OC + Особый бонус!', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 8, type: 'money', amount: 900, name: 'Второй круг', description: '900 OC', icon: <Star className="h-6 w-6" />, rarity: 'epic' },
+  { day: 9, type: 'money', amount: 1000, name: 'Верный игрок', description: '1,000 OC', icon: <Star className="h-6 w-6" />, rarity: 'epic' },
+  { day: 10, type: 'money', amount: 1100, name: 'Десятый день', description: '1,100 OC', icon: <Star className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 11, type: 'money', amount: 1200, name: 'Одиннадцать дней', description: '1,200 OC', icon: <Star className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 12, type: 'money', amount: 1250, name: 'Дюжина дней', description: '1,250 OC', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 13, type: 'money', amount: 1300, name: 'Тринадцать дней', description: '1,300 OC', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
+  { day: 14, type: 'money', amount: 1400, name: 'Двойная неделя!', description: '1,400 OC - Максимальная награда!', icon: <Crown className="h-6 w-6" />, rarity: 'legendary' },
 ];
 
 const getRarityColor = (rarity: string) => {
