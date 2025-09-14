@@ -86,6 +86,13 @@ export const WellsSection = ({
             const isMaxLevel = well.level >= wellType.maxLevel;
             const upgradeProgress = (well.level / wellType.maxLevel) * 100;
             
+            // Calculate upgrade benefits
+            const nextLevelIncome = Math.round(well.daily_income * 1.15);
+            const incomeIncrease = nextLevelIncome - well.daily_income;
+            const nextLevelIncomeWithBoosters = Math.round(nextLevelIncome * boosterMultiplier);
+            const currentIncomeWithBoosters = Math.round(well.daily_income * boosterMultiplier);
+            const boostIncomeIncrease = nextLevelIncomeWithBoosters - currentIncomeWithBoosters;
+            
             const metrics = calculateProfitMetrics(well.daily_income, wellType.price);
 
             return (
@@ -151,9 +158,18 @@ export const WellsSection = ({
                         Максимальный уровень
                       </Badge>
                     ) : (
-                      <div className="text-sm">
-                        <span className="text-muted-foreground">Улучшение: </span>
-                        <span className="font-medium">{upgradeCost.toLocaleString()} OC</span>
+                      <div className="text-sm space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Улучшение:</span>
+                          <span className="font-medium">{upgradeCost.toLocaleString()} OC</span>
+                        </div>
+                        <div className="text-xs text-green-400 space-y-1">
+                          <div>📈 Доход: +{incomeIncrease.toLocaleString()} → {nextLevelIncome.toLocaleString()}</div>
+                          {hasActiveBoosters && (
+                            <div>⚡ С бустерами: +{boostIncomeIncrease.toLocaleString()} → {nextLevelIncomeWithBoosters.toLocaleString()}</div>
+                          )}
+                          <div>💰 Прирост: +15% доходности</div>
+                        </div>
                       </div>
                     )}
                     
