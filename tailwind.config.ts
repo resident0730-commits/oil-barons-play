@@ -103,6 +103,30 @@ export default {
             opacity: "1"
           }
         },
+        "bounce-in": {
+          "0%": {
+            transform: "scale(0.3)",
+            opacity: "0"
+          },
+          "50%": {
+            transform: "scale(1.05)"
+          },
+          "70%": {
+            transform: "scale(0.9)"
+          },
+          "100%": {
+            transform: "scale(1)",
+            opacity: "1"
+          }
+        },
+        "glow-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 5px currentColor"
+          },
+          "50%": {
+            boxShadow: "0 0 20px currentColor, 0 0 30px currentColor"
+          }
+        },
         "gold-glow": {
           "0%": {
             boxShadow: "0 0 20px hsl(45 100% 65% / 0.3)"
@@ -120,6 +144,8 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        "bounce-in": "bounce-in 0.6s ease-out",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "gold-glow": "gold-glow 2s ease-in-out infinite",
       },
     },

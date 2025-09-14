@@ -5,7 +5,8 @@ import {
   BarChart3,
   ShoppingCart, 
   Zap,
-  Sparkles
+  Sparkles,
+  Gift
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -15,8 +16,10 @@ import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
+import { useSound } from "@/hooks/useSound";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
+import { CaseSystem } from "@/components/CaseSystem";
 import { GameSection } from "@/components/GameSection";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
@@ -37,9 +40,10 @@ const Dashboard = () => {
   
   const { toast } = useToast();
   const navigate = useNavigate();
+  const sounds = useSound();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases'>('overview');
 
   // Memoized utility functions for performance
   const getWellIcon = useCallback((wellTypeName: string) => {
@@ -326,7 +330,8 @@ const Dashboard = () => {
                 { id: 'overview', label: 'Обзор', icon: BarChart3 },
                 { id: 'wells', label: 'Скважины', icon: Fuel },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart },
-                { id: 'boosters', label: 'Бустеры', icon: Zap }
+                { id: 'boosters', label: 'Бустеры', icon: Zap },
+                { id: 'cases', label: 'Кейсы', icon: Gift }
               ].map((section) => (
                 <Button
                   key={section.id}
@@ -389,6 +394,10 @@ const Dashboard = () => {
             </div>
             <BoosterShop />
           </div>
+        )}
+
+        {activeSection === 'cases' && (
+          <CaseSystem />
         )}
       </main>
 
