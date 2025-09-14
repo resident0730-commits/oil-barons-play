@@ -39,30 +39,25 @@ const caseTypes: CaseType[] = [
     icon: <Gift className="h-8 w-8" />,
     rarity: 'basic',
     rewards: [
-      {
-        type: 'money',
-        name: 'Бонусные монеты',
-        amount: 2500,
-        rarity: 'common',
-        icon: <Coins className="h-6 w-6" />,
-        description: '2,500 OC'
-      },
-      {
-        type: 'money',
-        name: 'Средний бонус',
-        amount: 7500,
-        rarity: 'rare',
-        icon: <Coins className="h-6 w-6" />,
-        description: '7,500 OC'
-      },
-      {
-        type: 'booster',
-        name: 'Турбо-буст',
-        rarity: 'epic',
-        icon: <Zap className="h-6 w-6" />,
-        description: '+50% дохода на 24 часа',
-        boosterType: 'turbo_boost'
-      }
+      // Common rewards (60%)
+      { type: 'money', name: 'Небольшие монеты', amount: 1500, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '1,500 OC' },
+      { type: 'money', name: 'Карманные деньги', amount: 2000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '2,000 OC' },
+      { type: 'money', name: 'Стартовый капитал', amount: 2500, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '2,500 OC' },
+      { type: 'money', name: 'Базовая прибыль', amount: 3000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '3,000 OC' },
+      { type: 'money', name: 'Простой доход', amount: 3500, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '3,500 OC' },
+      { type: 'money', name: 'Ежедневная касса', amount: 4000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '4,000 OC' },
+      
+      // Rare rewards (25%)
+      { type: 'money', name: 'Неплохая находка', amount: 6000, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '6,000 OC' },
+      { type: 'money', name: 'Удачная сделка', amount: 7500, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '7,500 OC' },
+      { type: 'money', name: 'Выгодный контракт', amount: 9000, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '9,000 OC' },
+      
+      // Epic rewards (12%)
+      { type: 'money', name: 'Крупная сделка', amount: 12000, rarity: 'epic', icon: <Coins className="h-6 w-6" />, description: '12,000 OC' },
+      { type: 'booster', name: 'Мини турбо-буст', rarity: 'epic', icon: <Zap className="h-6 w-6" />, description: '+50% дохода на 12 часов', boosterType: 'turbo_boost' },
+      
+      // Legendary rewards (3%)
+      { type: 'money', name: 'Базовый джекпот!', amount: 20000, rarity: 'legendary', icon: <Star className="h-6 w-6" />, description: '20,000 OC' }
     ]
   },
   {
@@ -73,30 +68,26 @@ const caseTypes: CaseType[] = [
     icon: <Star className="h-8 w-8" />,
     rarity: 'premium',
     rewards: [
-      {
-        type: 'money',
-        name: 'Крупный бонус',
-        amount: 15000,
-        rarity: 'rare',
-        icon: <Coins className="h-6 w-6" />,
-        description: '15,000 OC'
-      },
-      {
-        type: 'booster',
-        name: 'Рабочая бригада',
-        rarity: 'epic',
-        icon: <Zap className="h-6 w-6" />,
-        description: '+10% дохода навсегда',
-        boosterType: 'worker_crew'
-      },
-      {
-        type: 'well',
-        name: 'Премиум скважина',
-        rarity: 'legendary',
-        icon: <Crown className="h-6 w-6" />,
-        description: 'Готовая к работе скважина',
-        wellType: 'Премиум скважина'
-      }
+      // Common rewards (45%)
+      { type: 'money', name: 'Солидная сумма', amount: 12000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '12,000 OC' },
+      { type: 'money', name: 'Хорошая прибыль', amount: 15000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '15,000 OC' },
+      { type: 'money', name: 'Стабильный доход', amount: 18000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '18,000 OC' },
+      { type: 'money', name: 'Премиум бонус', amount: 21000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '21,000 OC' },
+      
+      // Rare rewards (35%)
+      { type: 'money', name: 'Отличная находка', amount: 25000, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '25,000 OC' },
+      { type: 'money', name: 'Ценная сделка', amount: 30000, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '30,000 OC' },
+      { type: 'booster', name: 'Рабочая смена', rarity: 'rare', icon: <Zap className="h-6 w-6" />, description: '+10% дохода навсегда', boosterType: 'worker_crew' },
+      { type: 'money', name: 'Премиум контракт', amount: 35000, rarity: 'rare', icon: <Coins className="h-6 w-6" />, description: '35,000 OC' },
+      
+      // Epic rewards (15%)
+      { type: 'money', name: 'Эпическая прибыль', amount: 45000, rarity: 'epic', icon: <Crown className="h-6 w-6" />, description: '45,000 OC' },
+      { type: 'booster', name: 'Геологическая разведка', rarity: 'epic', icon: <Zap className="h-6 w-6" />, description: '+15% дохода навсегда', boosterType: 'geological_survey' },
+      { type: 'money', name: 'Золотая жила', amount: 55000, rarity: 'epic', icon: <Crown className="h-6 w-6" />, description: '55,000 OC' },
+      
+      // Legendary rewards (5%)
+      { type: 'well', name: 'Премиум скважина', rarity: 'legendary', icon: <Diamond className="h-6 w-6" />, description: 'Готовая к работе скважина', wellType: 'Премиум скважина' },
+      { type: 'money', name: 'Премиум джекпот!', amount: 80000, rarity: 'legendary', icon: <Crown className="h-6 w-6" />, description: '80,000 OC' }
     ]
   },
   {
@@ -107,31 +98,27 @@ const caseTypes: CaseType[] = [
     icon: <Crown className="h-8 w-8" />,
     rarity: 'elite',
     rewards: [
-      {
-        type: 'money',
-        name: 'Огромный бонус',
-        amount: 75000,
-        rarity: 'epic',
-        icon: <Coins className="h-6 w-6" />,
-        description: '75,000 OC'
-      },
-      {
-        type: 'well',
-        name: 'Элитная скважина',
-        rarity: 'legendary',
-        icon: <Diamond className="h-6 w-6" />,
-        description: 'Готовая к работе элитная скважина',
-        wellType: 'Элитная скважина'
-      },
-      {
-        type: 'multiplier',
-        name: 'Супер множитель',
-        amount: 2,
-        rarity: 'legendary',
-        icon: <Sparkles className="h-6 w-6" />,
-        description: 'x2 ко всем доходам на 7 дней',
-        multiplierDuration: 7
-      }
+      // Common rewards (40%)
+      { type: 'money', name: 'Элитная прибыль', amount: 40000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '40,000 OC' },
+      { type: 'money', name: 'VIP бонус', amount: 50000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '50,000 OC' },
+      { type: 'money', name: 'Магнатский доход', amount: 60000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '60,000 OC' },
+      { type: 'money', name: 'Элитная касса', amount: 70000, rarity: 'common', icon: <Coins className="h-6 w-6" />, description: '70,000 OC' },
+      
+      // Rare rewards (30%)
+      { type: 'money', name: 'Крупная инвестиция', amount: 85000, rarity: 'rare', icon: <Star className="h-6 w-6" />, description: '85,000 OC' },
+      { type: 'booster', name: 'Автоматизация', rarity: 'rare', icon: <Zap className="h-6 w-6" />, description: '+20% дохода навсегда', boosterType: 'automation' },
+      { type: 'money', name: 'Золотой резерв', amount: 100000, rarity: 'rare', icon: <Star className="h-6 w-6" />, description: '100,000 OC' },
+      { type: 'money', name: 'Элитный фонд', amount: 120000, rarity: 'rare', icon: <Star className="h-6 w-6" />, description: '120,000 OC' },
+      
+      // Epic rewards (20%)
+      { type: 'money', name: 'Мега-прибыль', amount: 150000, rarity: 'epic', icon: <Crown className="h-6 w-6" />, description: '150,000 OC' },
+      { type: 'well', name: 'Элитная скважина', rarity: 'epic', icon: <Diamond className="h-6 w-6" />, description: 'Готовая к работе элитная скважина', wellType: 'Элитная скважина' },
+      { type: 'booster', name: 'Продвинутое оборудование', rarity: 'epic', icon: <Zap className="h-6 w-6" />, description: '+25% дохода навсегда', boosterType: 'advanced_equipment' },
+      
+      // Legendary rewards (10%)
+      { type: 'money', name: 'Космический джекпот!', amount: 250000, rarity: 'legendary', icon: <Diamond className="h-6 w-6" />, description: '250,000 OC' },
+      { type: 'multiplier', name: 'Супер множитель', amount: 2, rarity: 'legendary', icon: <Sparkles className="h-6 w-6" />, description: 'x2 ко всем доходам на 3 дня', multiplierDuration: 3 },
+      { type: 'well', name: 'Легендарная скважина', rarity: 'legendary', icon: <Diamond className="h-6 w-6" />, description: 'Готовая легендарная скважина', wellType: 'Легендарная скважина' }
     ]
   }
 ];
@@ -186,22 +173,47 @@ export const CaseSystem = () => {
     
     // Анимация открытия
     setTimeout(() => {
-      // Определяем награду по вероятности
-      const rand = Math.random();
+      // Улучшенный алгоритм определения награды
+      const allRewards = caseType.rewards;
+      const commonRewards = allRewards.filter(r => r.rarity === 'common');
+      const rareRewards = allRewards.filter(r => r.rarity === 'rare');
+      const epicRewards = allRewards.filter(r => r.rarity === 'epic');
+      const legendaryRewards = allRewards.filter(r => r.rarity === 'legendary');
+      
+      const rand = Math.random() * 100;
       let reward: CaseReward;
       
-      if (rand < 0.05) { // 5% - legendary
-        const legendaryRewards = caseType.rewards.filter(r => r.rarity === 'legendary');
-        reward = legendaryRewards[Math.floor(Math.random() * legendaryRewards.length)] || caseType.rewards[0];
-      } else if (rand < 0.20) { // 15% - epic
-        const epicRewards = caseType.rewards.filter(r => r.rarity === 'epic');
-        reward = epicRewards[Math.floor(Math.random() * epicRewards.length)] || caseType.rewards[0];
-      } else if (rand < 0.50) { // 30% - rare
-        const rareRewards = caseType.rewards.filter(r => r.rarity === 'rare');
-        reward = rareRewards[Math.floor(Math.random() * rareRewards.length)] || caseType.rewards[0];
-      } else { // 50% - common
-        const commonRewards = caseType.rewards.filter(r => r.rarity === 'common');
-        reward = commonRewards[Math.floor(Math.random() * commonRewards.length)] || caseType.rewards[0];
+      // Настроенные вероятности для каждого кейса
+      if (caseType.id === 'basic_case') {
+        if (rand < 3 && legendaryRewards.length > 0) { // 3% legendary
+          reward = legendaryRewards[Math.floor(Math.random() * legendaryRewards.length)];
+        } else if (rand < 15 && epicRewards.length > 0) { // 12% epic
+          reward = epicRewards[Math.floor(Math.random() * epicRewards.length)];
+        } else if (rand < 40 && rareRewards.length > 0) { // 25% rare
+          reward = rareRewards[Math.floor(Math.random() * rareRewards.length)];
+        } else { // 60% common
+          reward = commonRewards[Math.floor(Math.random() * commonRewards.length)];
+        }
+      } else if (caseType.id === 'premium_case') {
+        if (rand < 5 && legendaryRewards.length > 0) { // 5% legendary
+          reward = legendaryRewards[Math.floor(Math.random() * legendaryRewards.length)];
+        } else if (rand < 20 && epicRewards.length > 0) { // 15% epic
+          reward = epicRewards[Math.floor(Math.random() * epicRewards.length)];
+        } else if (rand < 55 && rareRewards.length > 0) { // 35% rare
+          reward = rareRewards[Math.floor(Math.random() * rareRewards.length)];
+        } else { // 45% common
+          reward = commonRewards[Math.floor(Math.random() * commonRewards.length)];
+        }
+      } else { // elite_case
+        if (rand < 10 && legendaryRewards.length > 0) { // 10% legendary
+          reward = legendaryRewards[Math.floor(Math.random() * legendaryRewards.length)];
+        } else if (rand < 30 && epicRewards.length > 0) { // 20% epic
+          reward = epicRewards[Math.floor(Math.random() * epicRewards.length)];
+        } else if (rand < 60 && rareRewards.length > 0) { // 30% rare
+          reward = rareRewards[Math.floor(Math.random() * rareRewards.length)];
+        } else { // 40% common
+          reward = commonRewards[Math.floor(Math.random() * commonRewards.length)];
+        }
       }
 
       // Звук получения награды
@@ -302,18 +314,34 @@ export const CaseSystem = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Возможные награды:</div>
-                  <div className="grid grid-cols-3 gap-1 text-xs">
+                  <div className="text-sm font-medium">Шансы выпадения:</div>
+                  <div className="grid grid-cols-4 gap-1 text-xs">
                     <div className="text-center">
-                      <div className="text-gray-400">50%</div>
+                      <div className="text-gray-400">
+                        {caseType.id === 'basic_case' ? '60%' : 
+                         caseType.id === 'premium_case' ? '45%' : '40%'}
+                      </div>
                       <div className="text-gray-300">Обычные</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-purple-400">20%</div>
-                      <div className="text-purple-300">Редкие+</div>
+                      <div className="text-blue-400">
+                        {caseType.id === 'basic_case' ? '25%' : 
+                         caseType.id === 'premium_case' ? '35%' : '30%'}
+                      </div>
+                      <div className="text-blue-300">Редкие</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-yellow-400">5%</div>
+                      <div className="text-purple-400">
+                        {caseType.id === 'basic_case' ? '12%' : 
+                         caseType.id === 'premium_case' ? '15%' : '20%'}
+                      </div>
+                      <div className="text-purple-300">Эпич.</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-yellow-400">
+                        {caseType.id === 'basic_case' ? '3%' : 
+                         caseType.id === 'premium_case' ? '5%' : '10%'}
+                      </div>
                       <div className="text-yellow-300">Легенд.</div>
                     </div>
                   </div>
