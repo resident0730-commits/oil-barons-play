@@ -9,7 +9,7 @@ import {
   Target,
   Users
 } from "lucide-react";
-import { UserProfile, UserWell } from "@/hooks/useGameData";
+import { UserProfile, UserWell, wellTypes } from "@/hooks/useGameData";
 import { StatusDisplay } from "@/components/StatusDisplay";
 import { DailyBonus } from "@/components/DailyBonus";
 
@@ -20,9 +20,21 @@ interface OverviewSectionProps {
 }
 
 export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionProps) => {
+  // Правильный расчет общей стоимости активов
   const totalWellsValue = wells.reduce((total, well) => {
-    // Assuming base price for calculation, you might want to pass wellTypes here
-    return total + 1000; // Simplified calculation
+    const wellType = wellTypes.find(wt => wt.name === well.well_type);
+    if (!wellType) return total;
+    
+    // Базовая стоимость скважины
+    let wellValue = wellType.price;
+    
+    // Добавляем стоимость улучшений (каждый уровень стоит по формуле)
+    for (let level = 1; level < well.level; level++) {
+      const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, level - 1));
+      wellValue += upgradeCost;
+    }
+    
+    return total + wellValue;
   }, 0);
 
   const averageDailyPerWell = wells.length > 0 ? Math.round(profile.daily_income / wells.length) : 0;
@@ -112,9 +124,19 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
               <span className="font-medium">{totalWellsValue.toLocaleString()} OC</span>
             </div>
             <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Рыночная стоимость:</span>
+              <span className="font-medium text-green-600">{Math.round(totalWellsValue * 0.8).toLocaleString()} OC</span>
+            </div>
+            <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">ROI в месяц:</span>
               <span className="font-medium text-primary">
                 {totalWellsValue > 0 ? `${Math.round((profile.daily_income * 30 / totalWellsValue) * 100)}%` : '0%'}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">Окупаемость:</span>
+              <span className="font-medium text-blue-600">
+                {profile.daily_income > 0 ? `${Math.round(totalWellsValue / profile.daily_income)} дней` : '∞'}
               </span>
             </div>
           </CardContent>
