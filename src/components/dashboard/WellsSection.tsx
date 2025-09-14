@@ -113,11 +113,11 @@ export const WellsSection = ({
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-lg text-primary">{well.daily_income.toLocaleString()}</p>
+                      <p className="font-bold text-lg text-primary">{Math.round(well.daily_income * boosterMultiplier).toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">OC/день</p>
                       {hasActiveBoosters && (
                         <p className="text-xs text-purple-300">
-                          Базовый: {Math.round(well.daily_income / boosterMultiplier).toLocaleString()}
+                          Базовая: {well.daily_income.toLocaleString()}
                         </p>
                       )}
                     </div>
@@ -127,7 +127,7 @@ export const WellsSection = ({
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="text-center p-2 bg-muted/50 rounded">
-                      <p className="font-medium">{metrics.monthlyIncome.toLocaleString()}</p>
+                      <p className="font-medium">{Math.round(well.daily_income * boosterMultiplier * 30).toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">в месяц</p>
                     </div>
                     <div className="text-center p-2 bg-primary/10 rounded">
