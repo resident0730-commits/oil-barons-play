@@ -461,65 +461,118 @@ export function useGameData() {
   }, [user?.id, statusMultiplier, calculateBoosterMultiplier]);
 
   const loadGameData = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      // Load profile
-      const { data: profileData } = await supabase
+      console.log('🔍 Loading game data for user:', user.id);
+      
+      // Set timeout for mobile devices
+      const timeoutId = setTimeout(() => {
+        console.warn('⚠️ Data loading timeout, showing cached data');
+        setLoading(false);
+      }, 10000); // 10 second timeout
+
+      // Load profile with timeout
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
 
-      console.log('🔍 Loading game data for user:', user.id);
+      clearTimeout(timeoutId);
 
-      if (profileData) {
+      if (profileError) {
+        console.error('❌ Profile loading error:', profileError);
+        setProfile(null);
+      } else if (profileData) {
         console.log('👤 Profile loaded:', profileData);
-        // Calculate and add offline income
+        
+        // Calculate and add offline income (non-blocking)
         if (profileData.last_login && profileData.daily_income > 0) {
-          await calculateOfflineIncome(profileData);
+          try {
+            await calculateOfflineIncome(profileData);
+          } catch (error) {
+            console.error('Offline income error:', error);
+          }
         }
 
-        // Update last_login to current time
-        await supabase
-          .from('profiles')
-          .update({ last_login: new Date().toISOString() })
-          .eq('user_id', user.id);
+        // Update last_login to current time (non-blocking)
+        try {
+          await supabase
+            .from('profiles')
+            .update({ last_login: new Date().toISOString() })
+            .eq('user_id', user.id);
+          console.log('✅ Last login updated');
+        } catch (error) {
+          console.error('Last login update error:', error);
+        }
 
         setProfile(profileData);
       } else {
+        console.log('❌ No profile found, user needs setup');
         setProfile(null);
       }
 
-      // Load wells
-      const { data: wellsData } = await supabase
-        .from('wells')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      // Load wells with timeout protection
+      try {
+        const { data: wellsData, error: wellsError } = await supabase
+          .from('wells')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
 
-      console.log('⚡ Wells loaded:', wellsData?.length || 0, wellsData);
-      setWells(wellsData || []);
+        if (wellsError) {
+          console.error('❌ Wells loading error:', wellsError);
+          setWells([]);
+        } else {
+          console.log('⚡ Wells loaded:', wellsData?.length || 0, wellsData);
+          setWells(wellsData || []);
+        }
+      } catch (error) {
+        console.error('❌ Wells loading failed:', error);
+        setWells([]);
+      }
 
-      // Load boosters
-      const { data: boostersData } = await supabase
-        .from('user_boosters')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      // Load boosters with timeout protection
+      try {
+        const { data: boostersData, error: boostersError } = await supabase
+          .from('user_boosters')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
 
-      console.log('🚀 Boosters loaded:', boostersData?.length || 0, boostersData);
-      setBoosters(boostersData || []);
+        if (boostersError) {
+          console.error('❌ Boosters loading error:', boostersError);
+          setBoosters([]);
+        } else {
+          console.log('🚀 Boosters loaded:', boostersData?.length || 0, boostersData);
+          setBoosters(boostersData || []);
+        }
+      } catch (error) {
+        console.error('❌ Boosters loading failed:', error);
+        setBoosters([]);
+      }
 
-      // Recalculate daily income to ensure it's accurate
+      // Recalculate daily income to ensure it's accurate (non-blocking)
       setTimeout(() => {
-        recalculateDailyIncome();
+        try {
+          recalculateDailyIncome();
+        } catch (error) {
+          console.error('❌ Daily income recalculation error:', error);
+        }
       }, 100);
 
     } catch (error) {
-      console.error('Error loading game data:', error);
+      console.error('❌ Fatal error loading game data:', error);
+      setProfile(null);
+      setWells([]);
+      setBoosters([]);
     } finally {
       setLoading(false);
+      console.log('✅ Game data loading completed');
     }
   }, [user?.id, recalculateDailyIncome, calculateOfflineIncome]);
 

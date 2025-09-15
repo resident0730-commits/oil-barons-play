@@ -47,6 +47,17 @@ const Dashboard = () => {
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily'>('overview');
 
+  // Если нет профиля, но есть пользователь - создаем базовый профиль для отображения
+  const currentProfile = profile || {
+    id: '',
+    user_id: user?.id || '',
+    nickname: user?.user_metadata?.nickname || 'Игрок',
+    balance: 1000,
+    daily_income: 0,
+    last_login: new Date().toISOString(),
+    created_at: new Date().toISOString()
+  };
+
   // Memoized utility functions for performance
   const getWellIcon = useCallback((wellTypeName: string) => {
     const wellType = wellTypes.find(wt => wt.name === wellTypeName);
@@ -105,16 +116,16 @@ const Dashboard = () => {
 
   // Check for offline income and show notification
   useEffect(() => {
-    if (!profile || !profile.last_login) return;
+    if (!currentProfile || !currentProfile.last_login) return;
     
     const now = new Date();
-    const lastLogin = new Date(profile.last_login);
+    const lastLogin = new Date(currentProfile.last_login);
     const offlineTimeMs = now.getTime() - lastLogin.getTime();
     
     // If user was offline for more than 1 minute and has daily income
-    if (offlineTimeMs > 60000 && profile.daily_income > 0) {
+    if (offlineTimeMs > 60000 && currentProfile.daily_income > 0) {
       const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24);
-      const hourlyIncome = Math.floor(profile.daily_income / 24);
+      const hourlyIncome = Math.floor(currentProfile.daily_income / 24);
       const offlineIncome = hourlyIncome * Math.floor(offlineHours);
       
       if (offlineIncome > 0) {
@@ -125,24 +136,24 @@ const Dashboard = () => {
         });
       }
     }
-  }, [profile?.last_login, toast]);
+  }, [currentProfile?.last_login, toast]);
 
   // Проверка достижений при изменении профиля, скважин или бустеров
   useEffect(() => {
-    if (profile && wells.length >= 0 && boosters) {
+    if (currentProfile && wells.length >= 0 && boosters) {
       const timeoutId = setTimeout(() => {
         checkAchievements();
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, [profile?.balance, wells.length, boosters?.length, checkAchievements]);
+  }, [currentProfile?.balance, wells.length, boosters?.length, checkAchievements]);
 
   // Инициализация стартового баланса для новых игроков
   useEffect(() => {
-    if (profile && profile.balance === 0 && wells.length === 0) {
+    if (currentProfile && currentProfile.balance === 0 && wells.length === 0) {
       addIncome(1000);
     }
-  }, [profile?.balance, wells.length, addIncome]);
+  }, [currentProfile?.balance, wells.length, addIncome]);
 
   // Redirect to auth if not logged in
   useEffect(() => {
@@ -153,12 +164,12 @@ const Dashboard = () => {
 
   // Simulate income generation every 10 seconds
   useEffect(() => {
-    if (!profile?.daily_income) return;
+    if (!currentProfile?.daily_income) return;
 
     const interval = setInterval(() => {
       // Исправленная формула: дневной доход / (24 часа * 60 минут * 6 интервалов по 10 сек в минуте)
       // Но используем более точную формулу: дневной доход за 10 секунд = daily_income / (24 * 60 * 6)
-      const incomePerInterval = profile.daily_income / 8640; // 24*60*6 = 8640
+      const incomePerInterval = currentProfile.daily_income / 8640; // 24*60*6 = 8640
       
       if (incomePerInterval >= 0.01) { // Начисляем если доход хотя бы 0.01
         const totalIncome = incomePerInterval * referralMultiplier;
@@ -173,14 +184,14 @@ const Dashboard = () => {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [profile?.daily_income, referralMultiplier, addIncome, updateReferralEarnings]);
+  }, [currentProfile?.daily_income, referralMultiplier, addIncome, updateReferralEarnings]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
-    if (profile.balance < wellType.price) {
+    if (currentProfile.balance < wellType.price) {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки "${wellType.name}" нужно ${wellType.price.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
+        description: `Для покупки "${wellType.name}" нужно ${wellType.price.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -202,11 +213,11 @@ const Dashboard = () => {
   };
 
   const handleBuyPackage = async (wellPackage: typeof wellPackages[0]) => {
-    if (profile.balance < wellPackage.discountedPrice) {
+    if (currentProfile.balance < wellPackage.discountedPrice) {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки пакета "${wellPackage.name}" нужно ${wellPackage.discountedPrice.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
+        description: `Для покупки пакета "${wellPackage.name}" нужно ${wellPackage.discountedPrice.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -232,11 +243,11 @@ const Dashboard = () => {
     const wellType = wellTypes.find(wt => wt.name === well?.well_type);
     const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * Math.pow(1.2, (well?.level || 1) - 1));
     
-    if (profile.balance < upgradeCost) {
+    if (currentProfile.balance < upgradeCost) {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для улучшения нужно ${upgradeCost.toLocaleString()} OC. У вас ${profile.balance.toLocaleString()} OC`,
+        description: `Для улучшения нужно ${upgradeCost.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
         variant: "destructive"
       });
       return;
@@ -328,12 +339,16 @@ const Dashboard = () => {
     }
   };
 
-  if (loading || !user || !profile) {
+  if (loading || !user) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Fuel className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
-          <p>Загрузка игры...</p>
+        <div className="text-center space-y-4">
+          <Fuel className="h-12 w-12 text-primary mx-auto animate-pulse" />
+          <div className="space-y-2">
+            <p className="text-lg font-medium">Загрузка игры...</p>
+            {!user && <p className="text-sm text-muted-foreground">Проверка авторизации</p>}
+            {user && !profile && <p className="text-sm text-muted-foreground">Загрузка профиля</p>}
+          </div>
         </div>
       </div>
     );
@@ -342,7 +357,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen dashboard-light-bg">
       <DashboardHeader 
-        profile={profile} 
+        profile={currentProfile} 
         isAdmin={isAdmin} 
         onTopUpClick={() => setIsTopUpOpen(true)}
         onSignOut={handleSignOut}
@@ -381,16 +396,16 @@ const Dashboard = () => {
         {/* Dynamic Content */}
         {activeSection === 'overview' && (
           <OverviewSection 
-            profile={profile} 
+            profile={currentProfile} 
             wells={wells} 
-            playerRank={getPlayerRank(profile.nickname)} 
+            playerRank={getPlayerRank(currentProfile.nickname)} 
           />
         )}
 
         {activeSection === 'wells' && (
           <WellsSection
             wells={wells}
-            profile={profile}
+            profile={currentProfile}
             onUpgradeWell={handleUpgradeWell}
             getWellIcon={getWellIcon}
             getRarityColor={getRarityColor}
@@ -403,7 +418,7 @@ const Dashboard = () => {
 
         {activeSection === 'shop' && (
           <ShopSection
-            profile={profile}
+            profile={currentProfile}
             onBuyWell={handleBuyWell}
             onBuyPackage={handleBuyPackage}
             getWellIcon={getWellIcon}
