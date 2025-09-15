@@ -223,6 +223,10 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                       <Button 
                         className="w-full gradient-gold text-primary-foreground"
                         disabled={topUpLoading}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Предотвращаем двойной клик
+                          handlePackageSelect(pkg);
+                        }}
                       >
                         {topUpLoading ? 'Обработка...' : 'Выбрать'}
                       </Button>
