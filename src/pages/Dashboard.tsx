@@ -142,7 +142,7 @@ const Dashboard = () => {
     if (profile && profile.balance === 0 && wells.length === 0) {
       addIncome(1000);
     }
-  }, [profile, wells]);
+  }, [profile?.balance, wells.length, addIncome]);
 
   // Redirect to auth if not logged in
   useEffect(() => {

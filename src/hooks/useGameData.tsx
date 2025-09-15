@@ -62,199 +62,185 @@ export interface UserProfile {
   total_daily_chests_opened?: number;
 }
 
-export interface WellPackage {
-  name: string;
-  description: string;
-  wells: { type: string; count: number }[];
-  originalPrice: number;
-  discountedPrice: number;
-  discount: number;
-  icon: string;
-  image: string;
-  rarity: 'starter' | 'growth' | 'business' | 'empire';
-  totalDailyIncome: number;
-}
-
-export interface BoosterType {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  effect: string;
-  maxLevel: number;
-  baseCost: number;
-  costMultiplier: number;
-  bonusPerLevel: number;
-  duration: number | null; // null = permanent, number = milliseconds
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'temporary';
-}
-
 export interface UserBooster {
   id: string;
   user_id: string;
   booster_type: string;
   level: number;
-  expires_at: string | null;
+  expires_at?: string;
   created_at: string;
   updated_at: string;
 }
 
+export interface PackageType {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  wells: { wellType: WellType; quantity: number; }[];
+  bonuses: { type: string; value: number; duration?: number; }[];
+  badge?: string;
+  popular?: boolean;
+  image: string;
+}
+
 export const wellTypes: WellType[] = [
-  { 
-    name: "Мини-скважина",
-    description: "Ваш первый шаг в нефтяную империю! Компактная скважина с базовой системой добычи, идеальная для изучения основ нефтяного бизнеса.", 
-    baseIncome: 100, 
-    price: 1000, 
-    maxLevel: 5, 
-    icon: "🌱", 
+  {
+    name: 'Mini Well',
+    description: 'Маленькая скважина для новичков',
+    baseIncome: 50,
+    price: 500,
+    maxLevel: 5,
+    icon: '⛽',
     image: miniWellImg,
     rarity: 'common'
   },
-  { 
-    name: "Стартовая скважина",
-    description: "Надёжная рабочая лошадка нефтедобычи. Проверенные технологии и стабильная производительность обеспечивают постоянный поток нефти.", 
-    baseIncome: 220, 
-    price: 2000, 
-    maxLevel: 10, 
-    icon: "🔸", 
+  {
+    name: 'Starter Well',
+    description: 'Стартовая скважина среднего размера',
+    baseIncome: 150,
+    price: 2000,
+    maxLevel: 8,
+    icon: '🛢️',
     image: starterWellImg,
     rarity: 'common'
   },
-  { 
-    name: "Средняя скважина",
-    description: "Баланс мощности и эффективности! Усовершенствованная система бурения позволяет добывать нефть с больших глубин и увеличенной производительностью.", 
-    baseIncome: 360, 
-    price: 3000, 
-    maxLevel: 15, 
-    icon: "⚡", 
+  {
+    name: 'Medium Well',
+    description: 'Средняя скважина с хорошим доходом',
+    baseIncome: 350,
+    price: 8000,
+    maxLevel: 10,
+    icon: '⛽',
     image: mediumWellImg,
-    rarity: 'common'
-  },
-  { 
-    name: "Промышленная скважина",
-    description: "Серьёзная промышленная установка с мощным буровым оборудованием. Способна работать в сложных геологических условиях и приносить солидную прибыль.", 
-    baseIncome: 650, 
-    price: 5000, 
-    maxLevel: 20, 
-    icon: "🏭", 
-    image: industrialWellImg,
     rarity: 'uncommon'
   },
-  { 
-    name: "Супер скважина",
-    description: "Технологический прорыв в нефтедобыче! Инновационные алмазные буры и системы очистки обеспечивают невероятную эффективность добычи.", 
-    baseIncome: 1120, 
-    price: 8000, 
-    maxLevel: 25, 
-    icon: "💎", 
-    image: superWellImg,
+  {
+    name: 'Industrial Well',
+    description: 'Промышленная скважина с высокой производительностью',
+    baseIncome: 800,
+    price: 25000,
+    maxLevel: 12,
+    icon: '🏭',
+    image: industrialWellImg,
     rarity: 'rare'
   },
-  { 
-    name: "Премиум скважина",
-    description: "Элитное оборудование для королей нефти! Золотые компоненты, кристаллические фильтры и роботизированная система управления максимизируют добычу.", 
-    baseIncome: 1800, 
-    price: 12000, 
-    maxLevel: 30, 
-    icon: "👑", 
+  {
+    name: 'Super Well',
+    description: 'Супер скважина с отличным доходом',
+    baseIncome: 1500,
+    price: 75000,
+    maxLevel: 15,
+    icon: '⚡',
+    image: superWellImg,
+    rarity: 'epic'
+  },
+  {
+    name: 'Premium Well',
+    description: 'Премиум скважина для продвинутых игроков',
+    baseIncome: 3000,
+    price: 200000,
+    maxLevel: 18,
+    icon: '💎',
     image: premiumWellImg,
     rarity: 'epic'
   },
-  { 
-    name: "Элитная скважина",
-    description: "Эксклюзивная технология добычи с квантовыми резонаторами! Способна извлекать нефть из самых труднодоступных месторождений с феноменальной скоростью.", 
-    baseIncome: 2880, 
-    price: 18000, 
-    maxLevel: 35, 
-    icon: "💠", 
+  {
+    name: 'Elite Well',
+    description: 'Элитная скважина с превосходной производительностью',
+    baseIncome: 6000,
+    price: 500000,
+    maxLevel: 20,
+    icon: '👑',
     image: eliteWellImg,
-    rarity: 'epic'
+    rarity: 'legendary'
   },
-  { 
-    name: "Легендарная скважина",
-    description: "Легендарное произведение инженерного искусства! Использует магические кристаллы для усиления добычи и создаёт поистине невероятные объёмы нефти.", 
-    baseIncome: 4590, 
-    price: 27000, 
-    maxLevel: 40, 
-    icon: "🌟", 
+  {
+    name: 'Legendary Well',
+    description: 'Легендарная скважина - венец инженерной мысли',
+    baseIncome: 12000,
+    price: 1200000,
+    maxLevel: 25,
+    icon: '🌟',
     image: legendaryWellImg,
     rarity: 'legendary'
   },
-  { 
-    name: "Космическая скважина",
-    description: "Футуристическая установка из другого измерения! Антигравитационные буры, нано-фильтры и энергия звёзд позволяют добывать нефть с космической скоростью!", 
-    baseIncome: 7200, 
-    price: 40000, 
-    maxLevel: 50, 
-    icon: "🚀", 
+  {
+    name: 'Cosmic Well',
+    description: 'Космическая скважина - технология будущего',
+    baseIncome: 25000,
+    price: 5000000,
+    maxLevel: 30,
+    icon: '🚀',
     image: cosmicWellImg,
     rarity: 'mythic'
   }
 ];
 
-export const wellPackages: WellPackage[] = [
+export const packageTypes: PackageType[] = [
   {
-    name: "Стартовый пакет",
-    description: "Идеально для новичков",
+    id: 'starter',
+    name: 'Стартовый пакет',
+    description: 'Отличный выбор для начинающих нефтяных магнатов',
+    price: 15000,
     wells: [
-      { type: "Мини-скважина", count: 3 },
-      { type: "Стартовая скважина", count: 1 }
+      { wellType: wellTypes[1], quantity: 2 }, // Starter Well x2
+      { wellType: wellTypes[2], quantity: 1 }  // Medium Well x1
     ],
-    originalPrice: 5000,
-    discountedPrice: 3800,
-    discount: 24,
-    icon: "🎯",
-    image: starterPackageImg,
-    rarity: 'starter',
-    totalDailyIncome: 520 // 3*100 + 1*220
+    bonuses: [
+      { type: 'balance', value: 5000 }
+    ],
+    badge: '+5000 OC',
+    image: starterPackageImg
   },
   {
-    name: "Пакет роста",
-    description: "Для активного развития",
+    id: 'growth',
+    name: 'Пакет роста',
+    description: 'Ускоренное развитие вашего нефтяного бизнеса',
+    price: 75000,
     wells: [
-      { type: "Стартовая скважина", count: 2 },
-      { type: "Средняя скважина", count: 2 },
-      { type: "Промышленная скважина", count: 1 }
+      { wellType: wellTypes[2], quantity: 3 }, // Medium Well x3
+      { wellType: wellTypes[3], quantity: 1 }  // Industrial Well x1
     ],
-    originalPrice: 16000,
-    discountedPrice: 12500,
-    discount: 22,
-    icon: "📈",
-    image: growthPackageImg,
-    rarity: 'growth',
-    totalDailyIncome: 1450 // 2*220 + 2*360 + 1*650
+    bonuses: [
+      { type: 'balance', value: 15000 },
+      { type: 'booster', value: 1, duration: 7 * 24 * 60 * 60 * 1000 } // 7 дней
+    ],
+    badge: 'Популярный',
+    popular: true,
+    image: growthPackageImg
   },
   {
-    name: "Бизнес пакет",
-    description: "Для серьезного бизнеса",
+    id: 'business',
+    name: 'Бизнес пакет',
+    description: 'Профессиональный набор для серьезных инвесторов',
+    price: 300000,
     wells: [
-      { type: "Промышленная скважина", count: 3 },
-      { type: "Супер скважина", count: 2 },
-      { type: "Премиум скважина", count: 1 }
+      { wellType: wellTypes[3], quantity: 2 }, // Industrial Well x2
+      { wellType: wellTypes[4], quantity: 2 }  // Super Well x2
     ],
-    originalPrice: 55000,
-    discountedPrice: 42000,
-    discount: 24,
-    icon: "💼",
-    image: businessPackageImg,
-    rarity: 'business',
-    totalDailyIncome: 6040 // 3*650 + 2*1120 + 1*1800
+    bonuses: [
+      { type: 'balance', value: 50000 },
+      { type: 'booster', value: 2, duration: 14 * 24 * 60 * 60 * 1000 } // 14 дней
+    ],
+    badge: '+50000 OC',
+    image: businessPackageImg
   },
   {
-    name: "Империя",
-    description: "Для нефтяных магнатов",
+    id: 'empire',
+    name: 'Имперский пакет',
+    description: 'Максимальная мощность для создания нефтяной империи',
+    price: 1000000,
     wells: [
-      { type: "Премиум скважина", count: 2 },
-      { type: "Элитная скважина", count: 2 },
-      { type: "Легендарная скважина", count: 1 }
+      { wellType: wellTypes[5], quantity: 2 }, // Premium Well x2
+      { wellType: wellTypes[6], quantity: 1 }  // Elite Well x1
     ],
-    originalPrice: 96000,
-    discountedPrice: 72000,
-    discount: 25,
-    icon: "👑",
-    image: empirePackageImg,
-    rarity: 'empire',
-    totalDailyIncome: 13950 // 2*1800 + 2*2880 + 1*4590
+    bonuses: [
+      { type: 'balance', value: 200000 },
+      { type: 'booster', value: 3, duration: 30 * 24 * 60 * 60 * 1000 } // 30 дней
+    ],
+    badge: 'Премиум',
+    image: empirePackageImg
   }
 ];
 
@@ -266,89 +252,7 @@ export function useGameData() {
   const [boosters, setBoosters] = useState<UserBooster[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load user data
-  useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    loadGameData();
-  }, [user]);
-
-  const loadGameData = async () => {
-    if (!user) return;
-
-    try {
-      // Load profile
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      console.log('🔍 Loading game data for user:', user.id);
-
-      if (profileData) {
-        console.log('👤 Profile loaded:', profileData);
-        // Calculate and add offline income
-        if (profileData.last_login && profileData.daily_income > 0) {
-          await calculateOfflineIncome(profileData);
-        }
-
-        // Update last_login to current time
-        await supabase
-          .from('profiles')
-          .update({ last_login: new Date().toISOString() })
-          .eq('user_id', user.id);
-
-        // Reload profile to get updated balance after offline income calculation
-        const { data: updatedProfile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        setProfile(updatedProfile || profileData);
-      }
-
-      // Load wells
-      const { data: wellsData } = await supabase
-        .from('wells')
-        .select('*')
-        .eq('user_id', user.id);
-
-      console.log('🏭 Wells loaded:', wellsData?.length || 0, wellsData);
-
-      if (wellsData) {
-        setWells(wellsData);
-      }
-
-      // Load boosters
-      const { data: boostersData } = await supabase
-        .from('user_boosters')
-        .select('*')
-        .eq('user_id', user.id);
-
-      console.log('🚀 Boosters loaded:', boostersData?.length || 0, boostersData);
-
-      if (boostersData) {
-        setBoosters(boostersData);
-      }
-
-      // Recalculate daily income to ensure it's accurate
-      setTimeout(() => {
-        recalculateDailyIncome();
-      }, 100);
-
-    } catch (error) {
-      console.error('Error loading game data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calculateOfflineIncome = async (profileData: UserProfile) => {
+  const calculateOfflineIncome = useCallback(async (profileData: UserProfile) => {
     if (!user) return;
 
     const now = new Date();
@@ -370,331 +274,41 @@ export function useGameData() {
     const offlineIncome = hourlyIncome * Math.floor(offlineHours);
     
     console.log('💰 Hourly income:', hourlyIncome);
-    console.log('🎯 Offline income calculated:', offlineIncome);
+    console.log('💰 Offline income:', offlineIncome);
     
-    if (offlineIncome > 0) {
-      // Offline income calculated successfully
-      
-      // Add offline income to balance
-      const newBalance = profileData.balance + offlineIncome;
-      
+    if (offlineIncome > 10) { // Minimum 10 OC to add
       const { error } = await supabase
         .from('profiles')
-        .update({ balance: newBalance })
+        .update({ balance: profileData.balance + offlineIncome })
         .eq('user_id', user.id);
         
       if (!error) {
-        console.log('✅ Offline income added:', offlineIncome, 'New balance:', newBalance);
-        setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
-        
-        // Offline income successfully added
-      } else {
-        console.error('❌ Error updating balance:', error);
+        profileData.balance += offlineIncome;
+        console.log('✅ Added offline income:', offlineIncome, 'New balance:', profileData.balance);
       }
     }
-  };
+  }, [user?.id]);
 
-  const buyWell = async (wellType: WellType) => {
-    if (!user || !profile) return { success: false, error: 'Не авторизован' };
-
-    if (profile.balance < wellType.price) {
-      return { success: false, error: 'Недостаточно средств' };
-    }
-
-    try {
-      // Insert new well
-      const { data: newWell, error: wellError } = await supabase
-        .from('wells')
-        .insert({
-          user_id: user.id,
-          well_type: wellType.name,
-          level: 1,
-          daily_income: wellType.baseIncome
-        })
-        .select()
-        .single();
-
-      if (wellError) throw wellError;
-
-      // Update profile balance and daily income (wells уже содержат базовую доходность)
-      const newBalance = profile.balance - wellType.price;
-      const currentWellsIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
-      const newTotalIncome = currentWellsIncome + wellType.baseIncome;
-      const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.floor(newTotalIncome * multiplier);
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          balance: newBalance,
-          daily_income: boostedDailyIncome
-        })
-        .eq('user_id', user.id);
-
-      if (profileError) throw profileError;
-
-      // Update local state
-      setWells(prev => [...prev, newWell]);
-      setProfile(prev => prev ? {
-        ...prev,
-        balance: newBalance,
-        daily_income: boostedDailyIncome
-      } : null);
-
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  const upgradeWell = async (wellId: string) => {
-    if (!user || !profile) return { success: false, error: 'Не авторизован' };
-
-    const well = wells.find(w => w.id === wellId);
-    const wellType = wellTypes.find(wt => wt.name === well?.well_type);
-    
-    if (!well || !wellType || well.level >= wellType.maxLevel) {
-      return { success: false, error: 'Нельзя улучшить' };
-    }
-
-    const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
-    if (profile.balance < upgradeCost) {
-      return { success: false, error: 'Недостаточно средств' };
-    }
-
-    try {
-      const newLevel = well.level + 1;
-      // Каждый уровень увеличивает доход на 15%
-      const newIncome = Math.round(well.daily_income * 1.15);
-      const incomeIncrease = newIncome - well.daily_income;
-
-      // Update well
-      const { error: wellError } = await supabase
-        .from('wells')
-        .update({
-          level: newLevel,
-          daily_income: newIncome
-        })
-        .eq('id', wellId);
-
-      if (wellError) throw wellError;
-
-      // Update profile balance and daily income (wells уже содержат базовую доходность)
-      const newBalance = profile.balance - upgradeCost;
-      const currentTotalIncome = wells.reduce((sum, w) => 
-        w.id === wellId ? sum + newIncome : sum + w.daily_income, 0
-      );
-      const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.floor(currentTotalIncome * multiplier);
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          balance: newBalance,
-          daily_income: boostedDailyIncome
-        })
-        .eq('user_id', user.id);
-
-      if (profileError) throw profileError;
-
-      // Update local state
-      setWells(prev => prev.map(w => 
-        w.id === wellId 
-          ? { ...w, level: newLevel, daily_income: newIncome }
-          : w
-      ));
-      setProfile(prev => prev ? {
-        ...prev,
-        balance: newBalance,
-        daily_income: boostedDailyIncome
-      } : null);
-
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  const buyPackage = async (wellPackage: WellPackage) => {
-    if (!user || !profile) return { success: false, error: 'Не авторизован' };
-
-    if (profile.balance < wellPackage.discountedPrice) {
-      return { success: false, error: 'Недостаточно средств' };
-    }
-
-    try {
-      let totalDailyIncome = 0;
-      const newWells = [];
-
-      // Создаем скважины из пакета
-      for (const packageWell of wellPackage.wells) {
-        const wellType = wellTypes.find(wt => wt.name === packageWell.type);
-        if (!wellType) continue;
-
-        for (let i = 0; i < packageWell.count; i++) {
-          const { data: newWell, error: wellError } = await supabase
-            .from('wells')
-            .insert({
-              user_id: user.id,
-              well_type: wellType.name,
-              level: 1,
-              daily_income: wellType.baseIncome
-            })
-            .select()
-            .single();
-
-          if (wellError) throw wellError;
-          
-          newWells.push(newWell);
-          totalDailyIncome += wellType.baseIncome;
-        }
-      }
-
-      // Обновляем профиль (wells уже содержат базовую доходность)
-      const newBalance = profile.balance - wellPackage.discountedPrice;
-      const currentDailyIncome = wells.reduce((sum, w) => sum + w.daily_income, 0);
-      const totalNewIncome = currentDailyIncome + totalDailyIncome;
-      const multiplier = getActiveBoosterMultiplier();
-      const boostedDailyIncome = Math.floor(totalNewIncome * multiplier);
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          balance: newBalance,
-          daily_income: boostedDailyIncome
-        })
-        .eq('user_id', user.id);
-
-      if (profileError) throw profileError;
-
-      // Обновляем локальное состояние
-      setWells(prev => [...prev, ...newWells]);
-      setProfile(prev => prev ? {
-        ...prev,
-        balance: newBalance,
-        daily_income: boostedDailyIncome
-      } : null);
-
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  const addIncome = async (amount: number) => {
-    if (!user || !profile) return;
-
-    try {
-      const newBalance = profile.balance + amount;
-
-      const { error } = await supabase
-        .from('profiles')
-        .update({ balance: newBalance })
-        .eq('user_id', user.id);
-
-      if (!error) {
-        setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
-      }
-    } catch (error) {
-      console.error('Error adding income:', error);
-    }
-  };
-
-  const buyBooster = async (boosterId: string, cost: number, duration: number | null) => {
-    if (!user || !profile) {
-      return { success: false, error: 'Пользователь не авторизован' };
-    }
-
-    if (profile.balance < cost) {
-      return { success: false, error: 'Недостаточно средств' };
-    }
-
-    try {
-      // Check if booster already exists
-      const { data: existingBooster } = await supabase
-        .from('user_boosters')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('booster_type', boosterId)
-        .single();
-
-      let boosterQuery;
-      
-      if (existingBooster) {
-        // Update existing booster
-        const newLevel = existingBooster.level + 1;
-        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
-        
-        boosterQuery = supabase
-          .from('user_boosters')
-          .update({ 
-            level: newLevel,
-            expires_at: expiresAt,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', existingBooster.id);
-      } else {
-        // Create new booster
-        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
-        
-        boosterQuery = supabase
-          .from('user_boosters')
-          .insert({
-            user_id: user.id,
-            booster_type: boosterId,
-            level: 1,
-            expires_at: expiresAt
-          });
-      }
-
-      const { error: boosterError } = await boosterQuery;
-      if (boosterError) throw boosterError;
-
-      // Update user balance
-      const { error: balanceError } = await supabase
-        .from('profiles')
-        .update({ balance: profile.balance - cost })
-        .eq('user_id', user.id);
-
-      if (balanceError) throw balanceError;
-
-      // Reload data and recalculate daily income
-      await loadGameData();
-      
-      // Небольшая задержка, чтобы убедиться что данные загрузились
-      setTimeout(async () => {
-        await recalculateDailyIncome();
-      }, 100);
-
-      return { success: true };
-    } catch (error) {
-      console.error('Error buying booster:', error);
-      return { success: false, error: 'Ошибка при покупке бустера' };
-    }
-  };
-
-  const calculateBoosterMultiplier = (userBoosters: UserBooster[]) => {
-    if (!userBoosters.length) return 1;
-
+  const calculateBoosterMultiplier = useCallback((activeBoosters: UserBooster[]) => {
     let totalBonus = 0;
     
-    userBoosters.forEach(booster => {
+    activeBoosters.forEach(booster => {
       // Check if booster is still active
       const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
       
       if (isActive) {
         switch (booster.booster_type) {
           case 'worker_crew':
-            totalBonus += booster.level * 10; // 10% per level
-            break;
-          case 'geological_survey':
             totalBonus += booster.level * 15; // 15% per level
             break;
-          case 'advanced_equipment':
+          case 'geological_survey':
             totalBonus += booster.level * 25; // 25% per level
             break;
+          case 'advanced_equipment':
+            totalBonus += booster.level * 35; // 35% per level
+            break;
           case 'turbo_boost':
-            totalBonus += 50; // 50% flat bonus
+            totalBonus += booster.level * 50; // 50% per level
             break;
           case 'automation':
             totalBonus += booster.level * 20; // 20% per level
@@ -705,14 +319,9 @@ export function useGameData() {
     
     // Convert percentage to multiplier and round to avoid floating point issues
     return Math.round((1 + totalBonus / 100) * 1000) / 1000;
-  };
+  }, []);
 
-  const getActiveBoosterMultiplier = () => {
-    const boosterMultiplier = calculateBoosterMultiplier(boosters);
-    return boosterMultiplier * statusMultiplier;
-  };
-
-  const recalculateDailyIncome = async () => {
+  const recalculateDailyIncome = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -759,85 +368,259 @@ export function useGameData() {
     } catch (error) {
       console.error('Error recalculating daily income:', error);
     }
-  };
+  }, [user?.id, statusMultiplier, calculateBoosterMultiplier]);
 
-  const cancelBooster = async (boosterId: string) => {
+  const loadGameData = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      // Load profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      console.log('🔍 Loading game data for user:', user.id);
+
+      if (profileData) {
+        console.log('👤 Profile loaded:', profileData);
+        // Calculate and add offline income
+        if (profileData.last_login && profileData.daily_income > 0) {
+          await calculateOfflineIncome(profileData);
+        }
+
+        // Update last_login to current time
+        await supabase
+          .from('profiles')
+          .update({ last_login: new Date().toISOString() })
+          .eq('user_id', user.id);
+
+        setProfile(profileData);
+      } else {
+        setProfile(null);
+      }
+
+      // Load wells
+      const { data: wellsData } = await supabase
+        .from('wells')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      console.log('⚡ Wells loaded:', wellsData?.length || 0, wellsData);
+      setWells(wellsData || []);
+
+      // Load boosters
+      const { data: boostersData } = await supabase
+        .from('user_boosters')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      console.log('🚀 Boosters loaded:', boostersData?.length || 0, boostersData);
+      setBoosters(boostersData || []);
+
+      // Recalculate daily income to ensure it's accurate
+      setTimeout(() => {
+        recalculateDailyIncome();
+      }, 100);
+
+    } catch (error) {
+      console.error('Error loading game data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id, recalculateDailyIncome, calculateOfflineIncome]);
+
+  // Load user data when user changes
+  useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    loadGameData();
+  }, [user?.id, loadGameData]);
+
+  const addIncome = useCallback(async (amount: number) => {
+    if (!user || !profile) return;
+
+    try {
+      const newBalance = profile.balance + amount;
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (!error) {
+        setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+      }
+    } catch (error) {
+      console.error('Error adding income:', error);
+    }
+  }, [user?.id, profile?.balance]);
+
+  const buyWell = async (wellType: WellType) => {
     if (!user || !profile) {
       return { success: false, error: 'Пользователь не авторизован' };
     }
 
-    const existingBooster = boosters.find(b => b.booster_type === boosterId);
-    if (!existingBooster) {
-      return { success: false, error: 'Бустер не найден' };
-    }
-
-    // Проверяем, что бустер еще активен
-    const isActive = !existingBooster.expires_at || new Date(existingBooster.expires_at) > new Date();
-    if (!isActive) {
-      return { success: false, error: 'Нельзя отменить истекший бустер' };
+    if (profile.balance < wellType.price) {
+      return { success: false, error: 'Недостаточно средств' };
     }
 
     try {
-      // Рассчитываем возврат средств (50% от последней потраченной суммы)
-      const boosterTypes = [
-        { id: 'worker_crew', baseCost: 5000, costMultiplier: 1.8 },
-        { id: 'geological_survey', baseCost: 8000, costMultiplier: 2.0 },
-        { id: 'advanced_equipment', baseCost: 15000, costMultiplier: 2.2 },
-        { id: 'turbo_boost', baseCost: 3000, costMultiplier: 1.0 },
-        { id: 'automation', baseCost: 20000, costMultiplier: 2.5 }
-      ];
+      // Create well record
+      const { error: wellError } = await supabase
+        .from('wells')
+        .insert({
+          user_id: user.id,
+          well_type: wellType.name,
+          level: 1,
+          daily_income: wellType.baseIncome
+        });
 
-      const boosterType = boosterTypes.find(bt => bt.id === boosterId);
-      if (!boosterType) {
-        return { success: false, error: 'Неизвестный тип бустера' };
-      }
+      if (wellError) throw wellError;
 
-      // Рассчитываем стоимость последнего уровня
-      const lastLevelCost = Math.floor(boosterType.baseCost * Math.pow(boosterType.costMultiplier, existingBooster.level - 1));
-      const refundAmount = Math.floor(lastLevelCost * 0.5); // 50% возврат
-
-      // Удаляем бустер или понижаем уровень
-      if (existingBooster.level === 1) {
-        // Удаляем бустер полностью
-        const { error: deleteError } = await supabase
-          .from('user_boosters')
-          .delete()
-          .eq('id', existingBooster.id);
-
-        if (deleteError) throw deleteError;
-      } else {
-        // Понижаем уровень на 1
-        const { error: updateError } = await supabase
-          .from('user_boosters')
-          .update({ 
-            level: existingBooster.level - 1,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', existingBooster.id);
-
-        if (updateError) throw updateError;
-      }
-
-      // Возвращаем средства
-      const { error: balanceError } = await supabase
+      // Update profile balance
+      const newBalance = profile.balance - wellType.price;
+      const { error: profileError } = await supabase
         .from('profiles')
-        .update({ balance: profile.balance + refundAmount })
+        .update({ balance: newBalance })
         .eq('user_id', user.id);
 
-      if (balanceError) throw balanceError;
+      if (profileError) throw profileError;
 
-      // Перезагружаем данные и пересчитываем доход
-      await loadGameData();
-      
-      setTimeout(async () => {
-        await recalculateDailyIncome();
-      }, 100);
+      // Update local state
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
-      return { success: true, refundAmount };
-    } catch (error) {
-      console.error('Error canceling booster:', error);
-      return { success: false, error: 'Ошибка при отмене бустера' };
+      // Reload game data to get updated wells
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
     }
+  };
+
+  const buyPackage = async (packageType: PackageType) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    if (profile.balance < packageType.price) {
+      return { success: false, error: 'Недостаточно средств' };
+    }
+
+    try {
+      // Create wells from package
+      const wellPromises = packageType.wells.map(({ wellType, quantity }) => {
+        return Array.from({ length: quantity }, () =>
+          supabase.from('wells').insert({
+            user_id: user.id,
+            well_type: wellType.name,
+            level: 1,
+            daily_income: wellType.baseIncome
+          })
+        );
+      }).flat();
+
+      await Promise.all(wellPromises);
+
+      // Apply bonuses
+      let balanceBonus = 0;
+      for (const bonus of packageType.bonuses) {
+        if (bonus.type === 'balance') {
+          balanceBonus += bonus.value;
+        }
+      }
+
+      // Update profile balance
+      const newBalance = profile.balance - packageType.price + balanceBonus;
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Update local state
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+
+      // Reload game data
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const upgradeWell = async (wellId: string) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    try {
+      const well = wells.find(w => w.id === wellId);
+      if (!well) {
+        return { success: false, error: 'Скважина не найдена' };
+      }
+
+      const wellType = wellTypes.find(wt => wt.name === well.well_type);
+      if (!wellType) {
+        return { success: false, error: 'Тип скважины не найден' };
+      }
+
+      if (well.level >= wellType.maxLevel) {
+        return { success: false, error: 'Достигнут максимальный уровень' };
+      }
+
+      const upgradeCost = Math.floor(wellType.price * 0.5 * well.level);
+      if (profile.balance < upgradeCost) {
+        return { success: false, error: 'Недостаточно средств для улучшения' };
+      }
+
+      const newLevel = well.level + 1;
+      const newDailyIncome = Math.floor(wellType.baseIncome * (1 + (newLevel - 1) * 0.5));
+
+      // Update well
+      const { error: wellError } = await supabase
+        .from('wells')
+        .update({
+          level: newLevel,
+          daily_income: newDailyIncome
+        })
+        .eq('id', wellId);
+
+      if (wellError) throw wellError;
+
+      // Update profile balance
+      const newBalance = profile.balance - upgradeCost;
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Update local state
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+
+      // Reload to recalculate daily income
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const getActiveBoosterMultiplier = () => {
+    const boosterMultiplier = calculateBoosterMultiplier(boosters);
+    return boosterMultiplier * statusMultiplier;
   };
 
   return {
@@ -849,8 +632,6 @@ export function useGameData() {
     buyPackage,
     upgradeWell,
     addIncome,
-    buyBooster,
-    cancelBooster,
     getActiveBoosterMultiplier,
     recalculateDailyIncome,
     reload: loadGameData
