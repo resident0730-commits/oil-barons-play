@@ -15,12 +15,38 @@ serve(async (req) => {
 
   try {
     console.log("Step 3: Processing request");
+    
+    // Read and log request body
+    const body = await req.json();
+    console.log("Step 4: Request body:", JSON.stringify(body));
+    
+    const { amount, currency, oil_coins } = body;
+    
+    if (!amount || amount < 100) {
+      console.log("Step 5: Invalid amount:", amount);
+      return new Response(
+        JSON.stringify({ error: "Минимальная сумма 100₽" }), 
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        }
+      );
+    }
 
-    // Test basic functionality first
+    console.log("Step 6: Valid amount, creating test payment URL");
+    
+    // For now, return a test structure that matches what client expects
+    const testPaymentUrl = `https://securepayments.tinkoff.ru/test?amount=${amount}&currency=${currency}`;
+    
+    console.log("Step 7: Returning payment URL:", testPaymentUrl);
+    
     return new Response(
       JSON.stringify({ 
-        message: "Function works",
-        timestamp: new Date().toISOString()
+        url: testPaymentUrl,
+        confirmation_url: testPaymentUrl,
+        amount: amount,
+        oil_coins: oil_coins,
+        status: "test_payment"
       }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -30,8 +56,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error("Step ERROR:", error.message);
+    console.error("Step ERROR stack:", error.stack);
     return new Response(
-      JSON.stringify({ error: "Internal error" }), 
+      JSON.stringify({ error: "Internal error: " + error.message }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500,
