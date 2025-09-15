@@ -302,7 +302,14 @@ export function useGameData() {
           .update({ last_login: new Date().toISOString() })
           .eq('user_id', user.id);
 
-        setProfile(profileData);
+        // Reload profile to get updated balance after offline income calculation
+        const { data: updatedProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        setProfile(updatedProfile || profileData);
       }
 
       // Load wells
@@ -348,12 +355,22 @@ export function useGameData() {
     const lastLogin = new Date(profileData.last_login);
     const offlineTimeMs = now.getTime() - lastLogin.getTime();
     
+    console.log('⏰ Calculating offline income...');
+    console.log('📅 Last login:', lastLogin.toLocaleString());
+    console.log('⌚ Offline time (hours):', Math.round(offlineTimeMs / (1000 * 60 * 60) * 100) / 100);
+    
     // Minimum 1 minute offline to get income
-    if (offlineTimeMs < 60000) return;
+    if (offlineTimeMs < 60000) {
+      console.log('❌ Less than 1 minute offline, no income');
+      return;
+    }
     
     const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24); // Max 24 hours
     const hourlyIncome = Math.floor(profileData.daily_income / 24);
     const offlineIncome = hourlyIncome * Math.floor(offlineHours);
+    
+    console.log('💰 Hourly income:', hourlyIncome);
+    console.log('🎯 Offline income calculated:', offlineIncome);
     
     if (offlineIncome > 0) {
       // Offline income calculated successfully
@@ -367,9 +384,12 @@ export function useGameData() {
         .eq('user_id', user.id);
         
       if (!error) {
+        console.log('✅ Offline income added:', offlineIncome, 'New balance:', newBalance);
         setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
         
         // Offline income successfully added
+      } else {
+        console.error('❌ Error updating balance:', error);
       }
     }
   };
