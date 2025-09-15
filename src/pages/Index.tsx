@@ -18,7 +18,8 @@ import {
   Zap,
   Target,
   Wallet,
-  User
+  User,
+  Shield
 } from "lucide-react";
 
 const Index = () => {
@@ -111,6 +112,68 @@ const Index = () => {
               </Button>
             </Link>
           </div>
+        </div>
+
+        {/* Currency Exchange Information */}
+        <div className="mb-24 animate-fade-in">
+          <Card className="max-w-4xl mx-auto backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
+            <CardHeader className="text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="p-3 bg-primary/10 rounded-full">
+                  <Coins className="h-8 w-8 text-primary" />
+                </div>
+                <div className="p-3 bg-accent/10 rounded-full">
+                  <Wallet className="h-8 w-8 text-accent" />
+                </div>
+              </div>
+              <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
+                Игровая валюта OilCoin
+              </CardTitle>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Приобретайте игровую валюту для развития своей нефтяной империи
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="text-center p-6 bg-primary/5 rounded-xl border border-primary/10">
+                  <div className="text-4xl font-bold text-primary mb-2">1 OC = 1 ₽</div>
+                  <p className="text-sm text-muted-foreground">Прозрачный курс обмена</p>
+                </div>
+                <div className="text-center p-6 bg-accent/5 rounded-xl border border-accent/10">
+                  <div className="text-4xl font-bold text-accent mb-2">100%</div>
+                  <p className="text-sm text-muted-foreground">Безопасные платежи</p>
+                </div>
+              </div>
+              
+              <div className="bg-muted/30 rounded-xl p-6">
+                <h4 className="font-semibold text-lg mb-3 text-center">Что такое OilCoin?</h4>
+                <div className="grid md:grid-cols-3 gap-4 text-sm">
+                  <div className="text-center space-y-2">
+                    <div className="p-2 bg-primary/10 rounded-lg inline-block">
+                      <Target className="h-5 w-5 text-primary" />
+                    </div>
+                    <p className="font-medium">Игровая валюта</p>
+                    <p className="text-muted-foreground">Используется только внутри игры для покупки скважин и улучшений</p>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <div className="p-2 bg-accent/10 rounded-lg inline-block">
+                      <Shield className="h-5 w-5 text-accent" />
+                    </div>
+                    <p className="font-medium">Курс 1:1</p>
+                    <p className="text-muted-foreground">1 OilCoin = 1 российский рубль, фиксированный курс обмена</p>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <div className="p-2 bg-primary/10 rounded-lg inline-block">
+                      <Zap className="h-5 w-5 text-primary" />
+                    </div>
+                    <p className="font-medium">Мгновенное зачисление</p>
+                    <p className="text-muted-foreground">OilCoins поступают на игровой счет сразу после платежа</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Player Progress Section - показывается только для авторизованных игроков */}
