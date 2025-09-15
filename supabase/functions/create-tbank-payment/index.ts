@@ -7,175 +7,91 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  console.log('T-Bank payment function started');
-  console.log('Request method:', req.method);
-  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
-
+  console.log("=== T-Bank Payment Function Start ===");
+  console.log("Method:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    console.log('CORS preflight request handled');
+    console.log("CORS preflight handled");
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log('Processing payment request...');
+    console.log("Step 1: Reading request body");
+    const body = await req.text();
+    console.log("Raw body:", body);
     
-    let requestBody;
+    let requestData;
     try {
-      requestBody = await req.json();
-      console.log('Request body parsed:', requestBody);
+      requestData = JSON.parse(body);
+      console.log("Parsed data:", requestData);
     } catch (parseError) {
-      console.error('JSON parse error:', parseError);
-      throw new Error("Некорректный JSON в запросе");
+      console.error("JSON parse failed:", parseError.message);
+      return new Response(
+        JSON.stringify({ error: "Invalid JSON" }), 
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        }
+      );
     }
 
-    const { amount, currency = 'RUB' } = requestBody;
-    console.log('Amount:', amount, 'Currency:', currency);
-
+    console.log("Step 2: Validating amount");
+    const { amount, currency = 'RUB' } = requestData;
     if (!amount || amount <= 0) {
-      console.error('Invalid amount:', amount);
-      throw new Error("Укажите корректную сумму");
+      console.error("Invalid amount:", amount);
+      return new Response(
+        JSON.stringify({ error: "Invalid amount" }), 
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        }
+      );
     }
 
-    // Get T-Bank credentials
+    console.log("Step 3: Getting credentials");
     const terminalKey = Deno.env.get("TBANK_TERMINAL_KEY");
     const password = Deno.env.get("TBANK_PASSWORD");
     
+    console.log("Terminal key exists:", !!terminalKey);
+    console.log("Password exists:", !!password);
+    
     if (!terminalKey || !password) {
-      throw new Error("Т-Банк не настроен");
+      console.error("Missing T-Bank credentials");
+      return new Response(
+        JSON.stringify({ error: "T-Bank not configured" }), 
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 500,
+        }
+      );
     }
 
-    // Create Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      (Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ?? "")
-    );
-
-    // Get authenticated user
-    const authHeader = req.headers.get("Authorization");
-    let userEmail = "guest@example.com";
-
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      if (data.user?.email) {
-        userEmail = data.user.email;
-      }
-    }
-
-    // Build base URL for redirects
-    const originHeader = req.headers.get("origin");
-    const refererHeader = req.headers.get("referer");
-    let baseUrl = originHeader ?? "";
-    if (!baseUrl && refererHeader) {
-      try {
-        baseUrl = new URL(refererHeader).origin;
-      } catch (_) {
-        // ignore parse error
-      }
-    }
-    baseUrl = baseUrl || Deno.env.get("PUBLIC_SITE_URL") || Deno.env.get("FRONTEND_URL") || "https://lovable.dev";
-
-    // Generate order ID
-    const orderId = crypto.randomUUID();
-
-    // Create T-Bank payment request
-    const paymentData = {
-      TerminalKey: terminalKey,
-      Amount: Math.round(amount * 100), // T-Bank expects amount in kopecks
-      OrderId: orderId,
-      Description: "Пополнение баланса Oil Tycoon",
-      PayType: "O", // One-step payment
-      Language: "ru",
-      CustomerKey: userEmail,
-      SuccessURL: `${baseUrl}/dashboard?payment=success`,
-      FailURL: `${baseUrl}/dashboard?payment=failed`,
-      NotificationURL: `${baseUrl}/api/tbank-webhook`, // For future webhook implementation
-      Receipt: {
-        Email: userEmail,
-        Taxation: "usn_income",
-        Items: [{
-          Name: "Пополнение игрового баланса",
-          Price: Math.round(amount * 100),
-          Quantity: 1.00,
-          Amount: Math.round(amount * 100),
-          Tax: "none"
-        }]
-      }
-    };
-
-    // Generate token for T-Bank API according to their documentation
-    // Format: sorted key=value pairs joined without delimiter + password
-    const tokenParams = {
-      Amount: paymentData.Amount,
-      CustomerKey: paymentData.CustomerKey,
-      Description: paymentData.Description,
-      FailURL: paymentData.FailURL,
-      Language: paymentData.Language,
-      OrderId: paymentData.OrderId,
-      PayType: paymentData.PayType,
-      SuccessURL: paymentData.SuccessURL,
-      TerminalKey: paymentData.TerminalKey
-    };
-    
-    // Sort keys and create token string as key=value pairs joined together + password
-    const sortedKeys = Object.keys(tokenParams).sort();
-    const tokenPairs = sortedKeys.map(key => `${key}=${tokenParams[key]}`);
-    const tokenString = tokenPairs.join('') + password;
-    
-    console.log('Token generation:');
-    console.log('- Sorted keys:', sortedKeys);
-    console.log('- Token pairs:', tokenPairs);
-    console.log('- Token string (without password):', tokenPairs.join(''));
-
-    const token = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(tokenString));
-    const hashArray = Array.from(new Uint8Array(token));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-    paymentData.Token = hashHex;
-
-    console.log('Creating T-Bank payment with data:', { ...paymentData, Token: '[HIDDEN]' });
-
-    // Use test API endpoint for T-Bank
-    const apiUrl = 'https://rest-api-test.tinkoff.ru/v2/Init';
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(paymentData)
-    });
-
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('T-Bank error:', errorData);
-      throw new Error('Ошибка создания платежа в Т-Банк');
-    }
-
-    const payment = await response.json();
-
-    if (!payment.Success) {
-      console.error('T-Bank payment error:', payment);
-      throw new Error(payment.Message || 'Ошибка создания платежа');
-    }
-
+    console.log("Step 4: Success response");
     return new Response(
       JSON.stringify({ 
-        url: payment.PaymentURL,
-        paymentId: payment.PaymentId
+        success: true,
+        message: "Function is working",
+        amount: amount,
+        terminalKey: terminalKey.substring(0, 5) + "***"
       }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
       }
     );
+
   } catch (error) {
-    console.error("T-Bank payment error:", error);
+    console.error("Unexpected error:", error.message);
+    console.error("Error stack:", error.stack);
     return new Response(
-      JSON.stringify({ error: error.message }), 
+      JSON.stringify({ 
+        error: "Internal server error",
+        details: error.message 
+      }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
+        status: 500,
       }
     );
   }
