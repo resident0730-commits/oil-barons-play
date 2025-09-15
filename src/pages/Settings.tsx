@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { Fuel, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
+import { Fuel, ArrowLeft, CreditCard, ShieldCheck, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,6 +20,7 @@ const Settings = () => {
   const { profile } = useGameData();
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("yookassa");
 
   const handleTopUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +42,10 @@ const Settings = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment', {
+      // Choose function based on payment method
+      const functionName = paymentMethod === 'tbank' ? 'create-tbank-payment' : 'create-payment';
+      
+      const { data, error } = await supabase.functions.invoke(functionName, {
         body: {
           amount: value,
           currency: 'RUB'
@@ -55,7 +60,7 @@ const Settings = () => {
         window.open(data.url, '_blank');
         toast({
           title: "Переход к оплате",
-          description: "Окно Stripe Checkout открыто в новой вкладке",
+          description: `Окно ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'} открыто в новой вкладке`,
         });
       } else {
         throw new Error("Не удалось получить ссылку на оплату");
@@ -122,7 +127,31 @@ const Settings = () => {
               <CardTitle className="flex items-center"><CreditCard className="h-5 w-5 mr-2 text-primary" />Пополнение баланса</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleTopUp} className="space-y-6">
+              <div className="space-y-6">
+                {/* Payment Method Selection */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Способ оплаты</Label>
+                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid grid-cols-2 gap-4">
+                    <Label htmlFor="yookassa-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                      <RadioGroupItem value="yookassa" id="yookassa-settings" />
+                      <div className="flex items-center space-x-2">
+                        <CreditCard className="h-4 w-4" />
+                        <span className="text-sm font-medium">YooKassa</span>
+                      </div>
+                    </Label>
+                    <Label htmlFor="tbank-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                      <RadioGroupItem value="tbank" id="tbank-settings" />
+                      <div className="flex items-center space-x-2">
+                        <Building2 className="h-4 w-4" />
+                        <span className="text-sm font-medium">Т-Банк</span>
+                      </div>
+                    </Label>
+                  </RadioGroup>
+                </div>
+                
+                <Separator />
+                
+                <form onSubmit={handleTopUp} className="space-y-6">
                 <div>
                   <Label htmlFor="amount">Сумма в рублях</Label>
                   <div className="mt-2 flex items-center gap-3">
@@ -153,6 +182,7 @@ const Settings = () => {
                   </Button>
                 </div>
               </form>
+              </div>
             </CardContent>
           </Card>
         </div>

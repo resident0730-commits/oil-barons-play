@@ -257,7 +257,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleTopUp = async (customAmount?: number, packageData?: any) => {
+  const handleTopUp = async (customAmount?: number, packageData?: any, paymentMethod = 'yookassa') => {
     let rubAmount = 0;
     let ocAmount = 0;
     
@@ -277,7 +277,10 @@ const Dashboard = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('create-payment', {
+      // Choose function based on payment method
+      const functionName = paymentMethod === 'tbank' ? 'create-tbank-payment' : 'create-payment';
+      
+      const { data, error } = await supabase.functions.invoke(functionName, {
         body: {
           amount: rubAmount,
           currency: 'RUB',
@@ -286,11 +289,13 @@ const Dashboard = () => {
       });
 
       if (error) throw error;
-      if (data?.confirmation_url) {
-        window.open(data.confirmation_url, '_blank');
+      
+      const paymentUrl = data?.url || data?.confirmation_url;
+      if (paymentUrl) {
+        window.open(paymentUrl, '_blank');
         toast({
           title: "Переход к оплате",
-          description: `После успешной оплаты ${rubAmount}₽ вы получите ${ocAmount.toLocaleString()} OC!`,
+          description: `После успешной оплаты ${rubAmount}₽ вы получите ${ocAmount.toLocaleString()} OC через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
         });
         setIsTopUpOpen(false);
       }

@@ -2,3 +2,6 @@ project_id = "efaohdwvitrxanzzlgew"
 
 [functions.create-payment]
 verify_jwt = false
+
+[functions.create-tbank-payment]
+verify_jwt = false

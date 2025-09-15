@@ -5,12 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Star, Zap } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CreditCard, Star, Zap, Building2 } from "lucide-react";
 
 interface TopUpModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTopUp: (amount?: number, packageData?: any) => void;
+  onTopUp: (amount?: number, packageData?: any, paymentMethod?: string) => void;
   topUpLoading: boolean;
 }
 
@@ -83,18 +84,19 @@ const topUpPackages: TopUpPackage[] = [
 export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModalProps) => {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState("yookassa");
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
     if (amount && amount >= 100) {
-      onTopUp(amount);
+      onTopUp(amount, undefined, paymentMethod);
       setCustomAmount("");
     }
   };
 
   const handlePackageSelect = (pkg: TopUpPackage) => {
     setSelectedPackage(pkg);
-    onTopUp(undefined, pkg);
+    onTopUp(undefined, pkg, paymentMethod);
   };
 
   return (
@@ -111,6 +113,31 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         </DialogHeader>
 
         <div className="grid gap-6">
+          {/* Payment Method Selection */}
+          <Card>
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">Способ оплаты</Label>
+                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid grid-cols-2 gap-4">
+                  <Label htmlFor="yookassa" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                    <RadioGroupItem value="yookassa" id="yookassa" />
+                    <div className="flex items-center space-x-2">
+                      <CreditCard className="h-4 w-4" />
+                      <span className="text-sm font-medium">YooKassa</span>
+                    </div>
+                  </Label>
+                  <Label htmlFor="tbank" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                    <RadioGroupItem value="tbank" id="tbank" />
+                    <div className="flex items-center space-x-2">
+                      <Building2 className="h-4 w-4" />
+                      <span className="text-sm font-medium">Т-Банк</span>
+                    </div>
+                  </Label>
+                </RadioGroup>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Custom Amount Section */}
           <Card>
             <CardContent className="p-4">
