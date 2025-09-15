@@ -290,6 +290,16 @@ const Dashboard = () => {
 
       if (error) throw error;
       
+      // Handle test mode response
+      if (data?.test_mode) {
+        toast({
+          title: "Тестовый режим",
+          description: `Платеж на ${rubAmount}₽ создан в тестовом режиме. В реальном режиме вы получите ${ocAmount.toLocaleString()} OC через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
+        });
+        setIsTopUpOpen(false);
+        return;
+      }
+      
       const paymentUrl = data?.url || data?.confirmation_url;
       if (paymentUrl) {
         window.open(paymentUrl, '_blank');

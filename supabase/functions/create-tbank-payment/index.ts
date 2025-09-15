@@ -33,20 +33,18 @@ serve(async (req) => {
       );
     }
 
-    console.log("Step 6: Valid amount, creating test payment URL");
+    console.log("Step 6: Valid amount, creating test response");
     
-    // For now, return a test structure that matches what client expects
-    const testPaymentUrl = `https://securepayments.tinkoff.ru/test?amount=${amount}&currency=${currency}`;
-    
-    console.log("Step 7: Returning payment URL:", testPaymentUrl);
+    // Return success without URL for testing
+    console.log("Step 7: Returning success response for testing");
     
     return new Response(
       JSON.stringify({ 
-        url: testPaymentUrl,
-        confirmation_url: testPaymentUrl,
+        success: true,
+        test_mode: true,
         amount: amount,
         oil_coins: oil_coins,
-        status: "test_payment"
+        message: "Тестовый режим: платеж успешно создан"
       }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
