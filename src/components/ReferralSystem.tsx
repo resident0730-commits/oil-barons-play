@@ -72,17 +72,31 @@ export const ReferralSystem = () => {
   };
 
   const applyReferralCode = async () => {
-    if (!user || !referralInput.trim()) return;
+    if (!user || !referralInput.trim()) {
+      console.log('🚫 Apply referral cancelled: user or input missing');
+      return;
+    }
+
+    console.log('🎯 Applying referral code:', referralInput.trim());
+    console.log('👤 Current user:', user.id);
 
     try {
       // Check if referral code exists and is not user's own
-      const { data: referrer } = await supabase
+      console.log('🔍 Looking for referral code...');
+      const { data: referrer, error: referrerError } = await supabase
         .from('profiles')
-        .select('user_id, referral_code')
+        .select('user_id, referral_code, nickname')
         .eq('referral_code', referralInput.trim())
         .single();
 
+      if (referrerError) {
+        console.error('❌ Error finding referrer:', referrerError);
+      }
+
+      console.log('👥 Found referrer:', referrer);
+
       if (!referrer) {
+        console.log('❌ Referral code not found');
         toast({
           title: "Ошибка",
           description: "Реферальный код не найден",
@@ -92,6 +106,7 @@ export const ReferralSystem = () => {
       }
 
       if (referrer.user_id === user.id) {
+        console.log('❌ User trying to use own code');
         toast({
           title: "Ошибка", 
           description: "Нельзя использовать свой собственный код",
@@ -101,13 +116,21 @@ export const ReferralSystem = () => {
       }
 
       // Check if user already has a referrer
-      const { data: currentProfile } = await supabase
+      console.log('🔍 Checking if user already has referrer...');
+      const { data: currentProfile, error: profileError } = await supabase
         .from('profiles')
-        .select('referred_by')
+        .select('referred_by, nickname')
         .eq('user_id', user.id)
         .single();
 
+      if (profileError) {
+        console.error('❌ Error checking current profile:', profileError);
+      }
+
+      console.log('👤 Current profile:', currentProfile);
+
       if (currentProfile?.referred_by) {
+        console.log('❌ User already has referrer');
         toast({
           title: "Ошибка",
           description: "У вас уже есть реферер",
@@ -117,7 +140,8 @@ export const ReferralSystem = () => {
       }
 
       // Apply referral
-      await supabase
+      console.log('✅ Applying referral...');
+      const { error: updateError } = await supabase
         .from('profiles')
         .update({
           referred_by: referrer.user_id,
@@ -125,14 +149,29 @@ export const ReferralSystem = () => {
         })
         .eq('user_id', user.id);
 
+      if (updateError) {
+        console.error('❌ Error updating profile:', updateError);
+        throw updateError;
+      }
+
+      console.log('✅ Profile updated successfully');
+
       // Create referral record
-      await supabase
+      console.log('📝 Creating referral record...');
+      const { error: insertError } = await supabase
         .from('referrals')
         .insert({
           referrer_id: referrer.user_id,
           referred_id: user.id,
           referral_code: referralInput.trim()
         });
+
+      if (insertError) {
+        console.error('❌ Error creating referral record:', insertError);
+        throw insertError;
+      }
+
+      console.log('✅ Referral record created successfully');
 
       toast({
         title: "Успех!",
@@ -141,6 +180,7 @@ export const ReferralSystem = () => {
 
       setReferralInput("");
     } catch (error) {
+      console.error('❌ Referral application failed:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось применить реферальный код",
