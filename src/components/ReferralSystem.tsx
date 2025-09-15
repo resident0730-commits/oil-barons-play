@@ -38,7 +38,7 @@ export const ReferralSystem = () => {
       .from('profiles')
       .select('referral_code')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
 
     if (profile?.referral_code) {
       setReferralCode(profile.referral_code);
@@ -87,10 +87,16 @@ export const ReferralSystem = () => {
         .from('profiles')
         .select('user_id, referral_code, nickname')
         .eq('referral_code', referralInput.trim())
-        .single();
+        .maybeSingle();
 
       if (referrerError) {
         console.error('❌ Error finding referrer:', referrerError);
+        toast({
+          title: "Ошибка",
+          description: "Ошибка поиска реферального кода",
+          variant: "destructive"
+        });
+        return;
       }
 
       console.log('👥 Found referrer:', referrer);
@@ -121,10 +127,16 @@ export const ReferralSystem = () => {
         .from('profiles')
         .select('referred_by, nickname')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         console.error('❌ Error checking current profile:', profileError);
+        toast({
+          title: "Ошибка",
+          description: "Ошибка проверки профиля",
+          variant: "destructive"
+        });
+        return;
       }
 
       console.log('👤 Current profile:', currentProfile);
@@ -151,7 +163,12 @@ export const ReferralSystem = () => {
 
       if (updateError) {
         console.error('❌ Error updating profile:', updateError);
-        throw updateError;
+        toast({
+          title: "Ошибка",
+          description: "Ошибка обновления профиля",
+          variant: "destructive"
+        });
+        return;
       }
 
       console.log('✅ Profile updated successfully');
@@ -168,7 +185,12 @@ export const ReferralSystem = () => {
 
       if (insertError) {
         console.error('❌ Error creating referral record:', insertError);
-        throw insertError;
+        toast({
+          title: "Ошибка",
+          description: "Ошибка создания записи реферала",
+          variant: "destructive"
+        });
+        return;
       }
 
       console.log('✅ Referral record created successfully');
@@ -179,6 +201,10 @@ export const ReferralSystem = () => {
       });
 
       setReferralInput("");
+      
+      // Refresh referral data
+      fetchReferralData();
+      fetchReferrals();
     } catch (error) {
       console.error('❌ Referral application failed:', error);
       toast({
