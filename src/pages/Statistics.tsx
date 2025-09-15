@@ -12,9 +12,21 @@ const Statistics = () => {
 
   const totalWellsValue = wells.reduce((sum, well) => {
     const wellType = wellTypes.find(wt => wt.name === well.well_type);
-    return sum + (wellType ? wellType.price * well.level : 0);
+    if (!wellType) return sum;
+    
+    // Базовая стоимость скважины
+    let wellValue = wellType.price;
+    
+    // Добавляем стоимость улучшений (каждый уровень стоит по формуле)
+    for (let level = 1; level < well.level; level++) {
+      const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, level - 1));
+      wellValue += upgradeCost;
+    }
+    
+    return sum + wellValue;
   }, 0);
-  const averageWellIncome = wells.length > 0 ? wells.reduce((sum, well) => sum + well.daily_income, 0) / wells.length : 0;
+  
+  const averageWellIncome = wells.length > 0 ? (profile?.daily_income || 0) / wells.length : 0;
 
   if (!user) {
     return (

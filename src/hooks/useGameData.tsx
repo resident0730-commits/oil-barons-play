@@ -360,8 +360,8 @@ export function useGameData() {
     }
     
     const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24); // Max 24 hours
-    const hourlyIncome = Math.floor(profileData.daily_income / 24);
-    const offlineIncome = hourlyIncome * Math.floor(offlineHours);
+    const hourlyIncome = profileData.daily_income / 24;
+    const offlineIncome = Math.floor(hourlyIncome * offlineHours);
     
     console.log('💰 Hourly income:', hourlyIncome);
     console.log('💰 Offline income:', offlineIncome);

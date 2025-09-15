@@ -136,7 +136,7 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Окупаемость:</span>
               <span className="font-medium text-blue-600">
-                {profile.daily_income > 0 ? `${Math.round(totalWellsValue / profile.daily_income)} дней` : '∞'}
+                {profile.daily_income > 0 ? `${Math.ceil(totalWellsValue / profile.daily_income)} дней` : '∞'}
               </span>
             </div>
           </CardContent>
