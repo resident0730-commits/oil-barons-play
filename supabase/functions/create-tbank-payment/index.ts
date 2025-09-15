@@ -86,21 +86,27 @@ serve(async (req) => {
       }
     };
 
-    // Generate token for T-Bank API
-    // Create a copy without Token field for token generation
-    const tokenData = { ...paymentData };
-    delete tokenData.Token;
+    // Generate token for T-Bank API according to their documentation
+    // The token is generated from sorted parameter values (not key=value pairs) + password
+    const tokenParams = {
+      Amount: paymentData.Amount,
+      CustomerKey: paymentData.CustomerKey,
+      Description: paymentData.Description,
+      FailURL: paymentData.FailURL,
+      Language: paymentData.Language,
+      OrderId: paymentData.OrderId,
+      PayType: paymentData.PayType,
+      SuccessURL: paymentData.SuccessURL,
+      TerminalKey: paymentData.TerminalKey
+    };
     
-    // Convert values to strings and sort keys
-    const tokenValues = Object.keys(tokenData)
-      .filter(key => tokenData[key] !== undefined && tokenData[key] !== null)
-      .sort()
-      .map(key => tokenData[key].toString())
-      .join('');
-    
+    // Sort keys and create token string
+    const sortedKeys = Object.keys(tokenParams).sort();
+    const tokenValues = sortedKeys.map(key => tokenParams[key]).join('');
     const tokenString = tokenValues + password;
     
-    console.log('Token string for hash:', tokenString.replace(password, '[PASSWORD]'));
+    console.log('Token generation - sorted keys:', sortedKeys);
+    console.log('Token values:', tokenValues);
 
     const token = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(tokenString));
     const hashArray = Array.from(new Uint8Array(token));
