@@ -8,6 +8,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
 import About from "./pages/About";
+import Company from "./pages/Company";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Requisites from "./pages/Requisites";
@@ -46,7 +47,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/achievements" element={<Achievements />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={<Company />} />
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
