@@ -305,6 +305,28 @@ All colors MUST be HSL.
   }
 
   .section-toolbar {
-    @apply bg-card/70 backdrop-blur-md border border-primary/20 rounded-xl px-4 py-3 shadow-oil;
+    @apply bg-card/70 backdrop-blur-md border border-primary/20 rounded-xl px-2 sm:px-4 py-2 sm:py-3 shadow-oil;
+  }
+
+  /* Mobile scrollbar styling for section toolbar */
+  @media (max-width: 640px) {
+    .section-toolbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .section-toolbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  /* Ensure proper viewport width on mobile */
+  @media (max-width: 640px) {
+    html {
+      overflow-x: hidden;
+    }
+    body {
+      overflow-x: hidden;
+      width: 100vw;
+    }
   }
 }

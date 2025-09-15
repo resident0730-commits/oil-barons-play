@@ -329,28 +329,29 @@ const Dashboard = () => {
       />
 
       {/* Main Content */}
-      <main className="container mx-auto px-6 py-8 space-y-8">
+      <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* Section Navigation */}
         <div className="flex items-center justify-center">
-          <div className="section-toolbar">
-            <div className="flex space-x-1 bg-card/50 p-1 rounded-lg">
+          <div className="section-toolbar w-full max-w-full overflow-x-auto">
+            <div className="flex space-x-1 bg-card/50 p-1 rounded-lg min-w-max">
               {[
-                { id: 'overview', label: 'Обзор', icon: BarChart3 },
-                { id: 'wells', label: 'Скважины', icon: Fuel },
-                { id: 'shop', label: 'Магазин', icon: ShoppingCart },
-                { id: 'boosters', label: 'Бустеры', icon: Zap },
-                { id: 'cases', label: 'Кейсы', icon: Gift },
-                { id: 'daily', label: 'Ежедневно', icon: Calendar }
+                { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
+                { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
+                { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
+                { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
+                { id: 'cases', label: 'Кейсы', icon: Gift, shortLabel: 'Кейсы' },
+                { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
               ].map((section) => (
                 <Button
                   key={section.id}
                   variant={activeSection === section.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setActiveSection(section.id as any)}
-                  className={activeSection === section.id ? 'gradient-gold text-primary-foreground shadow-gold' : ''}
+                  className={`${activeSection === section.id ? 'gradient-gold text-primary-foreground shadow-gold' : ''} whitespace-nowrap flex-shrink-0`}
                 >
-                  <section.icon className="h-4 w-4 mr-2" />
-                  {section.label}
+                  <section.icon className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">{section.label}</span>
+                  <span className="inline sm:hidden ml-1 text-xs">{section.shortLabel}</span>
                 </Button>
               ))}
             </div>
