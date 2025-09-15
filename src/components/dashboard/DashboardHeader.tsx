@@ -68,8 +68,30 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             {/* Navigation Icons - Responsive */}
             <TooltipProvider>
               <div className="flex items-center space-x-1 sm:space-x-2">
-                {/* Mobile: Show only essential icons */}
-                <div className="flex sm:hidden">
+                {/* Mobile: Show all icons but compact */}
+                <div className="flex sm:hidden space-x-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
+                        <Link to="/referrals">
+                          <Users className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Рефералы</TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
+                        <Link to="/achievements">
+                          <Award className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Достижения</TooltipContent>
+                  </Tooltip>
+
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
@@ -79,6 +101,30 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Поддержка</TooltipContent>
+                  </Tooltip>
+
+                  {isAdmin && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
+                          <Link to="/admin">
+                            <Shield className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Админ панель</TooltipContent>
+                    </Tooltip>
+                  )}
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
+                        <Link to="/settings">
+                          <Settings className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Настройки</TooltipContent>
                   </Tooltip>
 
                   <Tooltip>
