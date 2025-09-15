@@ -113,7 +113,7 @@ export interface PackageType {
 
 export const wellTypes: WellType[] = [
   {
-    name: 'Mini Well',
+    name: 'Мини-скважина',
     description: 'Маленькая скважина для новичков',
     baseIncome: 50,
     price: 500,
@@ -123,7 +123,7 @@ export const wellTypes: WellType[] = [
     rarity: 'common'
   },
   {
-    name: 'Starter Well',
+    name: 'Стартовая скважина',
     description: 'Стартовая скважина среднего размера',
     baseIncome: 150,
     price: 2000,
@@ -133,7 +133,7 @@ export const wellTypes: WellType[] = [
     rarity: 'common'
   },
   {
-    name: 'Medium Well',
+    name: 'Средняя скважина',
     description: 'Средняя скважина с хорошим доходом',
     baseIncome: 350,
     price: 8000,
@@ -143,7 +143,7 @@ export const wellTypes: WellType[] = [
     rarity: 'uncommon'
   },
   {
-    name: 'Industrial Well',
+    name: 'Промышленная скважина',
     description: 'Промышленная скважина с высокой производительностью',
     baseIncome: 800,
     price: 25000,
@@ -153,7 +153,7 @@ export const wellTypes: WellType[] = [
     rarity: 'rare'
   },
   {
-    name: 'Super Well',
+    name: 'Супер-скважина',
     description: 'Супер скважина с отличным доходом',
     baseIncome: 1500,
     price: 75000,
@@ -163,7 +163,7 @@ export const wellTypes: WellType[] = [
     rarity: 'epic'
   },
   {
-    name: 'Premium Well',
+    name: 'Премиум-скважина',
     description: 'Премиум скважина для продвинутых игроков',
     baseIncome: 3000,
     price: 200000,
@@ -173,7 +173,7 @@ export const wellTypes: WellType[] = [
     rarity: 'epic'
   },
   {
-    name: 'Elite Well',
+    name: 'Элитная скважина',
     description: 'Элитная скважина с превосходной производительностью',
     baseIncome: 6000,
     price: 500000,
@@ -183,7 +183,7 @@ export const wellTypes: WellType[] = [
     rarity: 'legendary'
   },
   {
-    name: 'Legendary Well',
+    name: 'Легендарная скважина',
     description: 'Легендарная скважина - венец инженерной мысли',
     baseIncome: 12000,
     price: 1200000,
@@ -193,7 +193,7 @@ export const wellTypes: WellType[] = [
     rarity: 'legendary'
   },
   {
-    name: 'Cosmic Well',
+    name: 'Космическая скважина',
     description: 'Космическая скважина - технология будущего',
     baseIncome: 25000,
     price: 5000000,
@@ -518,6 +518,7 @@ export function useGameData() {
 
       // Load wells with timeout protection
       try {
+        console.log('🔍 Loading wells for user:', user.id);
         const { data: wellsData, error: wellsError } = await supabase
           .from('wells')
           .select('*')
@@ -526,9 +527,15 @@ export function useGameData() {
 
         if (wellsError) {
           console.error('❌ Wells loading error:', wellsError);
+          console.error('Wells error details:', wellsError.message, wellsError.code);
           setWells([]);
         } else {
-          console.log('⚡ Wells loaded:', wellsData?.length || 0, wellsData);
+          console.log('⚡ Wells loaded successfully:', wellsData?.length || 0, 'wells');
+          if (wellsData && wellsData.length > 0) {
+            console.log('Wells data:', wellsData);
+          } else {
+            console.log('ℹ️ No wells found for user');
+          }
           setWells(wellsData || []);
         }
       } catch (error) {
