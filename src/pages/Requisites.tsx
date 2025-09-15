@@ -9,8 +9,7 @@ const Requisites = () => {
   const { toast } = useToast();
 
   const companyInfo = {
-    name: "ИП Захаров А.И.",
-    project: "Oil Tycoon",
+    name: "Oil Tycoon",
     inn: "891151084170",
     ogrnip: "323890100010935",
     email: "oiltycoon.help@gmail.com",
@@ -84,8 +83,7 @@ const Requisites = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <RequisiteRow label="Владелец" value={companyInfo.name} />
-              <RequisiteRow label="Название проекта" value={companyInfo.project} />
+              <RequisiteRow label="Наименование" value={companyInfo.name} />
               <RequisiteRow label="ИНН" value={companyInfo.inn} />
               <RequisiteRow label="ОГРНИП" value={companyInfo.ogrnip} />
               <RequisiteRow label="Email для связи" value={companyInfo.email} />
