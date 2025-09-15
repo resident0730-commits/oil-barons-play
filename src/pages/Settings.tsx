@@ -66,11 +66,11 @@ const Settings = () => {
         throw new Error("Не удалось получить ссылку на оплату");
       }
     } catch (error: any) {
-      console.error("Payment error:", error);
+      console.error("Payment error details:", error);
       toast({
         variant: "destructive",
         title: "Ошибка оплаты",
-        description: error.message || "Не удалось создать платёж",
+        description: error.message || error.error?.message || "Не удалось создать платёж",
       });
     } finally {
       setLoading(false);

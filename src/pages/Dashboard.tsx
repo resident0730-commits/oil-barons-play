@@ -299,8 +299,13 @@ const Dashboard = () => {
         });
         setIsTopUpOpen(false);
       }
-    } catch (error) {
-      toast({ variant: "destructive", title: "Ошибка создания платежа" });
+    } catch (error: any) {
+      console.error("Payment error details:", error);
+      toast({ 
+        variant: "destructive", 
+        title: "Ошибка создания платежа",
+        description: error.message || error.error?.message || "Неизвестная ошибка"
+      });
     }
   };
 
