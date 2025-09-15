@@ -17,10 +17,23 @@ serve(async (req) => {
 
   try {
     console.log("Processing payment request...");
-    const { amount, currency = 'RUB' } = await req.json();
-    console.log("Amount:", amount, "Currency:", currency);
+    
+    let requestBody;
+    try {
+      const bodyText = await req.text();
+      console.log("Raw request body:", bodyText);
+      requestBody = JSON.parse(bodyText);
+      console.log("Parsed request body:", requestBody);
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError.message);
+      throw new Error("Некорректный JSON в запросе");
+    }
+
+    const { amount, currency = 'RUB' } = requestBody;
+    console.log("Extracted amount:", amount, "currency:", currency);
 
     if (!amount || amount <= 0) {
+      console.error("Invalid amount provided:", amount);
       throw new Error("Укажите корректную сумму");
     }
 
@@ -151,9 +164,17 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error("T-Bank payment error:", error.message);
+    console.error("=== ERROR DETAILS ===");
+    console.error("Error type:", typeof error);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
+    console.error("=== END ERROR ===");
+    
     return new Response(
-      JSON.stringify({ error: error.message }), 
+      JSON.stringify({ 
+        error: error.message,
+        timestamp: new Date().toISOString()
+      }), 
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 400,
