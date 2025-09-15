@@ -35,7 +35,7 @@ import boostersHero from '@/assets/sections/boosters-hero.jpg';
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
@@ -212,7 +212,7 @@ const Dashboard = () => {
       return;
     }
 
-    const result = await buyPackage(wellPackage);
+    const result = await buyWellPackage(wellPackage);
     if (result.success) {
       toast({
         title: "Пакет куплен!",

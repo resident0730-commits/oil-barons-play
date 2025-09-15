@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { ComponentType } from 'react';
 import { useAuth } from './useAuth';
 import { useStatusBonuses } from './useStatusBonuses';
@@ -48,15 +48,15 @@ export interface UserProfile {
   last_login: string;
   created_at?: string;
   updated_at?: string;
-  referral_code?: string;
-  referred_by?: string;
-  referral_bonus_expires_at?: string;
+  last_bonus_claim?: string;
   status_titles?: string[];
   is_banned?: boolean;
   ban_reason?: string;
   banned_at?: string;
   banned_by?: string;
-  last_bonus_claim?: string;
+  referral_code?: string;
+  referred_by?: string;
+  referral_bonus_expires_at?: string;
   last_daily_chest_claim?: string;
   daily_chest_streak?: number;
   total_daily_chests_opened?: number;
@@ -70,6 +70,33 @@ export interface UserBooster {
   expires_at?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface WellPackage {
+  name: string;
+  description: string;
+  wells: { type: string; count: number }[];
+  originalPrice: number;
+  discountedPrice: number;
+  discount: number;
+  icon: string;
+  image: string;
+  rarity: 'starter' | 'growth' | 'business' | 'empire';
+  totalDailyIncome: number;
+}
+
+export interface BoosterType {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  effect: string;
+  maxLevel: number;
+  baseCost: number;
+  costMultiplier: number;
+  bonusPerLevel: number;
+  duration: number | null; // null = permanent, number = milliseconds
+  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'temporary';
 }
 
 export interface PackageType {
@@ -241,6 +268,69 @@ export const packageTypes: PackageType[] = [
     ],
     badge: 'Премиум',
     image: empirePackageImg
+  }
+];
+
+export const wellPackages: WellPackage[] = [
+  {
+    name: 'Стартовый пакет',
+    description: 'Идеально для начинающих магнатов',
+    wells: [
+      { type: 'Starter Well', count: 2 },
+      { type: 'Medium Well', count: 1 }
+    ],
+    originalPrice: 18000,
+    discountedPrice: 15000,
+    discount: 17,
+    icon: '📦',
+    image: starterPackageImg,
+    rarity: 'starter',
+    totalDailyIncome: 650
+  },
+  {
+    name: 'Пакет роста',
+    description: 'Для быстрого развития бизнеса',
+    wells: [
+      { type: 'Medium Well', count: 3 },
+      { type: 'Industrial Well', count: 1 }
+    ],
+    originalPrice: 89000,
+    discountedPrice: 75000,
+    discount: 16,
+    icon: '🚀',
+    image: growthPackageImg,
+    rarity: 'growth',
+    totalDailyIncome: 1850
+  },
+  {
+    name: 'Бизнес пакет',
+    description: 'Серьезные инвестиции для профи',
+    wells: [
+      { type: 'Industrial Well', count: 2 },
+      { type: 'Super Well', count: 2 }
+    ],
+    originalPrice: 350000,
+    discountedPrice: 300000,
+    discount: 14,
+    icon: '🏢',
+    image: businessPackageImg,
+    rarity: 'business',
+    totalDailyIncome: 4600
+  },
+  {
+    name: 'Имперский пакет',
+    description: 'Максимальная мощность нефтяной империи',
+    wells: [
+      { type: 'Premium Well', count: 2 },
+      { type: 'Elite Well', count: 1 }
+    ],
+    originalPrice: 1200000,
+    discountedPrice: 1000000,
+    discount: 17,
+    icon: '👑',
+    image: empirePackageImg,
+    rarity: 'empire',
+    totalDailyIncome: 12000
   }
 ];
 
@@ -505,6 +595,54 @@ export function useGameData() {
     }
   };
 
+  const buyWellPackage = async (wellPackage: WellPackage) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    if (profile.balance < wellPackage.discountedPrice) {
+      return { success: false, error: 'Недостаточно средств' };
+    }
+
+    try {
+      // Create wells from package based on WellPackage structure
+      const wellPromises = wellPackage.wells.map(({ type, count }) => {
+        const wellType = wellTypes.find(wt => wt.name === type);
+        if (!wellType) throw new Error(`Well type ${type} not found`);
+        
+        return Array.from({ length: count }, () =>
+          supabase.from('wells').insert({
+            user_id: user.id,
+            well_type: wellType.name,
+            level: 1,
+            daily_income: wellType.baseIncome
+          })
+        );
+      }).flat();
+
+      await Promise.all(wellPromises);
+
+      // Update profile balance
+      const newBalance = profile.balance - wellPackage.discountedPrice;
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Update local state
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+
+      // Reload game data
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
   const buyPackage = async (packageType: PackageType) => {
     if (!user || !profile) {
       return { success: false, error: 'Пользователь не авторизован' };
@@ -618,6 +756,153 @@ export function useGameData() {
     }
   };
 
+  const buyBooster = async (boosterId: string, cost: number, duration: number | null) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    if (profile.balance < cost) {
+      return { success: false, error: 'Недостаточно средств' };
+    }
+
+    try {
+      // Check if booster already exists
+      const { data: existingBooster } = await supabase
+        .from('user_boosters')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('booster_type', boosterId)
+        .maybeSingle();
+
+      let boosterQuery;
+      
+      if (existingBooster) {
+        // Update existing booster
+        const newLevel = existingBooster.level + 1;
+        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
+        
+        boosterQuery = supabase
+          .from('user_boosters')
+          .update({ 
+            level: newLevel,
+            expires_at: expiresAt,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingBooster.id);
+      } else {
+        // Create new booster
+        const expiresAt = duration ? new Date(Date.now() + duration).toISOString() : null;
+        
+        boosterQuery = supabase
+          .from('user_boosters')
+          .insert({
+            user_id: user.id,
+            booster_type: boosterId,
+            level: 1,
+            expires_at: expiresAt
+          });
+      }
+
+      const { error: boosterError } = await boosterQuery;
+      if (boosterError) throw boosterError;
+
+      // Update balance
+      const newBalance = profile.balance - cost;
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+
+      // Reload game data to get fresh boosters and recalculate daily income
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const cancelBooster = async (boosterId: string) => {
+    if (!user || !profile) {
+      return { success: false, error: 'Пользователь не авторизован' };
+    }
+
+    const existingBooster = boosters.find(b => b.booster_type === boosterId);
+    if (!existingBooster) {
+      return { success: false, error: 'Бустер не найден' };
+    }
+
+    // Проверяем, что бустер еще активен
+    const isActive = !existingBooster.expires_at || new Date(existingBooster.expires_at) > new Date();
+    if (!isActive) {
+      return { success: false, error: 'Нельзя отменить истекший бустер' };
+    }
+
+    try {
+      // Рассчитываем возврат средств (50% от последней потраченной суммы)
+      const boosterTypes = [
+        { id: 'worker_crew', baseCost: 5000, costMultiplier: 1.8 },
+        { id: 'geological_survey', baseCost: 8000, costMultiplier: 2.0 },
+        { id: 'advanced_equipment', baseCost: 15000, costMultiplier: 2.2 },
+        { id: 'turbo_boost', baseCost: 3000, costMultiplier: 1.0 },
+        { id: 'automation', baseCost: 20000, costMultiplier: 2.5 }
+      ];
+
+      const boosterType = boosterTypes.find(bt => bt.id === boosterId);
+      if (!boosterType) {
+        return { success: false, error: 'Неизвестный тип бустера' };
+      }
+
+      // Рассчитываем стоимость последнего уровня
+      const lastLevelCost = Math.floor(boosterType.baseCost * Math.pow(boosterType.costMultiplier, existingBooster.level - 1));
+      const refundAmount = Math.floor(lastLevelCost * 0.5); // 50% возврат
+
+      // Удаляем бустер или понижаем уровень
+      if (existingBooster.level === 1) {
+        // Удаляем бустер полностью
+        const { error: deleteError } = await supabase
+          .from('user_boosters')
+          .delete()
+          .eq('id', existingBooster.id);
+
+        if (deleteError) throw deleteError;
+      } else {
+        // Понижаем уровень на 1
+        const { error: updateError } = await supabase
+          .from('user_boosters')
+          .update({
+            level: existingBooster.level - 1,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existingBooster.id);
+
+        if (updateError) throw updateError;
+      }
+
+      // Возвращаем средства
+      const newBalance = profile.balance + refundAmount;
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+
+      // Reload game data to refresh boosters and recalculate daily income
+      setTimeout(() => loadGameData(), 100);
+
+      return { success: true, refundAmount };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
   const getActiveBoosterMultiplier = () => {
     const boosterMultiplier = calculateBoosterMultiplier(boosters);
     return boosterMultiplier * statusMultiplier;
@@ -630,8 +915,11 @@ export function useGameData() {
     loading,
     buyWell,
     buyPackage,
+    buyWellPackage,
     upgradeWell,
     addIncome,
+    buyBooster,
+    cancelBooster,
     getActiveBoosterMultiplier,
     recalculateDailyIncome,
     reload: loadGameData
