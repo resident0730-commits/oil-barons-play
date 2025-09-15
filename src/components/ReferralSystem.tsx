@@ -83,11 +83,8 @@ export const ReferralSystem = () => {
     try {
       // Check if referral code exists and is not user's own
       console.log('🔍 Looking for referral code...');
-      const { data: referrer, error: referrerError } = await supabase
-        .from('profiles')
-        .select('user_id, referral_code, nickname')
-        .eq('referral_code', referralInput.trim())
-        .maybeSingle();
+      const { data: referrers, error: referrerError } = await supabase
+        .rpc('lookup_referral_code', { code: referralInput.trim() });
 
       if (referrerError) {
         console.error('❌ Error finding referrer:', referrerError);
@@ -98,6 +95,8 @@ export const ReferralSystem = () => {
         });
         return;
       }
+
+      const referrer = referrers && referrers.length > 0 ? referrers[0] : null;
 
       console.log('👥 Found referrer:', referrer);
 

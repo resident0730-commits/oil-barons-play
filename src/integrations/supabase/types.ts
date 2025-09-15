@@ -494,6 +494,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      lookup_referral_code: {
+        Args: { code: string }
+        Returns: {
+          nickname: string
+          referral_code: string
+          user_id: string
+        }[]
+      }
       process_withdrawal: {
         Args: { p_admin_id?: string; p_status: string; p_transfer_id: string }
         Returns: boolean
