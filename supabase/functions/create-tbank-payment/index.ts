@@ -87,11 +87,20 @@ serve(async (req) => {
     };
 
     // Generate token for T-Bank API
-    const tokenString = Object.keys(paymentData)
-      .filter(key => key !== 'Receipt' && paymentData[key] !== undefined)
+    // Create a copy without Token field for token generation
+    const tokenData = { ...paymentData };
+    delete tokenData.Token;
+    
+    // Convert values to strings and sort keys
+    const tokenValues = Object.keys(tokenData)
+      .filter(key => tokenData[key] !== undefined && tokenData[key] !== null)
       .sort()
-      .map(key => `${key}=${paymentData[key]}`)
-      .join('') + password;
+      .map(key => tokenData[key].toString())
+      .join('');
+    
+    const tokenString = tokenValues + password;
+    
+    console.log('Token string for hash:', tokenString.replace(password, '[PASSWORD]'));
 
     const token = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(tokenString));
     const hashArray = Array.from(new Uint8Array(token));
@@ -101,7 +110,9 @@ serve(async (req) => {
 
     console.log('Creating T-Bank payment with data:', { ...paymentData, Token: '[HIDDEN]' });
 
-    const response = await fetch('https://securepay.tinkoff.ru/v2/Init', {
+    // Use test API endpoint for T-Bank
+    const apiUrl = 'https://rest-api-test.tinkoff.ru/v2/Init';
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
