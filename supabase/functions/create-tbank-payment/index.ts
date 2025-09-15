@@ -7,15 +7,33 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('T-Bank payment function started');
+  console.log('Request method:', req.method);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log('CORS preflight request handled');
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { amount, currency = 'RUB' } = await req.json();
+    console.log('Processing payment request...');
+    
+    let requestBody;
+    try {
+      requestBody = await req.json();
+      console.log('Request body parsed:', requestBody);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      throw new Error("Некорректный JSON в запросе");
+    }
+
+    const { amount, currency = 'RUB' } = requestBody;
+    console.log('Amount:', amount, 'Currency:', currency);
 
     if (!amount || amount <= 0) {
+      console.error('Invalid amount:', amount);
       throw new Error("Укажите корректную сумму");
     }
 
