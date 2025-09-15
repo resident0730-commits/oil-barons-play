@@ -88,14 +88,14 @@ export default function Rules() {
                   <Badge variant="secondary">+1000</Badge>
                   <span className="text-sm">Стартовый капитал для новых игроков</span>
                 </li>
-                 <li className="flex items-center gap-2">
-                   <Badge variant="secondary">+500-25,000</Badge>
-                   <span className="text-sm">Награды за достижения</span>
-                 </li>
-                 <li className="flex items-center gap-2">
-                   <Badge variant="secondary">+10%</Badge>
-                   <span className="text-sm">Реферальные бонусы с доходов друзей</span>
-                 </li>
+                <li className="flex items-center gap-2">
+                  <Badge variant="secondary">+500-25,000</Badge>
+                  <span className="text-sm">Награды за достижения</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Badge variant="secondary">+10%</Badge>
+                  <span className="text-sm">Реферальные бонусы с доходов друзей</span>
+                </li>
               </ul>
             </div>
             
@@ -315,7 +315,7 @@ export default function Rules() {
                     </div>
                     <Badge variant="secondary">+3% доход</Badge>
                   </div>
-                  <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                  <div className="flex justify-between items-center p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Zap className="h-4 w-4 text-green-500" />
                       <span className="text-sm font-medium">Промышленник</span>
