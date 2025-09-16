@@ -11,8 +11,8 @@ import qrPaymentImage from "@/assets/qr-payment.png";
 interface TopUpModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTopUp: (amount?: number, packageData?: any, paymentMethod?: string) => void;
-  topUpLoading: boolean;
+  onTopUp?: (amount?: number, packageData?: any, paymentMethod?: string) => void;
+  topUpLoading?: boolean;
 }
 
 interface TopUpPackage {
@@ -81,7 +81,7 @@ const topUpPackages: TopUpPackage[] = [
   }
 ];
 
-export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModalProps) => {
+export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
   const [showQR, setShowQR] = useState(false);
@@ -139,11 +139,11 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           <div className="space-y-6">
             {/* QR Code */}
             <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-lg shadow-lg">
+              <div className="bg-white p-4 rounded-lg shadow-lg border">
                 <img 
                   src={qrPaymentImage} 
                   alt="QR-код для оплаты" 
-                  className="w-48 h-48 object-contain"
+                  className="w-64 h-64 object-contain"
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                     />
                     <Button 
                       onClick={handleCustomTopUp}
-                      disabled={!customAmount || parseFloat(customAmount) < 100 || topUpLoading}
+                      disabled={!customAmount || parseFloat(customAmount) < 100}
                     >
                       Пополнить
                     </Button>
@@ -320,13 +320,12 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
                       <Button 
                         className="w-full gradient-gold text-primary-foreground"
-                        disabled={topUpLoading}
                         onClick={(e) => {
-                          e.stopPropagation(); // Предотвращаем двойной клик
+                          e.stopPropagation();
                           handlePackageSelect(pkg);
                         }}
                       >
-                        {topUpLoading ? 'Обработка...' : 'Выбрать'}
+                        Выбрать
                       </Button>
                     </div>
                   </CardContent>

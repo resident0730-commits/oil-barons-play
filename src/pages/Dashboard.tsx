@@ -453,8 +453,6 @@ const Dashboard = () => {
       <TopUpModal
         isOpen={isTopUpOpen}
         onClose={() => setIsTopUpOpen(false)}
-        onTopUp={handleTopUp}
-        topUpLoading={false}
       />
     </div>
   );
