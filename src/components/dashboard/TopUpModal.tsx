@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, Star, Zap, ArrowLeft, Camera, Send } from "lucide-react";
-import qrPaymentImage from "@/assets/qr-payment.jpg";
+import qrPaymentImage from "@/assets/qr-payment.png";
 
 interface TopUpModalProps {
   isOpen: boolean;
