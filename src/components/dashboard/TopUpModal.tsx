@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CreditCard, Star, Zap, Building2 } from "lucide-react";
+import { CreditCard, Star, Zap, Building2, ArrowLeft, Camera, Send } from "lucide-react";
+import qrPaymentImage from "@/assets/qr-payment.jpg";
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -85,22 +86,146 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   const [customAmount, setCustomAmount] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
   const [paymentMethod, setPaymentMethod] = useState("yookassa");
+  const [showQR, setShowQR] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
     if (amount && amount >= 100) {
-      onTopUp(amount, undefined, paymentMethod);
-      setCustomAmount("");
+      setPaymentAmount(amount);
+      setShowQR(true);
     }
   };
 
   const handlePackageSelect = (pkg: TopUpPackage) => {
+    setPaymentAmount(pkg.rubAmount);
     setSelectedPackage(pkg);
-    onTopUp(undefined, pkg, paymentMethod);
+    setShowQR(true);
   };
 
+  const handleBackToPayment = () => {
+    setShowQR(false);
+    setPaymentAmount(0);
+    setSelectedPackage(null);
+  };
+
+  const handleCloseModal = () => {
+    setShowQR(false);
+    setPaymentAmount(0);
+    setSelectedPackage(null);
+    setCustomAmount("");
+    onClose();
+  };
+
+  if (showQR) {
+    return (
+      <Dialog open={isOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleBackToPayment}
+                className="p-1 h-8 w-8"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <DialogTitle>Оплата {paymentAmount} ₽</DialogTitle>
+            </div>
+            <DialogDescription>
+              Отсканируйте QR-код для оплаты
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {/* QR Code */}
+            <div className="flex justify-center">
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <img 
+                  src={qrPaymentImage} 
+                  alt="QR-код для оплаты" 
+                  className="w-48 h-48 object-contain"
+                />
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <Card>
+              <CardContent className="p-4">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Camera className="h-4 w-4" />
+                  Инструкция по оплате:
+                </h4>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2">
+                    <span className="font-semibold">1.</span>
+                    <span>Сделайте скриншот QR-кода или сохраните изображение</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-semibold">2.</span>
+                    <span>Откройте приложение вашего банка</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-semibold">3.</span>
+                    <span>Найдите функцию "Оплата по QR-коду"</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-semibold">4.</span>
+                    <span>Отсканируйте код или загрузите изображение</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-semibold">5.</span>
+                    <span>Введите сумму: <strong>{paymentAmount} ₽</strong></span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-semibold">6.</span>
+                    <span>Подтвердите платеж</span>
+                  </li>
+                </ol>
+              </CardContent>
+            </Card>
+
+            {/* Final Step */}
+            <Card className="border-primary/20 bg-primary/5">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <Send className="h-5 w-5 text-primary mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">
+                      Завершающий шаг:
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      После оплаты отправьте скриншот чека в поддержку для зачисления средств на баланс.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={handleBackToPayment}
+                className="flex-1"
+              >
+                Назад
+              </Button>
+              <Button 
+                onClick={handleCloseModal}
+                className="flex-1"
+              >
+                Закрыть
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -238,8 +363,8 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           </div>
 
           <div className="text-center text-sm text-muted-foreground">
-            <p>После нажатия кнопки вы будете перенаправлены на безопасную страницу оплаты</p>
-            <p>Пополнение происходит мгновенно после успешной оплаты</p>
+            <p>После нажатия кнопки появится QR-код для оплаты</p>
+            <p>Следуйте инструкциям для завершения платежа</p>
           </div>
         </div>
       </DialogContent>
