@@ -90,7 +90,7 @@ export const ShopSection = ({
 
                   <CardContent className="space-y-4 flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground break-words leading-relaxed">
+                      <p className="text-sm sm:text-xs text-foreground/90 sm:text-muted-foreground break-words leading-relaxed font-medium sm:font-normal">
                         {wellType.description}
                       </p>
 
