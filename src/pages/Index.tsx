@@ -70,7 +70,7 @@ const Index = () => {
           <div className="relative">
             <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-gold animate-scale-in">
               <Fuel className="w-5 h-5 mr-2" />
-              ЖОПА ИЗ НЕДР ЗЕМЛИ!!!
+              Жопа из недр земли
             </Badge>
           </div>
           
