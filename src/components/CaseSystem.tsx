@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Gift, Sparkles, Coins, Zap, Star, Crown, Diamond } from "lucide-react";
-import { useGameData } from '@/hooks/useGameData';
+import { useGameData, wellTypes } from '@/hooks/useGameData';
 import { useToast } from '@/hooks/use-toast';
 import { useSound } from '@/hooks/useSound';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -257,7 +257,11 @@ export const CaseSystem = () => {
         break;
       case 'well':
         if (reward.wellType) {
-          // Логика получения скважины - можно реализовать позже
+          // Находим тип скважины и добавляем её пользователю
+          const wellTypeData = wellTypes.find(wt => wt.name === reward.wellType);
+          if (wellTypeData) {
+            await buyWell(wellTypeData);
+          }
         }
         break;
       case 'multiplier':
