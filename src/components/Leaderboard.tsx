@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Trophy, Medal, Award, Crown, Zap } from 'lucide-react';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useCurrency } from '@/hooks/useCurrency';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const getRankIcon = (position: number) => {
@@ -26,21 +27,22 @@ const getRankBadgeVariant = (position: number) => {
   return "secondary";
 };
 
-const formatCurrency = (amount: number) => {
-  if (amount >= 1_000_000_000) {
-    return `${(amount / 1_000_000_000).toFixed(1)}B OC`;
-  }
-  if (amount >= 1_000_000) {
-    return `${(amount / 1_000_000).toFixed(1)}M OC`;
-  }
-  if (amount >= 1_000) {
-    return `${(amount / 1_000).toFixed(1)}K OC`;
-  }
-  return `${amount.toLocaleString('ru-RU')} OC`;
-};
-
 export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10 }) => {
   const { leaderboard, loading, refetch } = useLeaderboard();
+  const { formatGameCurrency } = useCurrency();
+
+  const formatCurrency = (amount: number) => {
+    if (amount >= 1_000_000_000) {
+      return `${(amount / 1_000_000_000).toFixed(1)}B ${formatGameCurrency(0).split(' ')[1]}`;
+    }
+    if (amount >= 1_000_000) {
+      return `${(amount / 1_000_000).toFixed(1)}M ${formatGameCurrency(0).split(' ')[1]}`;
+    }
+    if (amount >= 1_000) {
+      return `${(amount / 1_000).toFixed(1)}K ${formatGameCurrency(0).split(' ')[1]}`;
+    }
+    return formatGameCurrency(amount);
+  };
 
   // Manual refresh button functionality
   const handleRefresh = () => {

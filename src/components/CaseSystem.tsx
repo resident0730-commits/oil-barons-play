@@ -7,6 +7,7 @@ import { Gift, Sparkles, Coins, Zap, Star, Crown, Diamond } from "lucide-react";
 import { useGameData } from '@/hooks/useGameData';
 import { useToast } from '@/hooks/use-toast';
 import { useSound } from '@/hooks/useSound';
+import { useCurrency } from '@/hooks/useCurrency';
 
 export interface CaseReward {
   type: 'money' | 'booster' | 'well' | 'multiplier';
@@ -148,11 +149,19 @@ const getRarityGlow = (rarity: string) => {
 
 export const CaseSystem = () => {
   const { profile, buyWell, buyBooster, addIncome } = useGameData();
+  const { formatGameCurrency } = useCurrency();
   const { toast } = useToast();
   const sounds = useSound();
   const [openingCase, setOpeningCase] = useState<CaseType | null>(null);
   const [showReward, setShowReward] = useState<CaseReward | null>(null);
   const [isOpening, setIsOpening] = useState(false);
+
+  const getRewardDescription = (reward: CaseReward) => {
+    if (reward.type === 'money' && reward.amount) {
+      return formatGameCurrency(reward.amount);
+    }
+    return reward.description;
+  };
 
   const openCase = async (caseType: CaseType) => {
     if (!profile || profile.balance < caseType.price) {
@@ -390,7 +399,7 @@ export const CaseSystem = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold animate-fade-in">{showReward.name}</h3>
-                  <p className="text-sm text-muted-foreground animate-fade-in">{showReward.description}</p>
+                  <p className="text-sm text-muted-foreground animate-fade-in">{getRewardDescription(showReward)}</p>
                   <Badge className={`${getRarityColor(showReward.rarity)} mt-2 animate-scale-in`}>
                     {showReward.rarity.charAt(0).toUpperCase() + showReward.rarity.slice(1)}
                   </Badge>

@@ -3,11 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Gift, Clock, Coins } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export function DailyBonus() {
   const { user } = useAuth();
+  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
   const { toast } = useToast();
   const [canClaim, setCanClaim] = useState(false);
   const [timeUntilNext, setTimeUntilNext] = useState('');
@@ -95,7 +97,7 @@ export function DailyBonus() {
 
       toast({
         title: "Ежедневный бонус получен!",
-        description: `+${bonusAmount} оилкоинов добавлено на баланс`,
+        description: `+${formatGameCurrency(bonusAmount)} добавлено на баланс`,
       });
 
       setCanClaim(false);
@@ -136,7 +138,7 @@ export function DailyBonus() {
               +{bonusAmount}
             </div>
             <p className="text-sm text-muted-foreground font-medium">
-              Оилкоинов каждый день
+              {formatGameCurrencyWithName(0).split(' ')[1]} каждый день
             </p>
           </div>
           

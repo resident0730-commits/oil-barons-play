@@ -9,10 +9,18 @@ import {
   TrendingUp, 
   Sparkles,
   ShoppingCart,
-  Info
+  Info,
+  Users,
+  Search,
+  Cog,
+  Zap,
+  Bot,
+  Crown
 } from 'lucide-react';
 import { useGameData, BoosterType } from '@/hooks/useGameData';
+import { useStatusBonuses } from '@/hooks/useStatusBonuses';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrency } from '@/hooks/useCurrency';
 
 // Import booster images
 import workerCrewImg from '@/assets/boosters/worker-crew.png';
@@ -27,8 +35,38 @@ interface BoosterShopProps {
 
 export function BoosterShop({ onClose }: BoosterShopProps) {
   const { profile, boosters, buyBooster, cancelBooster, loading, getActiveBoosterMultiplier } = useGameData();
+  const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
   const { toast } = useToast();
+  const { formatGameCurrency } = useCurrency();
   const [selectedBooster, setSelectedBooster] = useState<BoosterType | null>(null);
+
+  // Calculate booster multiplier for display
+  const getBoosterMultiplier = () => {
+    let totalBonus = 0;
+    boosters.forEach(booster => {
+      const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+      if (isActive) {
+        switch (booster.booster_type) {
+          case 'worker_crew':
+            totalBonus += booster.level * 10;
+            break;
+          case 'geological_survey':
+            totalBonus += booster.level * 15;
+            break;
+          case 'advanced_equipment':
+            totalBonus += booster.level * 25;
+            break;
+          case 'turbo_boost':
+            totalBonus += 50;
+            break;
+          case 'automation':
+            totalBonus += booster.level * 20;
+            break;
+        }
+      }
+    });
+    return totalBonus;
+  };
 
   // Early return if profile is not loaded yet
   if (loading || !profile) {
@@ -188,7 +226,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     if (result.success) {
       toast({
         title: "Бустер отменен!",
-        description: `${booster.name} ${currentLevel === 1 ? 'удален' : 'понижен до уровня ' + (currentLevel - 1)}. Возврат: ${result.refundAmount?.toLocaleString()} OC (50%)`,
+        description: `${booster.name} ${currentLevel === 1 ? 'удален' : 'понижен до уровня ' + (currentLevel - 1)}. Возврат: ${formatGameCurrency(result.refundAmount || 0)} (50%)`,
       });
     } else {
       toast({
@@ -223,7 +261,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     if (profile.balance < cost) {
       toast({
         title: "Недостаточно средств",
-        description: `Нужно ${cost.toLocaleString()} оилкоинов`,
+        description: `Нужно ${formatGameCurrency(cost)}`,
         variant: "destructive"
       });
       return;
@@ -253,53 +291,139 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
         </p>
         
         {/* Current Booster Effects */}
-        {boosters.length > 0 && (
-          <div className="mt-4 p-4 bg-primary/10 rounded-lg border border-primary/20">
-            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+        {(boosters.length > 0 || statusMultiplier > 1) && (
+          <div className="mt-6 p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 rounded-xl border border-primary/30 shadow-lg">
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-3 text-foreground">
+              <div className="relative">
+                <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+                <div className="absolute -inset-1 bg-primary/20 blur-sm rounded-full"></div>
+              </div>
               Активные улучшения
             </h3>
-            <div className="grid md:grid-cols-2 gap-2 text-sm">
+            
+            <div className="space-y-3 mb-4">
+              {/* Status bonuses */}
+              {statusMultiplier > 1 && (
+                <div className="flex items-center justify-between p-4 bg-accent/10 rounded-lg border border-accent/20 hover:border-accent/40 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-accent/20 rounded-full">
+                      <Crown className="h-4 w-4 text-accent" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground">Статусные бонусы</div>
+                      <div className="text-sm text-muted-foreground">
+                        {userTitles.length > 0 ? getStatusDisplayNames().join(', ') : 'Активные достижения'}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="font-bold text-accent text-lg">+{Math.round((statusMultiplier - 1) * 100)}%</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Booster effects */}
               {boosters.map(booster => {
                 const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
                 if (!isActive) return null;
                 
                 let effectText = '';
+                let iconName = '';
                 switch (booster.booster_type) {
                   case 'worker_crew':
-                    effectText = `+${booster.level * 10}% от бригады (Ур.${booster.level})`;
+                    effectText = `Бригада рабочих`;
+                    iconName = 'Users';
                     break;
                   case 'geological_survey':
-                    effectText = `+${booster.level * 15}% от исследований (Ур.${booster.level})`;
+                    effectText = `Геологические исследования`;
+                    iconName = 'Search';
                     break;
                   case 'advanced_equipment':
-                    effectText = `+${booster.level * 25}% от оборудования (Ур.${booster.level})`;
+                    effectText = `Продвинутое оборудование`;
+                    iconName = 'Cog';
                     break;
                   case 'turbo_boost':
-                    effectText = `+50% турбо режим`;
+                    effectText = `Турбо режим`;
+                    iconName = 'Zap';
                     break;
                   case 'automation':
-                    effectText = `+${booster.level * 20}% от автоматизации (Ур.${booster.level})`;
+                    effectText = `Автоматизация`;
+                    iconName = 'Bot';
+                    break;
+                }
+
+                let bonusPercent = 0;
+                switch (booster.booster_type) {
+                  case 'worker_crew':
+                    bonusPercent = booster.level * 10;
+                    break;
+                  case 'geological_survey':
+                    bonusPercent = booster.level * 15;
+                    break;
+                  case 'advanced_equipment':
+                    bonusPercent = booster.level * 25;
+                    break;
+                  case 'turbo_boost':
+                    bonusPercent = 50;
+                    break;
+                  case 'automation':
+                    bonusPercent = booster.level * 20;
                     break;
                 }
                 
                 return (
-                  <div key={booster.id} className="flex justify-between items-center p-2 bg-background/50 rounded">
-                    <span className="text-muted-foreground">{effectText}</span>
-                    {booster.expires_at && (
-                      <span className="text-xs text-orange-600">
-                        До {new Date(booster.expires_at).toLocaleTimeString()}
-                      </span>
-                    )}
+                  <div key={booster.id} className="flex items-center justify-between p-4 bg-card/80 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-primary/20 rounded-full">
+                        {iconName === 'Users' && <Users className="h-4 w-4 text-primary" />}
+                        {iconName === 'Search' && <Search className="h-4 w-4 text-primary" />}
+                        {iconName === 'Cog' && <Cog className="h-4 w-4 text-primary" />}
+                        {iconName === 'Zap' && <Zap className="h-4 w-4 text-primary" />}
+                        {iconName === 'Bot' && <Bot className="h-4 w-4 text-primary" />}
+                      </div>
+                      <div>
+                        <div className="font-medium text-foreground">{effectText}</div>
+                        {booster.level > 1 && (
+                          <div className="text-sm text-muted-foreground">Уровень {booster.level}</div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className="font-bold text-primary text-lg">+{bonusPercent}%</div>
+                      {booster.expires_at && (
+                        <div className="text-xs text-orange-500 font-medium">
+                          До {new Date(booster.expires_at).toLocaleString('ru-RU', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            day: '2-digit',
+                            month: '2-digit'
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 );
               })}
-              <div className="col-span-full mt-2 pt-2 border-t border-primary/20">
-                <div className="flex justify-between items-center font-semibold">
-                  <span>Общий бонус:</span>
-                  <span className="text-primary">
-                    +{Math.round((getActiveBoosterMultiplier() - 1) * 100)}%
-                  </span>
+            </div>
+            
+            <div className="pt-4 border-t border-primary/20">
+              <div className="flex items-center justify-between p-4 bg-card/80 rounded-lg border-2 border-primary/30 hover:border-primary/50 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/20 rounded-full">
+                    <Crown className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-foreground text-lg">Общий бонус доходности</div>
+                    <div className="text-sm text-muted-foreground">
+                      бустеры (+{getBoosterMultiplier()}%) + статус (+{Math.round((statusMultiplier - 1) * 100)}%)
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-right">
+                  <div className="font-bold text-primary text-2xl">+{Math.round((getActiveBoosterMultiplier() - 1) * 100)}%</div>
                 </div>
               </div>
             </div>
@@ -388,7 +512,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Стоимость:</span>
-                      <span className="font-bold">{cost.toLocaleString()} OC</span>
+                      <span className="font-bold">{formatGameCurrency(cost)}</span>
                     </div>
                     <div className="flex gap-2">
                       <Button 
@@ -398,7 +522,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                         variant={profile && profile.balance >= cost ? "default" : "outline"}
                       >
                         <ShoppingCart className="h-4 w-4 mr-2" />
-                        {booster.duration ? 'Активировать' : 'Улучшить'}
+                        {currentLevel === 0 ? 'Активировать' : 'Улучшить'}
                       </Button>
                       {currentLevel > 0 && (
                         <Button 

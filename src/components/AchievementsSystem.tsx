@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Gift, Lock, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 
 interface Achievement {
@@ -33,6 +34,7 @@ interface UserAchievement {
 
 export const AchievementsSystem = () => {
   const { user } = useAuth();
+  const { formatGameCurrency } = useCurrency();
   const { toast } = useToast();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
@@ -214,7 +216,7 @@ export const AchievementsSystem = () => {
   const getRewardText = (achievement: Achievement) => {
     switch (achievement.reward_type) {
       case 'coins':
-        return `+${achievement.reward_amount.toLocaleString()} OC`;
+        return `+${formatGameCurrency(achievement.reward_amount)}`;
       case 'booster':
         return 'Бустер добавлен в инвентарь';
       case 'title':

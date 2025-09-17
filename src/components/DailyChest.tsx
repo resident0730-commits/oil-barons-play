@@ -59,7 +59,7 @@ const getRarityGlow = (rarity: string) => {
 };
 
 export const DailyChest = () => {
-  const { profile, addIncome } = useGameData();
+  const { profile, addIncome, reload } = useGameData();
   const { toast } = useToast();
   const sounds = useSound();
   const [showReward, setShowReward] = useState<DailyReward | null>(null);
@@ -142,11 +142,15 @@ export const DailyChest = () => {
       // Даем награду
       await addIncome(reward.amount);
 
+      // Перезагружаем данные игры чтобы получить обновленный профиль
+      await reload();
+
       setTimeout(() => {
         sounds.success();
         setShowReward(reward);
         setIsOpening(false);
-        setCanClaim(false);
+        // Обновляем состояние после успешного получения награды
+        checkClaimability();
       }, 2000);
 
     } catch (error) {
