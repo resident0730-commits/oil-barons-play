@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Plus, Zap, Sparkles } from "lucide-react";
 import { UserWell, UserProfile, wellTypes, UserBooster } from "@/hooks/useGameData";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -32,6 +33,7 @@ export const WellsSection = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
+  const { formatGameCurrency } = useCurrency();
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
     !booster.expires_at || new Date(booster.expires_at) > new Date()
@@ -49,7 +51,7 @@ export const WellsSection = ({
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-muted-foreground">Общий доход:</span>
                 <Badge className="gradient-gold text-primary-foreground">
-                  {profile.daily_income.toLocaleString()} OC/день
+                  {formatGameCurrency(profile.daily_income)}/день
                 </Badge>
                 {hasActiveBoosters && (
                   <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
@@ -122,11 +124,11 @@ export const WellsSection = ({
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-lg text-primary">{Math.round(well.daily_income * boosterMultiplier).toLocaleString()}</p>
-                      <p className="text-xs text-muted-foreground">OC/день</p>
+                      <p className="font-bold text-lg text-primary">{formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}</p>
+                      <p className="text-xs text-muted-foreground">в день</p>
                       {hasActiveBoosters && (
                         <p className="text-xs text-purple-300">
-                          Базовая: {well.daily_income.toLocaleString()}
+                          Базовая: {formatGameCurrency(well.daily_income)}
                         </p>
                       )}
                     </div>
@@ -136,7 +138,7 @@ export const WellsSection = ({
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="text-center p-2 bg-muted/50 rounded">
-                      <p className="font-medium">{Math.round(well.daily_income * boosterMultiplier * 30).toLocaleString()}</p>
+                      <p className="font-medium">{formatGameCurrency(Math.round(well.daily_income * boosterMultiplier * 30))}</p>
                       <p className="text-xs text-muted-foreground">в месяц</p>
                     </div>
                     <div className="text-center p-2 bg-primary/10 rounded">
@@ -163,12 +165,12 @@ export const WellsSection = ({
                       <div className="text-sm space-y-1">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Улучшение:</span>
-                          <span className="font-medium">{upgradeCost.toLocaleString()} OC</span>
+                          <span className="font-medium">{formatGameCurrency(upgradeCost)}</span>
                         </div>
                         <div className="text-xs text-green-400 space-y-1">
-                          <div>📈 Доход: +{incomeIncrease.toLocaleString()} → {nextLevelIncome.toLocaleString()}</div>
+                          <div>📈 Доход: +{formatGameCurrency(incomeIncrease)} → {formatGameCurrency(nextLevelIncome)}</div>
                           {hasActiveBoosters && (
-                            <div>⚡ С бустерами: +{boostIncomeIncrease.toLocaleString()} → {nextLevelIncomeWithBoosters.toLocaleString()}</div>
+                            <div>⚡ С бустерами: +{formatGameCurrency(boostIncomeIncrease)} → {formatGameCurrency(nextLevelIncomeWithBoosters)}</div>
                           )}
                           <div>💰 Прирост: +15% доходности</div>
                         </div>

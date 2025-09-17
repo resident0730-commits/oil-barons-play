@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, Star, Zap, ArrowLeft, Camera, Send } from "lucide-react";
 import qrPaymentImage from "@/assets/qr-payment.png";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -86,6 +87,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
   const [showQR, setShowQR] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
+  const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
@@ -129,7 +131,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <DialogTitle>Оплата {paymentAmount} ₽</DialogTitle>
+              <DialogTitle>Оплата {formatRealCurrency(paymentAmount)}</DialogTitle>
             </div>
             <DialogDescription>
               Отсканируйте QR-код для оплаты
@@ -241,7 +243,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             <CardContent className="p-4">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="amount">Произвольная сумма (мин. 100 ₽)</Label>
+                  <Label htmlFor="amount">Произвольная сумма (мин. 100 {currencyConfig.real_currency_symbol})</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="amount"
@@ -259,7 +261,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    1 ₽ = 1 OC
+                    {currencyConfig.exchange_rate}
                   </p>
                 </div>
               </div>
@@ -291,17 +293,17 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
                       
                       <div className="space-y-2">
                         <div className="text-2xl font-bold text-primary">
-                          {pkg.totalOC.toLocaleString()} OC
+                          {formatGameCurrency(pkg.totalOC)}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {pkg.rubAmount.toLocaleString()} ₽
+                          {formatRealCurrency(pkg.rubAmount)}
                         </div>
                       </div>
 
                       {pkg.bonusOC > 0 && (
                         <div className="space-y-1">
                           <div className="text-sm text-muted-foreground">
-                            {pkg.baseOC.toLocaleString()} + {pkg.bonusOC.toLocaleString()} бонус
+                            {formatGameCurrency(pkg.baseOC)} + {formatGameCurrency(pkg.bonusOC)} бонус
                           </div>
                           {pkg.badge && (
                             <Badge variant="secondary" className="bg-green-100 text-green-800">

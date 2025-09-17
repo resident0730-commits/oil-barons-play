@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingCart, Package, Gem, Star } from "lucide-react";
 import { wellTypes, wellPackages, UserProfile, WellType, WellPackage } from "@/hooks/useGameData";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface ShopSectionProps {
   profile: UserProfile;
@@ -30,6 +31,7 @@ export const ShopSection = ({
   calculateProfitMetrics, 
   formatProfitPercent 
 }: ShopSectionProps) => {
+  const { formatGameCurrency } = useCurrency();
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -42,7 +44,7 @@ export const ShopSection = ({
             <ShoppingCart className="h-4 w-4 text-primary" />
             <span className="text-sm text-muted-foreground">Доступно:</span>
             <Badge className="gradient-gold text-primary-foreground">
-              {profile.balance.toLocaleString()} OC
+              {formatGameCurrency(profile.balance)}
             </Badge>
           </div>
         </div>
@@ -82,8 +84,8 @@ export const ShopSection = ({
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-lg text-primary">{wellType.baseIncome.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">OC/день</p>
+                        <p className="font-bold text-lg text-primary">{formatGameCurrency(wellType.baseIncome)}</p>
+                        <p className="text-xs text-muted-foreground">в день</p>
                       </div>
                     </div>
                   </CardHeader>
@@ -96,7 +98,7 @@ export const ShopSection = ({
 
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="text-center p-2 bg-muted/50 rounded">
-                          <p className="font-medium">{metrics.monthlyIncome.toLocaleString()}</p>
+                          <p className="font-medium">{formatGameCurrency(metrics.monthlyIncome)}</p>
                           <p className="text-xs text-muted-foreground">в месяц</p>
                         </div>
                         <div className="text-center p-2 bg-primary/10 rounded">
@@ -109,7 +111,7 @@ export const ShopSection = ({
                     <div className="flex justify-between items-center">
                       <div className="text-sm">
                         <span className="text-muted-foreground">Цена: </span>
-                        <span className="font-bold text-lg">{wellType.price.toLocaleString()} OC</span>
+                        <span className="font-bold text-lg">{formatGameCurrency(wellType.price)}</span>
                       </div>
                       <Button
                         onClick={() => onBuyWell(wellType)}
@@ -184,11 +186,11 @@ export const ShopSection = ({
 
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div className="text-center p-2 bg-muted/50 rounded">
-                        <p className="font-medium">{wellPackage.totalDailyIncome.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">OC в день</p>
+                        <p className="font-medium">{formatGameCurrency(wellPackage.totalDailyIncome)}</p>
+                        <p className="text-xs text-muted-foreground">в день</p>
                       </div>
                       <div className="text-center p-2 bg-green-100 rounded">
-                        <p className="font-medium text-green-800">{savings.toLocaleString()}</p>
+                        <p className="font-medium text-green-800">{formatGameCurrency(savings)}</p>
                         <p className="text-xs text-green-600">экономия</p>
                       </div>
                     </div>
@@ -196,11 +198,11 @@ export const ShopSection = ({
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Обычная цена:</span>
-                        <span className="line-through text-muted-foreground">{wellPackage.originalPrice.toLocaleString()} OC</span>
+                        <span className="line-through text-muted-foreground">{formatGameCurrency(wellPackage.originalPrice)}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-lg font-bold">Цена пакета:</span>
-                        <span className="text-xl font-bold text-primary">{wellPackage.discountedPrice.toLocaleString()} OC</span>
+                        <span className="text-xl font-bold text-primary">{formatGameCurrency(wellPackage.discountedPrice)}</span>
                       </div>
                     </div>
 

@@ -7,11 +7,16 @@ import {
   Trophy,
   Zap,
   Target,
-  Users
+  Users,
+  Crown,
+  Star,
+  Wrench
 } from "lucide-react";
-import { UserProfile, UserWell, wellTypes } from "@/hooks/useGameData";
+import { UserProfile, UserWell, wellTypes, useGameData } from "@/hooks/useGameData";
 import { StatusDisplay } from "@/components/StatusDisplay";
 import { DailyBonus } from "@/components/DailyBonus";
+import { useCurrency } from "@/hooks/useCurrency";
+import { useStatusBonuses } from "@/hooks/useStatusBonuses";
 
 interface OverviewSectionProps {
   profile: UserProfile;
@@ -20,6 +25,10 @@ interface OverviewSectionProps {
 }
 
 export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionProps) => {
+  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
+  const { boosters, getActiveBoosterMultiplier } = useGameData();
+  const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
+  
   // Правильный расчет общей стоимости активов
   const totalWellsValue = wells.reduce((total, well) => {
     const wellType = wellTypes.find(wt => wt.name === well.well_type);
@@ -38,6 +47,54 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
   }, 0);
 
   const averageDailyPerWell = wells.length > 0 ? Math.round(profile.daily_income / wells.length) : 0;
+
+  // Calculate detailed booster information
+  const getDetailedBoosterInfo = () => {
+    const activeBoosters = [];
+    let totalBoosterBonus = 0;
+
+    boosters.forEach(booster => {
+      const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+      if (isActive) {
+        let bonus = 0;
+        let name = '';
+        
+        switch (booster.booster_type) {
+          case 'worker_crew':
+            bonus = booster.level * 10;
+            name = 'Бригада рабочих';
+            break;
+          case 'geological_survey':
+            bonus = booster.level * 15;
+            name = 'Геологическая разведка';
+            break;
+          case 'advanced_equipment':
+            bonus = booster.level * 25;  
+            name = 'Продвинутое оборудование';
+            break;
+          case 'turbo_boost':
+            bonus = 50;
+            name = 'Турбо-буст';
+            break;
+          case 'automation':
+            bonus = booster.level * 20;
+            name = 'Автоматизация';
+            break;
+        }
+        
+        if (bonus > 0) {
+          activeBoosters.push({ name, bonus, level: booster.level, expiresAt: booster.expires_at });
+          totalBoosterBonus += bonus;
+        }
+      }
+    });
+
+    return { activeBoosters, totalBoosterBonus };
+  };
+
+  const { activeBoosters, totalBoosterBonus } = getDetailedBoosterInfo();
+  const statusBonus = Math.round((statusMultiplier - 1) * 100);
+  const totalIncomeBonus = totalBoosterBonus + statusBonus;
 
   return (
     <div className="space-y-6">
@@ -67,7 +124,7 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{profile.balance.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Oil Coins</p>
+            <p className="text-xs text-muted-foreground">{formatGameCurrencyWithName(0).split(' ')[1]}</p>
           </CardContent>
         </Card>
 
@@ -78,7 +135,7 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{profile.daily_income.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">OC в день</p>
+            <p className="text-xs text-muted-foreground">{formatGameCurrency(0).split(' ')[1]} в день</p>
           </CardContent>
         </Card>
 
@@ -106,7 +163,7 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
       </div>
 
       {/* Performance Metrics */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -117,15 +174,15 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
           <CardContent className="space-y-3">
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Средний доход на скважину:</span>
-              <span className="font-medium">{averageDailyPerWell.toLocaleString()} OC</span>
+              <span className="font-medium">{formatGameCurrency(averageDailyPerWell)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Общая стоимость активов:</span>
-              <span className="font-medium">{totalWellsValue.toLocaleString()} OC</span>
+              <span className="font-medium">{formatGameCurrency(totalWellsValue)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Рыночная стоимость:</span>
-              <span className="font-medium text-green-600">{Math.round(totalWellsValue * 0.8).toLocaleString()} OC</span>
+              <span className="font-medium text-green-600">{formatGameCurrency(Math.round(totalWellsValue * 0.8))}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">ROI в месяц:</span>
@@ -151,6 +208,81 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
           </CardHeader>
           <CardContent>
             <DailyBonus />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Star className="h-5 w-5" />
+              <span>Бонусы доходности</span>
+            </CardTitle>
+            <CardDescription>
+              Общий доходный мультипликатор: <span className="font-bold text-primary">+{totalIncomeBonus}%</span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Status Bonuses */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium flex items-center gap-1">
+                  <Crown className="h-3 w-3 text-accent" />
+                  Статусные бонусы:
+                </span>
+                <span className="font-bold text-accent">+{statusBonus}%</span>
+              </div>
+              {statusBonus > 0 ? (
+                <div className="text-xs text-muted-foreground space-y-1">
+                  {getStatusDisplayNames().map((title, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{title}</span>
+                      <span>
+                        {userTitles[index] === 'oil_king' && '+5%'}
+                        {userTitles[index] === 'leader' && '+3%'}
+                        {userTitles[index] === 'industrialist' && '+2%'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-xs text-muted-foreground">
+                  Нет активных статусных титулов
+                </div>
+              )}
+            </div>
+
+            {/* Booster Bonuses */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium flex items-center gap-1">
+                  <Wrench className="h-3 w-3 text-primary" />
+                  Бонусы от бустеров:
+                </span>
+                <span className="font-bold text-primary">+{totalBoosterBonus}%</span>
+              </div>
+              {activeBoosters.length > 0 ? (
+                <div className="text-xs text-muted-foreground space-y-1">
+                  {activeBoosters.map((booster, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{booster.name} (ур. {booster.level})</span>
+                      <span>+{booster.bonus}%</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-xs text-muted-foreground">
+                  Нет активных бустеров
+                </div>
+              )}
+            </div>
+
+            {totalIncomeBonus > 0 && (
+              <div className="pt-2 border-t border-border">
+                <div className="text-xs text-muted-foreground">
+                  Ваши скважины приносят на <span className="font-bold text-primary">{totalIncomeBonus}%</span> больше дохода
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 

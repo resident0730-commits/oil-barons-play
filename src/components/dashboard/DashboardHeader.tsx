@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { UserProfile } from "@/hooks/useGameData";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface DashboardHeaderProps {
   profile: UserProfile;
@@ -23,6 +24,7 @@ interface DashboardHeaderProps {
 }
 
 export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: DashboardHeaderProps) => {
+  const { formatGameCurrency } = useCurrency();
   return (
     <header className="relative border-b border-primary/20 backdrop-blur-md bg-gradient-to-r from-card/95 via-card/90 to-card/95 shadow-luxury">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5"></div>
@@ -52,7 +54,7 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110" />
-              <span className="font-bold text-sm sm:text-lg relative z-10">{profile.balance.toLocaleString()} OC</span>
+              <span className="font-bold text-sm sm:text-lg relative z-10">{formatGameCurrency(profile.balance)}</span>
               <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
             
