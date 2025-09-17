@@ -407,26 +407,6 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                 );
               })}
             </div>
-            
-            <div className="pt-4 border-t border-primary/20">
-              <div className="flex items-center justify-between p-4 bg-card/80 rounded-lg border-2 border-primary/30 hover:border-primary/50 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/20 rounded-full">
-                    <Crown className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-foreground text-lg">Общий бонус доходности</div>
-                    <div className="text-sm text-muted-foreground">
-                      бустеры (+{getBoosterMultiplier()}%) + статус (+{Math.round((statusMultiplier - 1) * 100)}%)
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="text-right">
-                  <div className="font-bold text-primary text-2xl">+{Math.round((getActiveBoosterMultiplier() - 1) * 100)}%</div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
