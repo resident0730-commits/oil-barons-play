@@ -106,7 +106,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-image: url('./assets/oil-daylight-background.jpg');
+    background-image: url('./assets/oil-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -158,7 +158,7 @@ All colors MUST be HSL.
 @layer components {
   /* Hero luxury background for main page */
   .hero-luxury-background {
-    background-image: url('./assets/hero-oil-luxury.jpg');
+    background-image: url('./assets/oil-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -273,7 +273,7 @@ All colors MUST be HSL.
   /* Dashboard light background */
   .dashboard-light-bg {
     position: relative;
-    background-image: url('./assets/oil-daylight-background.jpg');
+    background-image: url('./assets/oil-background.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
