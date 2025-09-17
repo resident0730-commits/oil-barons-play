@@ -776,7 +776,7 @@ export function useGameData() {
         return { success: false, error: 'Достигнут максимальный уровень' };
       }
 
-      const upgradeCost = Math.floor(wellType.price * 0.5 * well.level);
+      const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
       if (profile.balance < upgradeCost) {
         return { success: false, error: 'Недостаточно средств для улучшения' };
       }
