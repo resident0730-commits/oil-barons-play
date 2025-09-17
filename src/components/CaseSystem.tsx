@@ -276,10 +276,20 @@ export const CaseSystem = () => {
             // Получаем бустер бесплатно из кейса (cost = 0)
             const result = await buyBooster(reward.boosterType, 0, null);
             if (result.success) {
+              // Перезагружаем данные игры для обновления списка бустеров
+              setTimeout(() => reload(), 100);
+              
               toast({
                 title: "Бустер получен!",
                 description: `${reward.name} добавлен в ваши бустеры`,
                 className: getRarityColor(reward.rarity)
+              });
+            } else {
+              console.error('Failed to add booster:', result.error);
+              toast({
+                title: "Ошибка получения бустера",
+                description: result.error || "Не удалось добавить бустер",
+                variant: "destructive"
               });
             }
           }
