@@ -3,11 +3,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
 import About from "./pages/About";
+import GameGuide from "./pages/GameGuide";
 import Company from "./pages/Company";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
@@ -39,8 +41,16 @@ const App = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/requisites" element={<Requisites />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/offer" element={<Offer />} />
+          <Route path="/terms" element={
+            <ProtectedRoute pageKey="terms">
+              <Terms />
+            </ProtectedRoute>
+          } />
+          <Route path="/offer" element={
+            <ProtectedRoute pageKey="offer">
+              <Offer />
+            </ProtectedRoute>
+          } />
           <Route path="/rules" element={<Rules />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
@@ -48,6 +58,7 @@ const App = () => (
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/about" element={<Company />} />
+          <Route path="/guide" element={<GameGuide />} />
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
