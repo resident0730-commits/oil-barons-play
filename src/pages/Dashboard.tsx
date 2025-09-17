@@ -18,6 +18,7 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useSound } from "@/hooks/useSound";
+import { useCurrency } from "@/hooks/useCurrency";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import { CaseSystem } from "@/components/CaseSystem";
@@ -39,6 +40,7 @@ const Dashboard = () => {
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
+  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
   
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -131,7 +133,7 @@ const Dashboard = () => {
       if (offlineIncome > 0) {
         toast({
           title: "Добро пожаловать!",
-          description: `Вы получили ${offlineIncome.toLocaleString()} OC за ${offlineHours.toFixed(1)} часов оффлайн дохода!`,
+          description: `Вы получили ${formatGameCurrency(offlineIncome)} за ${offlineHours.toFixed(1)} часов оффлайн дохода!`,
           duration: 5000,
         });
       }
@@ -191,7 +193,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки "${wellType.name}" нужно ${wellType.price.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
+        description: `Для покупки "${wellType.name}" нужно ${formatGameCurrency(wellType.price)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
         variant: "destructive"
       });
       return;
@@ -217,7 +219,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки пакета "${wellPackage.name}" нужно ${wellPackage.discountedPrice.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
+        description: `Для покупки пакета "${wellPackage.name}" нужно ${formatGameCurrency(wellPackage.discountedPrice)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
         variant: "destructive"
       });
       return;
@@ -247,7 +249,7 @@ const Dashboard = () => {
       setIsTopUpOpen(true);
       toast({
         title: "Недостаточно средств",
-        description: `Для улучшения нужно ${upgradeCost.toLocaleString()} OC. У вас ${currentProfile.balance.toLocaleString()} OC`,
+        description: `Для улучшения нужно ${formatGameCurrency(upgradeCost)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
         variant: "destructive"
       });
       return;
@@ -316,7 +318,7 @@ const Dashboard = () => {
         window.open(paymentUrl, '_blank');
         toast({
           title: "Переход к оплате",
-          description: `После успешной оплаты ${rubAmount}₽ вы получите ${ocAmount.toLocaleString()} OC через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
+          description: `После успешной оплаты ${rubAmount}₽ вы получите ${formatGameCurrency(ocAmount)} через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
         });
         setIsTopUpOpen(false);
       }

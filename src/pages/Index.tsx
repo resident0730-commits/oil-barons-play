@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData } from "@/hooks/useGameData";
 import { useGameStatistics } from "@/hooks/useGameStatistics";
+import { usePageVisibility } from "@/hooks/usePageVisibility";
+import { useCurrency } from "@/hooks/useCurrency";
 import { Leaderboard } from "@/components/Leaderboard";
 import { 
   Fuel, 
@@ -26,6 +28,8 @@ const Index = () => {
   const { user } = useAuth();
   const { profile, wells, loading } = useGameData();
   const { statistics } = useGameStatistics();
+  const { isPageVisible } = usePageVisibility();
+  const { currencyConfig, formatGameCurrency, getGameCurrencyDescription, getExchangeDescription } = useCurrency();
 
   return (
     <div className="min-h-screen hero-luxury-background overflow-x-hidden">
@@ -105,7 +109,7 @@ const Index = () => {
                 </Button>
               </Link>
             )}
-            <Link to="/about">
+            <Link to="/guide">
               <Button size="lg" variant="outline" className="text-xl px-10 py-6 backdrop-blur-sm bg-card/30 border-primary/50 hover:bg-primary/10 hover-scale">
                 <BarChart3 className="mr-3 h-6 w-6" />
                 Узнать больше
@@ -128,7 +132,7 @@ const Index = () => {
                 </div>
               </div>
               <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-                Игровая валюта OilCoin
+                Игровая валюта {currencyConfig.game_currency_name}
               </CardTitle>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Приобретайте игровую валюту для развития своей нефтяной империи
@@ -137,7 +141,7 @@ const Index = () => {
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="text-center p-6 bg-primary/5 rounded-xl border border-primary/10">
-                  <div className="text-4xl font-bold text-primary mb-2">1 OC = 1 ₽</div>
+                  <div className="text-4xl font-bold text-primary mb-2">{currencyConfig.exchange_rate}</div>
                   <p className="text-sm text-muted-foreground">Прозрачный курс обмена</p>
                 </div>
                 <div className="text-center p-6 bg-accent/5 rounded-xl border border-accent/10">
@@ -147,28 +151,28 @@ const Index = () => {
               </div>
               
               <div className="bg-muted/30 rounded-xl p-6">
-                <h4 className="font-semibold text-lg mb-3 text-center">Что такое OilCoin?</h4>
+                <h4 className="font-semibold text-lg mb-3 text-center">Что такое {currencyConfig.game_currency_name}?</h4>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">
                   <div className="text-center space-y-2">
                     <div className="p-2 bg-primary/10 rounded-lg inline-block">
                       <Target className="h-5 w-5 text-primary" />
                     </div>
                     <p className="font-medium">Игровая валюта</p>
-                    <p className="text-muted-foreground">Используется только внутри игры для покупки скважин и улучшений</p>
+                    <p className="text-muted-foreground">{getGameCurrencyDescription()}</p>
                   </div>
                   <div className="text-center space-y-2">
                     <div className="p-2 bg-accent/10 rounded-lg inline-block">
                       <Shield className="h-5 w-5 text-accent" />
                     </div>
-                    <p className="font-medium">Курс 1:1</p>
-                    <p className="text-muted-foreground">1 OilCoin = 1 российский рубль, фиксированный курс обмена</p>
+                    <p className="font-medium">Курс обмена</p>
+                    <p className="text-muted-foreground">{getExchangeDescription()}</p>
                   </div>
                   <div className="text-center space-y-2">
                     <div className="p-2 bg-primary/10 rounded-lg inline-block">
                       <Zap className="h-5 w-5 text-primary" />
                     </div>
                     <p className="font-medium">Мгновенное зачисление</p>
-                    <p className="text-muted-foreground">OilCoins поступают на игровой счет сразу после платежа</p>
+                    <p className="text-muted-foreground">{currencyConfig.game_currency_name} поступают на игровой счет сразу после платежа</p>
                   </div>
                 </div>
               </div>
@@ -193,7 +197,7 @@ const Index = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">{profile.balance.toLocaleString()} OC</div>
+                  <div className="text-3xl font-bold text-primary">{formatGameCurrency(profile.balance)}</div>
                   <p className="text-sm text-muted-foreground">Игровая валюта для развития</p>
                 </CardContent>
               </Card>
@@ -346,7 +350,7 @@ const Index = () => {
                     <BarChart3 className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-4xl font-bold text-primary mb-2 font-playfair">
-                    {statistics.average_profit?.toLocaleString() || '15,842'} OC
+                    {formatGameCurrency(statistics.average_profit || 15842)}
                   </div>
                   <p className="text-lg text-muted-foreground font-medium">Средняя прибыль</p>
                   <p className="text-sm text-muted-foreground/80 mt-2">За последние 30 дней</p>
@@ -445,12 +449,16 @@ const Index = () => {
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 О компании
               </Link>
-              <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
-                Условия использования
-              </Link>
-              <Link to="/offer" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
-                Публичная оферта
-              </Link>
+              {isPageVisible('terms') && (
+                <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
+                  Условия использования
+                </Link>
+              )}
+              {isPageVisible('offer') && (
+                <Link to="/offer" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
+                  Публичная оферта
+                </Link>
+              )}
               <Link to="/support" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 Поддержка
               </Link>

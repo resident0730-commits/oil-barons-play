@@ -16,6 +16,9 @@ import { TransferHistory } from '@/components/admin/TransferHistory';
 import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 import { BoosterManager } from '@/components/admin/BoosterManager';
 import { BotManager } from '@/components/admin/BotManager';
+import { PageVisibilityManager } from '@/components/admin/PageVisibilityManager';
+import { CompanyContentManager } from '@/components/admin/CompanyContentManager';
+import { CurrencyManager } from '@/components/admin/CurrencyManager';
 
 // Admin component for managing game and users
 export default function Admin() {
@@ -72,6 +75,21 @@ export default function Admin() {
         </div>
 
         <div className="space-y-8">
+          {/* Currency Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Настройки валют</h2>
+            <CurrencyManager />
+          </div>
+
+          {/* Page Visibility Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Управление страницами</h2>
+            <div className="space-y-6">
+              <PageVisibilityManager />
+              <CompanyContentManager />
+            </div>
+          </div>
+
           {/* Statistics */}
           <div>
             <h2 className="text-2xl font-semibold mb-4">Статистика</h2>

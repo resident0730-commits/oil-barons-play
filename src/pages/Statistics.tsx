@@ -5,10 +5,12 @@ import { ArrowLeft, TrendingUp, Wallet, Factory, BarChart3 } from "lucide-react"
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData, wellTypes } from "@/hooks/useGameData";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const Statistics = () => {
   const { user } = useAuth();
   const { profile, wells } = useGameData();
+  const { formatGameCurrency } = useCurrency();
 
   const totalWellsValue = wells.reduce((sum, well) => {
     const wellType = wellTypes.find(wt => wt.name === well.well_type);
@@ -62,7 +64,7 @@ const Statistics = () => {
               <Wallet className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{profile?.balance?.toLocaleString() || '0'}</div>
+              <div className="text-2xl font-bold">{formatGameCurrency(profile?.balance || 0)}</div>
             </CardContent>
           </Card>
 
@@ -72,7 +74,7 @@ const Statistics = () => {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{profile?.daily_income?.toLocaleString() || '0'}</div>
+              <div className="text-2xl font-bold">{formatGameCurrency(profile?.daily_income || 0)}</div>
             </CardContent>
           </Card>
 
@@ -92,7 +94,7 @@ const Statistics = () => {
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₽{totalWellsValue.toLocaleString()}</div>
+              <div className="text-2xl font-bold">{formatGameCurrency(totalWellsValue)}</div>
             </CardContent>
           </Card>
         </div>
@@ -106,15 +108,15 @@ const Statistics = () => {
             <CardContent className="space-y-4">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Средняя прибыль с скважины:</span>
-                <span className="font-semibold">₽{averageWellIncome.toFixed(0)}/день</span>
+                <span className="font-semibold">{formatGameCurrency(Math.round(averageWellIncome))}/день</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Месячная прибыль:</span>
-                <span className="font-semibold">₽{((profile?.daily_income || 0) * 30).toLocaleString()}</span>
+                <span className="font-semibold">{formatGameCurrency((profile?.daily_income || 0) * 30)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Годовая прибыль:</span>
-                <span className="font-semibold">₽{((profile?.daily_income || 0) * 365).toLocaleString()}</span>
+                <span className="font-semibold">{formatGameCurrency((profile?.daily_income || 0) * 365)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">ROI (годовой):</span>
@@ -141,8 +143,8 @@ const Statistics = () => {
                         <p className="text-sm text-muted-foreground">Уровень {well.level}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">₽{well.daily_income}/день</p>
-                        <p className="text-sm text-muted-foreground">₽{(wellTypes.find(wt => wt.name === well.well_type)?.price * well.level || 0).toLocaleString()}</p>
+                        <p className="font-semibold">{formatGameCurrency(well.daily_income)}/день</p>
+                        <p className="text-sm text-muted-foreground">{formatGameCurrency((wellTypes.find(wt => wt.name === well.well_type)?.price || 0) * well.level)}</p>
                       </div>
                     </div>
                   ))}
