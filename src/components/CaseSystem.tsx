@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Gift, Sparkles, Coins, Zap, Star, Crown, Diamond } from "lucide-react";
 import { useGameData, wellTypes } from '@/hooks/useGameData';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { useSound } from '@/hooks/useSound';
 import { useCurrency } from '@/hooks/useCurrency';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CaseReward {
   type: 'money' | 'booster' | 'well' | 'multiplier';
@@ -148,7 +150,8 @@ const getRarityGlow = (rarity: string) => {
 };
 
 export const CaseSystem = () => {
-  const { profile, buyWell, buyBooster, addIncome } = useGameData();
+  const { profile, buyWell, buyBooster, addIncome, reload } = useGameData();
+  const { user } = useAuth();
   const { formatGameCurrency } = useCurrency();
   const { toast } = useToast();
   const sounds = useSound();
@@ -164,6 +167,9 @@ export const CaseSystem = () => {
   };
 
   const openCase = async (caseType: CaseType) => {
+    console.log(`🎯 Starting case opening: ${caseType.name} for ${caseType.price}`);
+    console.log(`💰 Current balance: ${profile?.balance}`);
+    
     if (!profile || profile.balance < caseType.price) {
       sounds.error();
       toast({
@@ -182,6 +188,8 @@ export const CaseSystem = () => {
     
     // Анимация открытия
     setTimeout(() => {
+      console.log(`🎰 Determining reward for case: ${caseType.name}`);
+      
       // Улучшенный алгоритм определения награды
       const allRewards = caseType.rewards;
       const commonRewards = allRewards.filter(r => r.rarity === 'common');
@@ -225,6 +233,8 @@ export const CaseSystem = () => {
         }
       }
 
+      console.log(`🎁 Selected reward: ${reward.name} (${reward.type}, ${reward.rarity})`);
+
       // Звук получения награды
       if (reward.rarity === 'legendary') {
         sounds.success();
@@ -241,39 +251,101 @@ export const CaseSystem = () => {
   };
 
   const giveReward = async (reward: CaseReward, casePrice: number) => {
-    // Сначала списываем стоимость кейса
-    await addIncome(-casePrice);
+    console.log(`🎁 Processing reward: ${reward.name}, case cost: ${casePrice}`);
+    console.log(`💰 Current balance before: ${profile?.balance}`);
     
-    switch (reward.type) {
-      case 'money':
-        if (reward.amount) {
-          await addIncome(reward.amount);
-        }
-        break;
-      case 'booster':
-        if (reward.boosterType) {
-          // Логика покупки бустера - можно реализовать позже
-        }
-        break;
-      case 'well':
-        if (reward.wellType) {
-          // Находим тип скважины и добавляем её пользователю
-          const wellTypeData = wellTypes.find(wt => wt.name === reward.wellType);
-          if (wellTypeData) {
-            await buyWell(wellTypeData);
+    try {
+      switch (reward.type) {
+        case 'money':
+          if (reward.amount) {
+            // Вычисляем чистую прибыль (награда минус стоимость кейса)
+            const netAmount = reward.amount - casePrice;
+            console.log(`💵 Money reward: ${reward.amount}, net amount: ${netAmount}`);
+            await addIncome(netAmount);
+          } else {
+            // Если денежной награды нет, просто списываем стоимость кейса
+            console.log(`💸 No money reward, deducting case cost: -${casePrice}`);
+            await addIncome(-casePrice);
           }
-        }
-        break;
-      case 'multiplier':
-        // Логика временного множителя - можно реализовать позже
-        break;
-    }
+          break;
+        case 'booster':
+          // Сначала списываем стоимость кейса
+          console.log(`⚡ Booster reward, deducting case cost: -${casePrice}`);
+          await addIncome(-casePrice);
+          if (reward.boosterType) {
+            // Получаем бустер бесплатно из кейса (cost = 0)
+            const result = await buyBooster(reward.boosterType, 0, null);
+            if (result.success) {
+              toast({
+                title: "Бустер получен!",
+                description: `${reward.name} добавлен в ваши бустеры`,
+                className: getRarityColor(reward.rarity)
+              });
+            }
+          }
+          break;
+        case 'well':
+          // Списываем стоимость кейса и создаем скважину напрямую
+          console.log(`🏭 Well reward, deducting case cost: -${casePrice}`);
+          await addIncome(-casePrice);
+          if (reward.wellType) {
+            // Находим тип скважины
+            const wellType = wellTypes.find(wt => wt.name === reward.wellType);
+            if (wellType) {
+              // Создаем скважину напрямую в базе, минуя buyWell
+              if (user) {
+                const { error: wellError } = await supabase
+                  .from('wells')
+                  .insert({
+                    user_id: user.id,
+                    well_type: wellType.name,
+                    level: 1,
+                    daily_income: wellType.baseIncome
+                  });
 
-    toast({
-      title: "Награда получена!",
-      description: reward.description,
-      className: getRarityColor(reward.rarity)
-    });
+                if (!wellError) {
+                  // Перезагружаем данные игры
+                  setTimeout(() => reload(), 100);
+                  
+                  toast({
+                    title: "Скважина получена!",
+                    description: `${reward.name} добавлена в ваши скважины`,
+                    className: getRarityColor(reward.rarity)
+                  });
+                }
+              }
+            }
+          }
+          break;
+        case 'multiplier':
+          // Сначала списываем стоимость кейса
+          console.log(`✨ Multiplier reward, deducting case cost: -${casePrice}`);
+          await addIncome(-casePrice);
+          // Временный множитель - пока просто уведомление
+          toast({
+            title: "Множитель получен!",
+            description: `${reward.name} - функция будет добавлена позже`,
+            className: getRarityColor(reward.rarity)
+          });
+          break;
+      }
+
+      // Общее уведомление о получении награды только для денежных наград
+      if (reward.type === 'money') {
+        toast({
+          title: "Награда получена!",
+          description: reward.description,
+          className: getRarityColor(reward.rarity)
+        });
+      }
+    } catch (error) {
+      console.error('❌ Error processing reward:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось обработать награду",
+        variant: "destructive"
+      });
+    }
   };
 
   const closeDialog = () => {
