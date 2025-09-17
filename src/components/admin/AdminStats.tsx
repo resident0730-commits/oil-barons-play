@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, UserCheck, UserX, Building, DollarSign } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useCurrency } from '@/hooks/useCurrency';
 
 interface Stats {
   total_users: number;
@@ -14,6 +15,7 @@ interface Stats {
 export function AdminStats() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const { formatRealCurrency } = useCurrency();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -89,7 +91,7 @@ export function AdminStats() {
     },
     {
       title: 'Общий баланс',
-      value: `₽${Number(stats.total_balance).toLocaleString()}`,
+      value: formatRealCurrency(Number(stats.total_balance)),
       icon: DollarSign,
       className: 'text-emerald-600'
     }
