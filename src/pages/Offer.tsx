@@ -178,4 +178,4 @@ const Offer = () => {
   );
 };
 
-export default Offer;
+export { Offer };
