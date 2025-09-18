@@ -1,20 +1,11 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Building2, User, Globe, Mail, FileText, Home, RefreshCw } from 'lucide-react';
+import { Eye, EyeOff, Building2, User, Globe, Mail, FileText, Home } from 'lucide-react';
+import { useGlobalSettings } from '@/hooks/useGlobalSettings';
 
-interface CompanySetting {
-  section_key: string;
-  is_visible: boolean;
-}
-
-export function CompanyContentManager() {
-  const { toast } = useToast();
-  const [settings, setSettings] = useState<CompanySetting[]>([]);
-  const [loading, setLoading] = useState(true);
+export const CompanyContentManager = () => {
+  const { settings, loading, updateGlobalSetting } = useGlobalSettings();
 
   const sectionConfigs = [
     {
@@ -76,120 +67,19 @@ export function CompanyContentManager() {
     }
   ];
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = () => {
-    try {
-      setLoading(true);
-      
-      const savedSettings: CompanySetting[] = [];
-      
-      // Загрузка настроек разделов
-      sectionConfigs.forEach(config => {
-        const saved = localStorage.getItem(`company_section_${config.key}`);
-        savedSettings.push({
-          section_key: config.key,
-          is_visible: saved !== null ? JSON.parse(saved) : true
-        });
-      });
-
-      // Загрузка настроек реквизитов
-      companyRequisiteConfigs.forEach(config => {
-        const saved = localStorage.getItem(`company_requisite_${config.key}`);
-        savedSettings.push({
-          section_key: `requisite_${config.key}`,
-          is_visible: saved !== null ? JSON.parse(saved) : true
-        });
-      });
-
-      setSettings(savedSettings);
-    } catch (error) {
-      console.error('Error in loadSettings:', error);
-      const defaultSettings = [
-        ...sectionConfigs.map(config => ({
-          section_key: config.key,
-          is_visible: true
-        })),
-        ...companyRequisiteConfigs.map(config => ({
-          section_key: `requisite_${config.key}`,
-          is_visible: true
-        }))
-      ];
-      setSettings(defaultSettings);
-      
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить настройки видимости разделов",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleVisibility = (sectionKey: string, newVisibility: boolean) => {
-    try {
-      let storageKey = '';
-      let displayName = '';
-
-      if (sectionKey.startsWith('requisite_')) {
-        const requisiteKey = sectionKey.replace('requisite_', '');
-        storageKey = `company_requisite_${requisiteKey}`;
-        const config = companyRequisiteConfigs.find(r => r.key === requisiteKey);
-        displayName = config?.name || sectionKey;
-      } else {
-        storageKey = `company_section_${sectionKey}`;
-        const config = sectionConfigs.find(s => s.key === sectionKey);
-        displayName = config?.name || sectionKey;
-      }
-
-      localStorage.setItem(storageKey, JSON.stringify(newVisibility));
-
-      setSettings(prev => 
-        prev.map(setting => 
-          setting.section_key === sectionKey 
-            ? { ...setting, is_visible: newVisibility }
-            : setting
-        )
-      );
-
-      toast({
-        title: newVisibility ? "Элемент показан" : "Элемент скрыт",
-        description: `"${displayName}" теперь ${newVisibility ? 'видим' : 'скрыт'} на странице "О компании"`,
-      });
-    } catch (error) {
-      console.error('Error updating section visibility:', error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось обновить настройки видимости",
-        variant: "destructive",
-      });
-    }
+  const toggleVisibility = async (sectionKey: string, newVisibility: boolean) => {
+    const isMainSection = sectionConfigs.find(s => s.key === sectionKey);
+    const settingType = isMainSection ? 'company_section' : 'company_requisite';
+    
+    await updateGlobalSetting(sectionKey, settingType, newVisibility);
   };
 
   const getSettingForSection = (sectionKey: string) => {
-    return settings.find(s => s.section_key === sectionKey);
-  };
-
-  const applyToAllUsers = () => {
-    // Очищаем localStorage от всех настроек компании
-    sectionConfigs.forEach(config => {
-      localStorage.removeItem(`company_section_${config.key}`);
-    });
-
-    companyRequisiteConfigs.forEach(config => {
-      localStorage.removeItem(`company_requisite_${config.key}`);
-    });
-
-    // Перезагружаем текущие настройки
-    loadSettings();
-
-    toast({
-      title: "Настройки применены",
-      description: "Все пользователи получат актуальные настройки видимости при следующем входе",
-    });
+    const isMainSection = sectionConfigs.find(s => s.key === sectionKey);
+    const settingType = isMainSection ? 'company_section' : 'company_requisite';
+    
+    const setting = settings.find(s => s.setting_key === sectionKey && s.setting_type === settingType);
+    return { section_key: sectionKey, is_visible: setting?.setting_value ?? true };
   };
 
   if (loading) {
@@ -239,9 +129,9 @@ export function CompanyContentManager() {
                       </div>
                     </div>
                     <div>
-                      <Label className="text-base font-medium">
+                      <div className="text-base font-medium">
                         {config.name}
-                      </Label>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {config.description}
                       </p>
@@ -263,7 +153,7 @@ export function CompanyContentManager() {
           <h4 className="font-semibold text-lg mb-4 text-accent">Реквизиты компании (детально)</h4>
           <div className="space-y-4">
             {companyRequisiteConfigs.map((config) => {
-              const setting = getSettingForSection(`requisite_${config.key}`);
+              const setting = getSettingForSection(config.key);
               const isVisible = setting?.is_visible ?? true;
               
               return (
@@ -283,9 +173,9 @@ export function CompanyContentManager() {
                       </div>
                     </div>
                     <div>
-                      <Label className="text-base font-medium">
+                      <div className="text-base font-medium">
                         {config.name}
-                      </Label>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {config.description}
                       </p>
@@ -294,7 +184,7 @@ export function CompanyContentManager() {
                   
                   <Switch
                     checked={isVisible}
-                    onCheckedChange={(checked) => toggleVisibility(`requisite_${config.key}`, checked)}
+                    onCheckedChange={(checked) => toggleVisibility(config.key, checked)}
                   />
                 </div>
               );
@@ -304,26 +194,10 @@ export function CompanyContentManager() {
         
         <div className="text-xs text-muted-foreground mt-4 p-3 bg-muted/30 rounded">
           <p>
-            <strong>Примечание:</strong> Скрытые разделы и реквизиты не будут отображаться на странице "О компании" для обычных пользователей.
-            Администраторы всегда видят все разделы.
-          </p>
-        </div>
-
-        {/* Кнопка применения для всех */}
-        <div className="pt-4 border-t">
-          <Button
-            variant="outline"
-            onClick={applyToAllUsers}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw className="h-4 w-4" />
-            Применить настройки для всех пользователей
-          </Button>
-          <p className="text-xs text-muted-foreground mt-2">
-            Сбросит все пользовательские настройки и применит текущие настройки видимости для всех
+            <strong>Примечание:</strong> Изменения автоматически применяются для всех пользователей через глобальную систему управления.
           </p>
         </div>
       </CardContent>
     </Card>
   );
-}
+};

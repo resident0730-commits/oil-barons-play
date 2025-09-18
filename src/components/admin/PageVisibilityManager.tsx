@@ -1,103 +1,24 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Settings } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import { useGlobalSettings } from '@/hooks/useGlobalSettings';
 
-interface PageSetting {
-  page_key: string;
-  is_visible: boolean;
-}
-
-export function PageVisibilityManager() {
-  const { toast } = useToast();
-  const [settings, setSettings] = useState<PageSetting[]>([]);
-  const [loading, setLoading] = useState(true);
+export const PageVisibilityManager = () => {
+  const { settings, loading, updateGlobalSetting } = useGlobalSettings();
 
   const pageConfigs = [
-    {
-      key: 'offer',
-      name: 'Публичная оферта',
-      description: 'Договор оказания услуг игрового сервиса'
-    },
-    {
-      key: 'terms',
-      name: 'Пользовательское соглашение', 
-      description: 'Условия использования сервиса'
-    }
+    { key: 'offer', name: 'Публичная оферта', description: 'Договор оказания услуг игрового сервиса' },
+    { key: 'terms', name: 'Пользовательское соглашение', description: 'Условия использования сервиса Oil Tycoon' }
   ];
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = () => {
-    try {
-      setLoading(true);
-      
-      // Загружаем настройки из localStorage
-      const savedSettings: PageSetting[] = [];
-      
-      pageConfigs.forEach(config => {
-        const saved = localStorage.getItem(`page_visibility_${config.key}`);
-        savedSettings.push({
-          page_key: config.key,
-          is_visible: saved !== null ? JSON.parse(saved) : true
-        });
-      });
-
-      setSettings(savedSettings);
-    } catch (error) {
-      console.error('Error in loadSettings:', error);
-      // Создаем настройки по умолчанию
-      const defaultSettings = pageConfigs.map(config => ({
-        page_key: config.key,
-        is_visible: true
-      }));
-      setSettings(defaultSettings);
-      
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить настройки видимости страниц",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  const toggleVisibility = (pageKey: string, newVisibility: boolean) => {
-    try {
-      // Сохраняем в localStorage
-      localStorage.setItem(`page_visibility_${pageKey}`, JSON.stringify(newVisibility));
-
-      setSettings(prev => 
-        prev.map(setting => 
-          setting.page_key === pageKey 
-            ? { ...setting, is_visible: newVisibility }
-            : setting
-        )
-      );
-
-      const config = pageConfigs.find(p => p.key === pageKey);
-      toast({
-        title: newVisibility ? "Страница показана" : "Страница скрыта",
-        description: `"${config?.name}" теперь ${newVisibility ? 'видима' : 'скрыта'} для пользователей`,
-      });
-    } catch (error) {
-      console.error('Error updating page visibility:', error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось обновить настройки видимости",
-        variant: "destructive",
-      });
-    }
+  const toggleVisibility = async (pageKey: string, newVisibility: boolean) => {
+    await updateGlobalSetting(pageKey, 'page_visibility', newVisibility);
   };
 
   const getSettingForPage = (pageKey: string) => {
-    return settings.find(s => s.page_key === pageKey);
+    const setting = settings.find(s => s.setting_key === pageKey && s.setting_type === 'page_visibility');
+    return { page_key: pageKey, is_visible: setting?.setting_value ?? true };
   };
 
   if (loading) {
@@ -117,7 +38,6 @@ export function PageVisibilityManager() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Settings className="h-5 w-5" />
           Управление видимостью страниц
         </CardTitle>
       </CardHeader>
@@ -138,9 +58,9 @@ export function PageVisibilityManager() {
                   <EyeOff className="h-5 w-5 text-red-500" />
                 )}
                 <div>
-                  <Label className="text-base font-medium">
+                  <div className="text-base font-medium">
                     {config.name}
-                  </Label>
+                  </div>
                   <p className="text-sm text-muted-foreground">
                     {config.description}
                   </p>
@@ -157,11 +77,10 @@ export function PageVisibilityManager() {
         
         <div className="text-xs text-muted-foreground mt-4 p-3 bg-muted/30 rounded">
           <p>
-            <strong>Примечание:</strong> Скрытые страницы будут недоступны для обычных пользователей,
-            но администраторы смогут получить к ним доступ через прямые ссылки.
+            <strong>Примечание:</strong> Изменения автоматически применяются для всех пользователей через глобальную систему управления.
           </p>
         </div>
       </CardContent>
     </Card>
   );
-}
+};
