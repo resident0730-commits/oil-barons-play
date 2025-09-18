@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Building2, User, Globe, Mail, FileText, Home } from 'lucide-react';
+import { Eye, EyeOff, Building2, User, Globe, Mail, FileText, Home, RefreshCw } from 'lucide-react';
 
 interface CompanySetting {
   section_key: string;
@@ -172,6 +173,25 @@ export function CompanyContentManager() {
     return settings.find(s => s.section_key === sectionKey);
   };
 
+  const applyToAllUsers = () => {
+    // Очищаем localStorage от всех настроек компании
+    sectionConfigs.forEach(config => {
+      localStorage.removeItem(`company_section_${config.key}`);
+    });
+
+    companyRequisiteConfigs.forEach(config => {
+      localStorage.removeItem(`company_requisite_${config.key}`);
+    });
+
+    // Перезагружаем текущие настройки
+    loadSettings();
+
+    toast({
+      title: "Настройки применены",
+      description: "Все пользователи получат актуальные настройки видимости при следующем входе",
+    });
+  };
+
   if (loading) {
     return (
       <Card>
@@ -286,6 +306,21 @@ export function CompanyContentManager() {
           <p>
             <strong>Примечание:</strong> Скрытые разделы и реквизиты не будут отображаться на странице "О компании" для обычных пользователей.
             Администраторы всегда видят все разделы.
+          </p>
+        </div>
+
+        {/* Кнопка применения для всех */}
+        <div className="pt-4 border-t">
+          <Button
+            variant="outline"
+            onClick={applyToAllUsers}
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Применить настройки для всех пользователей
+          </Button>
+          <p className="text-xs text-muted-foreground mt-2">
+            Сбросит все пользовательские настройки и применит текущие настройки видимости для всех
           </p>
         </div>
       </CardContent>
