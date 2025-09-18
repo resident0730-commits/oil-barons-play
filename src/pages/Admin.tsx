@@ -15,7 +15,6 @@ import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
 import { TransferHistory } from '@/components/admin/TransferHistory';
 import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 import { BoosterManager } from '@/components/admin/BoosterManager';
-
 import { PageVisibilityManager } from '@/components/admin/PageVisibilityManager';
 import { CompanyContentManager } from '@/components/admin/CompanyContentManager';
 import { CurrencyManager } from '@/components/admin/CurrencyManager';
