@@ -9,11 +9,11 @@ export interface CurrencyConfig {
 }
 
 const DEFAULT_CONFIG: CurrencyConfig = {
-  game_currency_name: 'OilCoin',
-  game_currency_symbol: 'OC',
+  game_currency_name: 'Рубль',
+  game_currency_symbol: '₽',
   real_currency_name: 'российский рубль',
   real_currency_symbol: '₽',
-  exchange_rate: '1 OC = 1 ₽'
+  exchange_rate: '1 ₽ = 1 ₽'
 };
 
 export const useCurrency = () => {
