@@ -57,6 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    // Очищаем все localStorage перед выходом
+    localStorage.clear();
     await supabase.auth.signOut();
   };
 
