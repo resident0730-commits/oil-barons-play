@@ -15,7 +15,7 @@ import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
 import { TransferHistory } from '@/components/admin/TransferHistory';
 import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 import { BoosterManager } from '@/components/admin/BoosterManager';
-import { BotManager } from '@/components/admin/BotManager';
+
 import { PageVisibilityManager } from '@/components/admin/PageVisibilityManager';
 import { CompanyContentManager } from '@/components/admin/CompanyContentManager';
 import { CurrencyManager } from '@/components/admin/CurrencyManager';
@@ -114,11 +114,6 @@ export default function Admin() {
             <BoosterManager />
           </div>
 
-          {/* Bot Management */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Управление демо-счетами</h2>
-            <BotManager />
-          </div>
 
           {/* Withdrawal Processing */}
           <div>
