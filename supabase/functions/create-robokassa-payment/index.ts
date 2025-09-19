@@ -1,53 +1,103 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.4'
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createHash } from "https://deno.land/std@0.177.0/hash/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+interface PaymentRequest {
+  amount: number;
+  description?: string;
 }
 
-Deno.serve(async (req) => {
-  // Handle CORS preflight requests
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const { amount, description = 'Пополнение баланса Oil Tycoon' }: PaymentRequest = await req.json();
 
-    // Get request data
-    const { amount, orderId, description } = await req.json()
+    if (!amount || amount <= 0) {
+      return new Response(
+        JSON.stringify({ error: 'Некорректная сумма' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    console.log('Creating Robokassa payment:', { amount, orderId, description })
+    // Получаем конфигурацию Robokassa из переменных окружения
+    const merchantLogin = Deno.env.get('ROBOKASSA_MERCHANT_LOGIN');
+    const password1 = Deno.env.get('ROBOKASSA_PASSWORD1');
+    
+    if (!merchantLogin || !password1) {
+      console.error('Missing Robokassa configuration');
+      return new Response(
+        JSON.stringify({ error: 'Настройки платежной системы не найдены' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // TODO: Implement Robokassa payment creation logic here
-    // You'll need to add Robokassa API integration
+    // Генерируем уникальный ID заказа
+    const invoiceId = Date.now().toString();
+    
+    // Создаем подпись для Robokassa
+    // Формат: MerchantLogin:OutSum:InvoiceID:Password#1
+    const signatureString = `${merchantLogin}:${amount}:${invoiceId}:${password1}`;
+    
+    // Создаем MD5 хеш
+    const hash = createHash("md5");
+    hash.update(signatureString);
+    const signature = hash.toString();
+
+    // Получаем текущий домен для URL возврата
+    const referer = req.headers.get('referer') || 'https://your-domain.com';
+    const baseUrl = new URL(referer).origin;
+
+    // Параметры для формы Robokassa
+    const robokassaParams = {
+      MerchantLogin: merchantLogin,
+      OutSum: amount.toString(),
+      InvoiceID: invoiceId,
+      Description: description,
+      SignatureValue: signature,
+      Culture: 'ru',
+      SuccessURL: `${baseUrl}/?payment=success`,
+      FailURL: `${baseUrl}/?payment=fail`
+    };
+
+    console.log('Created Robokassa payment:', {
+      merchantLogin,
+      amount,
+      invoiceId,
+      signature: signature.substring(0, 8) + '...' // Логируем только начало подписи для безопасности
+    });
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Robokassa payment function ready for implementation' 
+      JSON.stringify({
+        success: true,
+        paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
+        params: robokassaParams,
+        invoiceId
       }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    )
+    );
 
   } catch (error) {
-    console.error('Error in create-robokassa-payment:', error)
-    
+    console.error('Robokassa payment creation error:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Internal server error',
+        error: 'Ошибка при создании платежа',
         details: error.message 
       }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    )
+    );
   }
-})
+});
