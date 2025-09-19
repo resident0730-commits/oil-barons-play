@@ -7,7 +7,8 @@ import {
   Zap,
   Sparkles,
   Gift,
-  Calendar
+  Calendar,
+  History
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -29,6 +30,7 @@ import { OverviewSection } from "@/components/dashboard/OverviewSection";
 import { WellsSection } from "@/components/dashboard/WellsSection";
 import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
+import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -47,7 +49,7 @@ const Dashboard = () => {
   const sounds = useSound();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily'>('overview');
 
   // Если нет профиля, но есть пользователь - создаем базовый профиль для отображения
   const currentProfile = profile || {
@@ -290,8 +292,20 @@ const Dashboard = () => {
     }
 
     try {
-      // Choose function based on payment method
+      console.log('Payment method:', paymentMethod);
+      
+      // For Robokassa, the widget handles the payment directly
+      if (paymentMethod === 'robokassa') {
+        console.log('Robokassa payment initiated via widget');
+        // Виджет Robokassa обрабатывает платеж самостоятельно
+        // После успешной оплаты пользователь будет перенаправлен обратно
+        setIsTopUpOpen(false);
+        return;
+      }
+      
+      // Choose function based on payment method for other methods
       const functionName = paymentMethod === 'tbank' ? 'create-tbank-payment' : 'create-payment';
+      console.log('Using function:', functionName);
       
       const { data, error } = await supabase.functions.invoke(functionName, {
         body: {
@@ -375,6 +389,7 @@ const Dashboard = () => {
                 { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
+                { id: 'history', label: 'История', icon: History, shortLabel: 'История' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
                 { id: 'cases', label: 'Кейсы', icon: Gift, shortLabel: 'Кейсы' },
                 { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
@@ -431,6 +446,10 @@ const Dashboard = () => {
           />
         )}
 
+        {activeSection === 'history' && (
+          <PaymentHistory />
+        )}
+
         {activeSection === 'boosters' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -455,6 +474,7 @@ const Dashboard = () => {
       <TopUpModal
         isOpen={isTopUpOpen}
         onClose={() => setIsTopUpOpen(false)}
+        onTopUp={handleTopUp}
       />
     </div>
   );

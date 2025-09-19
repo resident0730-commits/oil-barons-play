@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameData } from "@/hooks/useGameData";
 import { useGameStatistics } from "@/hooks/useGameStatistics";
 import { usePageVisibility } from "@/hooks/usePageVisibility";
 import { useCurrency } from "@/hooks/useCurrency";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { Leaderboard } from "@/components/Leaderboard";
 import { 
   Fuel, 
@@ -26,10 +28,104 @@ import {
 
 const Index = () => {
   const { user } = useAuth();
-  const { profile, wells, loading } = useGameData();
+  const { profile, wells, loading, reload } = useGameData();
   const { statistics } = useGameStatistics();
   const { isPageVisible } = usePageVisibility();
   const { currencyConfig, formatGameCurrency, getGameCurrencyDescription, getExchangeDescription } = useCurrency();
+  const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Обработка результата платежа
+  useEffect(() => {
+    const paymentStatus = searchParams.get('payment');
+    const outSum = searchParams.get('OutSum');
+    const invoiceId = searchParams.get('InvId');
+    
+    if (paymentStatus && user) {
+      if (paymentStatus === 'success') {
+        handlePaymentSuccess(outSum, invoiceId);
+      } else if (paymentStatus === 'fail') {
+        handlePaymentFailure();
+      }
+      
+      // Очищаем URL параметры
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('payment');
+      newParams.delete('OutSum');
+      newParams.delete('InvId');
+      newParams.delete('SignatureValue');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [searchParams, user]);
+
+  const handlePaymentSuccess = async (outSum: string | null, invoiceId: string | null) => {
+    try {
+      if (!user || !outSum) return;
+      
+      const amount = parseFloat(outSum);
+      if (amount <= 0) return;
+
+      // Обновляем баланс пользователя
+      const { data: userProfile, error: findError } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('user_id', user.id)
+        .single();
+
+      if (findError) throw findError;
+
+      const newBalance = Number(userProfile.balance) + amount;
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('user_id', user.id);
+
+      if (updateError) throw updateError;
+
+      // Сохраняем историю пополнения в money_transfers
+      const { error: historyError } = await supabase
+        .from('money_transfers')
+        .insert({
+          from_user_id: user.id, // Формально - от пользователя
+          to_user_id: user.id,   // К пользователю (пополнение)
+          amount: amount,
+          description: `Пополнение Robokassa ${amount.toLocaleString()} ₽ (${amount.toLocaleString()} OC) #${invoiceId}`,
+          transfer_type: 'topup',
+          status: 'completed',
+          created_by: user.id
+        });
+
+      if (historyError) {
+        console.error('Error saving payment history:', historyError);
+      }
+
+      // Обновляем данные профиля
+      reload();
+
+      toast({
+        title: "🎉 Платеж успешно завершен!",
+        description: `Ваш баланс пополнен на ${amount.toLocaleString()} ₽. Заказ #${invoiceId}`,
+        duration: 5000,
+      });
+
+    } catch (error: any) {
+      console.error('Payment success handling error:', error);
+      toast({
+        variant: "destructive",
+        title: "Ошибка обновления баланса",
+        description: "Платеж прошел, но баланс не обновился. Обратитесь в поддержку.",
+      });
+    }
+  };
+
+  const handlePaymentFailure = () => {
+    toast({
+      variant: "destructive", 
+      title: "❌ Платеж отменен",
+      description: "Оплата не была завершена. Попробуйте еще раз.",
+      duration: 4000,
+    });
+  };
 
   return (
     <div className="min-h-screen hero-luxury-background overflow-x-hidden">
