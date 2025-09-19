@@ -8,6 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, QrCode } from "lucide-react";
 import qrPaymentImage from "@/assets/qr-payment.png";
 import { useCurrency } from "@/hooks/useCurrency";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -82,22 +84,26 @@ const topUpPackages: TopUpPackage[] = [
   }
 ];
 
-export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
+export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModalProps) => {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const [paymentMethod, setPaymentMethod] = useState<'robokassa' | 'qr'>('robokassa');
+  const [paymentMethod, setPaymentMethod] = useState<'robokassa' | 'qr' | null>(null);
   const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
+  const { toast } = useToast();
 
-  // Загрузка скрипта Robokassa - больше не используется, так как применяется redirect подход
+  // Очистка состояния при закрытии модала
   useEffect(() => {
-    // Очищаем при закрытии
-    return () => {
-      const existingScripts = document.querySelectorAll('script[src*="robokassa"]');
-      existingScripts.forEach(script => script.remove());
-    };
-  }, [showPayment]);
+    if (!isOpen) {
+      console.log('Modal closed, resetting state');
+      setCustomAmount("");
+      setSelectedPackage(null);
+      setShowPayment(false);
+      setPaymentAmount(0);
+      setPaymentMethod(null);
+    }
+  }, [isOpen]);
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
@@ -117,7 +123,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
     setShowPayment(false);
     setPaymentAmount(0);
     setSelectedPackage(null);
-    setPaymentMethod('robokassa');
+    setPaymentMethod(null);
   };
 
   const handleCloseModal = () => {
@@ -125,14 +131,13 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
     setPaymentAmount(0);
     setSelectedPackage(null);
     setCustomAmount("");
-    setPaymentMethod('robokassa');
+    setPaymentMethod(null);
     onClose();
   };
 
   if (showPayment) {
-    // Сначала показываем выбор метода оплаты
-    if (paymentMethod === 'robokassa') {
-      // Показываем выбор между методами перед Robokassa
+    // Если метод оплаты не выбран - показываем выбор
+    if (!paymentMethod) {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
           <DialogContent className="max-w-md">
@@ -146,7 +151,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <DialogTitle>Выберите способ оплаты</DialogTitle>
+                <DialogTitle>🔄 Выберите способ оплаты</DialogTitle>
               </div>
               <DialogDescription>
                 Сумма к оплате: {formatRealCurrency(paymentAmount)}
@@ -156,10 +161,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             <div className="space-y-4">
               <div className="grid gap-3">
                 <Button 
-                  onClick={() => {
-                    const paymentUrl = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=test&OutSum=${paymentAmount}&InvId=${Date.now()}&Desc=Пополнение баланса Oil Tycoon&Culture=ru`;
-                    window.open(paymentUrl, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-                  }}
+                  onClick={() => setPaymentMethod('robokassa')}
                   variant="default"
                   className="p-6 h-auto"
                 >
@@ -192,6 +194,130 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
       );
     }
 
+    // Обработка оплаты через Robokassa
+    const handlePayment = async () => {
+      toast({
+        title: "Переход к оплате",
+        description: `Форма оплаты Robokassa загружена. После успешной оплаты ${paymentAmount}₽ вы получите ${formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}!`,
+      });
+    };
+
+    // Показываем платежную форму для Robokassa
+    if (paymentMethod === 'robokassa') {
+      const handleSubmitRobokassa = async () => {
+        try {
+          const { data, error } = await supabase.functions.invoke('create-robokassa-payment', {
+            body: {
+              amount: paymentAmount,
+              description: `Пополнение баланса Oil Tycoon на ${paymentAmount}₽`
+            }
+          });
+
+          if (error) {
+            console.error('Robokassa payment error:', error);
+            toast({
+              title: "Ошибка создания платежа",
+              description: "Попробуйте позже или выберите другой способ оплаты",
+              variant: "destructive"
+            });
+            return;
+          }
+
+          if (data && data.success) {
+            // Создаем форму для отправки в Robokassa с настоящими параметрами
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = data.paymentUrl;
+            form.target = '_blank';
+
+            Object.entries(data.params).forEach(([key, value]) => {
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = key;
+              input.value = value as string;
+              form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+
+            toast({
+              title: "Переход к оплате",
+              description: `Вы будете перенаправлены на страницу оплаты Robokassa на сумму ${formatRealCurrency(paymentAmount)}`,
+            });
+            
+            onClose();
+          }
+        } catch (error) {
+          console.error('Payment creation failed:', error);
+          toast({
+            title: "Ошибка",
+            description: "Не удалось создать платеж. Проверьте подключение к интернету.",
+            variant: "destructive"
+          });
+        }
+      };
+
+      return (
+        <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setPaymentMethod(null)}
+                  className="p-1 h-8 w-8"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                <DialogTitle>Оплата через Robokassa</DialogTitle>
+              </div>
+              <DialogDescription>
+                Сумма к оплате: {formatRealCurrency(paymentAmount)}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <CreditCard className="h-6 w-6" />
+                  <div>
+                    <h3 className="font-semibold">Robokassa</h3>
+                    <p className="text-sm text-muted-foreground">Банковские карты, электронные кошельки</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="p-4 bg-muted/50 rounded-lg text-center">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Сумма к оплате: <span className="font-semibold">{formatRealCurrency(paymentAmount)}</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      После оплаты вы получите {selectedPackage ? formatGameCurrency(selectedPackage.totalOC) : formatGameCurrency(paymentAmount)} на баланс
+                    </p>
+                  </div>
+                  
+                  <Button 
+                    onClick={handleSubmitRobokassa}
+                    className="w-full"
+                    size="lg"
+                    disabled={topUpLoading}
+                  >
+                    {topUpLoading ? 'Обработка...' : 'Перейти к оплате через Robokassa'}
+                  </Button>
+                  
+                  <p className="text-xs text-muted-foreground text-center">
+                    Вы будете перенаправлены на безопасную страницу оплаты Robokassa
+                  </p>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      );
+    }
+
     // Показываем QR-код
     if (paymentMethod === 'qr') {
       return (
@@ -202,7 +328,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  onClick={() => setPaymentMethod('robokassa')}
+                  onClick={() => setPaymentMethod(null)}
                   className="p-1 h-8 w-8"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -282,7 +408,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
-                  onClick={() => setPaymentMethod('robokassa')}
+                  onClick={() => setPaymentMethod(null)}
                   className="flex-1"
                 >
                   Назад
