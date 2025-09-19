@@ -276,61 +276,64 @@ export const wellPackages: WellPackage[] = [
     name: 'Стартовый пакет',
     description: 'Идеально для начинающих магнатов',
     wells: [
-      { type: 'Starter Well', count: 2 },
-      { type: 'Medium Well', count: 1 }
+      { type: 'Мини-скважина', count: 3 },
+      { type: 'Стартовая скважина', count: 1 }
     ],
-    originalPrice: 18000,
-    discountedPrice: 15000,
-    discount: 17,
+    originalPrice: 5000,
+    discountedPrice: 3800,
+    discount: 24,
     icon: '📦',
     image: starterPackageImg,
     rarity: 'starter',
-    totalDailyIncome: 650
+    totalDailyIncome: 520
   },
   {
     name: 'Пакет роста',
     description: 'Для быстрого развития бизнеса',
     wells: [
-      { type: 'Medium Well', count: 3 },
-      { type: 'Industrial Well', count: 1 }
+      { type: 'Стартовая скважина', count: 2 },
+      { type: 'Средняя скважина', count: 2 },
+      { type: 'Промышленная скважина', count: 1 }
     ],
-    originalPrice: 89000,
-    discountedPrice: 75000,
-    discount: 16,
+    originalPrice: 16000,
+    discountedPrice: 12500,
+    discount: 22,
     icon: '🚀',
     image: growthPackageImg,
     rarity: 'growth',
-    totalDailyIncome: 1850
+    totalDailyIncome: 1450
   },
   {
     name: 'Бизнес пакет',
     description: 'Серьезные инвестиции для профи',
     wells: [
-      { type: 'Industrial Well', count: 2 },
-      { type: 'Super Well', count: 2 }
+      { type: 'Промышленная скважина', count: 3 },
+      { type: 'Супер-скважина', count: 2 },
+      { type: 'Премиум-скважина', count: 1 }
     ],
-    originalPrice: 350000,
-    discountedPrice: 300000,
-    discount: 14,
+    originalPrice: 55000,
+    discountedPrice: 42000,
+    discount: 24,
     icon: '🏢',
     image: businessPackageImg,
     rarity: 'business',
-    totalDailyIncome: 4600
+    totalDailyIncome: 6040
   },
   {
-    name: 'Имперский пакет',
+    name: 'Империя пакет',
     description: 'Максимальная мощность нефтяной империи',
     wells: [
-      { type: 'Premium Well', count: 2 },
-      { type: 'Elite Well', count: 1 }
+      { type: 'Премиум-скважина', count: 2 },
+      { type: 'Элитная скважина', count: 2 },
+      { type: 'Легендарная скважина', count: 1 }
     ],
-    originalPrice: 1200000,
-    discountedPrice: 1000000,
-    discount: 17,
+    originalPrice: 96000,
+    discountedPrice: 72000,
+    discount: 25,
     icon: '👑',
     image: empirePackageImg,
     rarity: 'empire',
-    totalDailyIncome: 12000
+    totalDailyIncome: 13950
   }
 ];
 
