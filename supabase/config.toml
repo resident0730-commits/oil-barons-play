@@ -6,5 +6,8 @@ verify_jwt = false
 [functions.create-tbank-payment]
 verify_jwt = false
 
-[functions.create-robokassa-payment]
+[functions.simple-robokassa]
+verify_jwt = false
+
+[functions.robokassa-payment]
 verify_jwt = false
