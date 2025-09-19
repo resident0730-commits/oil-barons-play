@@ -10,6 +10,7 @@ import qrPaymentImage from "@/assets/qr-payment.png";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { RobokassaWidget } from "@/components/RobokassaWidget";
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -204,64 +205,24 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
     // Показываем платежную форму для Robokassa
     if (paymentMethod === 'robokassa') {
-      const handleSubmitRobokassa = async () => {
-        try {
-          const { data, error } = await supabase.functions.invoke('create-robokassa-payment', {
-            body: {
-              amount: paymentAmount,
-              description: `Пополнение баланса Oil Tycoon на ${paymentAmount}₽`
-            }
-          });
+      const handleWidgetSuccess = () => {
+        toast({
+          title: "Виджет загружен",
+          description: "Заполните форму оплаты для завершения транзакции",
+        });
+      };
 
-          if (error) {
-            console.error('Robokassa payment error:', error);
-            toast({
-              title: "Ошибка создания платежа",
-              description: "Попробуйте позже или выберите другой способ оплаты",
-              variant: "destructive"
-            });
-            return;
-          }
-
-          if (data && data.success) {
-            // Создаем форму для отправки в Robokassa с настоящими параметрами
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = data.paymentUrl;
-            form.target = '_blank';
-
-            Object.entries(data.params).forEach(([key, value]) => {
-              const input = document.createElement('input');
-              input.type = 'hidden';
-              input.name = key;
-              input.value = value as string;
-              form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-
-            toast({
-              title: "Переход к оплате",
-              description: `Вы будете перенаправлены на страницу оплаты Robokassa на сумму ${formatRealCurrency(paymentAmount)}`,
-            });
-            
-            onClose();
-          }
-        } catch (error) {
-          console.error('Payment creation failed:', error);
-          toast({
-            title: "Ошибка",
-            description: "Не удалось создать платеж. Проверьте подключение к интернету.",
-            variant: "destructive"
-          });
-        }
+      const handleWidgetError = (error: string) => {
+        toast({
+          title: "Ошибка загрузки",
+          description: error,
+          variant: "destructive"
+        });
       };
 
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -280,38 +241,24 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             </DialogHeader>
 
             <div className="space-y-4">
-              <div className="border rounded-lg p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <CreditCard className="h-6 w-6" />
-                  <div>
-                    <h3 className="font-semibold">Robokassa</h3>
-                    <p className="text-sm text-muted-foreground">Банковские карты, электронные кошельки</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-4 bg-muted/50 rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Сумма к оплате: <span className="font-semibold">{formatRealCurrency(paymentAmount)}</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      После оплаты вы получите {selectedPackage ? formatGameCurrency(selectedPackage.totalOC) : formatGameCurrency(paymentAmount)} на баланс
-                    </p>
-                  </div>
-                  
-                  <Button 
-                    onClick={handleSubmitRobokassa}
-                    className="w-full"
-                    size="lg"
-                    disabled={topUpLoading}
-                  >
-                    {topUpLoading ? 'Обработка...' : 'Перейти к оплате через Robokassa'}
-                  </Button>
-                  
-                  <p className="text-xs text-muted-foreground text-center">
-                    Вы будете перенаправлены на безопасную страницу оплаты Robokassa
-                  </p>
-                </div>
+              <div className="p-4 bg-muted/50 rounded-lg text-center">
+                <p className="text-sm text-muted-foreground mb-2">
+                  Сумма к оплате: <span className="font-semibold">{formatRealCurrency(paymentAmount)}</span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  После оплаты вы получите {selectedPackage ? formatGameCurrency(selectedPackage.totalOC) : formatGameCurrency(paymentAmount)} на баланс
+                </p>
               </div>
+
+              <RobokassaWidget 
+                amount={paymentAmount}
+                onSuccess={handleWidgetSuccess}
+                onError={handleWidgetError}
+              />
+              
+              <p className="text-xs text-muted-foreground text-center">
+                Заполните форму выше для совершения оплаты через Robokassa
+              </p>
             </div>
           </DialogContent>
         </Dialog>
