@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, QrCode } from "lucide-react";
+import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, QrCode, ArrowRight, Gift } from "lucide-react";
 import qrPaymentImage from "@/assets/qr-payment.png";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
@@ -33,24 +33,15 @@ interface TopUpPackage {
 
 const topUpPackages: TopUpPackage[] = [
   {
-    id: 'starter',
-    name: 'Стартовый',
-    rubAmount: 500,
-    baseOC: 500,
-    bonusOC: 0,
-    totalOC: 500,
-    badge: null,
-    popular: false
-  },
-  {
-    id: 'basic',
-    name: 'Базовый',
-    rubAmount: 1000,
-    baseOC: 1000,
-    bonusOC: 200,
-    totalOC: 1200,
-    badge: '+200 OC',
-    popular: false
+    id: 'first_time',
+    name: '🔥 Специальное предложение!',
+    rubAmount: 10000,
+    baseOC: 10000,
+    bonusOC: 10000,
+    totalOC: 20000,
+    badge: 'x2 БОНУС',
+    popular: false,
+    firstTimeOnly: true
   },
   {
     id: 'premium',
@@ -73,15 +64,24 @@ const topUpPackages: TopUpPackage[] = [
     popular: false
   },
   {
-    id: 'first_time',
-    name: 'Первое пополнение',
-    rubAmount: 10000,
-    baseOC: 10000,
-    bonusOC: 10000,
-    totalOC: 20000,
-    badge: 'x2 БОНУС',
-    popular: false,
-    firstTimeOnly: true
+    id: 'basic',
+    name: 'Базовый',
+    rubAmount: 1000,
+    baseOC: 1000,
+    bonusOC: 200,
+    totalOC: 1200,
+    badge: '+200 OC',
+    popular: false
+  },
+  {
+    id: 'starter',
+    name: 'Стартовый',
+    rubAmount: 500,
+    baseOC: 500,
+    bonusOC: 0,
+    totalOC: 500,
+    badge: null,
+    popular: false
   }
 ];
 
@@ -141,7 +141,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (!paymentMethod) {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md mx-4">
+          <DialogContent className="max-w-md">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -273,7 +273,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="max-w-lg mx-4">
+          <DialogContent className="max-w-lg">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -334,7 +334,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'qr') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md mx-4">
+          <DialogContent className="max-w-md">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -441,7 +441,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5" />
@@ -483,11 +483,105 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             </CardContent>
           </Card>
 
-          {/* Package Section */}
+          {/* Special Offer Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Пакеты с бонусами</h3>
+            <h3 className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              🔥 Ограниченное предложение
+            </h3>
+            
+            {topUpPackages.filter(pkg => pkg.firstTimeOnly).map((pkg) => (
+              <Card 
+                key={pkg.id} 
+                className="relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-primary/25 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/30 hover:border-primary/50 overflow-hidden group animate-scale-in"
+                onClick={() => handlePackageSelect(pkg)}
+              >
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/20 to-transparent rounded-full translate-y-12 -translate-x-12 group-hover:scale-110 transition-transform"></div>
+                
+                {/* Special badge */}
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                  <Badge className="bg-gradient-to-r from-accent to-primary text-white border-0 shadow-lg px-4 py-2 text-sm font-bold animate-pulse">
+                    <Zap className="h-4 w-4 mr-1" />
+                    {pkg.badge}
+                  </Badge>
+                </div>
+                
+                <CardContent className="p-8 relative z-10">
+                  <div className="text-center space-y-6">
+                    {/* Title */}
+                    <div className="space-y-2">
+                      <h4 className="font-bold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        {pkg.name}
+                      </h4>
+                      <p className="text-muted-foreground text-sm">
+                        Удвойте свои инвестиции прямо сейчас!
+                      </p>
+                    </div>
+                    
+                    {/* Main offer display */}
+                    <div className="bg-card/70 rounded-xl p-6 border border-primary/20">
+                      <div className="flex items-center justify-center space-x-4 mb-4">
+                        <div className="text-center space-y-1">
+                          <div className="text-sm text-muted-foreground">Вы платите</div>
+                          <div className="text-2xl font-bold text-primary">
+                            {formatRealCurrency(pkg.rubAmount)}
+                          </div>
+                        </div>
+                        
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
+                          <ArrowRight className="h-4 w-4 text-white" />
+                        </div>
+                        
+                        <div className="text-center space-y-1">
+                          <div className="text-sm text-muted-foreground">Вы получаете</div>
+                          <div className="text-3xl font-bold text-accent">
+                            {formatGameCurrency(pkg.totalOC)}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="text-center space-y-2">
+                        <div className="text-sm text-muted-foreground">
+                          <span className="line-through">{formatGameCurrency(pkg.baseOC)}</span>
+                          <span className="ml-2 text-accent font-bold">+ {formatGameCurrency(pkg.bonusOC)} БОНУС</span>
+                        </div>
+                        <div className="flex items-center justify-center space-x-2 text-xs font-medium text-primary">
+                          <Star className="h-3 w-3" />
+                          <span>Выгода 100% • Мгновенное зачисление</span>
+                          <Star className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button 
+                      size="lg"
+                      className="w-full h-14 text-lg font-bold bg-gradient-to-r from-primary via-accent to-primary hover:from-primary/90 hover:via-accent/90 hover:to-primary/90 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePackageSelect(pkg);
+                      }}
+                    >
+                      <Gift className="h-5 w-5 mr-2" />
+                      Получить удвоенный бонус
+                      <Zap className="h-5 w-5 ml-2" />
+                    </Button>
+                    
+                    <div className="text-xs text-muted-foreground flex items-center justify-center space-x-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span>Предложение действует ограниченное время</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Regular Packages Section */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Другие пакеты пополнения</h3>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {topUpPackages.map((pkg) => (
+              {topUpPackages.filter(pkg => !pkg.firstTimeOnly).map((pkg) => (
                 <Card 
                   key={pkg.id} 
                   className={`relative cursor-pointer transition-all duration-300 hover:shadow-luxury ${pkg.popular ? 'ring-2 ring-primary' : ''}`}
@@ -526,13 +620,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                             </Badge>
                           )}
                         </div>
-                      )}
-
-                      {pkg.firstTimeOnly && (
-                        <Badge className="bg-red-100 text-red-800 border-red-300">
-                          <Zap className="h-3 w-3 mr-1" />
-                          Только первая покупка
-                        </Badge>
                       )}
 
                       <Button 
