@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { Fuel, ArrowLeft, CreditCard, ShieldCheck, Building2 } from "lucide-react";
+import { Fuel, ArrowLeft, CreditCard, ShieldCheck, QrCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,7 +20,7 @@ const Settings = () => {
   const { profile } = useGameData();
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("yookassa");
+  const [paymentMethod, setPaymentMethod] = useState("robokassa");
 
   const handleTopUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,28 +42,32 @@ const Settings = () => {
     setLoading(true);
 
     try {
-      // Choose function based on payment method
-      const functionName = paymentMethod === 'tbank' ? 'create-tbank-payment' : 'create-payment';
-      
-      const { data, error } = await supabase.functions.invoke(functionName, {
-        body: {
-          amount: value,
-          currency: 'RUB'
-        }
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data?.url) {
-        window.open(data.url, '_blank');
-        toast({
-          title: "Переход к оплате",
-          description: `Окно ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'} открыто в новой вкладке`,
+      if (paymentMethod === 'robokassa') {
+        const { data, error } = await supabase.functions.invoke('simple-robokassa', {
+          body: {
+            amount: value,
+            currency: 'RUB'
+          }
         });
-      } else {
-        throw new Error("Не удалось получить ссылку на оплату");
+
+        if (error) {
+          throw error;
+        }
+
+        if (data?.url) {
+          window.open(data.url, '_blank');
+          toast({
+            title: "Переход к оплате",
+            description: "Окно Robokassa открыто в новой вкладке",
+          });
+        } else {
+          throw new Error("Не удалось получить ссылку на оплату");
+        }
+      } else if (paymentMethod === 'qr') {
+        toast({
+          title: "QR-код оплата",
+          description: "Используйте QR-код для оплаты через мобильное приложение банка",
+        });
       }
     } catch (error: any) {
       console.error("Payment error details:", error);
@@ -132,18 +136,18 @@ const Settings = () => {
                 <div className="space-y-3">
                   <Label className="text-sm font-medium">Способ оплаты</Label>
                   <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid grid-cols-2 gap-4">
-                    <Label htmlFor="yookassa-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
-                      <RadioGroupItem value="yookassa" id="yookassa-settings" />
+                    <Label htmlFor="robokassa-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                      <RadioGroupItem value="robokassa" id="robokassa-settings" />
                       <div className="flex items-center space-x-2">
                         <CreditCard className="h-4 w-4" />
-                        <span className="text-sm font-medium">YooKassa</span>
+                        <span className="text-sm font-medium">Robokassa</span>
                       </div>
                     </Label>
-                    <Label htmlFor="tbank-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
-                      <RadioGroupItem value="tbank" id="tbank-settings" />
+                    <Label htmlFor="qr-settings" className="flex items-center space-x-3 cursor-pointer border rounded-lg p-3 hover:bg-accent transition-colors">
+                      <RadioGroupItem value="qr" id="qr-settings" />
                       <div className="flex items-center space-x-2">
-                        <Building2 className="h-4 w-4" />
-                        <span className="text-sm font-medium">Т-Банк</span>
+                        <QrCode className="h-4 w-4" />
+                        <span className="text-sm font-medium">QR-код</span>
                       </div>
                     </Label>
                   </RadioGroup>
