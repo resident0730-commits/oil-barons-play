@@ -469,8 +469,9 @@ const Dashboard = () => {
         )}
 
         {activeSection === 'daily' && (
-          <div className="space-y-8">
-            <div className="text-center space-y-4">
+          <div className="space-y-6">
+            {/* Hero Section */}
+            <div className="text-center space-y-4 mb-8">
               <div className="relative">
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
                   ✨ Ежедневные награды ✨
@@ -481,37 +482,44 @@ const Dashboard = () => {
                 Заходите каждый день и получайте щедрые награды! Чем дольше ваша серия, тем больше бонусов
               </p>
             </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="order-2 lg:order-1">
-                <DailyBonus />
-              </div>
-              <div className="order-1 lg:order-2">
+
+            {/* Main Content - Centered Layout */}
+            <div className="max-w-6xl mx-auto space-y-8">
+              {/* Daily Chest - Main Feature */}
+              <div className="w-full">
                 <DailyChest />
               </div>
-            </div>
-            
-            {/* Дополнительные статистики */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-primary/20 rounded-xl p-4 text-center animate-fade-in">
-                <div className="text-2xl font-bold text-primary">{profile?.total_daily_chests_opened || 0}</div>
-                <div className="text-sm text-muted-foreground">Сундуков открыто</div>
-              </div>
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-accent/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                <div className="text-2xl font-bold text-accent">{profile?.daily_chest_streak || 0}</div>
-                <div className="text-sm text-muted-foreground">Текущая серия</div>
-              </div>
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-primary/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <div className="text-2xl font-bold text-primary">
-                  {Math.max(profile?.daily_chest_streak || 0, profile?.total_daily_chests_opened || 0)}
+
+              {/* Secondary Features Row */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Daily Bonus */}
+                <div className="lg:col-span-1">
+                  <DailyBonus />
                 </div>
-                <div className="text-sm text-muted-foreground">Лучшая серия</div>
-              </div>
-              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-accent/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <div className="text-2xl font-bold text-accent">
-                  {((profile?.total_daily_chests_opened || 0) * 650).toLocaleString()}
+                
+                {/* Statistics Cards */}
+                <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200">
+                    <div className="text-2xl font-bold text-primary mb-1">{profile?.total_daily_chests_opened || 0}</div>
+                    <div className="text-sm text-muted-foreground">Сундуков открыто</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.1s' }}>
+                    <div className="text-2xl font-bold text-accent mb-1">{profile?.daily_chest_streak || 0}</div>
+                    <div className="text-sm text-muted-foreground">Текущая серия</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.2s' }}>
+                    <div className="text-2xl font-bold text-primary mb-1">
+                      {Math.max(profile?.daily_chest_streak || 0, profile?.total_daily_chests_opened || 0)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Лучшая серия</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.3s' }}>
+                    <div className="text-2xl font-bold text-accent mb-1">
+                      {((profile?.total_daily_chests_opened || 0) * 650).toLocaleString()}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Всего получено OC</div>
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">Всего получено OC</div>
               </div>
             </div>
           </div>
