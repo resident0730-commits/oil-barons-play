@@ -10,7 +10,7 @@ import {
   Calendar,
   History
 } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -24,6 +24,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import { CaseSystem } from "@/components/CaseSystem";
 import { DailyChest } from "@/components/DailyChest";
+import { DailyBonus } from "@/components/DailyBonus";
 import { GameSection } from "@/components/GameSection";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
@@ -38,7 +39,7 @@ import boostersHero from '@/assets/sections/boosters-hero.jpg';
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster, reload } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
@@ -47,7 +48,6 @@ const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const sounds = useSound();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily'>('overview');
@@ -159,38 +159,6 @@ const Dashboard = () => {
       addIncome(1000);
     }
   }, [currentProfile?.balance, wells.length, addIncome]);
-
-  // Обработка результата платежа (для YooKassa, TBank и других)
-  useEffect(() => {
-    const paymentStatus = searchParams.get('payment');
-    
-    if (paymentStatus && user) {
-      if (paymentStatus === 'success') {
-        toast({
-          title: "✅ Платеж обработан",
-          description: "Ваш платеж успешно получен и обрабатывается. Баланс может обновиться в течение нескольких минут.",
-          duration: 5000,
-        });
-      } else if (paymentStatus === 'fail') {
-        toast({
-          variant: "destructive",
-          title: "❌ Платеж отменен", 
-          description: "Оплата не была завершена. Попробуйте еще раз.",
-          duration: 4000,
-        });
-      }
-      
-      // Очищаем URL параметры
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('payment');
-      setSearchParams(newParams, { replace: true });
-      
-      // Обновляем данные профиля для загрузки возможных изменений баланса
-      if (paymentStatus === 'success') {
-        setTimeout(() => reload(), 1000);
-      }
-    }
-  }, [searchParams, user, setSearchParams, toast, reload]);
 
   // Redirect to auth if not logged in
   useEffect(() => {
@@ -500,7 +468,52 @@ const Dashboard = () => {
         )}
 
         {activeSection === 'daily' && (
-          <DailyChest />
+          <div className="space-y-8">
+            <div className="text-center space-y-4">
+              <div className="relative">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
+                  ✨ Ежедневные награды ✨
+                </h2>
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-sm rounded-lg opacity-50 animate-pulse"></div>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Заходите каждый день и получайте щедрые награды! Чем дольше ваша серия, тем больше бонусов
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="order-2 lg:order-1">
+                <DailyBonus />
+              </div>
+              <div className="order-1 lg:order-2">
+                <DailyChest />
+              </div>
+            </div>
+            
+            {/* Дополнительные статистики */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-primary/20 rounded-xl p-4 text-center animate-fade-in">
+                <div className="text-2xl font-bold text-primary">{profile?.total_daily_chests_opened || 0}</div>
+                <div className="text-sm text-muted-foreground">Сундуков открыто</div>
+              </div>
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-accent/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                <div className="text-2xl font-bold text-accent">{profile?.daily_chest_streak || 0}</div>
+                <div className="text-sm text-muted-foreground">Текущая серия</div>
+              </div>
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-primary/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="text-2xl font-bold text-primary">
+                  {Math.max(profile?.daily_chest_streak || 0, profile?.total_daily_chests_opened || 0)}
+                </div>
+                <div className="text-sm text-muted-foreground">Лучшая серия</div>
+              </div>
+              <div className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-accent/20 rounded-xl p-4 text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                <div className="text-2xl font-bold text-accent">
+                  {((profile?.total_daily_chests_opened || 0) * 650).toLocaleString()}
+                </div>
+                <div className="text-sm text-muted-foreground">Всего получено OC</div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
 
