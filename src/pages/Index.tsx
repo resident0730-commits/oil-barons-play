@@ -130,33 +130,33 @@ const Index = () => {
   return (
     <div className="min-h-screen hero-luxury-background overflow-x-hidden">
       {/* Header */}
-      <header className="relative z-50 container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between backdrop-blur-sm bg-background/20 rounded-2xl p-4 shadow-luxury">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <Fuel className="h-10 w-10 text-primary animate-gold-glow" />
-              <div className="absolute inset-0 h-10 w-10 text-primary/30 animate-pulse" />
+      <header className="relative z-50 container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+        <nav className="flex items-center justify-between backdrop-blur-sm bg-background/20 rounded-2xl p-3 sm:p-4 shadow-luxury">
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+            <div className="relative flex-shrink-0">
+              <Fuel className="h-8 w-8 sm:h-10 sm:w-10 text-primary animate-gold-glow" />
+              <div className="absolute inset-0 h-8 w-8 sm:h-10 sm:w-10 text-primary/30 animate-pulse" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Oil Tycoon</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent truncate">Oil Tycoon</h1>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
             {user ? (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 text-sm bg-card/50 backdrop-blur-sm rounded-full px-4 py-2">
-                  <User className="h-4 w-4 text-primary" />
-                  <span className="font-medium">{profile?.nickname || 'Игрок'}</span>
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="flex items-center space-x-2 text-xs sm:text-sm bg-card/50 backdrop-blur-sm rounded-full px-2 sm:px-4 py-1 sm:py-2">
+                  <User className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
+                  <span className="font-medium max-w-[80px] sm:max-w-none truncate">{profile?.nickname || 'Игрок'}</span>
                 </div>
                 <Link to="/dashboard">
-                  <Button className="gradient-gold shadow-gold hover-scale">В игру</Button>
+                  <Button size="sm" className="gradient-gold shadow-gold hover-scale text-sm px-3 sm:px-4">В игру</Button>
                 </Link>
               </div>
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" className="backdrop-blur-sm">Войти</Button>
+                  <Button variant="ghost" size="sm" className="backdrop-blur-sm text-sm">Войти</Button>
                 </Link>
                 <Link to="/dashboard">
-                  <Button className="gradient-gold shadow-gold hover-scale">Начать игру</Button>
+                  <Button size="sm" className="gradient-gold shadow-gold hover-scale text-sm px-3 sm:px-4">Начать</Button>
                 </Link>
               </>
             )}
@@ -165,7 +165,7 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-20">
+      <main className="container mx-auto px-3 sm:px-4 py-12 sm:py-20">
         <div className="text-center space-y-12 mb-24 animate-fade-in">
           <div className="relative">
             <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-gold animate-scale-in">
@@ -176,14 +176,14 @@ const Index = () => {
           
           <div className="space-y-8 relative">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent blur-3xl" />
-            <h1 className="relative text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-scale-in font-playfair leading-tight">
+            <h1 className="relative text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-scale-in font-playfair leading-tight">
               Oil Tycoon
             </h1>
             <div className="relative max-w-4xl mx-auto space-y-4">
-              <p className="text-2xl md:text-3xl text-foreground/90 font-medium leading-relaxed">
+              <p className="text-xl sm:text-2xl md:text-3xl text-foreground/90 font-medium leading-relaxed">
                 Постройте виртуальную нефтяную империю в симуляторе
               </p>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Изучайте экономические принципы через игру! Управляйте виртуальными скважинами, изучайте бизнес-процессы и развивайте стратегическое мышление в безопасной игровой среде.
               </p>
             </div>

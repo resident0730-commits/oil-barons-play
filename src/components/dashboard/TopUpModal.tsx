@@ -141,7 +141,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (!paymentMethod) {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md mx-4">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -273,7 +273,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-lg mx-4">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -334,7 +334,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'qr') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md mx-4">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -441,7 +441,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5" />
