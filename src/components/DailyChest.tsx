@@ -175,27 +175,33 @@ export const DailyChest = () => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold heading-contrast mb-2">🎁 Ежедневный сундук</h2>
-        <p className="text-muted-foreground subtitle-contrast">
-          Возвращайтесь каждый день за наградами! Серия: <Badge className="gradient-gold text-primary-foreground">{currentStreak} дней</Badge>
+        <h3 className="text-2xl font-bold heading-contrast mb-2 flex items-center justify-center gap-2">
+          🎁 Ежедневный сундук
+        </h3>
+        <p className="text-sm text-muted-foreground subtitle-contrast">
+          Серия: <Badge className="gradient-gold text-primary-foreground ml-1">{currentStreak} дней</Badge>
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="space-y-6">
         {/* Основной сундук */}
-        <Card className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${canClaim ? 'animate-glow-pulse' : ''}`}>
+        <Card className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${canClaim ? 'animate-glow-pulse shadow-xl shadow-primary/20' : ''}`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/3"></div>
           <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
           
-          <CardHeader className="text-center pb-3">
+          <CardHeader className="relative text-center pb-3">
             <div className="flex justify-center mb-3">
-              <div className={`p-6 rounded-full ${canClaim ? 'bg-yellow-500/20 text-yellow-300' : 'bg-gray-500/20 text-gray-400'} ${canClaim ? 'animate-bounce' : ''}`}>
+              <div className={`relative p-6 rounded-full ${canClaim ? 'bg-gradient-to-br from-primary/20 to-accent/20 text-primary' : 'bg-gray-500/20 text-gray-400'} ${canClaim ? 'animate-bounce' : ''}`}>
                 <Gift className="h-12 w-12" />
+                {canClaim && (
+                  <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 to-accent/30 blur-md rounded-full animate-pulse"></div>
+                )}
               </div>
             </div>
-            <CardTitle className="text-xl">
-              {canClaim ? 'Сундук готов!' : 'Сундук заблокирован'}
+            <CardTitle className="text-xl font-bold">
+              {canClaim ? '🎉 Сундук готов!' : '🔒 Сундук заблокирован'}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-base">
               {canClaim ? 
                 `День ${currentStreak + 1} - Получите награду!` : 
                 `Следующая награда через: ${timeUntilNext}`
@@ -203,52 +209,45 @@ export const DailyChest = () => {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="text-center">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center space-x-2">
-                  <Calendar className="h-4 w-4" />
-                  <span className="text-sm">Серия дней: {currentStreak}</span>
-                </div>
-                <div className="flex items-center justify-center space-x-2">
-                  <Flame className="h-4 w-4 text-orange-400" />
-                  <span className="text-sm">Всего сундуков: {totalOpened}</span>
-                </div>
-              </div>
-            </div>
-
+          <CardContent className="relative space-y-4">
             {nextReward && (
-              <div className="text-center space-y-2">
-                <div className="text-sm font-medium">Следующая награда:</div>
-                <div className={`flex items-center justify-center space-x-2 p-2 rounded ${getRarityColor(nextReward.rarity)}`}>
-                  {nextReward.icon}
-                  <span className="text-sm">{nextReward.name}</span>
+              <div className="text-center space-y-3 p-4 bg-gradient-to-br from-card/30 to-secondary/20 rounded-lg border border-primary/20">
+                <div className="text-sm font-medium text-muted-foreground">
+                  {canClaim ? 'Ваша награда:' : 'Следующая награда:'}
+                </div>
+                <div className={`flex items-center justify-center space-x-3 p-3 rounded-lg ${getRarityColor(nextReward.rarity)} ${getRarityGlow(nextReward.rarity)}`}>
+                  <div className="text-2xl">
+                    {nextReward.icon}
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg">{nextReward.amount.toLocaleString()} OC</div>
+                    <div className="text-sm opacity-90">{nextReward.name}</div>
+                  </div>
                 </div>
               </div>
             )}
 
             <Button
-              className={`w-full ${canClaim ? 'gradient-gold text-primary-foreground hover:scale-105' : 'opacity-50 cursor-not-allowed'} transition-all`}
+              className={`w-full h-12 text-lg font-bold ${canClaim ? 'gradient-gold text-primary-foreground hover:scale-105 shadow-lg' : 'opacity-50 cursor-not-allowed'} transition-all duration-300`}
               onClick={claimDailyReward}
               disabled={!canClaim || isOpening}
             >
-              <Gift className="h-4 w-4 mr-2" />
-              {canClaim ? (isOpening ? 'Открываем...' : 'Открыть сундук') : 'Недоступно'}
+              <Gift className="h-5 w-5 mr-2" />
+              {canClaim ? (isOpening ? '🎁 Открываем...' : '✨ Открыть сундук') : '⏰ Недоступно'}
             </Button>
           </CardContent>
         </Card>
 
-        {/* Календарь наград */}
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center">
+        {/* Компактный календарь наград */}
+        <Card className="overflow-hidden bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border-primary/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center justify-center">
               <Calendar className="h-5 w-5 mr-2" />
-              Календарь наград
+              Календарь наград (14 дней)
             </CardTitle>
-            <CardDescription>Награды за каждый день (цикл 14 дней)</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-7 gap-2 text-xs">
+            <div className="grid grid-cols-7 gap-1.5 text-xs">
               {dailyRewards.slice(0, 14).map((reward) => {
                 const dayNum = ((currentStreak - 1) % 14) + 1;
                 const isToday = reward.day === dayNum + 1;
@@ -258,20 +257,33 @@ export const DailyChest = () => {
                   <div
                     key={reward.day}
                     className={`
-                      p-2 rounded text-center transition-all
-                      ${isPast ? 'bg-green-500/20 text-green-300' : ''}
-                      ${isToday ? 'bg-yellow-500/20 text-yellow-300 animate-glow-pulse' : ''}
-                      ${!isPast && !isToday ? 'bg-muted/30 text-muted-foreground' : ''}
+                      p-2 rounded-lg text-center transition-all duration-300 hover:scale-105
+                      ${isPast ? 'bg-green-500/20 text-green-300 border border-green-500/30' : ''}
+                      ${isToday ? 'bg-gradient-to-br from-primary/30 to-accent/30 text-primary animate-glow-pulse border border-primary/50' : ''}
+                      ${!isPast && !isToday ? 'bg-muted/20 text-muted-foreground border border-muted/30' : ''}
                     `}
                   >
-                    <div className="font-medium">День {reward.day}</div>
-                    <div className="flex justify-center mt-1">
+                    <div className="font-bold text-xs mb-1">
+                      {isPast ? '✅' : isToday ? '🎯' : reward.day}
+                    </div>
+                    <div className="flex justify-center mb-1">
                       {React.cloneElement(reward.icon as React.ReactElement, { className: 'h-3 w-3' })}
                     </div>
-                    <div className="mt-1">{reward.amount.toLocaleString()}</div>
+                    <div className="text-[10px] font-bold">{reward.amount.toLocaleString()}</div>
                   </div>
                 );
               })}
+            </div>
+            
+            <div className="mt-4 grid grid-cols-2 gap-2 text-center">
+              <div className="flex items-center justify-center space-x-1 text-xs text-muted-foreground">
+                <Flame className="h-3 w-3 text-orange-400" />
+                <span>Серия: {currentStreak}</span>
+              </div>
+              <div className="flex items-center justify-center space-x-1 text-xs text-muted-foreground">
+                <Gift className="h-3 w-3 text-primary" />
+                <span>Открыто: {totalOpened}</span>
+              </div>
             </div>
           </CardContent>
         </Card>
