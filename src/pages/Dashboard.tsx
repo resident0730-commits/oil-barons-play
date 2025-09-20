@@ -10,7 +10,7 @@ import {
   Calendar,
   History
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -38,7 +38,7 @@ import boostersHero from '@/assets/sections/boosters-hero.jpg';
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster, reload } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
@@ -47,6 +47,7 @@ const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const sounds = useSound();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily'>('overview');
@@ -158,6 +159,38 @@ const Dashboard = () => {
       addIncome(1000);
     }
   }, [currentProfile?.balance, wells.length, addIncome]);
+
+  // Обработка результата платежа (для YooKassa, TBank и других)
+  useEffect(() => {
+    const paymentStatus = searchParams.get('payment');
+    
+    if (paymentStatus && user) {
+      if (paymentStatus === 'success') {
+        toast({
+          title: "✅ Платеж обработан",
+          description: "Ваш платеж успешно получен и обрабатывается. Баланс может обновиться в течение нескольких минут.",
+          duration: 5000,
+        });
+      } else if (paymentStatus === 'fail') {
+        toast({
+          variant: "destructive",
+          title: "❌ Платеж отменен", 
+          description: "Оплата не была завершена. Попробуйте еще раз.",
+          duration: 4000,
+        });
+      }
+      
+      // Очищаем URL параметры
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('payment');
+      setSearchParams(newParams, { replace: true });
+      
+      // Обновляем данные профиля для загрузки возможных изменений баланса
+      if (paymentStatus === 'success') {
+        setTimeout(() => reload(), 1000);
+      }
+    }
+  }, [searchParams, user, setSearchParams, toast, reload]);
 
   // Redirect to auth if not logged in
   useEffect(() => {
