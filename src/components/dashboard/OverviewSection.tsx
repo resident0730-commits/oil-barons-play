@@ -10,7 +10,10 @@ import {
   Users,
   Crown,
   Star,
-  Wrench
+  Wrench,
+  CreditCard,
+  Gift,
+  ArrowRight
 } from "lucide-react";
 import { UserProfile, UserWell, wellTypes, useGameData } from "@/hooks/useGameData";
 import { StatusDisplay } from "@/components/StatusDisplay";
@@ -22,9 +25,10 @@ interface OverviewSectionProps {
   profile: UserProfile;
   wells: UserWell[];
   playerRank: number;
+  onTopUpClick?: () => void;
 }
 
-export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionProps) => {
+export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: OverviewSectionProps) => {
   const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
   const { boosters, getActiveBoosterMultiplier } = useGameData();
   const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
@@ -161,6 +165,66 @@ export const OverviewSection = ({ profile, wells, playerRank }: OverviewSectionP
           </CardContent>
         </Card>
       </div>
+
+      {/* Special Top-Up Offer */}
+      <Card className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-primary/20 hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-primary/25" onClick={onTopUpClick}>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/20 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+        
+        <CardHeader className="relative z-10 pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 bg-gradient-to-br from-primary to-accent rounded-full shadow-lg">
+                <Gift className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  🔥 Специальное предложение!
+                </CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Удвойте свои вложения прямо сейчас
+                </CardDescription>
+              </div>
+            </div>
+            <Badge className="bg-gradient-to-r from-accent to-primary text-white border-0 shadow-lg animate-pulse">
+              x2 БОНУС
+            </Badge>
+          </div>
+        </CardHeader>
+
+        <CardContent className="relative z-10 space-y-4">
+          <div className="flex items-center justify-between p-4 bg-card/50 rounded-lg border border-primary/20">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <CreditCard className="h-4 w-4 text-primary" />
+                <span className="text-sm text-muted-foreground">Пополните на</span>
+              </div>
+              <div className="text-2xl font-bold text-primary">10,000 ₽</div>
+            </div>
+            
+            <ArrowRight className="h-6 w-6 text-accent animate-bounce" />
+            
+            <div className="space-y-1 text-right">
+              <div className="flex items-center space-x-2 justify-end">
+                <Wallet className="h-4 w-4 text-accent" />
+                <span className="text-sm text-muted-foreground">Получите</span>
+              </div>
+              <div className="text-2xl font-bold text-accent">20,000 OC</div>
+            </div>
+          </div>
+
+          <div className="text-center space-y-2">
+            <p className="text-sm text-muted-foreground">
+              ⚡ Мгновенное зачисление • 🎯 Удвоение баланса • 🚀 Ускорьте развитие
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-xs text-primary font-medium">
+              <Zap className="h-3 w-3" />
+              <span>Нажмите, чтобы воспользоваться предложением</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Performance Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
