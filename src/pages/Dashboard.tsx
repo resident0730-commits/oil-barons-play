@@ -167,6 +167,36 @@ const Dashboard = () => {
     }
   }, [user, loading, navigate]);
 
+  // Handle payment callbacks
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    
+    if (paymentStatus === 'success') {
+      toast({
+        title: "Платеж успешен!",
+        description: "Ваш баланс будет пополнен в ближайшее время",
+      });
+      
+      // Reload profile to get updated balance
+      if (currentProfile) {
+        window.location.reload();
+      }
+      
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (paymentStatus === 'fail') {
+      toast({
+        variant: "destructive",
+        title: "Платеж отклонен",
+        description: "Попробуйте другой способ оплаты или обратитесь в поддержку"
+      });
+      
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [toast, currentProfile]);
+
   // Simulate income generation every 10 seconds
   useEffect(() => {
     if (!currentProfile?.daily_income) return;
