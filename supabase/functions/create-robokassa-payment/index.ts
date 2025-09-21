@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { createHash } from "https://deno.land/std@0.177.0/hash/mod.ts";
+import { crypto } from "https://deno.land/std@0.208.0/crypto/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -67,9 +67,11 @@ serve(async (req) => {
     const signatureString = `${merchantLogin}:${amount}:${invoiceId}:${password1}`;
     
     // Создаем MD5 хеш
-    const hash = createHash("md5");
-    hash.update(signatureString);
-    const signature = hash.toString();
+    const encoder = new TextEncoder();
+    const data = encoder.encode(signatureString);
+    const hashBuffer = await crypto.subtle.digest('MD5', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
     // Получаем текущий домен для URL возврата
     const referer = req.headers.get('referer') || 'https://your-domain.com';
