@@ -11,7 +11,7 @@ import { usePageVisibility } from "@/hooks/usePageVisibility";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Leaderboard } from "@/components/Leaderboard";
+import { GameReviews } from "@/components/GameReviews";
 import { ExclusiveAccessBanner } from "@/components/ExclusiveAccessBanner";
 import { 
   Fuel, 
@@ -462,18 +462,18 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Leaderboard Section */}
+        {/* Reviews Section */}
         <div className="py-24 relative">
           <div className="absolute inset-0 backdrop-blur-sm bg-muted/20 rounded-3xl"></div>
           <div className="relative max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
-                Топ игроков симулятора
+                Отзывы наших игроков
               </h2>
-              <p className="text-xl text-muted-foreground">Лучшие стратеги игрового сообщества - станьте одним из них</p>
+              <p className="text-xl text-muted-foreground">Узнайте, что говорят реальные игроки о нашем симуляторе</p>
             </div>
             <div className="bg-card/50 backdrop-blur-md rounded-2xl p-6 shadow-luxury border border-primary/20">
-              <Leaderboard maxEntries={15} />
+              <GameReviews />
             </div>
           </div>
         </div>
