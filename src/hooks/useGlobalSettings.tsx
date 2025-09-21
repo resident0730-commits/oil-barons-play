@@ -55,7 +55,7 @@ export const useGlobalSettings = () => {
     { setting_key: 'navigation_buttons', setting_value: true, setting_type: 'company_section' },
     
     // Реквизиты компании
-    { setting_key: 'owner', setting_value: true, setting_type: 'company_requisite' },
+    { setting_key: 'owner', setting_value: false, setting_type: 'company_requisite' },
     { setting_key: 'project_name', setting_value: true, setting_type: 'company_requisite' },
     { setting_key: 'inn', setting_value: true, setting_type: 'company_requisite' },
     { setting_key: 'ogrnip', setting_value: true, setting_type: 'company_requisite' },
