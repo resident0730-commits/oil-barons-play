@@ -10,7 +10,7 @@ import {
   Calendar,
   History
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -39,7 +39,7 @@ import boostersHero from '@/assets/sections/boosters-hero.jpg';
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster } = useGameData();
+  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster, reload } = useGameData();
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
@@ -48,9 +48,69 @@ const Dashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const sounds = useSound();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily'>('overview');
+
+  // Обработка результата платежа
+  useEffect(() => {
+    const paymentStatus = searchParams.get('payment');
+    const outSum = searchParams.get('OutSum');
+    const invoiceId = searchParams.get('InvId');
+    
+    if (paymentStatus && user) {
+      if (paymentStatus === 'success') {
+        handlePaymentSuccess(outSum, invoiceId);
+      } else if (paymentStatus === 'fail') {
+        handlePaymentFailure();
+      }
+      
+      // Очищаем URL параметры
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('payment');
+      newParams.delete('OutSum');
+      newParams.delete('InvId');
+      newParams.delete('SignatureValue');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [searchParams, user]);
+
+  const handlePaymentSuccess = async (outSum: string | null, invoiceId: string | null) => {
+    try {
+      if (!user || !outSum) return;
+      
+      const amount = parseFloat(outSum);
+      if (amount <= 0) return;
+
+      // Перезагружаем профиль для обновления баланса
+      await reload();
+      
+      toast({
+        title: "Платеж успешен!",
+        description: `Ваш баланс пополнен на ${amount} ₽`,
+        duration: 5000,
+      });
+      
+      sounds.success();
+    } catch (error) {
+      console.error('Ошибка при обработке успешного платежа:', error);
+      toast({
+        title: "Ошибка",
+        description: "Произошла ошибка при обработке платежа",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handlePaymentFailure = () => {
+    toast({
+      title: "Платеж отменен",
+      description: "Платеж был отменен или произошла ошибка",
+      variant: "destructive",
+    });
+    sounds.error();
+  };
 
   // Если нет профиля, но есть пользователь - создаем базовый профиль для отображения
   const currentProfile = profile || {
