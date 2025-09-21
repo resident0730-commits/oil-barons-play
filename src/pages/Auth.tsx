@@ -3,6 +3,7 @@ import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExclusiveAccessBanner } from "@/components/ExclusiveAccessBanner";
 import { Fuel, AlertCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -32,15 +33,20 @@ const Auth = () => {
 
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen hero-luxury-background flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
+        {/* Exclusive Access Banner */}
+        <div className="mb-6">
+          <ExclusiveAccessBanner />
+        </div>
+
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center space-x-2">
             <Fuel className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">Oil Tycoon</h1>
+            <h1 className="text-3xl font-bold heading-contrast">Oil Tycoon</h1>
           </div>
-          <p className="text-muted-foreground">
+          <p className="subtitle-contrast">
             Добывайте нефть, развивайте бизнес, становитесь магнатом!
           </p>
         </div>
@@ -57,6 +63,7 @@ const Auth = () => {
           <Button
             variant="link"
             onClick={() => setIsLogin(!isLogin)}
+            className="text-foreground hover:text-primary"
           >
             {isLogin ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти"}
           </Button>
