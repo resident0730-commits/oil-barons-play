@@ -39,12 +39,12 @@ const Index = () => {
   // Обработка результата платежа
   useEffect(() => {
     const paymentStatus = searchParams.get('payment');
-    const outSum = searchParams.get('OutSum');
-    const invoiceId = searchParams.get('InvId');
+    const amount = searchParams.get('amount');
+    const invoice = searchParams.get('invoice');
     
     if (paymentStatus && user) {
       if (paymentStatus === 'success') {
-        handlePaymentSuccess(outSum, invoiceId);
+        handlePaymentSuccess(amount, invoice);
       } else if (paymentStatus === 'fail') {
         handlePaymentFailure();
       }
@@ -52,69 +52,35 @@ const Index = () => {
       // Очищаем URL параметры
       const newParams = new URLSearchParams(searchParams);
       newParams.delete('payment');
-      newParams.delete('OutSum');
-      newParams.delete('InvId');
-      newParams.delete('SignatureValue');
+      newParams.delete('amount');
+      newParams.delete('invoice');
       setSearchParams(newParams, { replace: true });
     }
   }, [searchParams, user]);
 
-  const handlePaymentSuccess = async (outSum: string | null, invoiceId: string | null) => {
+  const handlePaymentSuccess = async (amount: string | null, invoiceId: string | null) => {
     try {
-      if (!user || !outSum) return;
+      if (!user || !amount) return;
       
-      const amount = parseFloat(outSum);
-      if (amount <= 0) return;
+      const amountNum = parseFloat(amount);
+      if (amountNum <= 0) return;
 
-      // Обновляем баланс пользователя
-      const { data: userProfile, error: findError } = await supabase
-        .from('profiles')
-        .select('balance')
-        .eq('user_id', user.id)
-        .single();
-
-      if (findError) throw findError;
-
-      const newBalance = Number(userProfile.balance) + amount;
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ balance: newBalance })
-        .eq('user_id', user.id);
-
-      if (updateError) throw updateError;
-
-      // Сохраняем историю пополнения в money_transfers
-      const { error: historyError } = await supabase
-        .from('money_transfers')
-        .insert({
-          from_user_id: user.id, // Формально - от пользователя
-          to_user_id: user.id,   // К пользователю (пополнение)
-          amount: amount,
-          description: `Пополнение Robokassa ${amount.toLocaleString()} ₽ (${amount.toLocaleString()} OC) #${invoiceId}`,
-          transfer_type: 'topup',
-          status: 'completed',
-          created_by: user.id
-        });
-
-      if (historyError) {
-        console.error('Error saving payment history:', historyError);
-      }
-
-      // Обновляем данные профиля
-      reload();
-
+      // Просто показываем уведомление - баланс уже обновлен через ResultURL
       toast({
         title: "🎉 Платеж успешно завершен!",
-        description: `Ваш баланс пополнен на ${amount.toLocaleString()} ₽. Заказ #${invoiceId}`,
+        description: `Ваш баланс пополнен на ${amountNum.toLocaleString()} ₽. Заказ #${invoiceId}`,
         duration: 5000,
       });
+
+      // Обновляем данные профиля для отображения нового баланса
+      reload();
 
     } catch (error: any) {
       console.error('Payment success handling error:', error);
       toast({
         variant: "destructive",
-        title: "Ошибка обновления баланса",
-        description: "Платеж прошел, но баланс не обновился. Обратитесь в поддержку.",
+        title: "Ошибка",
+        description: "Возникла ошибка при обработке успешного платежа.",
       });
     }
   };
