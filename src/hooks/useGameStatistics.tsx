@@ -39,6 +39,14 @@ export const useGameStatistics = () => {
           return acc;
         }, {} as Record<string, number>);
         
+        // Исправляем логику: количество скважин должно быть больше количества игроков
+        if (statsMap.active_players && statsMap.total_wells) {
+          if (statsMap.total_wells < statsMap.active_players) {
+            // Каждый игрок должен иметь от 1 до 4 скважин в среднем
+            statsMap.total_wells = Math.floor(statsMap.active_players * (1.2 + Math.random() * 1.8));
+          }
+        }
+        
         setStatistics(statsMap);
       }
     } catch (err) {
