@@ -155,12 +155,12 @@ export default function Referrals() {
                     <TooltipTrigger asChild>
                       <Link to="/leaderboard">
                         <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <Trophy className="h-4 w-4" />
+                          <MessageSquare className="h-4 w-4" />
                         </Button>
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Рейтинг игроков</p>
+                      <p>Отзывы игроков</p>
                     </TooltipContent>
                   </Tooltip>
 

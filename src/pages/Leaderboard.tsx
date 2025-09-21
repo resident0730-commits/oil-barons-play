@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Trophy } from 'lucide-react';
+import { ChevronLeft, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Leaderboard as LeaderboardComponent } from '@/components/Leaderboard';
+import { GameReviews } from '@/components/GameReviews';
 
 const LeaderboardPage = () => {
   return (
@@ -16,13 +16,13 @@ const LeaderboardPage = () => {
             </Link>
           </Button>
           <div className="flex items-center gap-2">
-            <Trophy className="h-6 w-6 text-yellow-500" />
-            <h1 className="text-2xl font-bold">Рейтинг игроков</h1>
+            <MessageSquare className="h-6 w-6 text-primary" />
+            <h1 className="text-2xl font-bold">Отзывы игроков</h1>
           </div>
         </div>
         
         <div className="space-y-6">
-          <LeaderboardComponent maxEntries={50} />
+          <GameReviews />
         </div>
       </div>
     </div>
