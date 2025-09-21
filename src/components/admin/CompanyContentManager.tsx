@@ -44,13 +44,13 @@ export const CompanyContentManager = () => {
     {
       key: 'inn',
       name: 'ИНН',
-      description: '891151084170',
+      description: '881151084171',
       icon: <FileText className="h-5 w-5" />
     },
     {
       key: 'ogrnip',
       name: 'ОГРНИП',
-      description: '323890100010935',
+      description: '323890100010934',
       icon: <FileText className="h-5 w-5" />
     },
     {
