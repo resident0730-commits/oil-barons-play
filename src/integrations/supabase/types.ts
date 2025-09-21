@@ -459,6 +459,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_user_balance: {
+        Args: { amount_to_add: number; user_id: string }
+        Returns: undefined
+      }
       calculate_status_multiplier: {
         Args: { user_titles: string[] }
         Returns: number

@@ -18,6 +18,26 @@ serve(async (req) => {
   }
 
   try {
+    // Получаем пользователя из заголовка авторизации
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: req.headers.get('Authorization')! },
+        },
+      }
+    );
+
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+    
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Требуется авторизация' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { amount, description = 'Пополнение баланса Oil Tycoon' }: PaymentRequest = await req.json();
 
     if (!amount || amount <= 0) {
@@ -63,6 +83,7 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
+      Shp_user_id: user.id, // Передаем ID пользователя для webhook
       SuccessURL: `${baseUrl}/?payment=success`,
       FailURL: `${baseUrl}/?payment=fail`
     };
