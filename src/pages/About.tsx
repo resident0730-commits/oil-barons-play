@@ -133,21 +133,12 @@ const About = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 bg-primary/5 rounded-xl border border-primary/10">
-                <h3 className="font-semibold text-lg mb-3 text-primary">Разработчик и владелец проекта</h3>
-                <p className="text-2xl font-bold text-primary mb-2">ИП Захаров А.И.</p>
-                <p className="text-sm text-muted-foreground">
-                  Индивидуальный предприниматель, создатель образовательного проекта Oil Tycoon
-                </p>
-              </div>
-              <div className="p-6 bg-muted/50 rounded-xl">
-                <h3 className="font-semibold text-lg mb-3">О проекте</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Oil Tycoon - образовательный симулятор для изучения экономических принципов и развития бизнес-мышления. 
-                  Проект создан с целью обучения основам инвестирования и управления ресурсами в безопасной игровой среде.
-                </p>
-              </div>
+            <div className="p-6 bg-muted/50 rounded-xl">
+              <h3 className="font-semibold text-lg mb-3">О проекте</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Oil Tycoon - образовательный симулятор для изучения экономических принципов и развития бизнес-мышления. 
+                Проект создан с целью обучения основам инвестирования и управления ресурсами в безопасной игровой среде.
+              </p>
             </div>
             <div className="text-center p-4 bg-accent/5 rounded-lg border border-accent/10">
               <p className="text-sm text-muted-foreground">

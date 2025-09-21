@@ -10,8 +10,8 @@ const Requisites = () => {
 
   const companyInfo = {
     name: "Oil Tycoon",
-    inn: "891151084170",
-    ogrnip: "323890100010935",
+    inn: "881151084171",
+    ogrnip: "323890100010934",
     email: "oiltycoon.help@gmail.com",
     address: "г. Москва, ул. Тверская, д. 15, офис 301",
   };
