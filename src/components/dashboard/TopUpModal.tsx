@@ -243,8 +243,9 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
               Description: description,
               SignatureValue: signature,
               Culture: 'ru',
-              SuccessURL: `${window.location.origin}/?payment=success`,
-              FailURL: `${window.location.origin}/?payment=fail`
+              SuccessURL: `${window.location.origin}/?payment=success&amount=${paymentAmount}&invoice=${invoiceId}`,
+              FailURL: `${window.location.origin}/?payment=fail`,
+              ResultURL: `${window.location.origin}/functions/v1/robokassa-result`
             };
 
             // Добавляем параметры как скрытые поля
