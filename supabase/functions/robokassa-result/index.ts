@@ -127,11 +127,13 @@ serve(async (req) => {
     const { error: logError } = await supabase
       .from('money_transfers')
       .insert({
-        user_id: userId,
+        from_user_id: userId, // Система как отправитель
+        to_user_id: userId,   // Пользователь как получатель
         amount: amount,
-        type: 'deposit',
+        transfer_type: 'deposit',
         description: `Пополнение через Robokassa (${rubAmount}₽ → ${amount.toLocaleString()} OC, Invoice: ${invId})`,
-        status: 'completed'
+        status: 'completed',
+        created_by: userId
       })
 
     if (logError) {
