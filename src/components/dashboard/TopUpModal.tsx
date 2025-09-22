@@ -110,7 +110,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (amount && amount >= 100) {
+    if (amount && amount >= 20) {
       setPaymentAmount(amount);
       setShowPayment(true);
     }
@@ -486,13 +486,13 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             <CardContent className="p-4">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="amount">Произвольная сумма (мин. 100 {currencyConfig.real_currency_symbol})</Label>
+                  <Label htmlFor="amount">Произвольная сумма (мин. 20 {currencyConfig.real_currency_symbol})</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="amount"
                       type="number"
-                      placeholder="100"
-                      min="100"
+                      placeholder="20"
+                      min="20"
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
                     />
