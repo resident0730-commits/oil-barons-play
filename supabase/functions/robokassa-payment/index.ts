@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createHash } from "https://deno.land/std@0.177.0/hash/mod.ts";
+import { crypto } from "https://deno.land/std@0.208.0/crypto/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -69,9 +69,11 @@ serve(async (req) => {
       fullString: `${merchantLogin}:${amountStr}:${invoiceId}:***`
     });
     
-    const hash = createHash("md5");
-    hash.update(signatureString);
-    const signature = hash.toString().toUpperCase(); // Robokassa требует uppercase
+    const encoder = new TextEncoder();
+    const data = encoder.encode(signatureString);
+    const hashBuffer = await crypto.subtle.digest('MD5', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase(); // Robokassa требует uppercase
 
     // Получаем домен для URL возврата
     const referer = req.headers.get('referer') || 'https://your-domain.com';
