@@ -41,7 +41,7 @@ export const PaymentHistory = () => {
         .from('money_transfers')
         .select('*')
         .eq('to_user_id', user.id) // Пополнения - это переводы К пользователю
-        .in('transfer_type', ['topup', 'payment']) // Только пополнения
+        .in('transfer_type', ['deposit', 'topup', 'payment']) // Включаем тип 'deposit'
         .order('created_at', { ascending: false })
         .limit(20);
 
