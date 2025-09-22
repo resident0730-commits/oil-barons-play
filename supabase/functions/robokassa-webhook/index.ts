@@ -84,7 +84,8 @@ serve(async (req) => {
         amount: amount,
         description: `Пополнение через Robokassa (${ocAmount.toLocaleString()} OC) #${invoiceId}`,
         transfer_type: 'topup',
-        status: 'completed'
+        status: 'completed',
+        created_by: userId
       });
 
     if (transferError) {

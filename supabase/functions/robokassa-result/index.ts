@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { createHash } from "https://deno.land/std@0.168.0/hash/mod.ts";
+import { crypto } from "https://deno.land/std@0.208.0/crypto/mod.ts";
 
 serve(async (req) => {
   // CORS headers
@@ -54,9 +54,11 @@ serve(async (req) => {
 
     // Verify signature (with additional parameters)
     const signatureString = `${outSum}:${invId}:${password2}:Shp_Amount=${shpAmount}:Shp_Currency=${shpCurrency}:Shp_UserId=${userId}`
-    const hash = createHash("md5")
-    hash.update(signatureString)
-    const calculatedSignature = hash.toString().toUpperCase()
+    const encoder = new TextEncoder();
+    const data = encoder.encode(signatureString);
+    const hashBuffer = await crypto.subtle.digest('MD5', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const calculatedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
 
     console.log('Signature verification:', { 
       received: signatureValue, 
