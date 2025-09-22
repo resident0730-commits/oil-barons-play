@@ -341,8 +341,8 @@ const Dashboard = () => {
       rubAmount = packageData.rubAmount;
       ocAmount = packageData.totalOC;
     } else if (customAmount) {
-      if (customAmount < 100) {
-        toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 100 ₽" });
+      if (customAmount < 20) {
+        toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 20 ₽" });
         return;
       }
       rubAmount = customAmount;
