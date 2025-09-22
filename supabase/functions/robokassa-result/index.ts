@@ -19,10 +19,20 @@ serve(async (req) => {
     const outSum = url.searchParams.get('OutSum')
     const invId = url.searchParams.get('InvId')
     const signatureValue = url.searchParams.get('SignatureValue')
+    const userId = url.searchParams.get('Shp_UserId')
+    const shpAmount = url.searchParams.get('Shp_Amount')
+    const shpCurrency = url.searchParams.get('Shp_Currency')
 
-    console.log('Robokassa Result callback received:', { outSum, invId, signatureValue })
+    console.log('Robokassa Result callback received:', { 
+      outSum, 
+      invId, 
+      signatureValue, 
+      userId, 
+      shpAmount, 
+      shpCurrency 
+    })
 
-    if (!outSum || !invId || !signatureValue) {
+    if (!outSum || !invId || !signatureValue || !userId) {
       console.error('Missing required parameters')
       return new Response('Missing parameters', { 
         status: 400,
@@ -42,8 +52,8 @@ serve(async (req) => {
       })
     }
 
-    // Verify signature
-    const signatureString = `${outSum}:${invId}:${password2}`
+    // Verify signature (with additional parameters)
+    const signatureString = `${outSum}:${invId}:${password2}:Shp_Amount=${shpAmount}:Shp_Currency=${shpCurrency}:Shp_UserId=${userId}`
     const hash = createHash("md5")
     hash.update(signatureString)
     const calculatedSignature = hash.toString().toUpperCase()
@@ -51,7 +61,8 @@ serve(async (req) => {
     console.log('Signature verification:', { 
       received: signatureValue, 
       calculated: calculatedSignature,
-      match: signatureValue === calculatedSignature 
+      match: signatureValue === calculatedSignature,
+      signatureString: signatureString 
     })
 
     if (signatureValue !== calculatedSignature) {
@@ -68,42 +79,41 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Get recent profiles to find the user (you may want to improve this logic)
-    const { data: profiles, error: profilesError } = await supabase
+    // Get user profile by the provided user ID
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
-      .order('created_at', { ascending: false })
-      .limit(10)
+      .eq('user_id', userId)
+      .single()
 
-    if (profilesError) {
-      console.error('Error fetching profiles:', profilesError)
-      return new Response('Database error', { 
-        status: 500,
-        headers: corsHeaders 
-      })
-    }
-
-    if (!profiles || profiles.length === 0) {
-      console.error('No profiles found')
-      return new Response('No users found', { 
+    if (profileError) {
+      console.error('Error fetching user profile:', profileError)
+      return new Response('User not found', { 
         status: 404,
         headers: corsHeaders 
       })
     }
 
-    // Use the first profile (you may want to implement better user identification)
-    const userId = profiles[0].id
-    const amount = parseFloat(outSum)
+    if (!profile) {
+      console.error('Profile not found for user:', userId)
+      return new Response('User profile not found', { 
+        status: 404,
+        headers: corsHeaders 
+      })
+    }
 
-    console.log(`Processing payment for user ${userId}, amount: ${amount}`)
+    const amount = parseFloat(shpCurrency || outSum) // Use OC amount if available
+    const rubAmount = parseFloat(outSum)
+
+    console.log(`Processing payment for user ${userId}, OC amount: ${amount}, RUB amount: ${rubAmount}`)
 
     // Update user balance
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ 
-        balance: profiles[0].balance + amount 
+        balance: profile.balance + amount 
       })
-      .eq('id', userId)
+      .eq('user_id', userId)
 
     if (updateError) {
       console.error('Error updating balance:', updateError)
@@ -120,7 +130,7 @@ serve(async (req) => {
         user_id: userId,
         amount: amount,
         type: 'deposit',
-        description: `Пополнение через Robokassa (Invoice: ${invId})`,
+        description: `Пополнение через Robokassa (${rubAmount}₽ → ${amount.toLocaleString()} OC, Invoice: ${invId})`,
         status: 'completed'
       })
 
