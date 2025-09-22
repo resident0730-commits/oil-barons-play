@@ -9,6 +9,7 @@ import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, QrCode, ArrowRight, Gif
 import qrPaymentImage from "@/assets/qr-payment.png";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import CryptoJS from "crypto-js";
 
@@ -92,6 +93,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState<'robokassa' | 'qr' | null>(null);
   const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
+  const { user } = useAuth();
   const { toast } = useToast();
 
   // Очистка состояния при закрытии модала
@@ -217,8 +219,9 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
           const description = `Пополнение Oil Tycoon ${paymentAmount}₽`;
           
-          // Создаем MD5 подпись по формуле: MerchantLogin:OutSum:InvoiceID:Password#1
-          const signatureString = `${merchantLogin}:${paymentAmount}:${invoiceId}:${password1}`;
+          // Создаем MD5 подпись по формуле: MerchantLogin:OutSum:InvoiceID:Password#1:Shp_Amount=paymentAmount:Shp_Currency=ocAmount:Shp_UserId=userId
+          const ocAmount = selectedPackage ? selectedPackage.totalOC : paymentAmount;
+          const signatureString = `${merchantLogin}:${paymentAmount}:${invoiceId}:${password1}:Shp_Amount=${paymentAmount}:Shp_Currency=${ocAmount}:Shp_UserId=${user?.id || ''}`;
           const signature = CryptoJS.MD5(signatureString).toString().toUpperCase();
           
           toast({
@@ -245,7 +248,10 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
               Culture: 'ru',
               SuccessURL: `${window.location.origin}/?payment=success&amount=${paymentAmount}&invoice=${invoiceId}`,
               FailURL: `${window.location.origin}/?payment=fail`,
-              ResultURL: `${window.location.origin}/functions/v1/robokassa-result`
+              ResultURL: `${window.location.origin}/functions/v1/robokassa-result`,
+              Shp_UserId: user?.id || '',
+              Shp_Amount: paymentAmount.toString(),
+              Shp_Currency: (selectedPackage ? selectedPackage.totalOC : paymentAmount).toString()
             };
 
             // Добавляем параметры как скрытые поля
