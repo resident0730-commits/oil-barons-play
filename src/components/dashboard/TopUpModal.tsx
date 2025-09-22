@@ -110,7 +110,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (amount && amount >= 20) {
+    if (amount && amount >= 100) {
       setPaymentAmount(amount);
       setShowPayment(true);
     }
@@ -211,6 +211,30 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         try {
           console.log('🚀 Robokassa платеж (актуальные данные)');
           
+          // ТЕСТ: Сначала попробуем прямое пополнение
+          const { data: { session } } = await supabase.auth.getSession()
+          const testResponse = await supabase.functions.invoke('test-deposit', {
+            body: {
+              userId: user?.id,
+              rubAmount: paymentAmount,
+              ocAmount: selectedPackage ? selectedPackage.totalOC : paymentAmount
+            },
+            headers: {
+              Authorization: `Bearer ${session?.access_token}`
+            }
+          })
+          
+          console.log('TEST DEPOSIT RESULT:', testResponse)
+          
+          if (testResponse.data?.success) {
+            toast({
+              title: "ТЕСТ УСПЕШЕН!",
+              description: `Баланс обновлен: ${testResponse.data.oldBalance} → ${testResponse.data.newBalance} OC`,
+            });
+            handleCloseModal();
+            return;
+          }
+          
           // Актуальные данные Robokassa
           const merchantLogin = 'Oiltycoon';
           const password1 = 'uGgPuH5o11c2F8njdBpj';
@@ -248,7 +272,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
               Culture: 'ru',
               SuccessURL: `${window.location.origin}/?payment=success&amount=${paymentAmount}&invoice=${invoiceId}`,
               FailURL: `${window.location.origin}/?payment=fail`,
-              ResultURL: `${window.location.origin}/functions/v1/robokassa-result`,
+              ResultURL: 'https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result',
               Shp_UserId: user?.id || '',
               Shp_Amount: paymentAmount.toString(),
               Shp_Currency: (selectedPackage ? selectedPackage.totalOC : paymentAmount).toString()
@@ -465,19 +489,19 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             <CardContent className="p-4">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="amount">Произвольная сумма (мин. 20 {currencyConfig.real_currency_symbol})</Label>
+                  <Label htmlFor="amount">Произвольная сумма (мин. 100 {currencyConfig.real_currency_symbol})</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="amount"
                       type="number"
-                      placeholder="20"
-                      min="20"
+                      placeholder="100"
+                      min="100"
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
                     />
                     <Button 
                       onClick={handleCustomTopUp}
-                      disabled={!customAmount || parseFloat(customAmount) < 20}
+                      disabled={!customAmount || parseFloat(customAmount) < 100}
                     >
                       Пополнить
                     </Button>
