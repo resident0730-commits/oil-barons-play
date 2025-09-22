@@ -110,7 +110,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (amount && amount >= 100) {
+    if (amount && amount >= 20) {
       setPaymentAmount(amount);
       setShowPayment(true);
     }
