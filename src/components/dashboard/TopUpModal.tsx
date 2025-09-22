@@ -498,7 +498,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                     />
                     <Button 
                       onClick={handleCustomTopUp}
-                      disabled={!customAmount || parseFloat(customAmount) < 100}
+                      disabled={!customAmount || parseFloat(customAmount) < 20}
                     >
                       Пополнить
                     </Button>
