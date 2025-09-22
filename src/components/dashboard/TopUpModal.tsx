@@ -213,11 +213,15 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           
           // ТЕСТ: Сначала попробуем прямое пополнение
           console.log('🧪 Вызываем тестовое пополнение для пользователя:', user?.id)
+          const { data: { session } } = await supabase.auth.getSession()
           const testResponse = await supabase.functions.invoke('test-deposit', {
             body: {
               userId: user?.id,
               rubAmount: paymentAmount,
               ocAmount: selectedPackage ? selectedPackage.totalOC : paymentAmount
+            },
+            headers: {
+              Authorization: `Bearer ${session?.access_token}`
             }
           })
           
