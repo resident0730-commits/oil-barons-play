@@ -212,15 +212,12 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           console.log('🚀 Robokassa платеж (актуальные данные)');
           
           // ТЕСТ: Сначала попробуем прямое пополнение
-          const { data: { session } } = await supabase.auth.getSession()
+          console.log('🧪 Вызываем тестовое пополнение для пользователя:', user?.id)
           const testResponse = await supabase.functions.invoke('test-deposit', {
             body: {
               userId: user?.id,
               rubAmount: paymentAmount,
               ocAmount: selectedPackage ? selectedPackage.totalOC : paymentAmount
-            },
-            headers: {
-              Authorization: `Bearer ${session?.access_token}`
             }
           })
           
