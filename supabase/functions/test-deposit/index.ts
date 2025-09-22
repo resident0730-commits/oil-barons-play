@@ -12,15 +12,24 @@ serve(async (req) => {
   }
 
   try {
+    // Get authorization header
+    const authHeader = req.headers.get('authorization')
+    console.log('AUTH HEADER:', authHeader ? 'Present' : 'Missing')
+    
     const { userId, rubAmount, ocAmount } = await req.json()
     
     console.log('TEST DEPOSIT:', { userId, rubAmount, ocAmount })
 
-    // Initialize Supabase client
+    // Initialize Supabase client with service role key
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
 
     // Get user profile
     const { data: profile, error: profileError } = await supabase
