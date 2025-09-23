@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED');
+    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
     
     const { amount, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
     console.log('💰 Received payment request:', { amount, description });
@@ -27,13 +27,12 @@ serve(async (req) => {
     }
 
     // Получаем секреты Robokassa
-    const merchantLogin = Deno.env.get('ROBOKASSA_MERCHANT_LOGIN');
+    const merchantLogin = "Oiltycoon"; // Хардкод, так как раньше работало именно так
     const password1 = Deno.env.get('ROBOKASSA_PASSWORD1');
     
     console.log('🔑 Environment variables check:', {
-      merchantLogin: merchantLogin ? `Found: "${merchantLogin}"` : 'MISSING',
-      password1: password1 ? `Found (${password1.length} chars)` : 'MISSING',
-      allEnvKeys: Object.keys(Deno.env.toObject()).filter(key => key.includes('ROBOKASSA'))
+      merchantLogin: `HARDCODED: "${merchantLogin}"`,
+      password1: password1 ? `Found (${password1.length} chars)` : 'MISSING'
     });
 
     if (!merchantLogin || !password1) {
@@ -97,7 +96,8 @@ serve(async (req) => {
       invoiceId,
       signature: signature.substring(0, 8) + '...',
       signatureLength: signature.length,
-      paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx'
+      paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
+      fullSignatureString: signatureString
     });
 
     return new Response(
