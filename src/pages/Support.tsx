@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, MessageSquare, Send, Clock, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import { ChevronLeft, MessageSquare, Send, Clock, CheckCircle, AlertCircle, HelpCircle, Upload, X, Image } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -20,6 +20,7 @@ interface SupportTicket {
   status: string;
   priority: string;
   admin_response?: string;
+  attachments?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -37,6 +38,7 @@ const Support = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [category, setCategory] = useState('general');
+  const [attachments, setAttachments] = useState<File[]>([]);
 
   useEffect(() => {
     if (!user) {
@@ -63,6 +65,38 @@ const Support = () => {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    
+    if (imageFiles.length !== files.length) {
+      toast({
+        variant: 'destructive',
+        title: 'Неверный формат',
+        description: 'Можно прикреплять только изображения'
+      });
+    }
+    
+    setAttachments(prev => [...prev, ...imageFiles].slice(0, 5)); // Максимум 5 файлов
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const convertFilesToBase64 = async (files: File[]): Promise<string[]> => {
+    const promises = files.map(file => {
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+    
+    return Promise.all(promises);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -78,6 +112,12 @@ const Support = () => {
     setIsSubmitting(true);
 
     try {
+      let attachmentData: string[] = [];
+      
+      if (attachments.length > 0) {
+        attachmentData = await convertFilesToBase64(attachments);
+      }
+
       const { error } = await supabase
         .from('support_tickets')
         .insert({
@@ -98,6 +138,7 @@ const Support = () => {
       setSubject('');
       setMessage('');
       setCategory('general');
+      setAttachments([]);
       
       // Reload tickets
       loadTickets();
@@ -147,6 +188,8 @@ const Support = () => {
         return 'Техническая проблема';
       case 'billing':
         return 'Вопросы оплаты';
+      case 'balance_deposit':
+        return 'Пополнение баланса';
       case 'account':
         return 'Аккаунт';
       case 'feature':
@@ -195,6 +238,7 @@ const Support = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="balance_deposit">Пополнение баланса</SelectItem>
                       <SelectItem value="general">Общий вопрос</SelectItem>
                       <SelectItem value="technical">Техническая проблема</SelectItem>
                       <SelectItem value="billing">Вопросы оплаты</SelectItem>
@@ -221,10 +265,51 @@ const Support = () => {
                     id="message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Опишите проблему подробно. Укажите шаги для воспроизведения, если это техническая проблема."
+                    placeholder={category === 'balance_deposit' 
+                      ? "Опишите проблему с пополнением: какую сумму пытались пополнить, какой способ оплаты использовали, на каком этапе возникла ошибка. При наличии - приложите скриншот ошибки."
+                      : "Опишите проблему подробно. Укажите шаги для воспроизведения, если это техническая проблема."
+                    }
                     rows={6}
                     required
                   />
+                </div>
+
+                {/* File Upload */}
+                <div>
+                  <Label>Прикрепить скриншоты (до 5 изображений)</Label>
+                  <div className="space-y-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileChange}
+                      className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                    />
+                    
+                    {attachments.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {attachments.map((file, index) => (
+                          <div key={index} className="relative group">
+                            <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
+                              <Image className="h-4 w-4 text-primary" />
+                              <span className="text-xs truncate flex-1">
+                                {file.name}
+                              </span>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeAttachment(index)}
+                                className="h-6 w-6 p-0 hover:bg-destructive/20"
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <Button 
@@ -294,6 +379,26 @@ const Support = () => {
                         {ticket.message}
                       </p>
                       
+                      {/* Поле attachments будет доступно после выполнения миграции БД
+                      {ticket.attachments && ticket.attachments.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-medium mb-1">Прикрепленные файлы:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {ticket.attachments.map((attachment, index) => (
+                              <div key={index} className="relative group">
+                                <img
+                                  src={attachment}
+                                  alt={`Attachment ${index + 1}`}
+                                  className="w-16 h-16 object-cover rounded border cursor-pointer hover:opacity-80"
+                                  onClick={() => window.open(attachment, '_blank')}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      */}
+                      
                       {ticket.admin_response && (
                         <div className="mt-3 p-2 bg-green-50 border-l-4 border-green-400 rounded">
                           <p className="text-xs font-medium text-green-800 mb-1">
@@ -318,33 +423,66 @@ const Support = () => {
             <CardTitle>Часто задаваемые вопросы</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-medium mb-2">Как пополнить баланс?</h4>
-                <p className="text-sm text-muted-foreground">
-                  Перейдите в раздел пополнения баланса и выберите удобный способ оплаты. Средства зачисляются мгновенно.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-medium mb-2">Как работают бустеры?</h4>
-                <p className="text-sm text-muted-foreground">
-                  Бустеры увеличивают доходность ваших скважин. Некоторые действуют постоянно, другие - временно.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-medium mb-2">Что такое оффлайн доход?</h4>
-                <p className="text-sm text-muted-foreground">
-                  Ваши скважины продолжают работать даже когда вы не в игре. Доход начисляется до 24 часов оффлайн.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-medium mb-2">Как улучшить скважины?</h4>
-                <p className="text-sm text-muted-foreground">
-                  Нажмите кнопку "Улучшить" у нужной скважины. Каждое улучшение увеличивает доходность.
-                </p>
+            <div className="space-y-6">
+              {/* Раздел "Пополнение баланса" */}
+              <Card className="border-l-4 border-l-primary bg-primary/5">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Upload className="h-5 w-5 text-primary" />
+                    Проблемы с пополнением баланса
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h5 className="font-medium mb-2">Если оплата не прошла:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                      <li>Проверьте, что средства списались с карты</li>
+                      <li>Подождите до 10 минут - иногда зачисление происходит с задержкой</li>
+                      <li>Обязательно сохраните скриншот успешной оплаты</li>
+                      <li>Создайте заявку в категории "Пополнение баланса" с приложенным скриншотом</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h5 className="font-medium mb-2">Что указать в заявке:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                      <li>Точную сумму пополнения</li>
+                      <li>Способ оплаты (карта, электронный кошелек и т.д.)</li>
+                      <li>Время и дату операции</li>
+                      <li>Скриншот подтверждения оплаты</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Как пополнить баланс?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Перейдите в раздел пополнения баланса и выберите удобный способ оплаты. Средства зачисляются мгновенно.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Как работают бустеры?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Бустеры увеличивают доходность ваших скважин. Некоторые действуют постоянно, другие - временно.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Что такое оффлайн доход?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Ваши скважины продолжают работать даже когда вы не в игре. Доход начисляется до 24 часов оффлайн.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium mb-2">Как улучшить скважины?</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Нажмите кнопку "Улучшить" у нужной скважины. Каждое улучшение увеличивает доходность.
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>

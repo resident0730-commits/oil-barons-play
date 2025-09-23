@@ -17,6 +17,7 @@ import { WithdrawalProcessor } from '@/components/admin/WithdrawalProcessor';
 import { BoosterManager } from '@/components/admin/BoosterManager';
 import { PageVisibilityManager } from '@/components/admin/PageVisibilityManager';
 import { CompanyContentManager } from '@/components/admin/CompanyContentManager';
+import { DatabaseMigration } from '@/components/admin/DatabaseMigration';
 import { CurrencyManager } from '@/components/admin/CurrencyManager';
 
 // Admin component for managing game and users
@@ -74,6 +75,12 @@ export default function Admin() {
         </div>
 
         <div className="space-y-8">
+          {/* Database Migration */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Миграция базы данных</h2>
+            <DatabaseMigration />
+          </div>
+
           {/* Currency Management */}
           <div>
             <h2 className="text-2xl font-semibold mb-4">Настройки валют</h2>
