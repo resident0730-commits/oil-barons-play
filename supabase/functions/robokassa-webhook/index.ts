@@ -27,7 +27,7 @@ serve(async (req) => {
     
     console.log('Robokassa webhook received:', params);
 
-    const merchantLogin = "Oiltycoon"; // Хардкод, как в функции создания платежа
+    const merchantLogin = Deno.env.get('ROBOKASSA_MERCHANT_LOGIN');
     const password2 = Deno.env.get('ROBOKASSA_PASSWORD2');
     
     if (!merchantLogin || !password2) {
