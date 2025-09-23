@@ -18,19 +18,6 @@ serve(async (req) => {
   }
 
   try {
-    // Получаем пользователя из заголовка авторизации (JWT проверяется автоматически)
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: req.headers.get('Authorization')! },
-        },
-      }
-    );
-
-    const { data: { user } } = await supabaseClient.auth.getUser();
-
     const { amount, description = 'Пополнение баланса Oil Tycoon' }: PaymentRequest = await req.json();
 
     if (!amount || amount <= 0) {
@@ -78,7 +65,7 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
-      Shp_user_id: user.id, // Передаем ID пользователя для webhook
+      Shp_user_id: 'anonymous', // Анонимный пользователь
       SuccessURL: `${baseUrl}/?payment=success`,
       FailURL: `${baseUrl}/?payment=fail`
     };
