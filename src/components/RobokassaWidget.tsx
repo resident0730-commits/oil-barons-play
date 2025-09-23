@@ -16,17 +16,23 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
   const { toast } = useToast();
 
   const createPayment = async () => {
+    console.log('🎯 Starting payment creation process');
+    
     setLoading(true);
+    console.log('💰 Creating payment for amount:', amount);
+    
     try {
-      const { data, error } = await supabase.functions.invoke('create-robokassa-payment', {
+      const { data, error } = await supabase.functions.invoke('robokassa-payment', {
         body: {
           amount: amount,
           description: `Пополнение баланса Oil Tycoon на ${amount}₽`
         }
       });
 
+      console.log('📡 Robokassa function response:', { data, error });
+
       if (error) {
-        console.error('Robokassa payment error:', error);
+        console.error('❌ Robokassa payment error:', error);
         onError?.('Не удалось создать платеж');
         toast({
           title: "Ошибка создания платежа",
@@ -36,17 +42,54 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
         return;
       }
 
+      console.log('✅ Response data:', data);
+      
       if (data && data.success) {
+        console.log('🎉 Payment created successfully!');
+        console.log('🔗 Payment URL:', data.paymentUrl);
+        console.log('📝 Payment params:', data.params);
+        
         setPaymentUrl(data.paymentUrl);
         setPaymentParams(data.params);
-        onSuccess?.();
-        toast({
-          title: "Платеж создан",
-          description: "Нажмите кнопку для перехода к оплате",
-        });
+        
+        // Сразу перенаправляем на оплату
+        setTimeout(() => {
+          console.log('⚡ Автоматическое перенаправление на оплату');
+          
+          const url = new URL(data.paymentUrl);
+          Object.entries(data.params).forEach(([key, value]) => {
+            url.searchParams.set(key, value as string);
+            console.log(`📝 Added URL param: ${key} = ${value}`);
+          });
+
+          const finalUrl = url.toString();
+          console.log('🌐 Final payment URL:', finalUrl);
+
+          // Открываем в новой вкладке
+          const newWindow = window.open(finalUrl, '_blank');
+          
+          if (newWindow) {
+            console.log('✅ Payment window opened successfully');
+            toast({
+              title: "Переход к оплате",
+              description: "Открыта страница оплаты Robokassa",
+            });
+            onSuccess?.();
+          } else {
+            console.error('❌ Failed to open payment window - popup blocked?');
+            toast({
+              title: "Ошибка",
+              description: "Не удалось открыть окно оплаты. Разрешите всплывающие окна.",
+              variant: "destructive"
+            });
+          }
+        }, 1000);
+      } else {
+        console.error('❌ Success flag is false or missing');
+        onError?.('Некорректный ответ от сервера');
       }
     } catch (error) {
-      console.error('Payment creation failed:', error);
+      console.error('💥 Payment creation failed:', error);
       onError?.('Не удалось создать платеж');
       toast({
         title: "Ошибка",
@@ -59,30 +102,47 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
   };
 
   const handleSubmitPayment = () => {
-    if (!paymentUrl || !paymentParams) return;
+    console.log('🚀 Starting payment submission');
+    console.log('🔗 Payment URL:', paymentUrl);
+    console.log('📝 Payment params:', paymentParams);
+    
+    if (!paymentUrl || !paymentParams) {
+      console.error('❌ Missing payment URL or params');
+      toast({
+        title: "Ошибка",
+        description: "Отсутствуют данные для оплаты",
+        variant: "destructive"
+      });
+      return;
+    }
 
-    // Создаем форму для отправки в Robokassa
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = paymentUrl;
-    form.target = '_blank';
-
+    // Создаем URL с GET параметрами вместо POST формы
+    const url = new URL(paymentUrl);
     Object.entries(paymentParams).forEach(([key, value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value as string;
-      form.appendChild(input);
+      url.searchParams.set(key, value as string);
+      console.log(`📝 Added URL param: ${key} = ${value}`);
     });
 
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+    const finalUrl = url.toString();
+    console.log('🌐 Final payment URL:', finalUrl);
 
-    toast({
-      title: "Переход к оплате",
-      description: "Вы перенаправлены на страницу оплаты Robokassa",
-    });
+    // Открываем в новой вкладке
+    const newWindow = window.open(finalUrl, '_blank');
+    
+    if (newWindow) {
+      console.log('✅ Payment window opened successfully');
+      toast({
+        title: "Переход к оплате",
+        description: "Открыта страница оплаты Robokassa",
+      });
+    } else {
+      console.error('❌ Failed to open payment window - popup blocked?');
+      toast({
+        title: "Ошибка",
+        description: "Не удалось открыть окно оплаты. Разрешите всплывающие окна.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -108,7 +168,10 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
                 Платеж создан успешно! Нажмите кнопку для перехода к оплате.
               </div>
               <Button 
-                onClick={handleSubmitPayment}
+                onClick={() => {
+                  console.log('🔥 КНОПКА НАЖАТА! Начинаем переход к оплате');
+                  handleSubmitPayment();
+                }}
                 className="w-full"
                 size="lg"
               >
