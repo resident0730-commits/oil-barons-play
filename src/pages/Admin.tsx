@@ -2,13 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Shield } from 'lucide-react';
+import { ArrowLeft, Shield, MessageSquare, BarChart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { AdminStats } from '@/components/admin/AdminStats';
 import { UserManagement } from '@/components/admin/UserManagement';
 import { BalanceManager } from '@/components/admin/BalanceManager';
-import { SupportManagement } from '@/components/admin/SupportManagement';
 import { AdminWellManager } from '@/components/admin/AdminWellManager';
 import { MoneyWithdrawal } from '@/components/admin/MoneyWithdrawal';
 import { MoneyTransfer } from '@/components/admin/MoneyTransfer';
@@ -75,6 +74,28 @@ export default function Admin() {
         </div>
 
         <div className="space-y-8">
+          {/* Quick Actions */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Быстрые действия</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate('/admin/support')}>
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <MessageSquare className="h-12 w-12 text-primary mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Служба поддержки</h3>
+                  <p className="text-sm text-muted-foreground">Управление заявками пользователей</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate('/statistics')}>
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <BarChart className="h-12 w-12 text-primary mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Статистика</h3>
+                  <p className="text-sm text-muted-foreground">Аналитика и отчеты</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
           {/* Database Migration */}
           <div>
             <h2 className="text-2xl font-semibold mb-4">Миграция базы данных</h2>
@@ -137,12 +158,6 @@ export default function Admin() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Управление пользователями</h2>
             <UserManagement />
-          </div>
-
-          {/* Support Management */}
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Служба поддержки</h2>
-            <SupportManagement />
           </div>
         </div>
       </div>

@@ -51,13 +51,33 @@ const Support = () => {
 
   const loadTickets = async () => {
     try {
-      const { data, error } = await supabase
+      // Пробуем загрузить с attachments
+      const { data: dataWithAttachments, error: attachmentsError } = await supabase
         .from('support_tickets')
-        .select('*')
+        .select('*, attachments')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setTickets(data || []);
+      if (attachmentsError && attachmentsError.message.includes('attachments')) {
+        // Если поле attachments не существует, загружаем без него
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('support_tickets')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (fallbackError) throw fallbackError;
+        
+        // Добавляем пустой массив attachments к каждой заявке
+        const ticketsWithAttachments = (fallbackData || []).map(ticket => ({ 
+          ...ticket, 
+          attachments: [] as string[] 
+        }));
+        
+        setTickets(ticketsWithAttachments as SupportTicket[]);
+      } else if (attachmentsError) {
+        throw attachmentsError;
+      } else {
+        setTickets((dataWithAttachments as any) || []);
+      }
     } catch (error) {
       console.error('Error loading tickets:', error);
     } finally {
@@ -124,7 +144,8 @@ const Support = () => {
           user_id: user!.id,
           subject: subject.trim(),
           message: message.trim(),
-          category
+          category,
+          attachments: attachmentData.length > 0 ? attachmentData : null
         });
 
       if (error) throw error;
@@ -379,7 +400,7 @@ const Support = () => {
                         {ticket.message}
                       </p>
                       
-                      {/* Поле attachments будет доступно после выполнения миграции БД
+                      
                       {ticket.attachments && ticket.attachments.length > 0 && (
                         <div className="mt-2">
                           <p className="text-xs font-medium mb-1">Прикрепленные файлы:</p>
@@ -397,7 +418,6 @@ const Support = () => {
                           </div>
                         </div>
                       )}
-                      */}
                       
                       {ticket.admin_response && (
                         <div className="mt-3 p-2 bg-green-50 border-l-4 border-green-400 rounded">
