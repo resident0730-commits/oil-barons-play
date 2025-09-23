@@ -150,17 +150,17 @@ export const GameReviews = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+        <div className="flex justify-center sm:justify-end w-full sm:w-auto shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="gap-2 hover-scale text-sm px-3 py-2"
+            className="gap-1 sm:gap-2 hover-scale text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 min-w-0"
           >
-            <RefreshCw className={cn("h-3 w-3 sm:h-4 sm:w-4", isRefreshing && "animate-spin")} />
-            <span className="hidden xs:inline">Обновить</span>
-            <span className="xs:hidden">↻</span>
+            <RefreshCw className={cn("h-3 w-3", isRefreshing && "animate-spin")} />
+            <span className="hidden sm:inline">Обновить</span>
+            <span className="sm:hidden">↻</span>
           </Button>
         </div>
       </div>
