@@ -48,9 +48,22 @@ export const DatabaseMigration = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          Добавить поле attachments в таблицу support_tickets для поддержки прикрепления скриншотов к заявкам.
-        </p>
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Добавить поле attachments в таблицу support_tickets для поддержки прикрепления скриншотов к заявкам.
+          </p>
+          {result === 'error' && (
+            <div className="p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
+              <p className="text-sm text-yellow-800 font-medium">Альтернативный способ:</p>
+              <p className="text-sm text-yellow-700 mt-1">
+                Если автоматическая миграция не работает, выполните SQL команду вручную в Supabase Dashboard → SQL Editor:
+              </p>
+              <code className="block mt-2 p-2 bg-yellow-50 text-xs text-yellow-900 rounded">
+                ALTER TABLE support_tickets ADD COLUMN IF NOT EXISTS attachments TEXT[];
+              </code>
+            </div>
+          )}
+        </div>
         
         <Button 
           onClick={runMigration}
