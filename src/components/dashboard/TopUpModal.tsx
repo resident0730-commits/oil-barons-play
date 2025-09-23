@@ -368,14 +368,14 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="w-[95vw] max-w-2xl mx-2 sm:mx-4 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[90vw] max-w-lg mx-2 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
-            <CreditCard className="h-5 w-5" />
+          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
             Пополнение баланса
           </DialogTitle>
-          <DialogDescription className="text-sm sm:text-base">
-            Выберите сумму для пополнения или воспользуйтесь готовыми пакетами с бонусами
+          <DialogDescription className="text-xs sm:text-sm">
+            Выберите сумму для пополнения или готовые пакеты с бонусами
           </DialogDescription>
         </DialogHeader>
 
@@ -412,8 +412,8 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
           {/* Special Offer Section */}
           <div>
-            <h3 className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              🔥 Ограниченное предложение
+            <h3 className="text-base sm:text-xl font-bold mb-4 sm:mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-2">
+              🔥 <span className="hidden xs:inline">Ограниченное</span><span className="xs:hidden">Особое</span> предложение
             </h3>
             
             {topUpPackages.filter(pkg => pkg.firstTimeOnly).map((pkg) => (
@@ -434,21 +434,22 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                   </Badge>
                 </div>
                 
-                <CardContent className="p-8 relative z-10">
-                  <div className="text-center space-y-6">
+                <CardContent className="p-4 sm:p-6 relative z-10">
+                  <div className="text-center space-y-4 sm:space-y-6">
                     {/* Title */}
                     <div className="space-y-2">
-                      <h4 className="font-bold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        {pkg.name}
+                      <h4 className="font-bold text-lg sm:text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-2">
+                        🔥 <span className="hidden xs:inline">Специальное предложение!</span><span className="xs:hidden">x2 БОНУС!</span>
                       </h4>
-                      <p className="text-muted-foreground text-sm">
-                        Удвойте свои инвестиции прямо сейчас!
+                      <p className="text-muted-foreground text-xs sm:text-sm px-2">
+                        <span className="hidden sm:inline">Удвойте свои инвестиции прямо сейчас!</span>
+                        <span className="sm:hidden">Двойной бонус сегодня!</span>
                       </p>
                     </div>
                     
                     {/* Main offer display */}
-                    <div className="bg-card/70 rounded-xl p-6 border border-primary/20">
-                      <div className="flex items-center justify-center space-x-4 mb-4">
+                    <div className="bg-card/70 rounded-xl p-3 sm:p-6 border border-primary/20">
+                      <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-3 sm:mb-4">
                         <div className="text-center space-y-1">
                           <div className="text-sm text-muted-foreground">Вы платите</div>
                           <div className="text-2xl font-bold text-primary">
