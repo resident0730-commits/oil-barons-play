@@ -63,6 +63,7 @@ export const SupportManagement = () => {
 
   const loadTickets = async () => {
     try {
+      // Загружаем заявки с attachments если поле существует
       const { data, error } = await supabase
         .from('support_tickets')
         .select(`
@@ -74,6 +75,7 @@ export const SupportManagement = () => {
           status,
           priority,
           admin_response,
+          attachments,
           responded_by,
           created_at,
           updated_at,
@@ -81,11 +83,54 @@ export const SupportManagement = () => {
         `)
         .order('created_at', { ascending: false });
 
+      // Если поле attachments не существует, загружаем без него
+      if (error && error.message.includes('attachments')) {
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('support_tickets')
+          .select(`
+            id,
+            user_id,
+            subject,
+            message,
+            category,
+            status,
+            priority,
+            admin_response,
+            responded_by,
+            created_at,
+            updated_at,
+            resolved_at
+          `)
+          .order('created_at', { ascending: false });
+          
+        if (fallbackError) throw fallbackError;
+        
+        // Добавляем пустой attachments к каждой заявке
+        const ticketsWithProfiles = await Promise.all(
+          (fallbackData || []).map(async (ticket) => {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('nickname')
+              .eq('user_id', ticket.user_id)
+              .single();
+            
+            return {
+              ...ticket,
+              attachments: [] as string[],
+              profiles: profile
+            };
+          })
+        );
+        
+        setTickets(ticketsWithProfiles);
+        return;
+      }
+
       if (error) throw error;
       
-      // Fetch profiles separately to avoid type issues
+      // Fetch profiles separately 
       const ticketsWithProfiles = await Promise.all(
-        (data || []).map(async (ticket) => {
+        (data || []).map(async (ticket: any) => {
           const { data: profile } = await supabase
             .from('profiles')
             .select('nickname')
@@ -316,8 +361,8 @@ export const SupportManagement = () => {
                         <Badge variant="outline" className="text-xs">
                           {getCategoryText(ticket.category)}
                         </Badge>
-                        <Badge className={`text-xs ${getPriorityColor(ticket.priority)}`}>
-                          {ticket.priority}
+                        <Badge className={`text-xs ${getPriorityColor(ticket.priority || 'low')}`}>
+                          {ticket.priority || 'low'}
                         </Badge>
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
                           <User className="h-3 w-3" />
@@ -333,12 +378,12 @@ export const SupportManagement = () => {
                         {ticket.message}
                       </p>
                       
-                      {/* Поле attachments будет доступно после выполнения миграции БД
+                      {/* Отображение прикрепленных файлов */}
                       {ticket.attachments && ticket.attachments.length > 0 && (
                         <div className="mt-2">
                           <p className="text-xs font-medium mb-1">Прикрепленные файлы:</p>
                           <div className="flex flex-wrap gap-1">
-                            {ticket.attachments.map((attachment, index) => (
+                            {ticket.attachments.map((attachment: string, index: number) => (
                               <div key={index} className="relative group">
                                 <img
                                   src={attachment}
@@ -351,7 +396,6 @@ export const SupportManagement = () => {
                           </div>
                         </div>
                       )}
-                      */}
                       
                       {ticket.admin_response && (
                         <div className="mt-2 p-2 bg-blue-50 border-l-4 border-blue-400 rounded">
@@ -398,12 +442,12 @@ export const SupportManagement = () => {
                               {ticket.message}
                             </p>
                             
-                            {/* Поле attachments будет доступно после выполнения миграции БД
+                            {/* Отображение прикрепленных изображений в диалоге */}
                             {ticket.attachments && ticket.attachments.length > 0 && (
                               <div className="mt-3">
                                 <h5 className="text-sm font-medium mb-2">Прикрепленные изображения:</h5>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                  {ticket.attachments.map((attachment, index) => (
+                                  {ticket.attachments.map((attachment: string, index: number) => (
                                     <div key={index} className="relative group">
                                       <img
                                         src={attachment}
@@ -416,7 +460,6 @@ export const SupportManagement = () => {
                                 </div>
                               </div>
                             )}
-                            */}
                           </div>
                           
                           <div>
