@@ -64,16 +64,33 @@ serve(async (req) => {
       return new Response('User ID not found', { status: 400 });
     }
 
+    // Получаем текущий баланс пользователя
+    const { data: profile, error: fetchError } = await supabaseClient
+      .from('profiles')
+      .select('balance')
+      .eq('id', userId)
+      .single();
+
+    if (fetchError) {
+      console.error('Error fetching user profile:', fetchError);
+      return new Response('Failed to fetch user profile', { status: 500 });
+    }
+
+    const currentBalance = profile?.balance || 0;
+    const newBalance = currentBalance + ocAmount;
+
     // Обновляем баланс пользователя
-    const { error: balanceError } = await supabaseClient.rpc('add_user_balance', {
-      user_id: userId,
-      amount_to_add: ocAmount
-    });
+    const { error: balanceError } = await supabaseClient
+      .from('profiles')
+      .update({ balance: newBalance })
+      .eq('id', userId);
 
     if (balanceError) {
       console.error('Error updating user balance:', balanceError);
       return new Response('Failed to update balance', { status: 500 });
     }
+
+    console.log(`Balance updated: ${currentBalance} + ${ocAmount} = ${newBalance} OC for user ${userId}`);
 
     // Создаем запись о пополнении
     const { error: transferError } = await supabaseClient
