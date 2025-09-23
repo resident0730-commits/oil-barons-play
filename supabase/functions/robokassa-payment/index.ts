@@ -14,14 +14,22 @@ serve(async (req) => {
   try {
     console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
     
-    const { amount, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
-    console.log('💰 Received payment request:', { amount, description });
+    const { amount, description = 'Пополнение баланса Oil Tycoon', userId } = await req.json();
+    console.log('💰 Received payment request:', { amount, description, userId });
 
-    // Валидация суммы
+    // Валидация суммы и userId
     if (!amount || amount <= 0 || typeof amount !== 'number') {
       console.log('❌ Invalid amount:', amount, typeof amount);
       return new Response(
         JSON.stringify({ error: 'Некорректная сумма' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    if (!userId) {
+      console.log('❌ Missing userId');
+      return new Response(
+        JSON.stringify({ error: 'Не указан пользователь' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -86,6 +94,7 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
+      Shp_user_id: userId, // Дополнительный параметр с user_id для webhook
       SuccessURL: `${baseUrl}/?payment=success`,
       FailURL: `${baseUrl}/?payment=fail`
     };
