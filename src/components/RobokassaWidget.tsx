@@ -18,10 +18,7 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
   const { session, user } = useAuth();
 
   const createPayment = async () => {
-    console.log('CreatePayment started, session:', !!session, 'user:', !!user);
-    
     if (!session || !user) {
-      console.log('No session or user:', { session: !!session, user: !!user });
       toast({
         title: "Ошибка авторизации",
         description: "Войдите в систему для создания платежа",
@@ -30,18 +27,14 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
       return;
     }
 
-    console.log('Starting payment creation for amount:', amount);
     setLoading(true);
     try {
-      console.log('Calling supabase function...');
       const { data, error } = await supabase.functions.invoke('create-robokassa-payment', {
         body: {
           amount: amount,
           description: `Пополнение баланса Oil Tycoon на ${amount}₽`
         }
       });
-
-      console.log('Function response:', { data, error });
 
       if (error) {
         console.error('Robokassa payment error:', error);
