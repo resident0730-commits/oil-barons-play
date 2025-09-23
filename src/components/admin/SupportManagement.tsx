@@ -20,6 +20,7 @@ interface SupportTicket {
   status: string;
   priority: string;
   admin_response?: string;
+  attachments?: string[];
   responded_by?: string;
   created_at: string;
   updated_at: string;
@@ -191,6 +192,8 @@ export const SupportManagement = () => {
         return 'Техническая проблема';
       case 'billing':
         return 'Вопросы оплаты';
+      case 'balance_deposit':
+        return 'Пополнение баланса';
       case 'account':
         return 'Аккаунт';
       case 'feature':
@@ -330,6 +333,26 @@ export const SupportManagement = () => {
                         {ticket.message}
                       </p>
                       
+                      {/* Поле attachments будет доступно после выполнения миграции БД
+                      {ticket.attachments && ticket.attachments.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-medium mb-1">Прикрепленные файлы:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {ticket.attachments.map((attachment, index) => (
+                              <div key={index} className="relative group">
+                                <img
+                                  src={attachment}
+                                  alt={`Attachment ${index + 1}`}
+                                  className="w-12 h-12 object-cover rounded border cursor-pointer hover:opacity-80 transition-opacity"
+                                  onClick={() => window.open(attachment, '_blank')}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      */}
+                      
                       {ticket.admin_response && (
                         <div className="mt-2 p-2 bg-blue-50 border-l-4 border-blue-400 rounded">
                           <p className="text-xs font-medium text-blue-800 mb-1">
@@ -371,7 +394,29 @@ export const SupportManagement = () => {
                               <Badge variant="outline">{getCategoryText(ticket.category)}</Badge>
                             </div>
                             <h4 className="font-medium mb-2">{ticket.subject}</h4>
-                            <p className="text-sm text-muted-foreground">{ticket.message}</p>
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                              {ticket.message}
+                            </p>
+                            
+                            {/* Поле attachments будет доступно после выполнения миграции БД
+                            {ticket.attachments && ticket.attachments.length > 0 && (
+                              <div className="mt-3">
+                                <h5 className="text-sm font-medium mb-2">Прикрепленные изображения:</h5>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                  {ticket.attachments.map((attachment, index) => (
+                                    <div key={index} className="relative group">
+                                      <img
+                                        src={attachment}
+                                        alt={`Attachment ${index + 1}`}
+                                        className="w-full h-20 object-cover rounded border cursor-pointer hover:opacity-80 transition-opacity"
+                                        onClick={() => window.open(attachment, '_blank')}
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            */}
                           </div>
                           
                           <div>
