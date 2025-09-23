@@ -144,7 +144,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (!paymentMethod) {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md mx-4 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -155,7 +155,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <DialogTitle>🔄 Выберите способ оплаты</DialogTitle>
+                <DialogTitle className="text-lg">🔄 Выберите способ оплаты</DialogTitle>
               </div>
               <DialogDescription>
                 Сумма к оплате: {formatRealCurrency(paymentAmount)}
@@ -210,7 +210,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'robokassa') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -221,7 +221,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <DialogTitle>Оплата через Robokassa</DialogTitle>
+                <DialogTitle className="text-lg">Оплата через Robokassa</DialogTitle>
               </div>
             </DialogHeader>
             
@@ -261,7 +261,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'qr') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md mx-4 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -272,7 +272,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <DialogTitle>Оплата {formatRealCurrency(paymentAmount)}</DialogTitle>
+                <DialogTitle className="text-lg">Оплата {formatRealCurrency(paymentAmount)}</DialogTitle>
               </div>
               <DialogDescription>
                 Отсканируйте QR-код для оплаты
@@ -282,11 +282,11 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             <div className="space-y-6">
               {/* QR Code */}
               <div className="flex justify-center">
-                <div className="bg-white p-4 rounded-lg shadow-lg border">
+                <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border">
                   <img 
                     src={qrPaymentImage} 
                     alt="QR-код для оплаты" 
-                    className="w-64 h-64 object-contain"
+                    className="w-48 h-48 sm:w-64 sm:h-64 object-contain"
                   />
                 </div>
               </div>
@@ -368,13 +368,13 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <CreditCard className="h-5 w-5" />
             Пополнение баланса
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm sm:text-base">
             Выберите сумму для пополнения или воспользуйтесь готовыми пакетами с бонусами
           </DialogDescription>
         </DialogHeader>
