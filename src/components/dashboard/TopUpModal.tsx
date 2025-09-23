@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import CryptoJS from "crypto-js";
+import { RobokassaWidget } from '../RobokassaWidget';
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -207,102 +208,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
     // Показываем платежную форму для Robokassa
     if (paymentMethod === 'robokassa') {
-      const handleSubmitRobokassa = async () => {
-        try {
-          console.log('🚀 Robokassa платеж (актуальные данные)');
-          
-          // ТЕСТ: Сначала попробуем прямое пополнение
-          console.log('🧪 Вызываем тестовое пополнение для пользователя:', user?.id)
-          const { data: { session } } = await supabase.auth.getSession()
-          const testResponse = await supabase.functions.invoke('test-deposit', {
-            body: {
-              userId: user?.id,
-              rubAmount: paymentAmount,
-              ocAmount: selectedPackage ? selectedPackage.totalOC : paymentAmount
-            },
-            headers: {
-              Authorization: `Bearer ${session?.access_token}`
-            }
-          })
-          
-          console.log('TEST DEPOSIT RESULT:', testResponse)
-          
-          if (testResponse.data?.success) {
-            toast({
-              title: "ТЕСТ УСПЕШЕН!",
-              description: `Баланс обновлен: ${testResponse.data.oldBalance} → ${testResponse.data.newBalance} OC`,
-            });
-            handleCloseModal();
-            return;
-          }
-          
-          // Актуальные данные Robokassa
-          const merchantLogin = 'Oiltycoon';
-          const password1 = 'uGgPuH5o11c2F8njdBpj';
-          
-          // Генерируем правильный InvoiceID: уникальное число в допустимом диапазоне 1-9223372036854775807
-          const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
-          const description = `Пополнение Oil Tycoon ${paymentAmount}₽`;
-          
-          // Создаем MD5 подпись по формуле: MerchantLogin:OutSum:InvoiceID:Password#1:Shp_Amount=paymentAmount:Shp_Currency=ocAmount:Shp_UserId=userId
-          const ocAmount = selectedPackage ? selectedPackage.totalOC : paymentAmount;
-          const signatureString = `${merchantLogin}:${paymentAmount}:${invoiceId}:${password1}:Shp_Amount=${paymentAmount}:Shp_Currency=${ocAmount}:Shp_UserId=${user?.id || ''}`;
-          const signature = CryptoJS.MD5(signatureString).toString().toUpperCase();
-          
-          toast({
-            title: "Переход к оплате",
-            description: `Перенаправляем на Robokassa для оплаты ${paymentAmount}₽`,
-            duration: 2000,
-          });
-          
-          // Задержка перед перенаправлением
-          setTimeout(() => {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://auth.robokassa.ru/Merchant/Index.aspx';
-            form.target = '_blank';
-            form.style.display = 'none';
-
-            // Параметры с правильной подписью 
-            const params = {
-              MerchantLogin: merchantLogin,
-              OutSum: paymentAmount.toString(),
-              InvoiceID: invoiceId,
-              Description: description,
-              SignatureValue: signature,
-              Culture: 'ru',
-              SuccessURL: `${window.location.origin}/?payment=success&amount=${paymentAmount}&invoice=${invoiceId}`,
-              FailURL: `${window.location.origin}/?payment=fail`,
-              ResultURL: 'https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result',
-              Shp_UserId: user?.id || '',
-              Shp_Amount: paymentAmount.toString(),
-              Shp_Currency: (selectedPackage ? selectedPackage.totalOC : paymentAmount).toString()
-            };
-
-            // Добавляем параметры как скрытые поля
-            Object.entries(params).forEach(([key, value]) => {
-              const input = document.createElement('input');
-              input.type = 'hidden';
-              input.name = key;
-              input.value = value;
-              form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          }, 1500);
-          
-        } catch (error) {
-          console.error('❌ Robokassa error:', error);
-          toast({
-            title: "Ошибка",
-            description: "Не удалось создать платеж. Попробуйте позже.",
-            variant: "destructive",
-          });
-        }
-      };
-
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
           <DialogContent className="max-w-lg">
@@ -318,49 +223,39 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 </Button>
                 <DialogTitle>Оплата через Robokassa</DialogTitle>
               </div>
-              <DialogDescription>
-                Сумма к оплате: {formatRealCurrency(paymentAmount)}
-              </DialogDescription>
             </DialogHeader>
-
+            
             <div className="space-y-4">
-              <div className="border rounded-lg p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <CreditCard className="h-6 w-6" />
-                  <div>
-                    <h3 className="font-semibold">Robokassa</h3>
-                    <p className="text-sm text-muted-foreground">Банковские карты, электронные кошельки</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-4 bg-muted/50 rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Сумма к оплате: <span className="font-semibold">{formatRealCurrency(paymentAmount)}</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      После оплаты вы получите {selectedPackage ? formatGameCurrency(selectedPackage.totalOC) : formatGameCurrency(paymentAmount)} на баланс
-                    </p>
-                  </div>
-                  
-                  <Button 
-                    onClick={handleSubmitRobokassa}
-                    className="w-full"
-                    size="lg"
-                    disabled={topUpLoading}
-                  >
-                    {topUpLoading ? 'Обработка...' : 'Перейти к оплате через Robokassa'}
-                  </Button>
-                  
-                  <p className="text-xs text-muted-foreground text-center">
-                    Вы будете перенаправлены на безопасную страницу оплаты Robokassa
-                  </p>
-                </div>
+              <div className="text-sm text-muted-foreground text-center">
+                Пополнение на {paymentAmount}₽ → {formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}
               </div>
+              
+              <RobokassaWidget
+                amount={paymentAmount}
+                onSuccess={() => {
+                  toast({
+                    title: "Оплата создана",
+                    description: "Переходим к оплате...",
+                  });
+                  handleCloseModal();
+                }}
+                onError={(error) => {
+                  toast({
+                    title: "Ошибка оплаты",
+                    description: error,
+                    variant: "destructive"
+                  });
+                }}
+              />
             </div>
           </DialogContent>
         </Dialog>
       );
     }
+    
+    // Если это не robokassa, показываем обычную форму
+
+    // Если это не robokassa и не qr, показываем обычную форму
 
     // Показываем QR-код
     if (paymentMethod === 'qr') {
@@ -679,3 +574,5 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     </Dialog>
   );
 };
+
+export default TopUpModal;
