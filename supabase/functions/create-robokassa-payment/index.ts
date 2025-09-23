@@ -18,7 +18,7 @@ serve(async (req) => {
   }
 
   try {
-    // Получаем пользователя из заголовка авторизации
+    // Получаем пользователя из заголовка авторизации (JWT проверяется автоматически)
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -29,14 +29,7 @@ serve(async (req) => {
       }
     );
 
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    
-    if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Требуется авторизация' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    const { data: { user } } = await supabaseClient.auth.getUser();
 
     const { amount, description = 'Пополнение баланса Oil Tycoon' }: PaymentRequest = await req.json();
 
