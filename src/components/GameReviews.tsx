@@ -128,37 +128,41 @@ export const GameReviews = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-2 flex-1 min-w-0">
           <p className="text-sm text-muted-foreground">
             Последние отзывы от наших игроков
           </p>
-          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl border border-primary/20">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl border border-primary/20">
             <div className="flex flex-col items-center gap-1">
-              <span className="text-sm font-medium text-muted-foreground">Общая оценка</span>
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Общая оценка</span>
               <div className="flex items-center gap-2">
                 <StarRating rating={5} size="md" />
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">4.8</span>
-                <span className="text-sm text-muted-foreground">/5</span>
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">4.8</span>
+                <span className="text-xs sm:text-sm text-muted-foreground">/5</span>
               </div>
             </div>
-            <div className="w-px h-12 bg-border"></div>
-            <div className="text-sm text-muted-foreground">
+            <div className="hidden sm:block w-px h-12 bg-border"></div>
+            <div className="sm:hidden w-12 h-px bg-border"></div>
+            <div className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
               <div>Основано на отзывах</div>
               <div className="font-semibold text-foreground">{reviews.length} игроков</div>
             </div>
           </div>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="gap-2 hover-scale"
-        >
-          <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-          Обновить
-        </Button>
+        <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="gap-2 hover-scale text-sm px-3 py-2"
+          >
+            <RefreshCw className={cn("h-3 w-3 sm:h-4 sm:w-4", isRefreshing && "animate-spin")} />
+            <span className="hidden xs:inline">Обновить</span>
+            <span className="xs:hidden">↻</span>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6">
@@ -193,8 +197,8 @@ export const GameReviews = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-muted/30 rounded-lg border-l-4 border-primary/50">
-                <p className="leading-relaxed text-foreground/90 italic">"{review.text}"</p>
+              <div className="p-3 sm:p-4 bg-muted/30 rounded-lg border-l-4 border-primary/50">
+                <p className="leading-relaxed text-sm sm:text-base text-foreground/90 italic">"{review.text}"</p>
               </div>
               
               <div className="space-y-3">
@@ -202,13 +206,13 @@ export const GameReviews = () => {
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <h4 className="font-semibold text-foreground">Детальная оценка по критериям</h4>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                   {review.criteria.map((criterion, criterionIndex) => (
                     <div 
                       key={criterionIndex} 
-                      className="flex items-center justify-between gap-3 p-3 rounded-lg bg-gradient-to-r from-muted/50 to-muted/30 border border-muted-foreground/10 hover:border-primary/30 transition-all duration-300 hover-scale"
+                      className="flex items-center justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-gradient-to-r from-muted/50 to-muted/30 border border-muted-foreground/10 hover:border-primary/30 transition-all duration-300 hover-scale"
                     >
-                      <span className="text-sm font-medium text-foreground/80">{criterion.name}</span>
+                      <span className="text-xs sm:text-sm font-medium text-foreground/80 truncate">{criterion.name}</span>
                       <StarRating rating={criterion.rating} size="sm" />
                     </div>
                   ))}
