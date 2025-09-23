@@ -20,6 +20,7 @@ import { Offer } from "./pages/Offer";
 import Rules from "./pages/Rules";
 import TelegramAvatar from "./pages/TelegramAvatar";
 import Admin from "./pages/Admin";
+import AdminSupport from "./pages/AdminSupport";
 import Leaderboard from "./pages/Leaderboard";
 import Support from "./pages/Support";
 import Referrals from "./pages/Referrals";
@@ -55,6 +56,7 @@ const App = () => (
           } />
           <Route path="/rules" element={<Rules />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/support" element={<AdminSupport />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/support" element={<Support />} />
           <Route path="/referrals" element={<Referrals />} />
