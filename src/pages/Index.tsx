@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
 import { ExclusiveAccessBanner } from "@/components/ExclusiveAccessBanner";
+import GiveawayPreview from "@/components/GiveawayPreview";
 import { 
   Fuel, 
   TrendingUp, 
@@ -135,6 +136,9 @@ const Index = () => {
       <div className="container mx-auto px-4 py-6">
         <ExclusiveAccessBanner />
       </div>
+
+      {/* Giveaway Preview */}
+      <GiveawayPreview />
 
       {/* Hero Section */}
       <main className="container mx-auto px-4 py-20">

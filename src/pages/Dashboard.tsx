@@ -8,7 +8,8 @@ import {
   Sparkles,
   Gift,
   Calendar,
-  History
+  History,
+  Trophy
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -32,6 +33,7 @@ import { WellsSection } from "@/components/dashboard/WellsSection";
 import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
+import PremiumGiveaway from "@/components/PremiumGiveaway";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -51,7 +53,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily' | 'giveaway'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -75,6 +77,21 @@ const Dashboard = () => {
       setSearchParams(newParams, { replace: true });
     }
   }, [searchParams, user]);
+
+  // Обработка параметра section для навигации
+  useEffect(() => {
+    const section = searchParams.get('section');
+    if (section) {
+      const validSections = ['overview', 'wells', 'shop', 'history', 'boosters', 'cases', 'daily', 'giveaway'];
+      if (validSections.includes(section)) {
+        setActiveSection(section as any);
+        // Очищаем параметр section из URL
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('section');
+        setSearchParams(newParams, { replace: true });
+      }
+    }
+  }, [searchParams, setSearchParams]);
 
   const handlePaymentSuccess = async (outSum: string | null, invoiceId: string | null) => {
     try {
@@ -445,8 +462,31 @@ const Dashboard = () => {
         {/* Section Navigation */}
         <div className="flex items-center justify-center">
           <div className="section-toolbar w-full max-w-full overflow-x-auto">
+            {/* Таймер розыгрыша */}
+            <div className="text-center mb-2">
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 px-3 py-1 rounded-full animate-glow-pulse">
+                <Trophy className="h-3 w-3 text-primary animate-gold-glow" />
+                <span className="text-xs font-bold text-primary">
+                  {(() => {
+                    const endDate = new Date('2025-10-18T23:59:59');
+                    const now = new Date();
+                    const timeLeft = endDate.getTime() - now.getTime();
+                    const daysLeft = Math.max(0, Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
+                    const getDaysText = (days: number) => {
+                      if (days % 10 === 1 && days % 100 !== 11) return 'день';
+                      if ([2, 3, 4].includes(days % 10) && ![12, 13, 14].includes(days % 100)) return 'дня';
+                      return 'дней';
+                    };
+                    return `${daysLeft} ${getDaysText(daysLeft)} до розыгрыша!`;
+                  })()}
+                </span>
+                <Trophy className="h-3 w-3 text-primary animate-gold-glow" />
+              </div>
+            </div>
+            
             <div className="flex space-x-1 bg-card/50 p-1 rounded-lg min-w-max">
               {[
+                { id: 'giveaway', label: 'Розыгрыш', icon: Trophy, shortLabel: 'Розыгрыш', special: true },
                 { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
@@ -460,9 +500,18 @@ const Dashboard = () => {
                   variant={activeSection === section.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setActiveSection(section.id as any)}
-                  className={`${activeSection === section.id ? 'gradient-gold text-primary-foreground shadow-gold' : ''} whitespace-nowrap flex-shrink-0`}
+                  className={`${
+                    activeSection === section.id 
+                      ? 'gradient-gold text-primary-foreground shadow-gold' 
+                      : section.special 
+                        ? 'bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 border border-primary/40 text-primary font-bold animate-glow-pulse hover:from-primary/30 hover:via-accent/40 hover:to-primary/30'
+                        : ''
+                  } whitespace-nowrap flex-shrink-0 ${section.special ? 'relative' : ''}`}
                 >
-                  <section.icon className="h-4 w-4 sm:mr-2" />
+                  {section.special && (
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-ping"></div>
+                  )}
+                  <section.icon className={`h-4 w-4 sm:mr-2 ${section.special ? 'animate-gold-glow' : ''}`} />
                   <span className="hidden sm:inline">{section.label}</span>
                   <span className="inline sm:hidden ml-1 text-xs">{section.shortLabel}</span>
                 </Button>
@@ -583,6 +632,13 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {activeSection === 'giveaway' && (
+          <PremiumGiveaway 
+            profile={currentProfile}
+            wells={wells}
+          />
         )}
       </main>
 
