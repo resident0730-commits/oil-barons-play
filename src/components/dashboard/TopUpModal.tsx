@@ -144,7 +144,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (!paymentMethod) {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -210,7 +210,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'robokassa') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -261,7 +261,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     if (paymentMethod === 'qr') {
       return (
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <div className="flex items-center gap-2">
                 <Button 
@@ -282,44 +282,44 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             <div className="space-y-6">
               {/* QR Code */}
               <div className="flex justify-center">
-                <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border">
+                <div className="bg-white p-2 rounded-lg shadow-lg border">
                   <img 
                     src={qrPaymentImage} 
                     alt="QR-код для оплаты" 
-                    className="w-48 h-48 sm:w-64 sm:h-64 object-contain"
+                    className="w-40 h-40 object-contain"
                   />
                 </div>
               </div>
 
               {/* Instructions */}
               <Card>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <Camera className="h-4 w-4" />
-                    Инструкция по оплате:
+                <CardContent className="p-3">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm">
+                    <Camera className="h-3 w-3" />
+                    Инструкция:
                   </h4>
-                  <ol className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex gap-2">
+                  <ol className="space-y-1 text-xs text-muted-foreground">
+                    <li className="flex gap-1">
                       <span className="font-semibold">1.</span>
-                      <span>Сделайте скриншот QR-кода или сохраните изображение</span>
+                      <span>Сделайте скриншот QR-кода</span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-1">
                       <span className="font-semibold">2.</span>
-                      <span>Откройте приложение вашего банка</span>
+                      <span>Откройте приложение банка</span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-1">
                       <span className="font-semibold">3.</span>
-                      <span>Найдите функцию "Оплата по QR-коду"</span>
+                      <span>Найдите "Оплата по QR-коду"</span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-1">
                       <span className="font-semibold">4.</span>
-                      <span>Отсканируйте код или загрузите изображение</span>
+                      <span>Отсканируйте код</span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-1">
                       <span className="font-semibold">5.</span>
-                      <span>Введите сумму: <strong>{paymentAmount} ₽</strong></span>
+                      <span>Сумма: <strong>{paymentAmount} ₽</strong></span>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex gap-1">
                       <span className="font-semibold">6.</span>
                       <span>Подтвердите платеж</span>
                     </li>
@@ -329,15 +329,15 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
               {/* Final Step */}
               <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Send className="h-5 w-5 text-primary mt-0.5" />
+                <CardContent className="p-3">
+                  <div className="flex items-start gap-2">
+                    <Send className="h-4 w-4 text-primary mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-primary mb-1">
+                      <h4 className="font-semibold text-primary mb-1 text-sm">
                         Завершающий шаг:
                       </h4>
-                      <p className="text-sm text-muted-foreground">
-                        После оплаты отправьте скриншот чека в поддержку для зачисления средств на баланс.
+                      <p className="text-xs text-muted-foreground">
+                        После оплаты отправьте скриншот чека в поддержку.
                       </p>
                     </div>
                   </div>
@@ -368,7 +368,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="w-[90vw] max-w-lg mx-2 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto p-3">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
             <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -379,13 +379,13 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4">
           {/* Custom Amount Section */}
           <Card>
-            <CardContent className="p-4">
-              <div className="space-y-4">
+            <CardContent className="p-3">
+              <div className="space-y-3">
                 <div>
-                  <Label htmlFor="amount">Произвольная сумма (мин. 20 {currencyConfig.real_currency_symbol})</Label>
+                  <Label htmlFor="amount" className="text-sm">Произвольная сумма (мин. 20 {currencyConfig.real_currency_symbol})</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="amount"
@@ -394,15 +394,17 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                       min="20"
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
+                      className="text-sm"
                     />
                     <Button 
                       onClick={handleCustomTopUp}
                       disabled={!customAmount || parseFloat(customAmount) < 20}
+                      size="sm"
                     >
                       Пополнить
                     </Button>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {currencyConfig.exchange_rate}
                   </p>
                 </div>
@@ -412,8 +414,8 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
           {/* Special Offer Section */}
           <div>
-            <h3 className="text-base sm:text-xl font-bold mb-4 sm:mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-2">
-              🔥 <span className="hidden xs:inline">Ограниченное</span><span className="xs:hidden">Особое</span> предложение
+            <h3 className="text-sm font-bold mb-3 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-1">
+              🔥 Особое предложение
             </h3>
             
             {topUpPackages.filter(pkg => pkg.firstTimeOnly).map((pkg) => (
