@@ -77,8 +77,8 @@ export const AnimatedWellCard = ({
       className="relative group cursor-pointer animate-fade-in hover-scale transition-all duration-500"
       onClick={() => onShowDetails(well)}
     >
-      {/* Well Avatar - УВЕЛИЧЕННЫЙ РАЗМЕР */}
-      <div className="relative w-40 h-40 mx-auto">
+      {/* Well Avatar - АДАПТИВНЫЙ РАЗМЕР */}
+      <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 mx-auto">
         {/* Working status glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-green-400/30 to-primary/30 rounded-full animate-pulse blur-sm scale-110"></div>
         
@@ -93,20 +93,20 @@ export const AnimatedWellCard = ({
         />
         
         {/* Working indicator */}
-        <div className="absolute top-3 right-3 w-5 h-5 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50 border-2 border-background z-20"></div>
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50 border-2 border-background z-20"></div>
         
         {/* Level badge */}
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-          <Badge className={`${getRarityColor(wellType.rarity)} text-sm px-3 py-1 shadow-lg font-bold`}>
+        <div className="absolute -top-2 sm:-top-3 left-1/2 transform -translate-x-1/2 z-20">
+          <Badge className={`${getRarityColor(wellType.rarity)} text-xs sm:text-sm px-2 sm:px-3 py-1 shadow-lg font-bold`}>
             Ур. {well.level}
           </Badge>
         </div>
         
         {/* Booster indicator */}
         {hasActiveBoosters && (
-          <div className="absolute -top-3 -right-3 z-20">
-            <Badge className="bg-purple-500/90 text-purple-100 border-purple-400 text-xs p-2 rounded-full shadow-lg animate-bounce-in">
-              <Sparkles className="h-4 w-4" />
+          <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 z-20">
+            <Badge className="bg-purple-500/90 text-purple-100 border-purple-400 text-xs p-1.5 sm:p-2 rounded-full shadow-lg animate-bounce-in">
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
             </Badge>
           </div>
         )}
@@ -114,32 +114,32 @@ export const AnimatedWellCard = ({
         {/* Income overlay on hover */}
         <div className="absolute inset-0 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-15">
           <div className="text-center text-white">
-            <div className="text-xl font-bold">
+            <div className="text-sm sm:text-lg md:text-xl font-bold">
               {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}
             </div>
-            <div className="text-sm opacity-90">в день</div>
+            <div className="text-xs sm:text-sm opacity-90">в день</div>
           </div>
         </div>
       </div>
       
       {/* УЛУЧШЕННЫЕ ПОДПИСИ */}
-      <div className="text-center mt-4 space-y-1">
-        <h3 className="text-base font-bold bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 leading-tight">
+      <div className="text-center mt-3 sm:mt-4 space-y-1">
+        <h3 className="text-xs sm:text-sm md:text-base font-bold bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 leading-tight px-1">
           {wellType.name}
         </h3>
-        <div className="flex items-center justify-center space-x-2 text-sm">
-          <Badge variant="outline" className="text-xs bg-background/80 backdrop-blur-sm">
+        <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
+          <Badge variant="outline" className="text-xs bg-background/80 backdrop-blur-sm px-1.5 py-0.5">
             {wellType.rarity}
           </Badge>
           <span className="text-muted-foreground">•</span>
-          <span className="text-primary font-semibold">
+          <span className="text-primary font-semibold text-xs sm:text-sm">
             {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}/день
           </span>
         </div>
       </div>
       
       {/* Animated working effect */}
-      <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse opacity-60"></div>
+      <div className="absolute -bottom-2 sm:-bottom-3 left-1/2 transform -translate-x-1/2 w-24 sm:w-32 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse opacity-60"></div>
     </div>
   );
 };

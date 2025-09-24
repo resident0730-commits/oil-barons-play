@@ -306,6 +306,8 @@ All colors MUST be HSL.
 
   .section-toolbar {
     @apply bg-card/70 backdrop-blur-md border border-primary/20 rounded-xl px-2 sm:px-4 py-2 sm:py-3 shadow-oil;
+    /* Добавляем ограничение максимальной ширины и скролл на мобильных */
+    max-width: 100%;
   }
 
   /* Mobile scrollbar styling for section toolbar */
@@ -313,9 +315,17 @@ All colors MUST be HSL.
     .section-toolbar {
       scrollbar-width: none;
       -ms-overflow-style: none;
+      /* Добавляем дополнительные стили для мобильных */
+      min-height: auto;
+      padding: 0.5rem 0.75rem;
     }
     .section-toolbar::-webkit-scrollbar {
       display: none;
+    }
+    
+    /* Улучшаем адаптивность grid на мобильных */
+    .mobile-grid-fix {
+      padding: 0 0.5rem;
     }
   }
 
