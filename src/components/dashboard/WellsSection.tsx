@@ -1,10 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Plus, Zap, Sparkles } from "lucide-react";
-import { UserWell, UserProfile, wellTypes, UserBooster } from "@/hooks/useGameData";
+import { Plus, Sparkles, ArrowUpDown, TrendingDown, TrendingUp, Calendar, CalendarDays } from "lucide-react";
+import { useState } from "react";
+import { UserWell, UserProfile, UserBooster } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
+import { AnimatedWellCard } from "./AnimatedWellCard";
+import { WellDetailsModal } from "./WellDetailsModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -34,35 +42,79 @@ export const WellsSection = ({
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
   const { formatGameCurrency } = useCurrency();
+  const [selectedWell, setSelectedWell] = useState<UserWell | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [sortType, setSortType] = useState<'default' | 'income-desc' | 'income-asc' | 'level-desc' | 'level-asc'>('default');
+  
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
     !booster.expires_at || new Date(booster.expires_at) > new Date()
   );
+
+  const handleShowDetails = (well: UserWell) => {
+    setSelectedWell(well);
+    setIsDetailsOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setIsDetailsOpen(false);
+    setSelectedWell(null);
+  };
+
+  // Функция сортировки скважин
+  const sortedWells = [...wells].sort((a, b) => {
+    switch (sortType) {
+      case 'income-desc':
+        return (b.daily_income * boosterMultiplier) - (a.daily_income * boosterMultiplier);
+      case 'income-asc':
+        return (a.daily_income * boosterMultiplier) - (b.daily_income * boosterMultiplier);
+      case 'level-desc':
+        return b.level - a.level;
+      case 'level-asc':
+        return a.level - b.level;
+      default:
+        return 0; // Оригинальный порядок
+    }
+  });
+
+  const getSortLabel = () => {
+    switch (sortType) {
+      case 'income-desc': return 'По доходности ↓';
+      case 'income-asc': return 'По доходности ↑';
+      case 'level-desc': return 'По уровню ↓';
+      case 'level-asc': return 'По уровню ↑';
+      default: return 'По умолчанию';
+    }
+  };
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold heading-contrast">Ваши скважины</h2>
-          <p className="text-muted-foreground subtitle-contrast">Управляйте своими нефтяными активами</p>
+          <h2 className="text-2xl font-bold heading-contrast bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            Ваши скважины
+          </h2>
+          <p className="text-muted-foreground subtitle-contrast">Живые активы, работающие на вас 24/7</p>
         </div>
         <div className="section-toolbar">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-muted-foreground">Общий доход:</span>
-                <Badge className="gradient-gold text-primary-foreground">
+                <Badge className="gradient-gold text-primary-foreground animate-pulse">
                   {formatGameCurrency(profile.daily_income)}/день
                 </Badge>
                 {hasActiveBoosters && (
-                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                  <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 animate-fade-in">
                     <Sparkles className="h-3 w-3 mr-1" />
                     +{Math.round((boosterMultiplier - 1) * 100)}%
                   </Badge>
                 )}
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">Скважин:</span>
-                <Badge variant="outline">{wells.length}</Badge>
+                <span className="text-sm text-muted-foreground">Активных:</span>
+                <Badge variant="outline" className="animate-fade-in">
+                  {wells.length}
+                </Badge>
               </div>
             </div>
           </div>
@@ -70,131 +122,87 @@ export const WellsSection = ({
       </div>
 
       {wells.length === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-4 bg-muted/50 rounded-full mb-4">
-              <Plus className="h-8 w-8 text-muted-foreground" />
+        <Card className="border-dashed animate-fade-in">
+          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="p-6 bg-muted/50 rounded-full mb-6 animate-pulse">
+              <Plus className="h-12 w-12 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">У вас пока нет скважин</h3>
-            <p className="text-muted-foreground mb-4">Купите свою первую скважину в магазине</p>
+            <h3 className="text-xl font-semibold mb-3">Ваша нефтяная империя ждет!</h3>
+            <p className="text-muted-foreground mb-6 max-w-md">
+              Начните с покупки первой скважины в магазине. Каждая скважина будет работать и приносить доход 24 часа в сутки.
+            </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {wells.map((well) => {
-            const wellType = wellTypes.find(wt => wt.name === well.well_type);
-            if (!wellType) return null;
-
-            const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
-            const canUpgrade = well.level < wellType.maxLevel && profile.balance >= upgradeCost;
-            const isMaxLevel = well.level >= wellType.maxLevel;
-            const upgradeProgress = (well.level / wellType.maxLevel) * 100;
+        <>
+          <div className="flex items-center justify-between mb-6 animate-fade-in animation-delay-100">
+            <p className="text-muted-foreground text-sm">
+              Ваши скважины работают в реальном времени. Нажмите на аватар для управления.
+            </p>
             
-            // Calculate upgrade benefits
-            const nextLevelIncome = Math.round(well.daily_income * 1.15);
-            const incomeIncrease = nextLevelIncome - well.daily_income;
-            const nextLevelIncomeWithBoosters = Math.round(nextLevelIncome * boosterMultiplier);
-            const currentIncomeWithBoosters = Math.round(well.daily_income * boosterMultiplier);
-            const boostIncomeIncrease = nextLevelIncomeWithBoosters - currentIncomeWithBoosters;
-            
-            const metrics = calculateProfitMetrics(well.daily_income, wellType.price);
-
-            return (
-              <Card key={well.id} className="relative overflow-hidden group hover:shadow-luxury transition-all duration-300">
-                <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
-                
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      {getWellIcon(well.well_type)}
-                      <div>
-                        <CardTitle className="text-lg">{wellType.name}</CardTitle>
-                        <div className="flex items-center space-x-2">
-                          <Badge className={getRarityColor(wellType.rarity)} variant="secondary">
-                            Уровень {well.level}
-                          </Badge>
-                          <Badge variant="outline">{wellType.rarity}</Badge>
-                          {hasActiveBoosters && (
-                            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
-                              <Sparkles className="h-3 w-3 mr-1" />
-                              Усилено
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-lg text-primary">{formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}</p>
-                      <p className="text-xs text-muted-foreground">в день</p>
-                      {hasActiveBoosters && (
-                        <p className="text-xs text-purple-300">
-                          Базовая: {formatGameCurrency(well.daily_income)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="text-center p-2 bg-muted/50 rounded">
-                      <p className="font-medium">{formatGameCurrency(Math.round(well.daily_income * boosterMultiplier * 30))}</p>
-                      <p className="text-xs text-muted-foreground">в месяц</p>
-                    </div>
-                    <div className="text-center p-2 bg-primary/10 rounded">
-                      <p className="font-medium text-primary">{formatProfitPercent(metrics.yearlyPercent)}</p>
-                      <p className="text-xs text-muted-foreground">ROI/год</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Прогресс улучшения</span>
-                      <span className="text-sm font-medium">{well.level}/{wellType.maxLevel}</span>
-                    </div>
-                    <Progress value={upgradeProgress} className="h-2" />
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    {isMaxLevel ? (
-                      <Badge className="gradient-gold text-primary-foreground">
-                        <Zap className="h-3 w-3 mr-1" />
-                        Максимальный уровень
-                      </Badge>
-                    ) : (
-                      <div className="text-sm space-y-1">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Улучшение:</span>
-                          <span className="font-medium">{formatGameCurrency(upgradeCost)}</span>
-                        </div>
-                        <div className="text-xs text-green-400 space-y-1">
-                          <div>📈 Доход: +{formatGameCurrency(incomeIncrease)} → {formatGameCurrency(nextLevelIncome)}</div>
-                          {hasActiveBoosters && (
-                            <div>⚡ С бустерами: +{formatGameCurrency(boostIncomeIncrease)} → {formatGameCurrency(nextLevelIncomeWithBoosters)}</div>
-                          )}
-                          <div>💰 Прирост: +15% доходности</div>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {!isMaxLevel && (
-                      <Button
-                        size="sm"
-                        onClick={() => onUpgradeWell(well.id)}
-                        disabled={!canUpgrade}
-                        className="gradient-gold text-primary-foreground"
-                      >
-                        <Zap className="h-4 w-4 mr-1" />
-                        Улучшить
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+            {/* Сортировка */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <ArrowUpDown className="h-4 w-4" />
+                  {getSortLabel()}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => setSortType('default')}>
+                  <ArrowUpDown className="h-4 w-4 mr-2" />
+                  По умолчанию
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortType('income-desc')}>
+                  <TrendingDown className="h-4 w-4 mr-2" />
+                  По доходности ↓
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortType('income-asc')}>
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  По доходности ↑
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortType('level-desc')}>
+                  <Calendar className="h-4 w-4 mr-2" />
+                  По уровню ↓
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortType('level-asc')}>
+                  <CalendarDays className="h-4 w-4 mr-2" />
+                  По уровню ↑
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center">
+            {sortedWells.map((well, index) => (
+              <div key={well.id} className={`animate-fade-in`} style={{animationDelay: `${index * 100}ms`}}>
+                <AnimatedWellCard
+                  well={well}
+                  onShowDetails={handleShowDetails}
+                  getWellIcon={getWellIcon}
+                  getRarityColor={getRarityColor}
+                  boosters={boosters}
+                  getActiveBoosterMultiplier={getActiveBoosterMultiplier}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
+
+      <WellDetailsModal
+        well={selectedWell}
+        profile={profile}
+        isOpen={isDetailsOpen}
+        onClose={handleCloseDetails}
+        onUpgradeWell={onUpgradeWell}
+        getWellIcon={getWellIcon}
+        getRarityColor={getRarityColor}
+        calculateProfitMetrics={calculateProfitMetrics}
+        formatProfitPercent={formatProfitPercent}
+        boosters={boosters}
+        getActiveBoosterMultiplier={getActiveBoosterMultiplier}
+      />
     </div>
   );
 };
