@@ -502,125 +502,131 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
       {/* Special Offer */}
       <div className="relative">
         {/* Subtle glow effect */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl blur-lg opacity-50"></div>
+        <div className="absolute -inset-1 sm:-inset-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl blur-lg opacity-50"></div>
         
         <Card className="relative overflow-hidden border-2 border-primary/40 bg-gradient-to-br from-card via-primary/5 to-accent/10 hover-scale">
-          {/* Elegant corner badge */}
-          <div className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-accent text-primary-foreground px-4 py-2 text-sm font-bold rounded-lg shadow-lg transform rotate-12 animate-fade-in">
-            <Star className="h-4 w-4 inline mr-1" />
-            ПРЕМИУМ ПРЕДЛОЖЕНИЕ
+          {/* Elegant corner badge - адаптивный */}
+          <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-gradient-to-r from-primary to-accent text-primary-foreground px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg shadow-lg transform rotate-12 animate-fade-in">
+            <Star className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
+            <span className="hidden sm:inline">ПРЕМИУМ ПРЕДЛОЖЕНИЕ</span>
+            <span className="sm:hidden">ПРЕМИУМ</span>
           </div>
 
-          {/* Subtle decorative elements */}
-          <div className="absolute top-6 left-6 w-20 h-20 bg-primary/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-6 right-6 w-16 h-16 bg-accent/10 rounded-full blur-xl"></div>
+          {/* Subtle decorative elements - адаптивные */}
+          <div className="absolute top-3 left-3 sm:top-6 sm:left-6 w-12 h-12 sm:w-20 sm:h-20 bg-primary/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-10 h-10 sm:w-16 sm:h-16 bg-accent/10 rounded-full blur-xl"></div>
 
-          <CardHeader className="relative z-10">
-            <CardTitle className="flex items-center space-x-3 text-3xl font-bold">
-              <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
-                <Zap className="h-6 w-6 text-white" />
+          <CardHeader className="relative z-10 p-3 sm:p-6">
+            <CardTitle className="flex items-center space-x-2 sm:space-x-3 text-xl sm:text-3xl font-bold">
+              <div className="p-1.5 sm:p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
+                <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
               </div>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Особое предложение
               </span>
             </CardTitle>
-            <CardDescription className="text-lg text-muted-foreground">
+            <CardDescription className="text-sm sm:text-lg text-muted-foreground">
               🚀 Удвойте свой бонус с максимальной выгодой
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="relative z-10">
+          <CardContent className="relative z-10 p-3 sm:p-6">
             <div 
               className="cursor-pointer group"
               onClick={() => handlePackageSelect(topUpPackages[8])}
             >
-              <div className="bg-gradient-to-br from-card to-primary/10 p-8 rounded-2xl border border-primary/30 group-hover:border-primary/50 group-hover:shadow-xl transition-all duration-500 relative overflow-hidden">
+              <div className="bg-gradient-to-br from-card to-primary/10 p-4 sm:p-8 rounded-2xl border border-primary/30 group-hover:border-primary/50 group-hover:shadow-xl transition-all duration-500 relative overflow-hidden">
                 
                 {/* Subtle hover effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
-                <div className="text-center space-y-6 relative z-10">
-                  {/* Stylish offer badge */}
-                  <div className="inline-flex items-center bg-gradient-to-r from-primary to-accent text-white py-3 px-8 rounded-full font-bold text-xl shadow-lg group-hover:shadow-primary/25 transition-shadow duration-300">
-                    <Gift className="h-5 w-5 mr-2" />
-                    x2 УДВОЕНИЕ БОНУСА
-                    <TrendingUp className="h-5 w-5 ml-2" />
+                <div className="text-center space-y-4 sm:space-y-6 relative z-10">
+                  {/* Stylish offer badge - адаптивный */}
+                  <div className="inline-flex items-center bg-gradient-to-r from-primary to-accent text-white py-2 px-4 sm:py-3 sm:px-8 rounded-full font-bold text-sm sm:text-xl shadow-lg group-hover:shadow-primary/25 transition-shadow duration-300">
+                    <Gift className="h-3 w-3 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">x2 УДВОЕНИЕ БОНУСА</span>
+                    <span className="sm:hidden">x2 БОНУС</span>
+                    <TrendingUp className="h-3 w-3 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
                   </div>
                   
-                   <p className="text-xl font-semibold text-foreground">
+                   <p className="text-sm sm:text-xl font-semibold text-foreground px-2">
                      Пополните счет — получите в два раза больше
                    </p>
                   
-                  {/* Elegant comparison */}
-                  <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-                    <div className="text-center bg-gradient-to-br from-card to-muted/20 p-6 rounded-xl border border-border shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                  {/* Elegant comparison - адаптивная сетка */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
+                    <div className="text-center bg-gradient-to-br from-card to-muted/20 p-3 sm:p-6 rounded-xl border border-border shadow-md group-hover:shadow-lg transition-shadow duration-300">
                       <div className="text-primary mb-2">
-                        <Wallet className="h-6 w-6 mx-auto" />
+                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
                       </div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">Вы пополняете</p>
-                      <p className="text-2xl font-bold text-foreground">10 000 ₽</p>
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы пополняете</p>
+                      <p className="text-lg sm:text-2xl font-bold text-foreground">10 000 ₽</p>
                     </div>
                     
                     <div className="flex flex-col items-center justify-center">
-                       <div className="bg-gradient-to-r from-primary to-accent text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg shadow-md">
+                       <div className="bg-gradient-to-r from-primary to-accent text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
                          ×2
                        </div>
-                      <p className="text-sm text-muted-foreground mt-2 font-medium">Бонус</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">Бонус</p>
                     </div>
                     
-                    <div className="text-center bg-gradient-to-br from-primary/10 to-accent/10 p-6 rounded-xl border border-primary/30 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                    <div className="text-center bg-gradient-to-br from-primary/10 to-accent/10 p-3 sm:p-6 rounded-xl border border-primary/30 shadow-md group-hover:shadow-lg transition-shadow duration-300">
                       <div className="text-primary mb-2">
-                        <TrendingUp className="h-6 w-6 mx-auto" />
+                        <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
                       </div>
-                       <p className="text-sm font-medium text-muted-foreground mb-1">Вы получаете</p>
-                       <p className="text-2xl font-bold text-primary">20 000 ₽</p>
+                       <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы получаете</p>
+                       <p className="text-lg sm:text-2xl font-bold text-primary">20 000 ₽</p>
                     </div>
                   </div>
                   
-                  {/* Elegant benefits */}
-                  <div className="bg-gradient-to-r from-muted/50 to-primary/5 p-6 rounded-xl border border-primary/20">
-                    <div className="grid md:grid-cols-3 gap-4 text-sm">
-                      <div className="flex items-center space-x-2 text-green-700">
-                        <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                          <Check className="h-3 w-3 text-green-600" />
+                  {/* Elegant benefits - адаптивная сетка */}
+                  <div className="bg-gradient-to-r from-muted/50 to-primary/5 p-3 sm:p-6 rounded-xl border border-primary/20">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
+                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-green-700">
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded-full flex items-center justify-center">
+                          <Check className="h-2 w-2 sm:h-3 sm:w-3 text-green-600" />
                         </div>
                         <span className="font-medium">Выгода 100%</span>
                       </div>
-                      <div className="flex items-center space-x-2 text-blue-700">
-                        <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Zap className="h-3 w-3 text-blue-600" />
+                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-blue-700">
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Zap className="h-2 w-2 sm:h-3 sm:w-3 text-blue-600" />
                         </div>
                         <span className="font-medium">Мгновенно</span>
                       </div>
-                      <div className="flex items-center space-x-2 text-purple-700">
-                        <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                          <Star className="h-3 w-3 text-purple-600" />
+                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-purple-700">
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-purple-100 rounded-full flex items-center justify-center">
+                          <Star className="h-2 w-2 sm:h-3 sm:w-3 text-purple-600" />
                         </div>
                         <span className="font-medium">Без комиссий</span>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Modern CTA button */}
+                  {/* Modern CTA button - адаптивная */}
                   <Button 
-                    className="group relative overflow-hidden text-lg font-bold py-6 px-10 bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:via-accent hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
+                    className="group relative overflow-hidden text-sm sm:text-lg font-bold py-3 px-6 sm:py-6 sm:px-10 bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:via-accent hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl w-full max-w-md mx-auto"
                     size="lg"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                     
-                    <div className="relative flex items-center space-x-3">
-                      <Gift className="h-5 w-5" />
-                      <span>Получить удвоенный бонус</span>
+                    <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
+                      <Gift className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <span className="whitespace-nowrap">
+                        <span className="hidden sm:inline">Получить удвоенный бонус</span>
+                        <span className="sm:hidden">Получить x2 бонус</span>
+                      </span>
                       <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                     </div>
                   </Button>
                   
-                  {/* Stylish notice */}
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 p-4 rounded-xl">
+                  {/* Stylish notice - адаптивный */}
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 p-3 sm:p-4 rounded-xl">
                     <div className="flex items-center justify-center space-x-2 text-amber-700">
-                      <Calendar className="h-4 w-4" />
-                      <span className="font-semibold text-sm">
-                        Эксклюзивное предложение • Ограниченное время
+                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="font-semibold text-xs sm:text-sm text-center">
+                        <span className="hidden sm:inline">Эксклюзивное предложение • Ограниченное время</span>
+                        <span className="sm:hidden">Ограниченное время</span>
                       </span>
                       <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
                     </div>
