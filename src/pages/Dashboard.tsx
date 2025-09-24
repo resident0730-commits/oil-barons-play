@@ -9,7 +9,8 @@ import {
   Gift,
   Calendar,
   History,
-  Trophy
+  Trophy,
+  Wallet
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -33,6 +34,7 @@ import { WellsSection } from "@/components/dashboard/WellsSection";
 import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
+import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import PremiumGiveaway from "@/components/PremiumGiveaway";
 
 // Import hero images
@@ -53,7 +55,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'history' | 'boosters' | 'cases' | 'daily' | 'giveaway'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily' | 'giveaway' | 'balance'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -82,7 +84,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'history', 'boosters', 'cases', 'daily', 'giveaway'];
+      const validSections = ['overview', 'wells', 'shop', 'boosters', 'cases', 'daily', 'giveaway', 'balance'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         // Очищаем параметр section из URL
@@ -453,7 +455,7 @@ const Dashboard = () => {
       <DashboardHeader 
         profile={currentProfile} 
         isAdmin={isAdmin} 
-        onTopUpClick={() => setIsTopUpOpen(true)}
+        onBalanceClick={() => setActiveSection('balance')}
         onSignOut={handleSignOut}
       />
 
@@ -488,9 +490,9 @@ const Dashboard = () => {
               {[
                 { id: 'giveaway', label: 'Розыгрыш', icon: Trophy, shortLabel: 'Розыгрыш', special: true },
                 { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
+                { id: 'balance', label: 'Баланс', icon: Wallet, shortLabel: 'Баланс' },
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
-                { id: 'history', label: 'История', icon: History, shortLabel: 'История' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
                 { id: 'cases', label: 'Кейсы', icon: Gift, shortLabel: 'Кейсы' },
                 { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
@@ -526,7 +528,14 @@ const Dashboard = () => {
             profile={currentProfile} 
             wells={wells} 
             playerRank={getPlayerRank(currentProfile.nickname)}
-            onTopUpClick={() => setIsTopUpOpen(true)}
+            onTopUpClick={() => setActiveSection('balance')}
+          />
+        )}
+
+        {activeSection === 'balance' && (
+          <BalanceSection 
+            onTopUp={handleTopUp}
+            topUpLoading={false}
           />
         )}
 
@@ -557,9 +566,6 @@ const Dashboard = () => {
           />
         )}
 
-        {activeSection === 'history' && (
-          <PaymentHistory />
-        )}
 
         {activeSection === 'boosters' && (
           <div className="space-y-6">
