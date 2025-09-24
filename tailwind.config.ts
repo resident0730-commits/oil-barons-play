@@ -148,7 +148,36 @@ export default {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "gold-glow": "gold-glow 2s ease-in-out infinite",
       },
+      animationDelay: {
+        '75': '75ms',
+        '100': '100ms',
+        '150': '150ms',
+        '200': '200ms',
+        '300': '300ms',
+        '500': '500ms',
+        '700': '700ms',
+        '1000': '1000ms',
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities }: any) {
+      const newUtilities = {
+        '.hover-scale': {
+          '@apply transition-transform duration-200 hover:scale-105': {},
+        },
+        '.animation-delay-100': {
+          'animation-delay': '100ms',
+        },
+        '.animation-delay-200': {
+          'animation-delay': '200ms',
+        },
+        '.animation-delay-300': {
+          'animation-delay': '300ms',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 } satisfies Config;
