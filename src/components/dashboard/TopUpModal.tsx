@@ -35,34 +35,84 @@ interface TopUpPackage {
 
 const topUpPackages: TopUpPackage[] = [
   {
-    id: 'first_time',
-    name: '🔥 Специальное предложение!',
+    id: 'mega_bonus',
+    name: '🚀 Мега бонус!',
     rubAmount: 10000,
     baseOC: 10000,
     bonusOC: 10000,
     totalOC: 20000,
-    badge: 'x2 БОНУС',
-    popular: false,
+    badge: '100% БОНУС',
+    popular: true,
     firstTimeOnly: true
   },
   {
-    id: 'premium',
-    name: 'Премиум',
+    id: 'premium_plus',
+    name: 'Премиум+',
     rubAmount: 5000,
     baseOC: 5000,
-    bonusOC: 2000,
-    totalOC: 7000,
-    badge: '+2000 OC',
-    popular: true
+    bonusOC: 1000,
+    totalOC: 6000,
+    badge: '+20%',
+    popular: false
   },
   {
-    id: 'ultimate',
-    name: 'Ультимум',
-    rubAmount: 10000,
-    baseOC: 10000,
-    bonusOC: 5000,
-    totalOC: 15000,
-    badge: '+5000 OC',
+    id: 'elite_6k',
+    name: 'Элитный 6К',
+    rubAmount: 6000,
+    baseOC: 6000,
+    bonusOC: 1260,
+    totalOC: 7260,
+    badge: '+21%',
+    popular: false
+  },
+  {
+    id: 'elite_7k',
+    name: 'Элитный 7К',
+    rubAmount: 7000,
+    baseOC: 7000,
+    bonusOC: 1540,
+    totalOC: 8540,
+    badge: '+22%',
+    popular: false
+  },
+  {
+    id: 'elite_8k',
+    name: 'Элитный 8К',
+    rubAmount: 8000,
+    baseOC: 8000,
+    bonusOC: 1840,
+    totalOC: 9840,
+    badge: '+23%',
+    popular: false
+  },
+  {
+    id: 'advanced',
+    name: 'Продвинутый',
+    rubAmount: 4000,
+    baseOC: 4000,
+    bonusOC: 600,
+    totalOC: 4600,
+    badge: '+15%',
+    popular: false
+  },
+  {
+    id: 'standard_3k',
+    name: 'Стандарт+',
+    rubAmount: 3000,
+    baseOC: 3000,
+    bonusOC: 300,
+    totalOC: 3300,
+    badge: '+10%',
+    popular: false
+  },
+  {
+    id: 'standard_2k',
+    name: 'Стандарт',
+    rubAmount: 2000,
+    baseOC: 2000,
+    bonusOC: 200,
+    totalOC: 2200,
+    badge: '+10%',
     popular: false
   },
   {
@@ -70,18 +120,8 @@ const topUpPackages: TopUpPackage[] = [
     name: 'Базовый',
     rubAmount: 1000,
     baseOC: 1000,
-    bonusOC: 200,
-    totalOC: 1200,
-    badge: '+200 OC',
-    popular: false
-  },
-  {
-    id: 'starter',
-    name: 'Стартовый',
-    rubAmount: 500,
-    baseOC: 500,
     bonusOC: 0,
-    totalOC: 500,
+    totalOC: 1000,
     badge: null,
     popular: false
   }
@@ -111,7 +151,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (amount && amount >= 20) {
+    if (amount && amount >= 1000) {
       setPaymentAmount(amount);
       setShowPayment(true);
     }
@@ -385,20 +425,20 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             <CardContent className="p-3">
               <div className="space-y-3">
                 <div>
-                  <Label htmlFor="amount" className="text-sm">Произвольная сумма (мин. 20 {currencyConfig.real_currency_symbol})</Label>
+                  <Label htmlFor="amount" className="text-sm">Произвольная сумма (мин. 1000 {currencyConfig.real_currency_symbol})</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="amount"
                       type="number"
-                      placeholder="20"
-                      min="20"
+                      placeholder="1000"
+                      min="1000"
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
                       className="text-sm"
                     />
                     <Button 
                       onClick={handleCustomTopUp}
-                      disabled={!customAmount || parseFloat(customAmount) < 20}
+                      disabled={!customAmount || parseFloat(customAmount) < 1000}
                       size="sm"
                     >
                       Пополнить
