@@ -532,7 +532,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
           <CardContent className="relative z-10">
             <div 
               className="cursor-pointer group"
-              onClick={() => handlePackageSelect(topUpPackages[5])}
+              onClick={() => handlePackageSelect(topUpPackages[8])}
             >
               <div className="bg-gradient-to-br from-card to-primary/10 p-8 rounded-2xl border border-primary/30 group-hover:border-primary/50 group-hover:shadow-xl transition-all duration-500 relative overflow-hidden">
                 
