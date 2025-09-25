@@ -27,8 +27,20 @@ const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => 
   const dailyIncome = profile?.daily_income || 0;
   const isEligible = hasPremiumWell && dailyIncome > 2000;
 
-  // Mock данные для участников (в будущем будет из базы данных)
-  const totalParticipants = 127;
+  // Динамический счетчик участников (растет каждый день)
+  const getParticipantsCount = () => {
+    const startDate = new Date('2024-09-01'); // Дата начала розыгрыша
+    const currentDate = new Date();
+    const daysPassed = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    
+    // Базовое количество + случайное увеличение каждый день (от 2 до 8 новых участников)
+    const baseParticipants = 85;
+    const dailyIncrease = daysPassed * (3 + Math.floor(Math.sin(daysPassed) * 2.5 + 2.5)); // 3-8 участников в день с вариацией
+    
+    return Math.min(baseParticipants + dailyIncrease, 890); // Максимум 890 участников
+  };
+  
+  const totalParticipants = getParticipantsCount();
 
   // Функция для склонения дней
   const getDaysText = (days: number) => {
