@@ -23,7 +23,7 @@ const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => 
   const daysLeft = Math.max(0, Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
 
   // Проверяем наличие премиум-скважины
-  const hasPremiumWell = wells.some(well => well.type === 'premium');
+  const hasPremiumWell = wells.some(well => well.well_type === 'Премиум-скважина');
   const dailyIncome = profile?.daily_income || 0;
   const isEligible = hasPremiumWell && dailyIncome > 2000;
 
