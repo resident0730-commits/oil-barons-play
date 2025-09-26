@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, QrCode, ArrowRight, Gift } from "lucide-react";
-import qrPaymentImage from "@/assets/qr-payment.png";
+import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, ArrowRight, Gift } from "lucide-react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
@@ -132,7 +131,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
   const [showPayment, setShowPayment] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const [paymentMethod, setPaymentMethod] = useState<'robokassa' | 'qr' | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'robokassa' | null>(null);
   const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -207,7 +206,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 <Button 
                   onClick={() => setPaymentMethod('robokassa')}
                   variant="default"
-                  className="p-6 h-auto"
+                  className="p-6 h-auto w-full"
                 >
                   <div className="flex items-center gap-3 w-full">
                     <CreditCard className="h-6 w-6" />
@@ -217,7 +216,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                     </div>
                   </div>
                 </Button>
-                
               </div>
             </div>
           </DialogContent>
@@ -274,118 +272,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                   });
                 }}
               />
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    }
-    
-    // Если это не robokassa, показываем обычную форму
-
-    // Если это не robokassa и не qr, показываем обычную форму
-
-    // Показываем QR-код
-    if (paymentMethod === 'qr') {
-      return (
-        <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setPaymentMethod(null)}
-                  className="p-1 h-8 w-8"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <DialogTitle className="text-lg">Оплата {formatRealCurrency(paymentAmount)}</DialogTitle>
-              </div>
-              <DialogDescription>
-                Отсканируйте QR-код для оплаты
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-6">
-              {/* QR Code */}
-              <div className="flex justify-center">
-                <div className="bg-white p-2 rounded-lg shadow-lg border">
-                  <img 
-                    src={qrPaymentImage} 
-                    alt="QR-код для оплаты" 
-                    className="w-40 h-40 object-contain"
-                  />
-                </div>
-              </div>
-
-              {/* Instructions */}
-              <Card>
-                <CardContent className="p-3">
-                  <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm">
-                    <Camera className="h-3 w-3" />
-                    Инструкция:
-                  </h4>
-                  <ol className="space-y-1 text-xs text-muted-foreground">
-                    <li className="flex gap-1">
-                      <span className="font-semibold">1.</span>
-                      <span>Сделайте скриншот QR-кода</span>
-                    </li>
-                    <li className="flex gap-1">
-                      <span className="font-semibold">2.</span>
-                      <span>Откройте приложение банка</span>
-                    </li>
-                    <li className="flex gap-1">
-                      <span className="font-semibold">3.</span>
-                      <span>Найдите "Оплата по QR-коду"</span>
-                    </li>
-                    <li className="flex gap-1">
-                      <span className="font-semibold">4.</span>
-                      <span>Отсканируйте код</span>
-                    </li>
-                    <li className="flex gap-1">
-                      <span className="font-semibold">5.</span>
-                      <span>Сумма: <strong>{paymentAmount} ₽</strong></span>
-                    </li>
-                    <li className="flex gap-1">
-                      <span className="font-semibold">6.</span>
-                      <span>Подтвердите платеж</span>
-                    </li>
-                  </ol>
-                </CardContent>
-              </Card>
-
-              {/* Final Step */}
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-2">
-                    <Send className="h-4 w-4 text-primary mt-0.5" />
-                    <div>
-                      <h4 className="font-semibold text-primary mb-1 text-sm">
-                        Завершающий шаг:
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        После оплаты отправьте скриншот чека в поддержку.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setPaymentMethod(null)}
-                  className="flex-1"
-                >
-                  Назад
-                </Button>
-                <Button 
-                  onClick={handleCloseModal}
-                  className="flex-1"
-                >
-                  Закрыть
-                </Button>
-              </div>
             </div>
           </DialogContent>
         </Dialog>
