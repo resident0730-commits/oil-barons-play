@@ -42,6 +42,49 @@ export const ReferralSystem = () => {
 
     if (profile?.referral_code) {
       setReferralCode(profile.referral_code);
+    } else {
+      // Генерируем реферальный код если его нет
+      await generateReferralCodeForUser();
+    }
+  };
+
+  const generateReferralCodeForUser = async () => {
+    if (!user) return;
+
+    try {
+      console.log('🔧 Generating referral code for user:', user.id);
+      
+      // Генерируем новый код через RPC функцию
+      const { data: newCode, error: codeError } = await supabase
+        .rpc('generate_referral_code');
+
+      if (codeError) {
+        console.error('❌ Error generating referral code:', codeError);
+        return;
+      }
+
+      console.log('✅ Generated code:', newCode);
+
+      // Обновляем профиль пользователя
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ referral_code: newCode })
+        .eq('user_id', user.id);
+
+      if (updateError) {
+        console.error('❌ Error updating profile with referral code:', updateError);
+        return;
+      }
+
+      console.log('✅ Referral code saved to profile');
+      setReferralCode(newCode);
+      
+      toast({
+        title: "Реферальный код создан!",
+        description: "Теперь вы можете приглашать друзей",
+      });
+    } catch (error) {
+      console.error('❌ Error in generateReferralCodeForUser:', error);
     }
   };
 
@@ -230,10 +273,15 @@ export const ReferralSystem = () => {
           <div>
             <label className="text-sm font-medium">Ваш реферальный код:</label>
             <div className="flex gap-2 mt-1">
-              <Input value={referralCode} readOnly />
-              <Button onClick={copyReferralCode} size="sm">
+              <Input value={referralCode} readOnly placeholder="Генерируется автоматически..." />
+              <Button onClick={copyReferralCode} size="sm" disabled={!referralCode}>
                 <Copy className="h-4 w-4" />
               </Button>
+              {!referralCode && (
+                <Button onClick={generateReferralCodeForUser} size="sm" variant="outline">
+                  Создать
+                </Button>
+              )}
             </div>
           </div>
 
