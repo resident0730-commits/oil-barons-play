@@ -28,6 +28,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RobokassaWidget } from "@/components/RobokassaWidget";
 import qrPaymentImage from "@/assets/qr-payment.png";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
+import { WithdrawalHistory } from "@/components/dashboard/WithdrawalHistory";
 import {
   Select,
   SelectContent,
@@ -35,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface BalanceSectionProps {
   onTopUp: (customAmount?: number, packageData?: any, paymentMethod?: string) => Promise<void>;
@@ -825,8 +827,19 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
             Последние операции по вашему счету
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-0">
-          <PaymentHistory />
+        <CardContent className="p-6">
+          <Tabs defaultValue="payments" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="payments">Пополнения</TabsTrigger>
+              <TabsTrigger value="withdrawals">Выводы</TabsTrigger>
+            </TabsList>
+            <TabsContent value="payments" className="mt-4">
+              <PaymentHistory />
+            </TabsContent>
+            <TabsContent value="withdrawals" className="mt-4">
+              <WithdrawalHistory />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>
