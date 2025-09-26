@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, nickname: string) => {
-    return await supabase.auth.signUp({
+    const result = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -47,6 +47,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data: { nickname }
       }
     });
+
+    // Если регистрация успешна, генерируем реферальный код
+    if (result.data?.user && !result.error) {
+      try {
+        // Генерируем реферальный код
+        const { data: referralCode, error: codeError } = await supabase
+          .rpc('generate_referral_code');
+
+        if (!codeError && referralCode) {
+          // Обновляем профиль с реферальным кодом
+          await supabase
+            .from('profiles')
+            .update({ referral_code: referralCode })
+            .eq('user_id', result.data.user.id);
+          
+          console.log('✅ Referral code generated for new user:', referralCode);
+        }
+      } catch (error) {
+        console.error('❌ Error generating referral code for new user:', error);
+      }
+    }
+
+    return result;
   };
 
   const signIn = async (email: string, password: string) => {
