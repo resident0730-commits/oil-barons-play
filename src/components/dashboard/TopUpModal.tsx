@@ -218,19 +218,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                   </div>
                 </Button>
                 
-                <Button 
-                  onClick={() => setPaymentMethod('qr')}
-                  variant="outline"
-                  className="p-6 h-auto"
-                >
-                  <div className="flex items-center gap-3 w-full">
-                    <QrCode className="h-6 w-6" />
-                    <div className="text-left">
-                      <div className="font-semibold">QR-код</div>
-                      <div className="text-sm text-muted-foreground">Оплата через мобильное приложение банка</div>
-                    </div>
-                  </div>
-                </Button>
               </div>
             </div>
           </DialogContent>
