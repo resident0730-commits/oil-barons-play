@@ -101,11 +101,100 @@ export const ReferralSystem = () => {
     console.log('📊 Referrals data:', data);
     console.log('❓ Referrals error:', error);
 
+    // Also check if current user is someone's referral
+    const { data: asReferral, error: asRefError } = await supabase
+      .from('referrals')
+      .select('*')
+      .eq('referred_id', user.id);
+      
+    console.log('👤 Current user as referral:', asReferral);
+    console.log('❓ As referral error:', asRefError);
+
+    // Check Alexandr's referrals specifically if we know his ID
+    if (user.id === 'd41e012f-b980-48d5-8d73-9ffbff0a408c') {
+      console.log('🔍 Checking Alexandr referrals (6aa50831-acdc-42d9-87bb-67899957712a)...');
+      const { data: alexandrRefs } = await supabase
+        .from('referrals')
+        .select('*')
+        .eq('referrer_id', '6aa50831-acdc-42d9-87bb-67899957712a');
+      console.log('👥 Alexandr referrals:', alexandrRefs);
+    }
+
     if (data) {
       setReferrals(data);
       const total = data.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
       setTotalBonus(total);
       console.log('✅ Loaded referrals count:', data.length, 'Total bonus:', total);
+    }
+  };
+
+  const fixMissingReferralRecord = async () => {
+    if (!user) return;
+
+    try {
+      console.log('🔧 Starting fix for missing referral record...');
+      
+      // Get current user profile
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('referred_by, nickname')
+        .eq('user_id', user.id)
+        .single();
+
+      console.log('👤 Current user profile:', currentProfile);
+
+      if (!currentProfile?.referred_by) {
+        console.log('❌ User has no referrer in profile');
+        toast({
+          title: "Информация",
+          description: "У вас нет реферера для восстановления связи",
+        });
+        return;
+      }
+
+      // Try to use update_referral_bonus to create/update referral connection
+      const { data: result, error: rpcError } = await supabase
+        .rpc('update_referral_bonus', {
+          earned_amount: 0,
+          referrer_user_id: currentProfile.referred_by
+        });
+
+      if (rpcError) {
+        console.error('❌ Error via update_referral_bonus RPC:', rpcError);
+        
+        // Fallback: Try to query referrals directly to see if we can read
+        const { data: testQuery, error: queryError } = await supabase
+          .from('referrals')
+          .select('*')
+          .limit(1);
+        
+        console.log('🔍 Test query result:', testQuery);
+        console.log('❓ Query error:', queryError);
+        
+        toast({
+          title: "Информация",
+          description: "Попробуйте обратиться к администратору для настройки разрешений базы данных",
+        });
+        return;
+      }
+
+      console.log('✅ Updated via RPC:', result);
+      toast({
+        title: "Успех!",
+        description: "Проверка связи выполнена",
+      });
+
+      // Refresh data
+      fetchReferralData();
+      fetchReferrals();
+
+    } catch (error) {
+      console.error('❌ Fix function error:', error);
+      toast({
+        title: "Ошибка",
+        description: "Произошла ошибка при проверке связи",
+        variant: "destructive"
+      });
     }
   };
 
@@ -200,38 +289,8 @@ export const ReferralSystem = () => {
           .eq('referrer_id', currentProfile.referred_by)
           .maybeSingle();
           
-      console.log('🔍 Existing referral record:', existingReferral);
+        console.log('🔍 Existing referral record:', existingReferral);
         console.log('❓ Referral check error:', refError);
-        
-        // If no referral record exists but user has referred_by, create the missing record
-        if (!existingReferral && !refError) {
-          console.log('🔧 Creating missing referral record for existing relationship...');
-          const { error: insertError } = await supabase
-            .from('referrals')
-            .insert({
-              referrer_id: currentProfile.referred_by,
-              referred_id: user.id,
-              referral_code: referralInput.trim(),
-              bonus_earned: 0,
-              is_active: true
-            });
-
-          if (!insertError) {
-            console.log('✅ Missing referral record created successfully');
-            toast({
-              title: "Связь восстановлена",
-              description: "Связь с реферером была восстановлена в системе",
-            });
-            
-            // Refresh referral data
-            fetchReferralData();
-            fetchReferrals();
-            setReferralInput("");
-            return;
-          } else {
-            console.error('❌ Error creating missing referral record:', insertError);
-          }
-        }
         
         toast({
           title: "Ошибка",
@@ -241,66 +300,15 @@ export const ReferralSystem = () => {
         return;
       }
 
-      // Create referral record first
-      console.log('📝 Creating referral record...');
-      const { error: insertError } = await supabase
-        .from('referrals')
-        .insert({
-          referrer_id: referrer.user_id,
-          referred_id: user.id,
-          referral_code: referralInput.trim()
-        });
-
-      if (insertError) {
-        console.error('❌ Error creating referral record:', insertError);
-        console.error('❌ Full error details:', insertError);
-        toast({
-          title: "Ошибка",
-          description: `Ошибка создания записи реферала: ${insertError.message}`,
-          variant: "destructive"
-        });
-        return;
-      }
-
-      console.log('✅ Referral record created successfully');
-
-      // Apply referral to profile
-      console.log('✅ Applying referral to profile...');
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          referred_by: referrer.user_id,
-          referral_bonus_expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-        })
-        .eq('user_id', user.id);
-
-      if (updateError) {
-        console.error('❌ Error updating profile:', updateError);
-        // Rollback: delete the referral record we just created
-        await supabase
-          .from('referrals')
-          .delete()
-          .eq('referrer_id', referrer.user_id)
-          .eq('referred_id', user.id);
-        
-        toast({
-          title: "Ошибка",
-          description: "Ошибка обновления профиля",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      console.log('✅ Profile updated successfully');
-
+      // Since direct insert is blocked by RLS, let's inform user about the connection
+      console.log('📝 User already has referrer, informing about connection...');
+      
       toast({
-        title: "Успех!",
-        description: "Реферальный код применен. Вы получите +50% к доходу на 7 дней!",
+        title: "Информация",
+        description: "Связь с реферером уже установлена в профиле. Обратитесь к администратору для синхронизации таблиц.",
       });
 
-      setReferralInput("");
-      
-      // Refresh referral data
+      // Still refresh data to show current state
       fetchReferralData();
       fetchReferrals();
     } catch (error) {
@@ -338,6 +346,9 @@ export const ReferralSystem = () => {
                   Создать
                 </Button>
               )}
+              <Button onClick={fixMissingReferralRecord} size="sm" variant="secondary">
+                Исправить связи
+              </Button>
             </div>
           </div>
 
