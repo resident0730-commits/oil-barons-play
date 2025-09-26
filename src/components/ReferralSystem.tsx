@@ -193,29 +193,7 @@ export const ReferralSystem = () => {
         return;
       }
 
-      // Apply referral
-      console.log('✅ Applying referral...');
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          referred_by: referrer.user_id,
-          referral_bonus_expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-        })
-        .eq('user_id', user.id);
-
-      if (updateError) {
-        console.error('❌ Error updating profile:', updateError);
-        toast({
-          title: "Ошибка",
-          description: "Ошибка обновления профиля",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      console.log('✅ Profile updated successfully');
-
-      // Create referral record
+      // Create referral record first
       console.log('📝 Creating referral record...');
       const { error: insertError } = await supabase
         .from('referrals')
@@ -227,15 +205,45 @@ export const ReferralSystem = () => {
 
       if (insertError) {
         console.error('❌ Error creating referral record:', insertError);
+        console.error('❌ Full error details:', insertError);
         toast({
           title: "Ошибка",
-          description: "Ошибка создания записи реферала",
+          description: `Ошибка создания записи реферала: ${insertError.message}`,
           variant: "destructive"
         });
         return;
       }
 
       console.log('✅ Referral record created successfully');
+
+      // Apply referral to profile
+      console.log('✅ Applying referral to profile...');
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          referred_by: referrer.user_id,
+          referral_bonus_expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        })
+        .eq('user_id', user.id);
+
+      if (updateError) {
+        console.error('❌ Error updating profile:', updateError);
+        // Rollback: delete the referral record we just created
+        await supabase
+          .from('referrals')
+          .delete()
+          .eq('referrer_id', referrer.user_id)
+          .eq('referred_id', user.id);
+        
+        toast({
+          title: "Ошибка",
+          description: "Ошибка обновления профиля",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      console.log('✅ Profile updated successfully');
 
       toast({
         title: "Успех!",
