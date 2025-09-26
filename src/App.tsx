@@ -25,6 +25,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Support from "./pages/Support";
 import Referrals from "./pages/Referrals";
 import Achievements from "./pages/Achievements";
+import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/achievements" element={<Achievements />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/about" element={<Company />} />
           <Route path="/guide" element={<GameGuide />} />
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />
