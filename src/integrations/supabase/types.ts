@@ -296,6 +296,7 @@ export type Database = {
       support_tickets: {
         Row: {
           admin_response: string | null
+          attachments: string[] | null
           category: string
           created_at: string
           id: string
@@ -310,6 +311,7 @@ export type Database = {
         }
         Insert: {
           admin_response?: string | null
+          attachments?: string[] | null
           category?: string
           created_at?: string
           id?: string
@@ -324,6 +326,7 @@ export type Database = {
         }
         Update: {
           admin_response?: string | null
+          attachments?: string[] | null
           category?: string
           created_at?: string
           id?: string
