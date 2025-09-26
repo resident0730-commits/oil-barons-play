@@ -91,16 +91,21 @@ export const ReferralSystem = () => {
   const fetchReferrals = async () => {
     if (!user) return;
 
-    const { data } = await supabase
+    console.log('🔍 Fetching referrals for user:', user.id);
+    const { data, error } = await supabase
       .from('referrals')
       .select('*')
       .eq('referrer_id', user.id)
       .order('created_at', { ascending: false });
 
+    console.log('📊 Referrals data:', data);
+    console.log('❓ Referrals error:', error);
+
     if (data) {
       setReferrals(data);
       const total = data.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
       setTotalBonus(total);
+      console.log('✅ Loaded referrals count:', data.length, 'Total bonus:', total);
     }
   };
 
@@ -182,12 +187,55 @@ export const ReferralSystem = () => {
       }
 
       console.log('👤 Current profile:', currentProfile);
+      console.log('👤 Current user referred_by:', currentProfile?.referred_by);
 
       if (currentProfile?.referred_by) {
-        console.log('❌ User already has referrer');
+        console.log('❌ User already has referrer:', currentProfile.referred_by);
+        
+        // Check if referral record exists
+        const { data: existingReferral, error: refError } = await supabase
+          .from('referrals')
+          .select('*')
+          .eq('referred_id', user.id)
+          .eq('referrer_id', currentProfile.referred_by)
+          .maybeSingle();
+          
+      console.log('🔍 Existing referral record:', existingReferral);
+        console.log('❓ Referral check error:', refError);
+        
+        // If no referral record exists but user has referred_by, create the missing record
+        if (!existingReferral && !refError) {
+          console.log('🔧 Creating missing referral record for existing relationship...');
+          const { error: insertError } = await supabase
+            .from('referrals')
+            .insert({
+              referrer_id: currentProfile.referred_by,
+              referred_id: user.id,
+              referral_code: referralInput.trim(),
+              bonus_earned: 0,
+              is_active: true
+            });
+
+          if (!insertError) {
+            console.log('✅ Missing referral record created successfully');
+            toast({
+              title: "Связь восстановлена",
+              description: "Связь с реферером была восстановлена в системе",
+            });
+            
+            // Refresh referral data
+            fetchReferralData();
+            fetchReferrals();
+            setReferralInput("");
+            return;
+          } else {
+            console.error('❌ Error creating missing referral record:', insertError);
+          }
+        }
+        
         toast({
           title: "Ошибка",
-          description: "У вас уже есть реферер",
+          description: `У вас уже есть реферер: ${currentProfile.referred_by}`,
           variant: "destructive"
         });
         return;
