@@ -34,7 +34,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     }
 
     try {
-      const { error } = await signUp(email, password, nickname || "Игрок");
+      const { data, error } = await signUp(email, password, nickname || "Игрок");
       
       if (error) {
         throw error;
