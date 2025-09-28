@@ -12,8 +12,10 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
-import { ExclusiveAccessBanner } from "@/components/ExclusiveAccessBanner";
-import GiveawayPreview from "@/components/GiveawayPreview";
+import { PromoBanner } from "@/components/PromoBanner";
+import { StatisticMetrics } from "@/components/StatisticMetrics";
+import { InteractiveChart } from "@/components/InteractiveChart";
+import { RealTimeVisualizer } from "@/components/RealTimeVisualizer";
 import { 
   Fuel, 
   TrendingUp, 
@@ -132,15 +134,7 @@ const Index = () => {
         </nav>
       </header>
 
-      {/* Exclusive Access Banner */}
-      <div className="container mx-auto px-4 py-6">
-        <ExclusiveAccessBanner />
-      </div>
-
-      {/* Giveaway Preview */}
-      <GiveawayPreview />
-
-      {/* Hero Section */}
+      {/* Hero Section - Main focal point */}
       <main className="container mx-auto px-4 py-20">
         <div className="text-center space-y-12 mb-24 animate-fade-in">
           <div className="relative">
@@ -157,11 +151,16 @@ const Index = () => {
             </h1>
             <div className="relative max-w-4xl mx-auto space-y-4">
               <p className="text-2xl md:text-3xl text-foreground/90 font-medium leading-relaxed">
-                Постройте виртуальную нефтяную империю в симуляторе
+                Постройте нефтяную империю
               </p>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Изучайте экономические принципы через игру! Управляйте виртуальными скважинами, изучайте бизнес-процессы и развивайте стратегическое мышление в безопасной игровой среде.
+                Изучайте экономические принципы через игру! Управляйте скважинами, изучайте бизнес-процессы и развивайте стратегическое мышление в безопасной игровой среде.
               </p>
+              <div className="pt-4">
+                <p className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  💎 Монетизируйте свои навыки магната 💎
+                </p>
+              </div>
             </div>
           </div>
 
@@ -189,11 +188,19 @@ const Index = () => {
             </Link>
           </div>
         </div>
+      </main>
 
+      {/* Promo Banner */}
+      <PromoBanner />
+
+      {/* Rest of the content with spacing */}
+      <div className="relative mt-12">
         {/* Currency Exchange Information */}
-        <div className="mb-24 animate-fade-in">
-          <Card className="max-w-4xl mx-auto backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
+        <div className="container mx-auto px-4 mb-24 animate-fade-in">
+          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group animate-fade-in">
+            {/* Animated border */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="p-3 bg-primary/10 rounded-full">
@@ -260,8 +267,10 @@ const Index = () => {
               <p className="text-xl text-muted-foreground">Текущие достижения и активы</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <Card className="relative overflow-hidden group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury">
-                <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
+                {/* Animated border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Капитал</CardTitle>
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -274,8 +283,10 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury">
-                <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
+                {/* Animated border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Ежедневный доход</CardTitle>
                   <div className="p-2 bg-accent/10 rounded-lg">
@@ -288,8 +299,10 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury">
-                <div className="absolute top-0 left-0 w-full h-1 gradient-gold"></div>
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
+                {/* Animated border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Нефтяные активы</CardTitle>
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -313,8 +326,10 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
                 <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-gold-glow">
                   <Fuel className="h-12 w-12 text-primary" />
@@ -323,13 +338,15 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Покупайте и развивайте виртуальные скважины различных классов для изучения экономических принципов
+                  Покупайте и развивайте скважины различных классов для изучения экономических принципов
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
                 <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-gold-glow">
                   <TrendingUp className="h-12 w-12 text-accent" />
@@ -338,13 +355,15 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Изучайте основы экономики через игровые механики и получайте стабильный прогресс в симуляторе
+                  Изучайте основы экономики через игровые механики и получайте стабильный прогресс в игре
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
                 <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-gold-glow">
                   <Users className="h-12 w-12 text-primary" />
@@ -353,13 +372,15 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Приглашайте друзей в игру и получайте бонусы за совместную игру в образовательном симуляторе
+                  Приглашайте друзей в игру и получайте бонусы за совместную игру в образовательной игре
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale backdrop-blur-md bg-card/80 border-primary/20 shadow-luxury relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
                 <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-gold-glow">
                   <Award className="h-12 w-12 text-accent" />
@@ -368,98 +389,82 @@ const Index = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <p className="text-muted-foreground leading-relaxed">
-                  Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах симулятора
+                  Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах игры
                 </p>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="py-24 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-3xl"></div>
-          <div className="relative max-w-7xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
-                  Игровая статистика в реальном времени
-                </h2>
-                <p className="text-xl text-muted-foreground">Присоединяйтесь к растущему сообществу игроков в экономический симулятор</p>
-              </div>
+        {/* Enhanced Data Visualization Section */}
+        <div className="py-12 relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-slate-900/50 rounded-3xl"></div>
+          <div className="relative max-w-6xl mx-auto space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-3 font-playfair">
+                📊 Аналитика & Метрики
+              </h2>
+              <p className="text-lg text-slate-300 mb-6">Современная визуализация игровых данных в реальном времени</p>
+            </div>
+
+            {/* Real-time visualizer */}
+            <div className="mb-8">
+              <RealTimeVisualizer />
+            </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="text-center group hover-scale backdrop-blur-md bg-card/90 border-primary/30 shadow-luxury relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <CardContent className="pt-8 pb-8 relative z-10">
-                  <div className="mx-auto mb-6 p-4 bg-primary/20 rounded-full w-fit animate-gold-glow">
-                    <Users className="h-10 w-10 text-primary" />
-                  </div>
-                  <div className="text-4xl font-bold text-primary mb-2 font-playfair">
-                    {statistics.active_players?.toLocaleString() || '1,247'}
-                  </div>
-                  <p className="text-lg text-muted-foreground font-medium">Активных игроков</p>
-                  <p className="text-sm text-muted-foreground/80 mt-2">Изучают экономику прямо сейчас</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="text-center group hover-scale backdrop-blur-md bg-card/90 border-accent/30 shadow-luxury relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <CardContent className="pt-8 pb-8 relative z-10">
-                  <div className="mx-auto mb-6 p-4 bg-accent/20 rounded-full w-fit animate-gold-glow">
-                    <Fuel className="h-10 w-10 text-accent" />
-                  </div>
-                  <div className="text-4xl font-bold text-accent mb-2 font-playfair">
-                    {statistics.total_wells?.toLocaleString() || '1,057'}
-                  </div>
-                  <p className="text-lg text-muted-foreground font-medium">Игровых скважин</p>
-                  <p className="text-sm text-muted-foreground/80 mt-2">Созданы для обучения</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="text-center group hover-scale backdrop-blur-md bg-card/90 border-primary/30 shadow-luxury relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <CardContent className="pt-8 pb-8 relative z-10">
-                  <div className="mx-auto mb-6 p-4 bg-primary/20 rounded-full w-fit animate-gold-glow">
-                    <BarChart3 className="h-10 w-10 text-primary" />
-                  </div>
-                  <div className="text-4xl font-bold text-primary mb-2 font-playfair">
-                    {formatGameCurrency(statistics.average_profit || 15842)}
-                  </div>
-                  <p className="text-lg text-muted-foreground font-medium">Средняя прибыль</p>
-                  <p className="text-sm text-muted-foreground/80 mt-2">За последние 30 дней</p>
-                </CardContent>
-              </Card>
+            {/* Metrics grid */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                ⚡ Ключевые показатели
+              </h3>
+              <StatisticMetrics />
+            </div>
+            
+            {/* Interactive chart */}
+            <div>
+              <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                📈 Динамика роста
+              </h3>
+              <InteractiveChart />
             </div>
           </div>
         </div>
 
         {/* Reviews Section */}
-        <div className="py-24 relative">
+        <div className="py-12 relative">
           <div className="absolute inset-0 backdrop-blur-sm bg-muted/20 rounded-3xl"></div>
-          <div className="relative max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
+          <div className="relative max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair">
                 Отзывы наших игроков
               </h2>
-              <p className="text-xl text-muted-foreground">Узнайте, что говорят реальные игроки о нашем симуляторе</p>
+              <p className="text-lg text-muted-foreground">Узнайте, что говорят реальные игроки о нашей игре</p>
             </div>
-            <div className="bg-card/50 backdrop-blur-md rounded-2xl p-6 shadow-luxury border border-primary/20">
-              <GameReviews />
+            <div className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl p-8 border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+              {/* Animated border */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 animate-glow-pulse -z-10 blur-sm"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
+              <div className="relative z-10">
+                <GameReviews />
+              </div>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center py-24">
+        <div className="text-center py-12">
           <div className="relative max-w-4xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 blur-3xl rounded-full"></div>
-            <Card className="relative backdrop-blur-md bg-card/80 border-primary/30 shadow-luxury overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-2 gradient-luxury"></div>
-              <CardHeader className="text-center py-12">
-                <CardTitle className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">
+            <Card className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden group animate-fade-in">
+              {/* Animated border */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
+              <CardHeader className="text-center py-8">
+                <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair">
                   Готовы изучать экономику через игру?
                 </CardTitle>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                  Присоединяйтесь к тысячам игроков в образовательном симуляторе. Изучайте основы экономики и бизнеса в безопасной игровой среде!
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  Присоединяйтесь к тысячам игроков в образовательной игре. Изучайте основы экономики и бизнеса в безопасной игровой среде!
                 </p>
               </CardHeader>
               <CardContent className="space-y-8 pb-12">
@@ -489,7 +494,7 @@ const Index = () => {
                     </div>
                     <div>
                       <div className="text-lg font-bold text-primary">Игровые награды</div>
-                      <div className="text-sm text-muted-foreground">За активность в симуляторе</div>
+                      <div className="text-sm text-muted-foreground">За активность в игре</div>
                     </div>
                   </div>
                 </div>
@@ -503,7 +508,7 @@ const Index = () => {
             </Card>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Footer */}
       <footer className="relative border-t border-primary/20 backdrop-blur-sm bg-card/30">
@@ -543,7 +548,7 @@ const Index = () => {
             
             <div className="space-y-2 text-muted-foreground">
               <p className="font-medium">&copy; 2025 Oil Tycoon. Все права защищены.</p>
-              <p className="text-sm">Образовательный экономический симулятор для изучения основ бизнеса. Возрастное ограничение: 18+</p>
+              <p className="text-sm">Образовательная экономическая игра для изучения основ бизнеса. Возрастное ограничение: 18+</p>
             </div>
           </div>
         </div>
