@@ -80,7 +80,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </div>
           <Button 
             type="submit" 
-            className="w-full gradient-gold shadow-gold"
+            className="w-full gradient-primary shadow-primary"
             disabled={loading}
           >
             {loading ? "Вход..." : "Войти"}
