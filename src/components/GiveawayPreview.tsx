@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Crown, Smartphone, Gamepad2, Gift, Clock, Star, Sparkles, TrendingUp } from 'lucide-react';
+import { Trophy, Crown, Smartphone, Gamepad2, Gift, Clock, Star, Sparkles, TrendingUp, Zap } from 'lucide-react';
 
 const GiveawayPreview: React.FC = () => {
   // Дата окончания розыгрыша
@@ -21,131 +21,164 @@ const GiveawayPreview: React.FC = () => {
 
   const prizes = [
     {
-      place: '1-10 место',
+      place: '🥇 1-10 место',
       prize: 'iPhone 17 Pro',
-      icon: <Smartphone className="h-6 w-6" />,
-      color: 'text-yellow-500'
+      value: '150 000₽',
+      icon: <Smartphone className="h-7 w-7 text-white" />,
+      gradient: 'from-amber-400 via-yellow-500 to-orange-500',
+      bgGlow: 'shadow-amber-500/30',
+      borderGlow: 'border-amber-400/50'
     },
     {
-      place: '11-20 место',
+      place: '🥈 11-20 место', 
       prize: 'PlayStation 5',
-      icon: <Gamepad2 className="h-6 w-6" />,
-      color: 'text-blue-500'
+      value: '60 000₽',
+      icon: <Gamepad2 className="h-7 w-7 text-white" />,
+      gradient: 'from-blue-400 via-cyan-500 to-blue-600',
+      bgGlow: 'shadow-blue-500/30',
+      borderGlow: 'border-blue-400/50'
     },
     {
-      place: '21-100 место',
+      place: '🥉 21-100 место',
       prize: 'Премиум призы',
-      icon: <Gift className="h-6 w-6" />,
-      color: 'text-purple-500'
+      value: 'до 20 000₽',
+      icon: <Gift className="h-7 w-7 text-white" />,
+      gradient: 'from-purple-400 via-violet-500 to-purple-600',
+      bgGlow: 'shadow-purple-500/30',
+      borderGlow: 'border-purple-400/50'
     }
   ];
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Фоновые эффекты */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/10 to-primary/5"></div>
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse"></div>
-      
-      <div className="container mx-auto px-6 py-16 relative">
-        <Card className="gradient-oil border-primary/40 shadow-gold overflow-hidden relative group animate-fade-in">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
+    <section className="relative overflow-hidden py-4 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <Card className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group animate-fade-in rounded-none border-l-0 border-r-0">
+          {/* Animated border */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
           
-          <CardContent className="p-8 md:p-12 relative">
+          <CardContent className="p-4 md:p-6 relative">
             {/* Заголовок */}
-            <div className="text-center space-y-6 mb-8">
-              <div className="flex items-center justify-center space-x-4 animate-bounce-in">
-                <Crown className="h-12 w-12 text-primary animate-gold-glow" />
+            <div className="text-center space-y-4 mb-6">
+              <div className="flex items-center justify-center space-x-3 animate-bounce-in">
+                <div className="relative">
+                  <Crown className="h-8 w-8 text-primary animate-gold-glow" />
+                </div>
                 <div>
-                  <h2 className="text-4xl md:text-6xl font-bold gradient-gold bg-clip-text text-transparent font-playfair">
+                  <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 bg-clip-text text-transparent font-playfair tracking-wide">
                     ПРЕМИУМ РОЗЫГРЫШ
                   </h2>
                   <div className="flex items-center justify-center space-x-2 mt-2">
                     <Sparkles className="h-4 w-4 text-primary animate-gold-glow" />
-                    <p className="text-lg md:text-xl text-muted-foreground font-semibold">
-                      Призы на миллионы рублей!
+                    <p className="text-base md:text-lg text-slate-300 font-semibold tracking-wide">
+                      🎁 Призы на миллионы рублей! 🎁
                     </p>
                     <Sparkles className="h-4 w-4 text-primary animate-gold-glow" />
                   </div>
                 </div>
-                <Crown className="h-12 w-12 text-primary animate-gold-glow" />
+                <div className="relative">
+                  <Crown className="h-8 w-8 text-primary animate-gold-glow" />
+                </div>
               </div>
 
               {/* Таймер */}
-              <div className="bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 p-6 rounded-2xl border border-primary/40 animate-glow-pulse">
-                <div className="flex items-center justify-center space-x-4 mb-3">
-                  <Clock className="h-8 w-8 text-primary animate-gold-glow" />
-                  <span className="text-2xl md:text-3xl font-bold text-primary">
-                    {daysLeft} {getDaysText(daysLeft)} до розыгрыша!
-                  </span>
-                  <Clock className="h-8 w-8 text-primary animate-gold-glow" />
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 rounded-xl blur-md"></div>
+                <div className="relative bg-gradient-to-r from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl p-4 rounded-xl border-2 border-primary/40">
+                  <div className="flex items-center justify-center space-x-3 mb-2">
+                    <div className="relative">
+                      <Clock className="h-6 w-6 text-primary animate-gold-glow" />
+                    </div>
+                    <span className="text-lg md:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                      ⏰ {daysLeft} {getDaysText(daysLeft)} до розыгрыша! ⏰
+                    </span>
+                    <div className="relative">
+                      <Clock className="h-6 w-6 text-primary animate-gold-glow" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-400 font-semibold">
+                    🗓️ Розыгрыш состоится 18 октября 2025 года
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground font-semibold">
-                  📅 Розыгрыш состоится 18 октября 2025 года
-                </p>
               </div>
             </div>
 
             {/* Призы */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
               {prizes.map((prize, index) => (
                 <div 
                   key={index} 
-                  className="bg-gradient-to-br from-card/80 to-transparent p-6 rounded-xl border border-primary/20 hover-scale group/prize animate-fade-in"
-                  style={{ animationDelay: `${index * 0.2}s` }}
+                  className={`relative group hover-scale animate-fade-in bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-lg border-2 ${prize.borderGlow} p-3 ${prize.bgGlow} shadow-2xl transition-all duration-500 hover:shadow-3xl`}
+                  style={{ animationDelay: `${index * 0.3}s` }}
                 >
-                  <div className="flex items-center space-x-4 mb-3">
-                    <div className={`${prize.color} p-3 rounded-full bg-black/20 animate-glow-pulse`}>
-                      {prize.icon}
-                    </div>
-                    <div>
-                      <Badge className="bg-primary/20 text-primary border-primary/40 mb-2">
+                  {/* Background glow effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${prize.gradient} opacity-10 rounded-lg blur-xl group-hover:opacity-20 transition-opacity duration-500`}></div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className={`text-xs px-2 py-1 bg-gradient-to-r ${prize.gradient} text-white border-0 font-bold shadow-lg`}>
                         {prize.place}
                       </Badge>
-                      <h4 className="font-bold text-lg">{prize.prize}</h4>
+                      <div className={`p-2 rounded-lg bg-gradient-to-br ${prize.gradient} shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                        {prize.icon}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex justify-end">
-                    {[...Array(3-index)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 text-primary fill-primary ml-1" />
-                    ))}
+                    
+                    <div className="text-center space-y-1">
+                      <h4 className="text-base font-bold text-white">{prize.prize}</h4>
+                      <p className={`text-sm font-semibold bg-gradient-to-r ${prize.gradient} bg-clip-text text-transparent`}>
+                        {prize.value}
+                      </p>
+                      <div className="flex justify-center">
+                        {[...Array(3-index)].map((_, i) => (
+                          <Star key={i} className="h-3 w-3 text-amber-400 fill-amber-400 ml-1 animate-pulse" />
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Условия и CTA */}
-            <div className="text-center space-y-6">
-              <div className="bg-gradient-to-r from-muted/20 to-muted/10 p-6 rounded-xl border border-muted/30">
-                <h3 className="text-xl font-bold mb-3 text-primary">Как участвовать:</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Trophy className="h-4 w-4 text-primary" />
-                    <span>Купи Премиум-скважину</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-4 w-4 text-accent" />
-                    <span>Достигни дохода 2000₽/день</span>
+            <div className="text-center space-y-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg blur-md"></div>
+                <div className="relative bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-xl p-4 rounded-lg border border-primary/30">
+                  <h3 className="text-lg font-bold mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                    ⚡ Как участвовать ⚡
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="flex items-center justify-center space-x-2 p-2 bg-slate-700/50 rounded-lg border border-primary/20">
+                      <Trophy className="h-4 w-4 text-primary" />
+                      <span className="text-white font-medium text-sm">💎 Купи Премиум-скважину</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-2 p-2 bg-slate-700/50 rounded-lg border border-accent/20">
+                      <TrendingUp className="h-4 w-4 text-accent" />
+                      <span className="text-white font-medium text-sm">📈 Достигни дохода 2000₽/день</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                 <Button 
                   asChild
                   size="lg" 
-                  className="bg-gradient-to-r from-primary via-accent to-primary hover:from-accent hover:via-primary hover:to-accent text-white font-bold px-8 py-4 text-lg animate-glow-pulse hover-scale shadow-gold border border-primary/30"
+                  className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-primary hover:from-accent hover:via-primary hover:to-accent text-white font-bold px-6 py-3 text-sm rounded-lg hover-scale shadow-2xl border-2 border-primary/30 transition-all duration-500"
                 >
                   <Link to="/auth">
-                    🎯 Участвовать в розыгрыше
+                    <span className="relative z-10 flex items-center space-x-2">
+                      <span>🎯</span>
+                      <span>Участвовать в розыгрыше</span>
+                      <Sparkles className="h-3 w-3 animate-spin" />
+                    </span>
                   </Link>
                 </Button>
                 <Button 
                   asChild
                   variant="outline" 
                   size="lg"
-                  className="border-primary/60 text-primary hover:bg-primary/20 px-8 py-4 hover-scale bg-background/80"
+                  className="border-2 border-primary/60 text-primary hover:bg-primary/20 px-6 py-3 hover-scale bg-slate-800/80 backdrop-blur-xl rounded-lg text-sm font-semibold transition-all duration-500"
                 >
                   <Link to="/dashboard?section=giveaway">
                     📋 Подробнее о розыгрыше
@@ -155,7 +188,6 @@ const GiveawayPreview: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
     </section>
   );
 };

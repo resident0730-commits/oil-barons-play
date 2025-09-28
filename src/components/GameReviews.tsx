@@ -175,130 +175,126 @@ export const GameReviews = () => {
   const hasMoreReviews = reviews.length > 6;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-2 flex-1 min-w-0">
-          <p className="text-sm text-muted-foreground">
-            Последние отзывы от наших игроков
-          </p>
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl border border-primary/20">
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground">Общая оценка</span>
-              <div className="flex items-center gap-2">
-                <StarRating rating={5} size="md" />
-                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">4.8</span>
-                <span className="text-xs sm:text-sm text-muted-foreground">/5</span>
-              </div>
-            </div>
-            <div className="hidden sm:block w-px h-12 bg-border"></div>
-            <div className="sm:hidden w-12 h-px bg-border"></div>
-            <div className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-              <div>Основано на отзывах</div>
-              <div className="font-semibold text-foreground">{reviews.length} игроков</div>
-            </div>
+    <div className="space-y-8">
+      {/* Modern Header */}
+      <div className="text-center space-y-4">
+        <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-full border border-primary/10">
+          <MessageSquare className="w-5 h-5 text-primary" />
+          <span className="text-sm font-medium text-muted-foreground">Отзывы игроков</span>
+          <div className="flex items-center gap-2">
+            <StarRating rating={5} size="sm" />
+            <span className="text-sm font-bold text-primary">4.8</span>
+            <span className="text-xs text-muted-foreground">({reviews.length})</span>
           </div>
         </div>
-        <div className="flex justify-center sm:justify-end w-full sm:w-auto shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="gap-1 sm:gap-2 hover-scale text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 min-w-0"
-          >
-            <RefreshCw className={cn("h-3 w-3", isRefreshing && "animate-spin")} />
-            <span className="hidden sm:inline">Обновить</span>
-            <span className="sm:hidden">↻</span>
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="gap-2 text-muted-foreground hover:text-primary"
+        >
+          <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
+          Обновить
+        </Button>
       </div>
 
-      <div className="grid gap-6">
+      {/* Modern Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedReviews.map((review, index) => (
-          <Card key={review.id} className="group hover:shadow-lg transition-all duration-300 hover-scale border-primary/10 hover:border-primary/30 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-            <CardHeader className="pb-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-4">
-                  <Avatar className="ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
-                    <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary font-bold text-lg group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
-                      {review.avatar}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <h3 className="font-bold text-lg group-hover:text-primary transition-colors duration-300">{review.nickname}</h3>
-                    <p className="text-sm text-muted-foreground">{review.date}</p>
-                  </div>
+          <div 
+            key={review.id} 
+            className="group relative bg-gradient-to-br from-background via-background to-muted/20 rounded-2xl border border-border/50 hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 animate-fade-in overflow-hidden" 
+            style={{ animationDelay: `${index * 0.05}s` }}
+          >
+            {/* Gradient Accent */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-accent/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            {/* Rating Badge */}
+            <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1 bg-background/80 backdrop-blur-sm rounded-full border border-primary/20">
+              <Star className="w-3 h-3 fill-current text-yellow-500" />
+              <span className="text-xs font-bold text-foreground">{review.overallRating}</span>
+            </div>
+
+            <div className="relative p-6 space-y-4">
+              {/* User Info */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-sm font-bold text-primary group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
+                  {review.avatar}
                 </div>
-                <div className="text-right space-y-2">
-                  <div className="flex items-center gap-2 justify-end">
-                    <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-3 py-1 rounded-full border border-yellow-500/30">
-                      <div className="flex items-center gap-1">
-                        <StarRating rating={Math.round(review.overallRating)} size="sm" />
-                        <span className="text-sm font-bold text-yellow-600 dark:text-yellow-400">{review.overallRating}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/30">
-                    ✓ Проверенный игрок
-                  </Badge>
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-semibold text-foreground truncate">{review.nickname}</div>
+                  <div className="text-xs text-muted-foreground">{review.date}</div>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="p-3 sm:p-4 bg-muted/30 rounded-lg border-l-4 border-primary/50">
-                <p className="leading-relaxed text-sm sm:text-base text-foreground/90 italic">"{review.text}"</p>
-              </div>
-              
+
+              {/* Review Text */}
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
-                  <h4 className="font-semibold text-foreground">Детальная оценка по критериям</h4>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-                  {review.criteria.map((criterion, criterionIndex) => (
-                    <div 
-                      key={criterionIndex} 
-                      className="flex items-center justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-gradient-to-r from-muted/50 to-muted/30 border border-muted-foreground/10 hover:border-primary/30 transition-all duration-300 hover-scale"
-                    >
-                      <span className="text-xs sm:text-sm font-medium text-foreground/80 truncate">{criterion.name}</span>
-                      <StarRating rating={criterion.rating} size="sm" />
-                    </div>
-                  ))}
-                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
+                  "{review.text}"
+                </p>
               </div>
-            </CardContent>
-          </Card>
+
+              {/* Criteria Tags */}
+              <div className="flex flex-wrap gap-2">
+                {review.criteria.slice(0, 3).map((criterion, criterionIndex) => (
+                  <div 
+                    key={criterionIndex}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-muted/50 rounded-lg text-xs"
+                  >
+                    <span className="text-muted-foreground">{criterion.name}</span>
+                    <div className="flex">
+                      {Array.from({ length: criterion.rating }, (_, i) => (
+                        <Star key={i} className="w-2.5 h-2.5 fill-current text-yellow-500" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {review.criteria.length > 3 && (
+                  <div className="inline-flex items-center px-2 py-1 bg-primary/10 rounded-lg text-xs text-primary">
+                    +{review.criteria.length - 3}
+                  </div>
+                )}
+              </div>
+
+              {/* Verified Badge */}
+              <div className="flex items-center gap-1 text-xs text-primary">
+                <div className="w-1 h-1 bg-primary rounded-full" />
+                <span>Проверенный игрок</span>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
+      {/* Show More Button */}
       {hasMoreReviews && (
         <div className="text-center">
           <Button
             variant="outline" 
             onClick={() => setShowAll(!showAll)}
-            className="gap-2 hover-scale"
+            className="gap-2 rounded-full px-6 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
           >
             {showAll ? (
               <>
-                <MessageSquare className="h-4 w-4" />
                 Скрыть отзывы
               </>
             ) : (
               <>
-                <MessageSquare className="h-4 w-4" />
-                Показать все отзывы ({reviews.length - 6} еще)
+                Показать еще {reviews.length - 6} отзывов
               </>
             )}
           </Button>
         </div>
       )}
 
+      {/* Loading State */}
       {reviews.length === 0 && !isRefreshing && (
         <div className="text-center py-16 animate-fade-in">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center">
             <MessageSquare className="h-8 w-8 text-primary" />
           </div>
-          <p className="text-muted-foreground text-lg">Отзывы загружаются...</p>
+          <p className="text-muted-foreground">Отзывы загружаются...</p>
         </div>
       )}
     </div>
