@@ -292,7 +292,7 @@ export const BalanceManager = () => {
         <Button
           onClick={handleAddBalance}
           disabled={loading || !nickname.trim() || !amount}
-          className="w-full gradient-gold shadow-gold"
+          className="w-full gradient-primary shadow-primary"
         >
           <Plus className="h-4 w-4 mr-2" />
           {loading ? "Пополняем..." : "Пополнить баланс"}
