@@ -138,6 +138,22 @@ export default {
             boxShadow: "0 0 20px hsl(45 100% 65% / 0.3)"
           }
         },
+        "spin-slow": {
+          "from": {
+            transform: "rotate(0deg)"
+          },
+          "to": {
+            transform: "rotate(360deg)"
+          }
+        },
+        "shine": {
+          "0%": {
+            transform: "translateX(-100%)"
+          },
+          "100%": {
+            transform: "translateX(100%)"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -147,6 +163,8 @@ export default {
         "bounce-in": "bounce-in 0.6s ease-out",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "gold-glow": "gold-glow 2s ease-in-out infinite",
+        "spin-slow": "spin-slow 3s linear infinite",
+        "shine": "shine 2s ease-in-out infinite",
       },
       animationDelay: {
         '75': '75ms',
