@@ -104,7 +104,7 @@ const Index = () => {
         <nav className="flex items-center justify-between backdrop-blur-sm bg-background/20 rounded-2xl p-4 shadow-luxury">
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <Fuel className="h-10 w-10 text-primary animate-gold-glow" />
+              <Fuel className="h-10 w-10 text-primary animate-glow-pulse" />
               <div className="absolute inset-0 h-10 w-10 text-primary/30 animate-pulse" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Oil Tycoon</h1>
@@ -117,7 +117,7 @@ const Index = () => {
                   <span className="font-medium">{profile?.nickname || 'Игрок'}</span>
                 </div>
                 <Link to="/dashboard">
-                  <Button className="gradient-gold shadow-gold hover-scale">В игру</Button>
+                  <Button className="gradient-primary shadow-primary hover-scale">В игру</Button>
                 </Link>
               </div>
             ) : (
@@ -126,7 +126,7 @@ const Index = () => {
                   <Button variant="ghost" className="backdrop-blur-sm">Войти</Button>
                 </Link>
                 <Link to="/dashboard">
-                  <Button className="gradient-gold shadow-gold hover-scale">Начать игру</Button>
+                  <Button className="gradient-primary shadow-primary hover-scale">Начать игру</Button>
                 </Link>
               </>
             )}
@@ -138,7 +138,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-20">
         <div className="text-center space-y-12 mb-24 animate-fade-in">
           <div className="relative">
-            <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-gold animate-scale-in">
+            <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-primary animate-scale-in">
               <Fuel className="w-5 h-5 mr-2" />
               Богатство из недр земли
             </Badge>
@@ -167,14 +167,14 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
             {user ? (
               <Link to="/dashboard">
-                <Button size="lg" className="gradient-luxury shadow-luxury text-xl px-12 py-6 hover-scale animate-gold-glow">
+                <Button size="lg" className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse">
                   <Zap className="mr-3 h-6 w-6" />
                   Продолжить империю
                 </Button>
               </Link>
             ) : (
               <Link to="/auth">
-                <Button size="lg" className="gradient-luxury shadow-luxury text-xl px-12 py-6 hover-scale animate-gold-glow">
+                <Button size="lg" className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse">
                   <Coins className="mr-3 h-6 w-6" />
                   Начать игру бесплатно
                 </Button>
@@ -331,7 +331,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-gold-glow">
+                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Fuel className="h-12 w-12 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-bold">Нефтяные скважины</CardTitle>
@@ -348,7 +348,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-gold-glow">
+                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <TrendingUp className="h-12 w-12 text-accent" />
                 </div>
                 <CardTitle className="text-xl font-bold">Стабильная прибыль</CardTitle>
@@ -365,7 +365,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-gold-glow">
+                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Users className="h-12 w-12 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-bold">Реферальная программа</CardTitle>
@@ -382,7 +382,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-gold-glow">
+                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Award className="h-12 w-12 text-accent" />
                 </div>
                 <CardTitle className="text-xl font-bold">Система достижений</CardTitle>
@@ -499,7 +499,7 @@ const Index = () => {
                   </div>
                 </div>
                 <Link to={user ? "/dashboard" : "/auth"} className="block">
-                  <Button size="lg" className="gradient-luxury shadow-luxury w-full md:w-auto text-xl px-16 py-6 hover-scale animate-gold-glow">
+                  <Button size="lg" className="gradient-primary shadow-primary w-full md:w-auto text-xl px-16 py-6 hover-scale animate-glow-pulse">
                     <Zap className="mr-3 h-6 w-6" />
                     {user ? "Продолжить игру" : "Начать обучение игрой"}
                   </Button>
@@ -515,7 +515,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center space-y-8">
             <div className="flex items-center justify-center space-x-3 mb-8">
-              <Fuel className="h-8 w-8 text-primary animate-gold-glow" />
+              <Fuel className="h-8 w-8 text-primary animate-glow-pulse" />
               <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Oil Tycoon</span>
             </div>
             

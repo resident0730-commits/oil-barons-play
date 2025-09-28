@@ -114,7 +114,7 @@ const About = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth">
-              <Button size="lg" className="gradient-gold shadow-gold text-lg px-8 py-4">
+              <Button size="lg" className="gradient-primary shadow-primary text-lg px-8 py-4">
                 Начать играть
               </Button>
             </Link>
@@ -275,7 +275,7 @@ const About = () => {
                 Стартовый капитал 1000₽ ждет вас!
               </p>
               <Link to="/auth">
-                <Button size="lg" className="gradient-gold shadow-gold w-full text-lg">
+                <Button size="lg" className="gradient-primary shadow-primary w-full text-lg">
                   Начать игру с 1000₽
                 </Button>
               </Link>

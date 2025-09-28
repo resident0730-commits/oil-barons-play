@@ -25,7 +25,7 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import { CaseSystem } from "@/components/CaseSystem";
-import { DailyChest } from "@/components/DailyChest";
+import DailyChest from "@/components/DailyChest";
 import { DailyBonus } from "@/components/DailyBonus";
 import { GameSection } from "@/components/GameSection";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
@@ -455,7 +455,7 @@ const Dashboard = () => {
       <DashboardHeader 
         profile={currentProfile} 
         isAdmin={isAdmin} 
-        onTopUpClick={() => setActiveSection('balance')}
+        onBalanceClick={() => setActiveSection('balance')}
         onSignOut={handleSignOut}
       />
 
@@ -467,7 +467,7 @@ const Dashboard = () => {
             {/* Таймер розыгрыша */}
             <div className="text-center mb-2">
               <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 px-3 py-1 rounded-full animate-glow-pulse">
-                <Trophy className="h-3 w-3 text-primary animate-gold-glow" />
+                  <Trophy className="h-3 w-3 text-primary animate-glow-pulse" />
                 <span className="text-xs font-bold text-primary">
                   {(() => {
                     const endDate = new Date('2025-10-18T23:59:59');
@@ -482,7 +482,7 @@ const Dashboard = () => {
                     return `${daysLeft} ${getDaysText(daysLeft)} до розыгрыша!`;
                   })()}
                 </span>
-                <Trophy className="h-3 w-3 text-primary animate-gold-glow" />
+                <Trophy className="h-3 w-3 text-primary animate-glow-pulse" />
               </div>
             </div>
             
@@ -504,7 +504,7 @@ const Dashboard = () => {
                   onClick={() => setActiveSection(section.id as any)}
                   className={`${
                     activeSection === section.id 
-                      ? 'gradient-gold text-primary-foreground shadow-gold' 
+                      ? 'gradient-primary text-primary-foreground shadow-primary' 
                       : section.special 
                         ? 'bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 border border-primary/40 text-primary font-bold animate-glow-pulse hover:from-primary/30 hover:via-accent/40 hover:to-primary/30'
                         : ''
@@ -513,7 +513,7 @@ const Dashboard = () => {
                   {section.special && (
                     <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-ping"></div>
                   )}
-                  <section.icon className={`h-4 w-4 sm:mr-2 ${section.special ? 'animate-gold-glow' : ''}`} />
+                  <section.icon className={`h-4 w-4 sm:mr-2 ${section.special ? 'animate-glow-pulse' : ''}`} />
                   <span className="hidden sm:inline">{section.label}</span>
                   <span className="inline sm:hidden ml-1 text-xs">{section.shortLabel}</span>
                 </Button>
@@ -602,7 +602,11 @@ const Dashboard = () => {
             <div className="max-w-6xl mx-auto space-y-8">
               {/* Daily Chest - Main Feature */}
               <div className="w-full">
-                <DailyChest />
+              <DailyChest 
+                userId={user?.id} 
+                userIncome={currentProfile?.daily_income || 0}
+                devMode={isAdmin} // Админы имеют неограниченные попытки для тестирования
+              />
               </div>
 
               {/* Secondary Features Row */}

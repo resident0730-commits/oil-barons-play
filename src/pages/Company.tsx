@@ -252,7 +252,7 @@ const Company = () => {
               </div>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link to="/">
-                  <Button size="lg" className="gradient-gold shadow-gold">
+                  <Button size="lg" className="gradient-primary shadow-primary">
                     <Home className="h-4 w-4 mr-2" />
                     На главную
                   </Button>

@@ -111,7 +111,7 @@ const Profile = () => {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full gradient-gold shadow-gold"
+                  className="w-full gradient-primary shadow-primary"
                   disabled={loading}
                 >
                   <Save className="h-4 w-4 mr-2" />
