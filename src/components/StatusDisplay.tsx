@@ -44,7 +44,7 @@ export const StatusDisplay = () => {
   const totalBonus = Math.round((statusMultiplier - 1) * 100);
 
   return (
-    <Card className="border-gold/30 bg-gradient-to-r from-yellow-50/50 to-amber-50/50">
+    <Card className="border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10">
       <CardHeader className="pb-3">
         <CardTitle className="text-sm flex items-center gap-2">
           <Crown className="h-4 w-4 text-yellow-600" />

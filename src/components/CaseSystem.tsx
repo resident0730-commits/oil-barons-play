@@ -443,7 +443,7 @@ export const CaseSystem = () => {
                 </div>
 
                 <Button
-                  className={`w-full gradient-gold text-primary-foreground ${!canAfford ? 'opacity-50' : 'hover:scale-105 animate-fade-in'} transition-all`}
+                  className={`w-full gradient-primary text-primary-foreground ${!canAfford ? 'opacity-50' : 'hover:scale-105 animate-fade-in'} transition-all`}
                   onClick={() => {
                     sounds.purchase();
                     openCase(caseType);

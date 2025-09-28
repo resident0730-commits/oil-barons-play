@@ -141,7 +141,7 @@ export function DailyBonus() {
           {canClaim ? (
             <Button 
               onClick={claimBonus} 
-              className="relative overflow-hidden gradient-gold text-primary-foreground font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
+              className="relative overflow-hidden gradient-primary text-primary-foreground font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
               size="lg"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>

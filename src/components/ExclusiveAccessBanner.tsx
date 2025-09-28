@@ -33,7 +33,7 @@ export const ExclusiveAccessBanner = () => {
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-4 right-4">
-              <Crown className="h-8 w-8 text-primary rotate-12 animate-gold-glow" />
+              <Crown className="h-8 w-8 text-primary rotate-12 animate-glow-pulse" />
             </div>
             <div className="absolute bottom-4 left-4">
               <Star className="h-6 w-6 text-accent -rotate-12 animate-pulse" />
@@ -46,7 +46,7 @@ export const ExclusiveAccessBanner = () => {
               <div className="space-y-3">
                 <div className="flex items-center justify-center gap-2">
                   <Badge className="bg-gradient-to-r from-primary via-accent to-primary text-white border-0 px-3 py-1 text-sm font-bold shadow-xl">
-                    <Crown className="w-3 h-3 mr-1 animate-gold-glow" />
+                    <Crown className="w-3 h-3 mr-1 animate-glow-pulse" />
                     👑 ЭКСКЛЮЗИВНЫЙ ДОСТУП
                   </Badge>
                   {!isLimitReached && (
@@ -89,7 +89,7 @@ export const ExclusiveAccessBanner = () => {
                       </div>
                       <div className="text-slate-400">/</div>
                       <div className="flex items-center gap-2 text-slate-300">
-                        <Crown className="w-4 h-4 text-accent animate-gold-glow" />
+                        <Crown className="w-4 h-4 text-accent animate-glow-pulse" />
                         <span className="font-semibold">{maxPlayers.toLocaleString()} мест</span>
                       </div>
                     </div>

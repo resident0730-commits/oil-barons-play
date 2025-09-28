@@ -27,7 +27,7 @@ const GiveawayPreview: React.FC = () => {
       icon: <Smartphone className="h-7 w-7 text-white" />,
       gradient: 'from-amber-400 via-yellow-500 to-orange-500',
       bgGlow: 'shadow-amber-500/30',
-      borderGlow: 'border-amber-400/50'
+      borderGlow: 'border-primary/50'
     },
     {
       place: '🥈 11-20 место', 
@@ -61,22 +61,22 @@ const GiveawayPreview: React.FC = () => {
             <div className="text-center space-y-4 mb-6">
               <div className="flex items-center justify-center space-x-3 animate-bounce-in">
                 <div className="relative">
-                  <Crown className="h-8 w-8 text-primary animate-gold-glow" />
+                  <Crown className="h-8 w-8 text-primary animate-glow-pulse" />
                 </div>
                 <div>
                   <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 bg-clip-text text-transparent font-playfair tracking-wide">
                     ПРЕМИУМ РОЗЫГРЫШ
                   </h2>
                   <div className="flex items-center justify-center space-x-2 mt-2">
-                    <Sparkles className="h-4 w-4 text-primary animate-gold-glow" />
+                    <Sparkles className="h-4 w-4 text-primary animate-glow-pulse" />
                     <p className="text-base md:text-lg text-slate-300 font-semibold tracking-wide">
                       🎁 Призы на миллионы рублей! 🎁
                     </p>
-                    <Sparkles className="h-4 w-4 text-primary animate-gold-glow" />
+                    <Sparkles className="h-4 w-4 text-primary animate-glow-pulse" />
                   </div>
                 </div>
                 <div className="relative">
-                  <Crown className="h-8 w-8 text-primary animate-gold-glow" />
+                  <Crown className="h-8 w-8 text-primary animate-glow-pulse" />
                 </div>
               </div>
 
@@ -86,13 +86,13 @@ const GiveawayPreview: React.FC = () => {
                 <div className="relative bg-gradient-to-r from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl p-4 rounded-xl border-2 border-primary/40">
                   <div className="flex items-center justify-center space-x-3 mb-2">
                     <div className="relative">
-                      <Clock className="h-6 w-6 text-primary animate-gold-glow" />
+                      <Clock className="h-6 w-6 text-primary animate-glow-pulse" />
                     </div>
                     <span className="text-lg md:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
                       ⏰ {daysLeft} {getDaysText(daysLeft)} до розыгрыша! ⏰
                     </span>
                     <div className="relative">
-                      <Clock className="h-6 w-6 text-primary animate-gold-glow" />
+                      <Clock className="h-6 w-6 text-primary animate-glow-pulse" />
                     </div>
                   </div>
                   <p className="text-sm text-slate-400 font-semibold">
@@ -130,7 +130,7 @@ const GiveawayPreview: React.FC = () => {
                       </p>
                       <div className="flex justify-center">
                         {[...Array(3-index)].map((_, i) => (
-                          <Star key={i} className="h-3 w-3 text-amber-400 fill-amber-400 ml-1 animate-pulse" />
+                          <Star key={i} className="h-3 w-3 text-primary fill-primary ml-1 animate-pulse" />
                         ))}
                       </div>
                     </div>

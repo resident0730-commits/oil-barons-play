@@ -49,7 +49,7 @@ const metrics: Metric[] = [
     change: 18.2,
     icon: <Fuel className="h-6 w-6" />,
     description: 'Количество работающих скважин на данный момент',
-    color: 'text-amber-400',
+    color: 'text-primary',
     gradient: 'from-amber-500 to-orange-500'
   },
   {

@@ -19,7 +19,7 @@ export const PromoBanner = () => {
           {/* Background pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-2 right-4">
-              <Crown className="h-8 w-8 text-primary rotate-12 animate-gold-glow" />
+              <Crown className="h-8 w-8 text-primary rotate-12 animate-glow-pulse" />
             </div>
             <div className="absolute bottom-2 left-4">
               <Gift className="h-6 w-6 text-accent -rotate-12 animate-pulse" />
@@ -58,7 +58,7 @@ export const PromoBanner = () => {
                         <CardContent className="p-4 text-center space-y-3">
                           <div className="flex items-center justify-center">
                             <div className="p-3 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
-                              <Crown className="h-6 w-6 text-primary animate-gold-glow" />
+                              <Crown className="h-6 w-6 text-primary animate-glow-pulse" />
                             </div>
                           </div>
                           <div className="space-y-1">

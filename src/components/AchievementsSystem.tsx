@@ -279,7 +279,7 @@ export const AchievementsSystem = () => {
             const canUnlockNow = canUnlock(achievement);
 
             return (
-              <Card key={achievement.id} className={`relative ${unlocked ? 'border-gold' : ''}`}>
+              <Card key={achievement.id} className={`relative ${unlocked ? 'border-primary' : ''}`}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
