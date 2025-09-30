@@ -455,7 +455,7 @@ const Dashboard = () => {
       <DashboardHeader 
         profile={currentProfile} 
         isAdmin={isAdmin} 
-        onBalanceClick={() => setActiveSection('balance')}
+        onTopUpClick={() => setActiveSection('balance')}
         onSignOut={handleSignOut}
       />
 

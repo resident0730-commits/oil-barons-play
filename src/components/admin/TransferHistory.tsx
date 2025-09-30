@@ -13,6 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface Transfer {
   id: string;
@@ -25,12 +31,14 @@ interface Transfer {
   created_at: string;
   from_nickname?: string;
   to_nickname?: string;
+  withdrawal_details?: any;
 }
 
 export function TransferHistory() {
   const { user } = useAuth();
   const [transfers, setTransfers] = useState<Transfer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTransfer, setSelectedTransfer] = useState<Transfer | null>(null);
 
   const loadTransfers = async () => {
     if (!user) return;
@@ -168,7 +176,11 @@ export function TransferHistory() {
                 {transfers.map((transfer) => {
                   const transferType = getTransferType(transfer);
                   return (
-                    <TableRow key={transfer.id}>
+                    <TableRow 
+                      key={transfer.id}
+                      className="cursor-pointer hover:bg-muted/50"
+                      onClick={() => setSelectedTransfer(transfer)}
+                    >
                       <TableCell>
                         {getTransferIcon(transfer)}
                       </TableCell>
@@ -178,7 +190,7 @@ export function TransferHistory() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {transfer.from_nickname || 'Система'}
+                        игровая платформа «Oil Tycoon»
                       </TableCell>
                       <TableCell>
                         {transfer.to_nickname || 'Система'}
@@ -200,6 +212,73 @@ export function TransferHistory() {
           </div>
         )}
       </CardContent>
+
+      {/* Transfer Details Dialog */}
+      <Dialog open={!!selectedTransfer} onOpenChange={() => setSelectedTransfer(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Детали перевода</DialogTitle>
+          </DialogHeader>
+          {selectedTransfer && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Номер чека</p>
+                  <p className="font-medium">{selectedTransfer.id}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Тип операции</p>
+                  <Badge variant={getTransferType(selectedTransfer).variant}>
+                    {getTransferType(selectedTransfer).label}
+                  </Badge>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">От кого</p>
+                  <p className="font-medium">игровая платформа «Oil Tycoon»</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Кому</p>
+                  <p className="font-medium">{selectedTransfer.to_nickname || 'Система'}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Сумма</p>
+                  <p className="font-medium text-lg">{selectedTransfer.amount.toLocaleString()} ₽</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Статус</p>
+                  <p className="font-medium">{selectedTransfer.status || 'completed'}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-sm text-muted-foreground">Описание</p>
+                  <p className="font-medium">{selectedTransfer.description || 'Нет описания'}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Дата создания</p>
+                  <p className="font-medium">
+                    {new Date(selectedTransfer.created_at).toLocaleString('ru-RU')}
+                  </p>
+                </div>
+                {selectedTransfer.transfer_type === 'withdrawal' && selectedTransfer.withdrawal_details && (
+                  <>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Способ вывода</p>
+                      <p className="font-medium">
+                        {(selectedTransfer.withdrawal_details as any)?.method || 'Не указан'}
+                      </p>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="text-sm text-muted-foreground">Реквизиты</p>
+                      <p className="font-medium">
+                        {(selectedTransfer.withdrawal_details as any)?.details || 'Не указаны'}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

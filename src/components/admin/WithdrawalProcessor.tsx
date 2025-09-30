@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Clock, CreditCard } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, CreditCard, User, Check, X } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -42,7 +42,7 @@ export function WithdrawalProcessor() {
   const { toast } = useToast();
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
   const [loading, setLoading] = useState(false);
-  const [processLoading, setProcessLoading] = useState<string | null>(null);
+  const [processingId, setProcessingId] = useState<string | null>(null);
   const [selectedWithdrawal, setSelectedWithdrawal] = useState<Withdrawal | null>(null);
   const [transferDetails, setTransferDetails] = useState('');
 
@@ -90,7 +90,7 @@ export function WithdrawalProcessor() {
   const processWithdrawal = async (withdrawalId: string, status: 'completed' | 'rejected') => {
     if (!user) return;
 
-    setProcessLoading(withdrawalId);
+    setProcessingId(withdrawalId);
     try {
       const { error } = await supabase.rpc('process_withdrawal', {
         p_transfer_id: withdrawalId,
@@ -134,7 +134,7 @@ export function WithdrawalProcessor() {
         variant: "destructive",
       });
     } finally {
-      setProcessLoading(null);
+      setProcessingId(null);
     }
   };
 
@@ -182,12 +182,13 @@ export function WithdrawalProcessor() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-12"></TableHead>
-                  <TableHead>Статус</TableHead>
+                  <TableHead>От кого</TableHead>
                   <TableHead>Игрок</TableHead>
                   <TableHead>Сумма</TableHead>
                   <TableHead>Способ</TableHead>
                   <TableHead>Реквизиты</TableHead>
                   <TableHead>Дата</TableHead>
+                  <TableHead>Статус</TableHead>
                   <TableHead>Действия</TableHead>
                 </TableRow>
               </TableHeader>
@@ -197,71 +198,176 @@ export function WithdrawalProcessor() {
                     <TableCell>
                       {getStatusIcon(withdrawal.status)}
                     </TableCell>
-                    <TableCell>
-                      {getStatusBadge(withdrawal.status)}
-                    </TableCell>
-                    <TableCell>
-                      {withdrawal.from_nickname || 'Неизвестный'}
-                    </TableCell>
                     <TableCell className="font-medium">
+                      игровая платформа «Oil Tycoon»
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <span>{withdrawal.from_nickname || 'Неизвестно'}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-bold">
                       {withdrawal.amount.toLocaleString()} ₽
                     </TableCell>
                     <TableCell>
-                      {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.method || 'Не указан'}
+                      <Badge variant="outline">
+                        {withdrawal.withdrawal_details?.method || 'Не указан'}
+                      </Badge>
                     </TableCell>
                     <TableCell className="max-w-xs truncate">
-                      {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.details || 'Не указаны'}
+                      {withdrawal.withdrawal_details?.details || 'Не указаны'}
                     </TableCell>
                     <TableCell>
                       {new Date(withdrawal.created_at).toLocaleString('ru-RU')}
                     </TableCell>
                     <TableCell>
-                      {withdrawal.status === 'pending' && (
+                      {getStatusBadge(withdrawal.status)}
+                    </TableCell>
+                    <TableCell>
+                      {withdrawal.status === 'pending' ? (
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button 
-                              size="sm" 
-                              onClick={() => setSelectedWithdrawal(withdrawal)}
-                            >
+                            <Button variant="outline" size="sm" onClick={() => setSelectedWithdrawal(withdrawal)}>
                               Обработать
                             </Button>
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
                               <DialogTitle>Обработка вывода</DialogTitle>
-                              <DialogDescription>
-                                Игрок: {withdrawal.from_nickname}<br/>
-                                Сумма: {withdrawal.amount.toLocaleString()} ₽<br/>
-                                Способ: {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.method}<br/>
-                                Реквизиты: {withdrawal.withdrawal_details && typeof withdrawal.withdrawal_details === 'object' && withdrawal.withdrawal_details.details}
-                              </DialogDescription>
                             </DialogHeader>
-                            
-                            <div>
-                              <Label htmlFor="transfer-details">Детали перевода (для истории)</Label>
-                              <Input
-                                id="transfer-details"
-                                placeholder="Например: Переведено на карту *1234"
-                                value={transferDetails}
-                                onChange={(e) => setTransferDetails(e.target.value)}
-                              />
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Номер чека</p>
+                                <p className="font-medium text-xs break-all">{withdrawal.id}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">От кого</p>
+                                <p className="font-medium">игровая платформа «Oil Tycoon»</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Пользователь</p>
+                                <p className="font-medium">{withdrawal.from_nickname}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Сумма</p>
+                                <p className="font-bold text-lg">{withdrawal.amount.toLocaleString()} ₽</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Способ вывода</p>
+                                <p className="font-medium">{withdrawal.withdrawal_details?.method}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Реквизиты</p>
+                                <p className="font-medium">{withdrawal.withdrawal_details?.details}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Дата создания</p>
+                                <p className="font-medium">
+                                  {new Date(withdrawal.created_at).toLocaleString('ru-RU')}
+                                </p>
+                              </div>
+                              <div className="space-y-2">
+                                <label className="text-sm text-muted-foreground">Комментарий к переводу</label>
+                                <input
+                                  type="text"
+                                  className="w-full px-3 py-2 border rounded-md"
+                                  placeholder="Перевод средств пользователю"
+                                  value={transferDetails}
+                                  onChange={(e) => setTransferDetails(e.target.value)}
+                                />
+                              </div>
+                              <div className="flex space-x-2">
+                                <Button
+                                  onClick={() => {
+                                    processWithdrawal(withdrawal.id, 'completed');
+                                  }}
+                                  disabled={processingId === withdrawal.id}
+                                  className="flex-1"
+                                >
+                                  {processingId === withdrawal.id ? (
+                                    <>
+                                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                      Обработка...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Check className="h-4 w-4 mr-2" />
+                                      Одобрить
+                                    </>
+                                  )}
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  onClick={() => {
+                                    processWithdrawal(withdrawal.id, 'rejected');
+                                  }}
+                                  disabled={processingId === withdrawal.id}
+                                  className="flex-1"
+                                >
+                                  {processingId === withdrawal.id ? (
+                                    <>
+                                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                      Обработка...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <X className="h-4 w-4 mr-2" />
+                                      Отклонить
+                                    </>
+                                  )}
+                                </Button>
+                              </div>
                             </div>
-
-                            <DialogFooter className="flex gap-2">
-                              <Button
-                                variant="destructive"
-                                onClick={() => processWithdrawal(withdrawal.id, 'rejected')}
-                                disabled={processLoading === withdrawal.id}
-                              >
-                                Отклонить
-                              </Button>
-                              <Button
-                                onClick={() => processWithdrawal(withdrawal.id, 'completed')}
-                                disabled={processLoading === withdrawal.id}
-                              >
-                                {processLoading === withdrawal.id ? "Обработка..." : "Одобрить"}
-                              </Button>
-                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      ) : (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              Детали
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Детали вывода</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Номер чека</p>
+                                <p className="font-medium text-xs break-all">{withdrawal.id}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">От кого</p>
+                                <p className="font-medium">игровая платформа «Oil Tycoon»</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Пользователь</p>
+                                <p className="font-medium">{withdrawal.from_nickname}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Сумма</p>
+                                <p className="font-bold text-lg">{withdrawal.amount.toLocaleString()} ₽</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Способ вывода</p>
+                                <p className="font-medium">{withdrawal.withdrawal_details?.method}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Реквизиты</p>
+                                <p className="font-medium">{withdrawal.withdrawal_details?.details}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Статус</p>
+                                {getStatusBadge(withdrawal.status)}
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-muted-foreground">Дата создания</p>
+                                <p className="font-medium">
+                                  {new Date(withdrawal.created_at).toLocaleString('ru-RU')}
+                                </p>
+                              </div>
+                            </div>
                           </DialogContent>
                         </Dialog>
                       )}
