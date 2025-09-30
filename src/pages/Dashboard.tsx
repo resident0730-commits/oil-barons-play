@@ -131,16 +131,34 @@ const Dashboard = () => {
     sounds.error();
   };
 
-  // Если нет профиля, но есть пользователь - создаем базовый профиль для отображения
-  const currentProfile = profile || {
-    id: '',
-    user_id: user?.id || '',
-    nickname: user?.user_metadata?.nickname || 'Игрок',
-    balance: 1000,
-    daily_income: 0,
-    last_login: new Date().toISOString(),
-    created_at: new Date().toISOString()
-  };
+  // Показываем загрузку если профиль еще не загружен
+  useEffect(() => {
+    if (!loading && !profile && user) {
+      console.log('⚠️ Profile not loaded after initial loading, attempting reload...');
+      // Пробуем перезагрузить данные через 1 секунду
+      const reloadTimer = setTimeout(() => {
+        reload();
+      }, 1000);
+      return () => clearTimeout(reloadTimer);
+    }
+  }, [loading, profile, user, reload]);
+
+  // Не используем fallback профиль - ждем загрузки реальных данных
+  if (!profile && user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Fuel className="h-12 w-12 text-primary mx-auto animate-pulse" />
+          <div className="space-y-2">
+            <p className="text-lg font-medium">Загрузка профиля...</p>
+            <p className="text-sm text-muted-foreground">Пожалуйста, подождите</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentProfile = profile!;
 
   // Memoized utility functions for performance
   const getWellIcon = useCallback((wellTypeName: string) => {
