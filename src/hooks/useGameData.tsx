@@ -472,44 +472,29 @@ export function useGameData() {
     try {
       console.log('🔍 Loading game data for user:', user.id);
       
-      // Load profile with retry logic for mobile devices
-      let profileData = null;
-      let profileError = null;
-      let retryCount = 0;
-      const maxRetries = 3;
-
-      while (retryCount < maxRetries && !profileData) {
-        console.log(`📡 Profile loading attempt ${retryCount + 1}/${maxRetries}`);
-        
-        const result = await supabase
+      // Load profile with simple timeout for mobile
+      const result = await Promise.race([
+        supabase
           .from('profiles')
           .select('*')
           .eq('user_id', user.id)
-          .maybeSingle();
+          .maybeSingle(),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Profile load timeout')), 8000)
+        )
+      ]).catch(err => {
+        console.error('❌ Profile loading error:', err);
+        return { data: null, error: err };
+      }) as { data: any; error: any };
 
-        profileData = result.data;
-        profileError = result.error;
+      const profileData = result.data;
+      const profileError = result.error;
 
-        if (profileError) {
-          console.error(`❌ Profile loading error (attempt ${retryCount + 1}):`, profileError);
-          retryCount++;
-          if (retryCount < maxRetries) {
-            console.log('⏳ Retrying in 2 seconds...');
-            await new Promise(resolve => setTimeout(resolve, 2000));
-          }
-        } else if (profileData) {
-          console.log('✅ Profile loaded successfully:', profileData);
-          break;
-        } else {
-          console.log('⚠️ No profile found for user');
-          break;
-        }
-      }
-
-      if (profileError && retryCount >= maxRetries) {
-        console.error('❌ Failed to load profile after all retries');
+      if (profileError) {
+        console.error('❌ Profile loading failed:', profileError);
         setProfile(null);
       } else if (profileData) {
+        console.log('✅ Profile loaded:', profileData);
         
         // Calculate and add offline income (non-blocking)
         if (profileData.last_login && profileData.daily_income > 0) {
