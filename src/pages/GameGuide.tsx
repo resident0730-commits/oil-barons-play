@@ -37,7 +37,7 @@ const GameGuide = () => {
       price: `1,000 ${currencyConfig.game_currency_symbol}`,
       income: `20 ${currencyConfig.game_currency_symbol}/день`,
       description: "Компактная установка для первых шагов в нефтяной индустрии.",
-      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(1000)} в день.`,
+      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(200)} в день.`,
       gradient: "from-gray-500 to-slate-500",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
@@ -46,7 +46,7 @@ const GameGuide = () => {
       price: `2,000 ${currencyConfig.game_currency_symbol}`,
       income: `44 ${currencyConfig.game_currency_symbol}/день`,
       description: "Проверенная временем установка с оптимизированной системой добычи.",
-      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(1100)} в день.`,
+      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(220)} в день.`,
       gradient: "from-blue-500 to-cyan-500",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
@@ -55,7 +55,7 @@ const GameGuide = () => {
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
       income: `72 ${currencyConfig.game_currency_symbol}/день`,
       description: "Сбалансированное решение с улучшенной системой извлечения.",
-      example: `3 средние скважины дают ${formatGameCurrency(1080)} в день и окупаются за 8.3 дня.`,
+      example: `3 средние скважины дают ${formatGameCurrency(216)} в день и окупаются за 8.3 дня.`,
       gradient: "from-green-500 to-emerald-500",
       icon: <Target className="h-8 w-8 text-white" />
     },
@@ -64,7 +64,7 @@ const GameGuide = () => {
       price: `5,000 ${currencyConfig.game_currency_symbol}`, 
       income: `130 ${currencyConfig.game_currency_symbol}/день`,
       description: "Мощная установка промышленного класса с глубоким бурением.",
-      example: `2 промышленные скважины приносят ${formatGameCurrency(1300)} в день и окупаются за 7.7 дня.`,
+      example: `2 промышленные скважины приносят ${formatGameCurrency(260)} в день и окупаются за 7.7 дня.`,
       gradient: "from-purple-500 to-indigo-500",
       icon: <Settings className="h-8 w-8 text-white" />
     },
@@ -73,7 +73,7 @@ const GameGuide = () => {
       price: `8,000 ${currencyConfig.game_currency_symbol}`,
       income: `224 ${currencyConfig.game_currency_symbol}/день`,
       description: "Высокотехнологичная установка с турбонаддувом и многоступенчатой системой.",
-      example: `1 супер-скважина окупается за 7.1 дня и дает ${formatGameCurrency(1120)} ежедневно.`,
+      example: `1 супер-скважина окупается за 7.1 дня и дает ${formatGameCurrency(224)} ежедневно.`,
       gradient: "from-orange-500 to-red-500",
       icon: <Zap className="h-8 w-8 text-white" />
     },
@@ -82,7 +82,7 @@ const GameGuide = () => {
       price: `12,000 ${currencyConfig.game_currency_symbol}`,
       income: `360 ${currencyConfig.game_currency_symbol}/день`,
       description: "Эксклюзивная установка с алмазным буровым оборудованием и ИИ.",
-      example: `1 премиум-скважина окупается за 6.7 дня и дает стабильные ${formatGameCurrency(1800)} ежедневно.`,
+      example: `1 премиум-скважина окупается за 6.7 дня и дает стабильные ${formatGameCurrency(360)} ежедневно.`,
       gradient: "from-pink-500 to-purple-500",
       icon: <Gem className="h-8 w-8 text-white" />
     },
@@ -91,7 +91,7 @@ const GameGuide = () => {
       price: `18,000 ${currencyConfig.game_currency_symbol}`,
       income: `576 ${currencyConfig.game_currency_symbol}/день`, 
       description: "Королевская установка с позолоченными элементами и квантовыми сенсорами.",
-      example: `1 элитная скважина окупается за 6.3 дня и дает стабильные ${formatGameCurrency(2880)} ежедневно.`,
+      example: `1 элитная скважина окупается за 6.3 дня и дает стабильные ${formatGameCurrency(576)} ежедневно.`,
       gradient: "from-yellow-500 to-orange-500",
       icon: <Crown className="h-8 w-8 text-white" />
     },
@@ -100,7 +100,7 @@ const GameGuide = () => {
       price: `27,000 ${currencyConfig.game_currency_symbol}`,
       income: `918 ${currencyConfig.game_currency_symbol}/день`,
       description: "Мифическая установка с нанотехнологиями и квантовыми процессорами.",
-      example: `1 легендарная скважина окупается за 5.9 дня и дает невероятные ${formatGameCurrency(4590)} ежедневно.`,
+      example: `1 легендарная скважина окупается за 5.9 дня и дает невероятные ${formatGameCurrency(918)} ежедневно.`,
       gradient: "from-violet-500 to-purple-500",
       icon: <Star className="h-8 w-8 text-white" />
     },
@@ -109,7 +109,7 @@ const GameGuide = () => {
       price: `40,000 ${currencyConfig.game_currency_symbol}`,
       income: `1,440 ${currencyConfig.game_currency_symbol}/день`,
       description: "Футуристическая установка внеземных технологий с антигравитационным двигателем.",
-      example: `1 космическая скважина окупается за 5.6 дня и дает фантастические ${formatGameCurrency(7200)} ежедневно.`,
+      example: `1 космическая скважина окупается за 5.6 дня и дает фантастические ${formatGameCurrency(1440)} ежедневно.`,
       gradient: "from-cyan-500 to-blue-500",
       icon: <Rocket className="h-8 w-8 text-white" />
     }
@@ -173,21 +173,21 @@ const GameGuide = () => {
       level: "1 → 2",
       cost: "50% от цены скважины",
       effect: "+20% к доходу",
-      example: `Стартовая скважина: ${formatGameCurrency(500)} → доход 220 → 264 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Стартовая скважина: ${formatGameCurrency(500)} → доход 44 → 53 ${currencyConfig.game_currency_symbol}/день`,
       gradient: "from-blue-500 to-indigo-500"
     },
     {
       level: "2 → 3", 
       cost: "60% от цены скважины",
       effect: "+20% к новому доходу",
-      example: `Средняя скважина: ${formatGameCurrency(1800)} → доход 360 → 432 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Средняя скважина: ${formatGameCurrency(1800)} → доход 72 → 86 ${currencyConfig.game_currency_symbol}/день`,
       gradient: "from-green-500 to-teal-500"
     },
     {
       level: "3 → 4",
       cost: "72% от цены скважины", 
       effect: "+20% к новому доходу",
-      example: `Промышленная: ${formatGameCurrency(4680)} → доход 650 → 780 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Промышленная: ${formatGameCurrency(4680)} → доход 130 → 156 ${currencyConfig.game_currency_symbol}/день`,
       gradient: "from-purple-500 to-pink-500"
     }
   ];
