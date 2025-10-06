@@ -35,7 +35,7 @@ const metrics: Metric[] = [
   {
     id: 'total-users',
     title: 'Всего игроков',
-    value: 12847,
+    value: 6380,
     change: 23.5,
     icon: <Users className="h-6 w-6" />,
     description: 'Общее количество зарегистрированных игроков в системе',
