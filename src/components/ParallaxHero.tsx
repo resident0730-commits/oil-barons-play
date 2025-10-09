@@ -61,8 +61,7 @@ export const ParallaxHero = () => {
                 alt="Oil Tycoon"
                 className="w-full max-w-4xl h-auto animate-fade-in"
                 style={{
-                  mixBlendMode: 'screen',
-                  filter: 'drop-shadow(0 0 40px rgba(234, 179, 8, 0.6)) contrast(1.2) brightness(1.1)'
+                  filter: 'drop-shadow(0 0 40px rgba(234, 179, 8, 0.8)) brightness(1.1) saturate(1.2)'
                 }}
               />
             </div>
