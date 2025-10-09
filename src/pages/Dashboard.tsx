@@ -603,7 +603,7 @@ const Dashboard = () => {
           <div className="space-y-6">
             <div className="text-center space-y-4 mb-8">
               <div className="relative">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent animate-fade-in [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
                   Калькулятор доходности
                 </h2>
                 <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
