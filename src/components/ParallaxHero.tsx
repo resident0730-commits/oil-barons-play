@@ -54,8 +54,8 @@ export const ParallaxHero = () => {
               transform: `translate(${mousePosition.x * -8}px, ${mousePosition.y * -8}px)`
             }}
           >
-            <h1 className="holographic-text text-7xl md:text-9xl lg:text-[12rem] font-bold font-playfair leading-tight tracking-tight">
-              Oil Tycoon
+            <h1 className="luxury-gold-text text-7xl md:text-9xl lg:text-[12rem] font-bold font-playfair leading-tight tracking-tight">
+              OIL TYCOON
             </h1>
             
             <div className="max-w-5xl mx-auto space-y-8">
