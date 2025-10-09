@@ -193,12 +193,15 @@ const Index = () => {
                     </Badge>
                   </div>
                   <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Курс обмена</h3>
-                  <div className="flex items-baseline gap-2 mb-4 justify-center flex-wrap">
-                    <span className="text-7xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
-                      {currencyConfig.exchange_rate}
+                  <div className="flex items-center gap-4 mb-4 justify-center">
+                    <span className="text-6xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)] whitespace-nowrap">
+                      1 ₽
                     </span>
-                    <span className="text-4xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)] whitespace-nowrap">
-                      {currencyConfig.game_currency_symbol}
+                    <span className="text-5xl font-bold text-cyan-300 drop-shadow-[0_0_20px_rgba(34,211,238,0.6)]">
+                      =
+                    </span>
+                    <span className="text-6xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)] whitespace-nowrap">
+                      1 ₽
                     </span>
                   </div>
                   <p className="text-lg text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
