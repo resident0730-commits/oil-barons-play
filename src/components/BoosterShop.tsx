@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
 import { 
   Clock, 
-  TrendingUp, 
   Sparkles,
   ShoppingCart,
-  Info,
   Users,
   Search,
   Cog,
@@ -21,6 +16,7 @@ import { useGameData, BoosterType } from '@/hooks/useGameData';
 import { useStatusBonuses } from '@/hooks/useStatusBonuses';
 import { useToast } from '@/hooks/use-toast';
 import { useCurrency } from '@/hooks/useCurrency';
+import { AnimatedBoosterCard } from '@/components/AnimatedBoosterCard';
 
 // Import booster images
 import workerCrewImg from '@/assets/boosters/worker-crew.png';
@@ -38,7 +34,6 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
   const { toast } = useToast();
   const { formatGameCurrency } = useCurrency();
-  const [selectedBooster, setSelectedBooster] = useState<BoosterType | null>(null);
 
   // Calculate booster multiplier for display
   const getBoosterMultiplier = () => {
@@ -157,28 +152,6 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     const currentLevel = getBoosterLevel(booster.id);
     if (currentLevel >= booster.maxLevel) return 0;
     return Math.floor(booster.baseCost * Math.pow(booster.costMultiplier, currentLevel));
-  };
-
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'bg-gray-100 text-gray-800';
-      case 'uncommon': return 'bg-green-100 text-green-800';
-      case 'rare': return 'bg-blue-100 text-blue-800';
-      case 'epic': return 'bg-purple-100 text-purple-800';
-      case 'temporary': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getRarityText = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'Обычный';
-      case 'uncommon': return 'Необычный';
-      case 'rare': return 'Редкий';
-      case 'epic': return 'Эпический';
-      case 'temporary': return 'Временный';
-      default: return 'Обычный';
-    }
   };
 
   const isBoosterActive = (boosterId: string) => {
@@ -411,167 +384,32 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
         )}
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {availableBoosters.map((booster) => {
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {availableBoosters.map((booster, index) => {
           const currentLevel = getBoosterLevel(booster.id);
           const cost = getBoosterCost(booster);
           const isMaxLevel = currentLevel >= booster.maxLevel;
           const isActive = isBoosterActive(booster.id);
+          const userBooster = boosters.find(b => b.booster_type === booster.id);
 
           return (
-            <Card key={booster.id} className={`relative hover:shadow-lg transition-all duration-300 hover:scale-105 ${isActive ? 'ring-2 ring-primary' : ''}`}>
-              <CardHeader className="pb-3">
-                <div className="flex flex-col items-center space-y-3">
-                  <div className="relative">
-                    <img 
-                      src={booster.icon} 
-                      alt={booster.name}
-                      className="w-32 h-32 rounded-lg object-cover border-3 border-primary/30 shadow-lg"
-                    />
-                    <Badge className={`absolute -top-2 -right-2 ${getRarityColor(booster.rarity)}`}>
-                      {getRarityText(booster.rarity)}
-                    </Badge>
-                  </div>
-                  <div className="text-center">
-                    <CardTitle className="text-lg font-medium mb-2">{booster.name}</CardTitle>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  {booster.description}
-                </p>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-green-500" />
-                    <span className="text-sm font-medium">{booster.effect}</span>
-                  </div>
-                  
-                  {booster.duration && (
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-blue-500" />
-                      <span className="text-sm">Действует 24 часа</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Уровень:</span>
-                    <span className="font-medium">
-                      {currentLevel}/{booster.maxLevel}
-                      {isActive && !booster.duration && ' (активен)'}
-                    </span>
-                  </div>
-                  <Progress 
-                    value={(currentLevel / booster.maxLevel) * 100} 
-                    className="h-2"
-                  />
-                </div>
-
-                {isMaxLevel ? (
-                  <div className="space-y-2">
-                    <Button disabled className="w-full">
-                      Максимальный уровень
-                    </Button>
-                    {currentLevel > 0 && (
-                      <Button 
-                        onClick={() => handleCancelBooster(booster)}
-                        disabled={loading}
-                        variant="destructive"
-                        size="sm"
-                        className="w-full"
-                      >
-                        Отменить бустер (50% возврат)
-                      </Button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Стоимость:</span>
-                      <span className="font-bold">{formatGameCurrency(cost)}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button 
-                        onClick={() => handleBuyBooster(booster)}
-                        disabled={loading || !profile || profile.balance < cost}
-                        className="flex-1"
-                        variant={profile && profile.balance >= cost ? "default" : "outline"}
-                      >
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        {currentLevel === 0 ? 'Активировать' : 'Улучшить'}
-                      </Button>
-                      {currentLevel > 0 && (
-                        <Button 
-                          onClick={() => handleCancelBooster(booster)}
-                          disabled={loading}
-                          variant="destructive"
-                          size="sm"
-                          className="px-3"
-                          title="Отменить бустер (50% возврат)"
-                        >
-                          ✕
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="sm" className="w-full">
-                      <Info className="h-4 w-4 mr-2" />
-                      Подробнее
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center gap-2">
-                        <img src={booster.icon} alt={booster.name} className="h-8 w-8 object-cover rounded" />
-                        {booster.name}
-                      </DialogTitle>
-                      <DialogDescription>
-                        Подробная информация об улучшении и его эффекте на доходность.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <p>{booster.description}</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span>Эффект за уровень:</span>
-                          <span>+{booster.bonusPerLevel}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Максимальный уровень:</span>
-                          <span>{booster.maxLevel}</span>
-                        </div>
-                        {booster.duration && (
-                          <div className="flex justify-between">
-                            <span>Длительность:</span>
-                            <span>24 часа</span>
-                          </div>
-                        )}
-                        <div className="flex justify-between">
-                          <span>Возврат при отмене:</span>
-                          <span>50% от последнего уровня</span>
-                        </div>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </CardContent>
-              
-              {isActive && (
-                <div className="absolute -top-2 -right-2">
-                  <div className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
-                    Активен
-                  </div>
-                </div>
-              )}
-            </Card>
+            <div 
+              key={booster.id} 
+              className="wave-appear"
+              style={{animationDelay: `${index * 100}ms`}}
+            >
+              <AnimatedBoosterCard
+                booster={booster}
+                currentLevel={currentLevel}
+                cost={cost}
+                balance={profile?.balance || 0}
+                isMaxLevel={isMaxLevel}
+                isActive={isActive}
+                onBuy={handleBuyBooster}
+                onCancel={handleCancelBooster}
+                expiresAt={userBooster?.expires_at}
+              />
+            </div>
           );
         })}
       </div>
