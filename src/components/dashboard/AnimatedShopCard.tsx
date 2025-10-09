@@ -35,10 +35,10 @@ interface AnimatedShopCardProps {
 const getWellImage = (wellType: string) => {
   const imageMap: { [key: string]: string } = {
     'Стартовая скважина': starterWellArt,
-    'Мини скважина': miniWellArt,
+    'Мини-скважина': miniWellArt,
     'Средняя скважина': mediumWellArt,
     'Премиум-скважина': premiumWellArt,
-    'Супер скважина': superWellArt,
+    'Супер-скважина': superWellArt,
     'Элитная скважина': eliteWellArt,
     'Промышленная скважина': industrialWellArt,
     'Легендарная скважина': legendaryWellArt,
