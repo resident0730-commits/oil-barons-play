@@ -69,13 +69,13 @@ const WELL_PACKAGES = [
 ];
 
 // Бустеры и их множители (постоянные улучшения, 1 уровень)
-// Данные из useGameData.tsx - calculateBoosterMultiplier()
+// Данные из BoosterShop.tsx - bonusPerLevel
 const BOOSTERS = [
-  { name: 'Современное оборудование', multiplier: 1.35, cost: 20000, bonusPercent: 35 }, // +35% за 1 уровень
-  { name: 'Геологические исследования', multiplier: 1.25, cost: 8000, bonusPercent: 25 }, // +25% за 1 уровень
+  { name: 'Современное оборудование', multiplier: 1.25, cost: 20000, bonusPercent: 25 }, // +25% за 1 уровень
   { name: 'Автоматизация', multiplier: 1.2, cost: 15000, bonusPercent: 20 }, // +20% за 1 уровень
-  { name: 'Квалифицированная бригада', multiplier: 1.15, cost: 5000, bonusPercent: 15 }, // +15% за 1 уровень
-  // Турбо режим - временный, не включаем в калькулятор
+  { name: 'Геологические исследования', multiplier: 1.15, cost: 8000, bonusPercent: 15 }, // +15% за 1 уровень
+  { name: 'Квалифицированная бригада', multiplier: 1.1, cost: 5000, bonusPercent: 10 }, // +10% за 1 уровень
+  // Турбо режим - временный (+50%), не включаем в калькулятор
 ];
 
 interface CalculatorProps {
