@@ -197,7 +197,6 @@ const Index = () => {
                     <span className="text-7xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)]">
                       {currencyConfig.exchange_rate}
                     </span>
-                    <span className="text-2xl text-cyan-100 font-medium">₽</span>
                   </div>
                   <p className="text-lg text-cyan-50/90 leading-relaxed">
                     {getExchangeDescription()}
