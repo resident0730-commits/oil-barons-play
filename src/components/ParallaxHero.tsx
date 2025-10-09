@@ -27,11 +27,11 @@ export const ParallaxHero = () => {
             </h1>
             
             <div className="max-w-5xl mx-auto space-y-8">
-              <p className="text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.8)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%),_-1px_-1px_2px_rgb(0_0_0_/_60%)]">
+              <p className="text-4xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-white via-yellow-100 to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]">
                 От первой капли нефти до нефтяной империи
               </p>
               
-              <p className="text-3xl md:text-5xl font-bold max-w-3xl mx-auto leading-relaxed text-white drop-shadow-[0_0_25px_rgba(255,255,255,0.7)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%),_-1px_-1px_2px_rgb(0_0_0_/_60%)]">
+              <p className="text-2xl md:text-3xl font-semibold max-w-3xl mx-auto leading-relaxed bg-gradient-to-r from-yellow-100 via-white to-yellow-100 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(234,179,8,0.4)]">
                 Реальный заработок через игровую механику! Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
               </p>
             </div>
