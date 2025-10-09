@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Zap, BarChart3 } from 'lucide-react';
 import { OilParticles } from './OilParticles';
 import { useAuth } from '@/hooks/useAuth';
-import oilTycoonLogo from '@/assets/oil-tycoon-logo-transparent.png';
+import oilTycoonLogo from '@/assets/oil-tycoon-logo-new.png';
 
 export const ParallaxHero = () => {
   const { user } = useAuth();
