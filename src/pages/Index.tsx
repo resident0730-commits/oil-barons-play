@@ -235,65 +235,6 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* Player Progress Section - показывается только для авторизованных игроков */}
-        {user && profile && (
-          <div className="mb-24 animate-fade-in">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">Ваша нефтяная империя</h2>
-              <p className="text-xl text-muted-foreground">Текущие достижения и активы</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
-                {/* Animated border */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                  <CardTitle className="text-lg font-medium">Капитал</CardTitle>
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Wallet className="h-6 w-6 text-primary" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">{formatGameCurrency(profile.balance)}</div>
-                  <p className="text-sm text-muted-foreground">Игровая валюта для развития</p>
-                </CardContent>
-              </Card>
-
-              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
-                {/* Animated border */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                  <CardTitle className="text-lg font-medium">Ежедневный доход</CardTitle>
-                  <div className="p-2 bg-accent/10 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-accent" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="text-3xl font-bold text-accent">{profile.daily_income.toLocaleString()} OC</div>
-                  <p className="text-sm text-muted-foreground">Игровой доход от активности</p>
-                </CardContent>
-              </Card>
-
-              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
-                {/* Animated border */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                  <CardTitle className="text-lg font-medium">Нефтяные активы</CardTitle>
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Fuel className="h-6 w-6 text-primary" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">{wells.length}</div>
-                  <p className="text-sm text-muted-foreground">Работающих скважин</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        )}
-
         {/* Features Grid */}
         <div className="mb-24">
           <div className="text-center mb-16">
