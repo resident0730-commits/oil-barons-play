@@ -276,7 +276,7 @@ All colors MUST be HSL.
   /* Dashboard light background */
   .dashboard-light-bg {
     position: relative;
-    background-image: url('./assets/dashboard-light-bg.jpg');
+    background-image: url('./assets/dashboard-oil-bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -289,7 +289,7 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.25) 0%, hsl(30, 25%, 12% / 0.2) 50%, hsl(35, 30%, 18% / 0.15) 100%);
+    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.4) 0%, hsl(30, 25%, 12% / 0.35) 50%, hsl(35, 30%, 18% / 0.3) 100%);
     z-index: 0;
   }
 
