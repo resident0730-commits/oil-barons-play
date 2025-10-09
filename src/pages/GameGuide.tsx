@@ -257,16 +257,16 @@ const GameGuide = () => {
       <header className="relative z-10 border-b border-primary/20 backdrop-blur-md bg-black/40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center text-primary/70 hover:text-primary transition-colors">
+            <Link to="/" className="flex items-center text-white/70 hover:text-white transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Назад на главную
             </Link>
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <Fuel className="h-6 w-6 text-primary animate-pulse" />
-                <div className="absolute inset-0 h-6 w-6 text-primary/30 animate-ping"></div>
+                <Fuel className="h-6 w-6 text-white animate-pulse" />
+                <div className="absolute inset-0 h-6 w-6 text-white/30 animate-ping"></div>
               </div>
-              <span className="font-bold luxury-gold-text">Oil Tycoon</span>
+              <span className="font-bold text-white">Oil Tycoon</span>
               <div className="px-3 py-1 gradient-primary text-xs font-bold text-black rounded-full">
                 ГАЙД
               </div>
@@ -321,23 +321,23 @@ const GameGuide = () => {
                   </div>
                 </div>
                 <CardTitle className="text-3xl md:text-4xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Игровая валюта: {currencyConfig.game_currency_name}
+                  Игровая валюта: Игровой рубль
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-center space-y-4">
+                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Все операции в игре проводятся в игровых рублях
+                </p>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                    <div className="text-2xl font-bold text-primary">{currencyConfig.exchange_rate}</div>
-                    <p className="text-sm text-white/60">Курс обмена</p>
+                    <div className="text-2xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{currencyConfig.exchange_rate}</div>
+                    <p className="text-sm text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Курс обмена</p>
                   </div>
                   <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                    <div className="text-2xl font-bold text-primary">100%</div>
-                    <p className="text-sm text-white/60">Безопасно</p>
+                    <div className="text-2xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">100%</div>
+                    <p className="text-sm text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Безопасно</p>
                   </div>
                 </div>
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  {currencyConfig.game_currency_name} используется только внутри игры для развития нефтяной империи
-                </p>
               </CardContent>
             </Card>
           </div>
@@ -358,7 +358,7 @@ const GameGuide = () => {
           <div className="grid md:grid-cols-4 gap-8">
             {[
               { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-primary to-amber-500" },
-              { step: "2", title: "Первая скважина", desc: `Купите стартовую скважину за ${formatGameCurrency(1000)}`, badge: `220 ${currencyConfig.game_currency_symbol}/день`, gradient: "from-amber-500 to-yellow-600" },
+              { step: "2", title: "Первая скважина", desc: `Купите стартовую скважину за ${formatGameCurrency(2000)}`, badge: `44 ${currencyConfig.game_currency_symbol}/день`, gradient: "from-amber-500 to-yellow-600" },
               { step: "3", title: "Ждите доход", desc: "Через 24 часа получите первую прибыль", badge: "Автоматически", gradient: "from-yellow-600 to-orange-500" },
               { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины и улучшения", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
             ].map((item, index) => (
