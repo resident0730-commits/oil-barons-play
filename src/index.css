@@ -224,6 +224,23 @@ All colors MUST be HSL.
     position: relative;
   }
 
+  /* Mobile optimization for hero background */
+  @media (max-width: 768px) {
+    .hero-luxury-background {
+      background-size: auto 100%;
+      background-position: center top;
+      background-attachment: scroll;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-luxury-background {
+      background-size: cover;
+      background-position: center center;
+      background-attachment: scroll;
+    }
+  }
+
   .hero-luxury-background::before {
     content: '';
     position: absolute;
