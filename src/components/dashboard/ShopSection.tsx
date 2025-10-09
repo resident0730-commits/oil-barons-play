@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingCart, Package, Gem, Star } from "lucide-react";
 import { wellTypes, wellPackages, UserProfile, WellType, WellPackage } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
+import { AnimatedShopCard } from "./AnimatedShopCard";
 
 interface ShopSectionProps {
   profile: UserProfile;
@@ -63,72 +64,25 @@ export const ShopSection = ({
         </TabsList>
 
         <TabsContent value="wells" className="mt-6">
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {wellTypes.map((wellType) => {
-              const canAfford = profile.balance >= wellType.price;
-              const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
-
-              return (
-                <Card key={wellType.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${!canAfford ? "opacity-60" : ""}`}>
-                  <div className={`absolute top-0 left-0 w-full h-1 ${wellType.rarity === 'mythic' ? 'gradient-luxury' : 'gradient-gold'}`}></div>
-                  
-                  <CardHeader className="pb-2 sm:pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                        <div className="flex-shrink-0">
-                          {getWellIcon(wellType.name)}
-                        </div>
-                        <div className="min-w-0">
-                          <CardTitle className="text-base sm:text-lg truncate">{wellType.name}</CardTitle>
-                          <Badge className={getRarityBadgeColor(wellType.rarity)} variant="secondary">
-                            {wellType.rarity}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="font-bold text-sm sm:text-lg text-primary">{formatGameCurrency(wellType.baseIncome)}</p>
-                        <p className="text-xs text-muted-foreground">в день</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-3 sm:space-y-4 flex-1 flex flex-col justify-between">
-                    <div className="space-y-3 sm:space-y-4">
-                      <p className="text-xs sm:text-sm text-foreground/90 sm:text-muted-foreground break-words leading-relaxed font-medium sm:font-normal">
-                        {wellType.description}
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-2 sm:gap-3 text-sm">
-                        <div className="text-center p-2 bg-muted/50 rounded">
-                          <p className="font-medium text-xs sm:text-sm">{formatGameCurrency(metrics.monthlyIncome)}</p>
-                          <p className="text-xs text-muted-foreground">в месяц</p>
-                        </div>
-                        <div className="text-center p-2 bg-primary/10 rounded">
-                          <p className="font-medium text-primary text-xs sm:text-sm">{formatProfitPercent(metrics.yearlyPercent)}</p>
-                          <p className="text-xs text-muted-foreground">ROI/год</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
-                      <div className="text-sm">
-                        <span className="text-muted-foreground">Цена: </span>
-                        <span className="font-bold text-base sm:text-lg">{formatGameCurrency(wellType.price)}</span>
-                      </div>
-                      <Button
-                        onClick={() => onBuyWell(wellType)}
-                        disabled={!canAfford}
-                        className="gradient-gold text-primary-foreground w-full sm:w-auto"
-                        size="sm"
-                      >
-                        <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                        Купить
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {wellTypes.map((wellType, index) => (
+              <div 
+                key={wellType.name} 
+                className="animate-fade-in" 
+                style={{animationDelay: `${index * 100}ms`}}
+              >
+                <AnimatedShopCard
+                  wellType={wellType}
+                  profile={profile}
+                  onBuyWell={onBuyWell}
+                  getWellIcon={getWellIcon}
+                  getRarityColor={getRarityColor}
+                  getRarityBadgeColor={getRarityBadgeColor}
+                  calculateProfitMetrics={calculateProfitMetrics}
+                  formatProfitPercent={formatProfitPercent}
+                />
+              </div>
+            ))}
           </div>
         </TabsContent>
 
