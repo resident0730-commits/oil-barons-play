@@ -3,24 +3,16 @@ import { Sparkles } from "lucide-react";
 import { UserWell, wellTypes, UserBooster } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
 
-// Import well images - используем максимально разные изображения
+// Import well images
 import starterWellArt from "@/assets/wells/starter-well-art.jpg";
 import miniWellArt from "@/assets/wells/mini-well-art.jpg"; 
 import mediumWellArt from "@/assets/wells/medium-well-art.jpg";
-import premiumWellArt from "@/assets/wells/premium-well-art.jpg"; // Попробуем art версию снова
+import premiumWellArt from "@/assets/wells/premium-well-art.jpg";
 import superWellArt from "@/assets/wells/super-well-art.jpg";
 import eliteWellArt from "@/assets/wells/elite-well-art.jpg";
 import industrialWellArt from "@/assets/wells/industrial-well-art.jpg";  
 import legendaryWellArt from "@/assets/wells/legendary-well-art.jpg";
 import cosmicWellArt from "@/assets/wells/cosmic-well-art.jpg";
-
-// Запасные изображения если art версии не работают
-import premiumWellRegular from "@/assets/wells/premium-well.jpg";
-import superWellRegular from "@/assets/wells/super-well.jpg";
-import eliteWellRegular from "@/assets/wells/elite-well.jpg";
-import industrialWellRegular from "@/assets/wells/industrial-well.jpg";
-import legendaryWellRegular from "@/assets/wells/legendary-well.jpg";
-import cosmicWellRegular from "@/assets/wells/cosmic-well.jpg";
 
 interface AnimatedWellCardProps {
   well: UserWell;
@@ -34,23 +26,18 @@ interface AnimatedWellCardProps {
 // Mapping well types to their avatar images - ИСПОЛЬЗУЕМ ТЕ ЖЕ ИЗОБРАЖЕНИЯ ЧТО И В КАРТОЧКАХ
 const getWellAvatar = (wellType: string) => {
   const avatarMap: { [key: string]: string } = {
-    'Стартовая скважина': starterWellArt,       // starter-well-art.jpg ✅
-    'Мини скважина': miniWellArt,               // mini-well-art.jpg ✅  
-    'Средняя скважина': mediumWellArt,          // medium-well-art.jpg ✅
-    'Премиум-скважина': premiumWellArt,         // premium-well-art.jpg (как в карточках!)
-    'Супер скважина': superWellArt,             // super-well-art.jpg ✅
-    'Элитная скважина': eliteWellArt,           // elite-well-art.jpg ✅
-    'Промышленная скважина': industrialWellArt, // industrial-well-art.jpg ✅
-    'Легендарная скважина': legendaryWellArt,   // legendary-well-art.jpg (как в карточках!)
-    'Космическая скважина': cosmicWellArt,      // cosmic-well-art.jpg ✅
+    'Стартовая скважина': starterWellArt,
+    'Мини-скважина': miniWellArt,
+    'Средняя скважина': mediumWellArt,
+    'Премиум-скважина': premiumWellArt,
+    'Супер-скважина': superWellArt,
+    'Элитная скважина': eliteWellArt,
+    'Промышленная скважина': industrialWellArt,
+    'Легендарная скважина': legendaryWellArt,
+    'Космическая скважина': cosmicWellArt,
   };
   
-  const selectedImage = avatarMap[wellType] || starterWellArt;
-  
-  // Отладочная информация в консоль
-  console.log(`Well type: ${wellType}, Selected image: ${selectedImage}`);
-  
-  return selectedImage;
+  return avatarMap[wellType] || starterWellArt;
 };
 
 export const AnimatedWellCard = ({ 
