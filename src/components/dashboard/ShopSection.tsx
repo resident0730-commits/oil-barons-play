@@ -6,6 +6,7 @@ import { ShoppingCart, Package, Gem, Star } from "lucide-react";
 import { wellTypes, wellPackages, UserProfile, WellType, WellPackage } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
 import { AnimatedShopCard } from "./AnimatedShopCard";
+import { AnimatedPackageCard } from "./AnimatedPackageCard";
 
 interface ShopSectionProps {
   profile: UserProfile;
@@ -87,94 +88,20 @@ export const ShopSection = ({
         </TabsContent>
 
         <TabsContent value="packages" className="mt-6">
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
-            {wellPackages.map((wellPackage) => {
-              const canAfford = profile.balance >= wellPackage.discountedPrice;
-              const savings = wellPackage.originalPrice - wellPackage.discountedPrice;
-
-              return (
-                <Card key={wellPackage.name} className={`relative overflow-hidden group hover:shadow-luxury transition-all duration-300 ${!canAfford ? 'opacity-60' : ''}`}>
-                  <div className="absolute top-0 left-0 w-full h-1 gradient-luxury"></div>
-                  
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                        <div className="relative flex-shrink-0">
-                          <img 
-                            src={wellPackage.image} 
-                            alt={wellPackage.name}
-                            className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border-2 border-primary/20"
-                          />
-                          <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-primary rounded-full flex items-center justify-center text-xs">
-                            {wellPackage.icon}
-                          </div>
-                        </div>
-                        <div className="min-w-0">
-                          <CardTitle className="text-lg sm:text-xl truncate">{wellPackage.name}</CardTitle>
-                          <CardDescription className="text-xs sm:text-sm">{wellPackage.description}</CardDescription>
-                        </div>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <div className="flex flex-col gap-1 sm:gap-2">
-                          <Badge className="bg-red-100 text-red-800 border-red-300 text-xs">
-                            -{wellPackage.discount}%
-                          </Badge>
-                          <Badge className="gradient-gold text-primary-foreground text-xs">
-                            <Star className="h-2 w-2 sm:h-3 sm:w-3 mr-1" />
-                            Хит
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-3 sm:space-y-4">
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Содержимое пакета:</h4>
-                      <div className="grid gap-1 sm:gap-2">
-                        {wellPackage.wells.map((well) => (
-                          <div key={well.type} className="flex justify-between items-center text-xs sm:text-sm bg-muted/50 p-2 rounded">
-                            <span className="truncate">{well.type}</span>
-                            <Badge variant="outline" className="text-xs">{well.count}x</Badge>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3 text-sm">
-                      <div className="text-center p-2 bg-muted/50 rounded">
-                        <p className="font-medium text-xs sm:text-sm">{formatGameCurrency(wellPackage.totalDailyIncome)}</p>
-                        <p className="text-xs text-muted-foreground">в день</p>
-                      </div>
-                      <div className="text-center p-2 bg-green-100 rounded">
-                        <p className="font-medium text-green-800 text-xs sm:text-sm">{formatGameCurrency(savings)}</p>
-                        <p className="text-xs text-green-600">экономия</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs sm:text-sm">
-                        <span className="text-muted-foreground">Обычная цена:</span>
-                        <span className="line-through text-muted-foreground">{formatGameCurrency(wellPackage.originalPrice)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-base sm:text-lg font-bold">Цена пакета:</span>
-                        <span className="text-lg sm:text-xl font-bold text-primary">{formatGameCurrency(wellPackage.discountedPrice)}</span>
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => onBuyPackage(wellPackage)}
-                      disabled={!canAfford}
-                      className="w-full gradient-luxury text-primary-foreground text-base sm:text-lg py-2 sm:py-3"
-                    >
-                      <Package className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                      Купить пакет
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-2">
+            {wellPackages.map((wellPackage, index) => (
+              <div 
+                key={wellPackage.name} 
+                className="wave-appear" 
+                style={{animationDelay: `${index * 100}ms`}}
+              >
+                <AnimatedPackageCard
+                  wellPackage={wellPackage}
+                  profile={profile}
+                  onBuyPackage={onBuyPackage}
+                />
+              </div>
+            ))}
           </div>
         </TabsContent>
       </Tabs>
