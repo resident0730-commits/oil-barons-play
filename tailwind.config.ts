@@ -154,6 +154,22 @@ export default {
             transform: "translateX(100%)"
           }
         },
+        "bubble": {
+          "0%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "0"
+          },
+          "10%": {
+            opacity: "0.6"
+          },
+          "90%": {
+            opacity: "0.6"
+          },
+          "100%": {
+            transform: "translateY(-400px) scale(0.5)",
+            opacity: "0"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -165,6 +181,7 @@ export default {
         "gold-glow": "gold-glow 2s ease-in-out infinite",
         "spin-slow": "spin-slow 3s linear infinite",
         "shine": "shine 2s ease-in-out infinite",
+        "bubble": "bubble 4s ease-in infinite",
       },
       animationDelay: {
         '75': '75ms',

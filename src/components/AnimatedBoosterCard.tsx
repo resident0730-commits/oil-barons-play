@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { ShoppingCart, TrendingUp, Clock, Sparkles, X } from "lucide-react";
 import { BoosterType } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 interface AnimatedBoosterCardProps {
   booster: BoosterType;
@@ -67,60 +68,112 @@ export const AnimatedBoosterCard = ({
   const canAfford = balance >= cost;
   const progress = (currentLevel / booster.maxLevel) * 100;
 
+  // Calculate boost percentage for animated counter
+  const boostPercent = parseInt(booster.effect.match(/\d+/)?.[0] || "0");
+
   return (
     <Card 
       className={`
         group relative overflow-hidden
-        transition-all duration-500
-        hover:shadow-2xl hover:-translate-y-2
+        transition-all duration-700 ease-out
+        hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]
+        hover:scale-[1.02]
         ${isActive ? 'ring-2 ring-primary shadow-primary/50' : ''}
         ${getRarityGlow(booster.rarity)}
+        perspective-1000
       `}
+      style={{
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.7s ease-out'
+      }}
+      onMouseMove={(e) => {
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      }}
     >
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      
+      {/* Oil bubbles animation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-primary/30 rounded-full animate-bubble"
+            style={{
+              left: `${20 + i * 15}%`,
+              bottom: '-10px',
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${3 + i * 0.3}s`
+            }}
+          />
+        ))}
+      </div>
+
       {/* Active indicator */}
       {isActive && (
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-pulse"></div>
       )}
 
       <CardContent className="p-6 relative">
-        {/* Header with image and rarity */}
-        <div className="flex flex-col items-center space-y-4 mb-4">
-          <div className="relative">
-            <div className={`
-              absolute inset-0 blur-xl opacity-50 
-              ${booster.rarity === 'epic' ? 'bg-purple-500' : ''}
-              ${booster.rarity === 'rare' ? 'bg-blue-500' : ''}
-              ${booster.rarity === 'uncommon' ? 'bg-green-500' : ''}
-              ${booster.rarity === 'temporary' ? 'bg-orange-500' : ''}
-              group-hover:opacity-75 transition-opacity
-            `}></div>
-            <img 
-              src={booster.icon} 
-              alt={booster.name}
-              className="w-32 h-32 rounded-xl object-cover border-2 border-primary/30 relative z-10 group-hover:scale-110 transition-transform duration-500"
-            />
-            <Badge className={`absolute -top-2 -right-2 z-20 ${getRarityColor(booster.rarity)}`}>
-              <Sparkles className="h-3 w-3 mr-1" />
-              {getRarityText(booster.rarity)}
-            </Badge>
-          </div>
-
-          <div className="text-center">
-            <h3 className="text-xl font-bold mb-1">{booster.name}</h3>
-            <p className="text-sm text-muted-foreground">{booster.description}</p>
-          </div>
+        {/* Large booster image - 60% of card */}
+        <div className="relative mb-6 h-56 flex items-center justify-center">
+          {/* Glow effect behind image */}
+          <div className={`
+            absolute inset-0 blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-500
+            ${booster.rarity === 'epic' ? 'bg-purple-500' : ''}
+            ${booster.rarity === 'rare' ? 'bg-blue-500' : ''}
+            ${booster.rarity === 'uncommon' ? 'bg-green-500' : ''}
+            ${booster.rarity === 'temporary' ? 'bg-orange-500' : ''}
+          `}></div>
+          
+          <img 
+            src={booster.icon} 
+            alt={booster.name}
+            className="relative z-10 w-48 h-48 object-contain group-hover:scale-110 transition-transform duration-700 ease-out drop-shadow-2xl"
+          />
+          
+          {/* Rarity badge */}
+          <Badge className={`absolute top-2 right-2 z-20 ${getRarityColor(booster.rarity)}`}>
+            <Sparkles className="h-3 w-3 mr-1" />
+            {getRarityText(booster.rarity)}
+          </Badge>
         </div>
 
-        {/* Stats */}
-        <div className="space-y-3 mb-4">
-          <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-green-500/10 to-transparent rounded-lg border border-green-500/20">
-            <TrendingUp className="h-4 w-4 text-green-500 flex-shrink-0" />
-            <span className="text-sm font-medium">{booster.effect}</span>
+        {/* Title */}
+        <div className="text-center mb-4">
+          <h3 className="text-2xl font-bold mb-2">{booster.name}</h3>
+          <p className="text-sm text-muted-foreground">{booster.description}</p>
+        </div>
+
+        {/* Animated stats with golden glow */}
+        <div className="space-y-3 mb-6">
+          {/* ROI/Effect stat with pulsing golden glow */}
+          <div className="relative p-4 bg-gradient-to-r from-yellow-500/10 via-amber-500/10 to-yellow-500/10 rounded-lg border border-yellow-500/30 overflow-hidden">
+            {/* Pulsing golden glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent animate-pulse"></div>
+            
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-yellow-500/20 rounded-full animate-pulse">
+                  <TrendingUp className="h-5 w-5 text-yellow-500" />
+                </div>
+                <span className="text-sm font-medium">Эффект</span>
+              </div>
+              <div className="text-2xl font-bold text-yellow-500">
+                +<AnimatedCounter end={boostPercent} duration={1500} suffix="%" />
+              </div>
+            </div>
           </div>
 
+          {/* Duration for temporary boosters */}
           {booster.duration && (
             <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-500/10 to-transparent rounded-lg border border-blue-500/20">
               <Clock className="h-4 w-4 text-blue-500 flex-shrink-0" />
@@ -128,7 +181,7 @@ export const AnimatedBoosterCard = ({
             </div>
           )}
 
-          {/* Expiration timer for active temporary boosters */}
+          {/* Expiration timer */}
           {isActive && expiresAt && (
             <div className="p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
               <div className="flex items-center gap-2 mb-1">
@@ -152,66 +205,72 @@ export const AnimatedBoosterCard = ({
           <div className="space-y-2 mb-4">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Уровень</span>
-              <span className="font-bold">{currentLevel} / {booster.maxLevel}</span>
+              <span className="font-bold">
+                <AnimatedCounter end={currentLevel} duration={800} /> / {booster.maxLevel}
+              </span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
         )}
 
-        {/* Price and actions */}
-        <div className="space-y-3">
-          {!isMaxLevel && (
-            <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+        {/* Price with golden pulsing glow */}
+        {!isMaxLevel && (
+          <div className="relative mb-4 p-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-lg border border-primary/30 overflow-hidden">
+            {/* Pulsing glow around price */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse"></div>
+            
+            <div className="relative flex justify-between items-center">
               <span className="text-sm text-muted-foreground">
                 {currentLevel > 0 ? 'Улучшить' : 'Цена'}:
               </span>
-              <span className="text-lg font-bold">{formatGameCurrency(cost)}</span>
+              <span className="text-2xl font-bold">{formatGameCurrency(cost)}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex gap-2">
+          {!isMaxLevel && (
+            <Button
+              onClick={() => onBuy(booster)}
+              disabled={!canAfford}
+              className={`
+                flex-1 transition-all duration-300
+                ${canAfford
+                  ? 'bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:scale-105'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed'
+                }
+              `}
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              {currentLevel > 0 ? 'Улучшить' : 'Купить'}
+            </Button>
+          )}
+
+          {isMaxLevel && (
+            <div className="flex-1 p-3 bg-gradient-to-r from-green-500/20 to-green-500/10 rounded-lg border border-green-500/30 text-center">
+              <span className="text-sm font-medium text-green-500">Максимальный уровень</span>
             </div>
           )}
 
-          <div className="flex gap-2">
-            {!isMaxLevel && (
-              <Button
-                onClick={() => onBuy(booster)}
-                disabled={!canAfford}
-                className={`
-                  flex-1 transition-all duration-300
-                  ${canAfford
-                    ? 'bg-gradient-to-r from-primary to-primary/80 hover:shadow-xl hover:scale-105'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed'
-                  }
-                `}
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                {currentLevel > 0 ? 'Улучшить' : 'Купить'}
-              </Button>
-            )}
-
-            {isMaxLevel && (
-              <div className="flex-1 p-3 bg-gradient-to-r from-green-500/20 to-green-500/10 rounded-lg border border-green-500/30 text-center">
-                <span className="text-sm font-medium text-green-600">Максимальный уровень</span>
-              </div>
-            )}
-
-            {currentLevel > 0 && !booster.duration && (
-              <Button
-                onClick={() => onCancel(booster)}
-                variant="outline"
-                size="icon"
-                className="hover:bg-destructive hover:text-destructive-foreground"
-                title="Отменить (возврат 50%)"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-
-          {!canAfford && !isMaxLevel && (
-            <p className="text-xs text-center text-destructive">
-              Недостаточно средств
-            </p>
+          {currentLevel > 0 && !booster.duration && (
+            <Button
+              onClick={() => onCancel(booster)}
+              variant="outline"
+              size="icon"
+              className="hover:bg-destructive hover:text-destructive-foreground"
+              title="Отменить (возврат 50%)"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           )}
         </div>
+
+        {!canAfford && !isMaxLevel && (
+          <p className="text-xs text-center text-destructive mt-2">
+            Недостаточно средств
+          </p>
+        )}
       </CardContent>
     </Card>
   );
