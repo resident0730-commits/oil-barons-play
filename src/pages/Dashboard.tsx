@@ -33,6 +33,7 @@ import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -433,18 +434,7 @@ const Dashboard = () => {
   };
 
   if (loading || !user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Fuel className="h-12 w-12 text-primary mx-auto animate-pulse" />
-          <div className="space-y-2">
-            <p className="text-lg font-medium">Загрузка игры...</p>
-            {!user && <p className="text-sm text-muted-foreground">Проверка авторизации</p>}
-            {user && !profile && <p className="text-sm text-muted-foreground">Загрузка профиля</p>}
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingScreen user={user} profile={profile} />;
   }
 
   return (
