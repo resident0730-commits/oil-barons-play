@@ -166,7 +166,7 @@ const Index = () => {
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
-            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
               Игровой рубль
             </h2>
             <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
@@ -291,7 +291,7 @@ const Index = () => {
         {/* Features Grid */}
         <div className="mb-32">
           <div className="text-center mb-16">
-            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
               Возможности игры
             </h2>
             <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
