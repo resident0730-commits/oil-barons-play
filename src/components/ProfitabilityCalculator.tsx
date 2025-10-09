@@ -8,12 +8,12 @@ import { Calculator, TrendingUp, Fuel, Package, Calendar, ArrowRight, Check } fr
 import { useCurrency } from '@/hooks/useCurrency';
 import { Link } from 'react-router-dom';
 
-// Типы скважин и их характеристики (данные из useGameData)
+// Типы скважин и их характеристики (данные из useGameData.tsx)
 const WELL_TYPES = [
-  { name: 'Премиум-скважина', dailyIncome: 360, cost: 12000, efficiency: 0.03 },
-  { name: 'Легендарная скважина', dailyIncome: 918, cost: 27000, efficiency: 0.034 },
   { name: 'Космическая скважина', dailyIncome: 1440, cost: 40000, efficiency: 0.036 },
+  { name: 'Легендарная скважина', dailyIncome: 918, cost: 27000, efficiency: 0.034 },
   { name: 'Элитная скважина', dailyIncome: 576, cost: 18000, efficiency: 0.032 },
+  { name: 'Премиум-скважина', dailyIncome: 360, cost: 12000, efficiency: 0.03 },
   { name: 'Супер-скважина', dailyIncome: 224, cost: 8000, efficiency: 0.028 },
   { name: 'Промышленная скважина', dailyIncome: 130, cost: 5000, efficiency: 0.026 },
   { name: 'Средняя скважина', dailyIncome: 72, cost: 3000, efficiency: 0.024 },
@@ -21,15 +21,62 @@ const WELL_TYPES = [
   { name: 'Мини-скважина', dailyIncome: 20, cost: 1000, efficiency: 0.02 },
 ];
 
+// Пакеты скважин (данные из useGameData.tsx - wellPackages)
+const WELL_PACKAGES = [
+  { 
+    name: 'Стартовый пакет', 
+    wells: [
+      { type: 'Мини-скважина', count: 3, dailyIncome: 20 },
+      { type: 'Стартовая скважина', count: 1, dailyIncome: 44 }
+    ],
+    cost: 3800, 
+    totalIncome: 104,
+    discount: '24%'
+  },
+  { 
+    name: 'Пакет роста', 
+    wells: [
+      { type: 'Стартовая скважина', count: 2, dailyIncome: 44 },
+      { type: 'Средняя скважина', count: 2, dailyIncome: 72 },
+      { type: 'Промышленная скважина', count: 1, dailyIncome: 130 }
+    ],
+    cost: 12500, 
+    totalIncome: 290,
+    discount: '22%'
+  },
+  { 
+    name: 'Бизнес пакет', 
+    wells: [
+      { type: 'Промышленная скважина', count: 3, dailyIncome: 130 },
+      { type: 'Супер-скважина', count: 2, dailyIncome: 224 },
+      { type: 'Премиум-скважина', count: 1, dailyIncome: 360 }
+    ],
+    cost: 42000, 
+    totalIncome: 1208,
+    discount: '24%'
+  },
+  { 
+    name: 'Империя пакет', 
+    wells: [
+      { type: 'Премиум-скважина', count: 2, dailyIncome: 360 },
+      { type: 'Элитная скважина', count: 2, dailyIncome: 576 },
+      { type: 'Легендарная скважина', count: 1, dailyIncome: 918 }
+    ],
+    cost: 72000, 
+    totalIncome: 2790,
+    discount: '25%'
+  }
+];
+
 // Бустеры и их множители (постоянные улучшения, 1 уровень)
-// Данные из useGameData.tsx и BoosterShop.tsx
+// Данные из useGameData.tsx - calculateBoosterMultiplier()
 const BOOSTERS = [
-  { name: 'Турбо режим', multiplier: 1.5, cost: 3000, temporary: true }, // 50% на 24ч - ВРЕМЕННЫЙ
-  { name: 'Современное оборудование', multiplier: 1.35, cost: 20000, temporary: false }, // 35% постоянно
-  { name: 'Геологические исследования', multiplier: 1.25, cost: 8000, temporary: false }, // 25% постоянно
-  { name: 'Автоматизация', multiplier: 1.2, cost: 15000, temporary: false }, // 20% постоянно
-  { name: 'Квалифицированная бригада', multiplier: 1.15, cost: 5000, temporary: false }, // 15% постоянно
-].filter(b => !b.temporary); // Исключаем временные бустеры из калькулятора
+  { name: 'Современное оборудование', multiplier: 1.35, cost: 20000, bonusPercent: 35 }, // +35% за 1 уровень
+  { name: 'Геологические исследования', multiplier: 1.25, cost: 8000, bonusPercent: 25 }, // +25% за 1 уровень
+  { name: 'Автоматизация', multiplier: 1.2, cost: 15000, bonusPercent: 20 }, // +20% за 1 уровень
+  { name: 'Квалифицированная бригада', multiplier: 1.15, cost: 5000, bonusPercent: 15 }, // +15% за 1 уровень
+  // Турбо режим - временный, не включаем в калькулятор
+];
 
 interface CalculatorProps {
   compact?: boolean;
@@ -40,14 +87,20 @@ interface WellPurchase {
   count: number;
 }
 
+interface PackagePurchase {
+  package: typeof WELL_PACKAGES[0];
+  count: number;
+}
+
 interface BoosterPurchase {
   booster: typeof BOOSTERS[0];
   apply: boolean;
 }
 
-// Функция для расчета оптимального набора скважин
+// Функция для расчета оптимального набора скважин и пакетов
 const calculateOptimalPurchases = (targetIncome: number): {
   wells: WellPurchase[];
+  packages: PackagePurchase[];
   booster: typeof BOOSTERS[0] | null;
   totalCost: number;
   actualIncome: number;
@@ -55,6 +108,7 @@ const calculateOptimalPurchases = (targetIncome: number): {
 } => {
   let bestSolution = {
     wells: [] as WellPurchase[],
+    packages: [] as PackagePurchase[],
     booster: null as typeof BOOSTERS[0] | null,
     totalCost: Infinity,
     actualIncome: 0,
@@ -67,14 +121,131 @@ const calculateOptimalPurchases = (targetIncome: number): {
     const boosterMultiplier = currentBooster ? currentBooster.multiplier : 1.0;
     const requiredBaseIncome = targetIncome / boosterMultiplier;
 
-    // Жадный алгоритм: покупаем самые эффективные скважины
-    const purchases: WellPurchase[] = [];
-    let currentIncome = 0;
-    let totalCost = currentBooster ? currentBooster.cost : 0;
+    // Вариант 1: Покупка только пакетов
+    let packageSolution = calculatePackagesSolution(requiredBaseIncome, currentBooster);
+    
+    // Вариант 2: Покупка только отдельных скважин
+    let individualSolution = calculateIndividualWellsSolution(requiredBaseIncome, currentBooster);
+    
+    // Вариант 3: Комбинация пакетов и отдельных скважин
+    let combinedSolution = calculateCombinedSolution(requiredBaseIncome, currentBooster);
 
-    // Сортируем по эффективности
+    // Выбираем лучшее решение
+    const solutions = [packageSolution, individualSolution, combinedSolution];
+    const bestCurrent = solutions.reduce((best, current) => 
+      current.totalCost < best.totalCost ? current : best
+    );
+
+    if (bestCurrent.actualIncome >= targetIncome && bestCurrent.totalCost < bestSolution.totalCost) {
+      bestSolution = bestCurrent;
+    }
+  }
+
+  return bestSolution;
+};
+
+// Расчет решения только с пакетами
+const calculatePackagesSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
+  const packages: PackagePurchase[] = [];
+  let currentIncome = 0;
+  let totalCost = booster ? booster.cost : 0;
+  const boosterMultiplier = booster ? booster.multiplier : 1.0;
+
+  // Сортируем пакеты по эффективности (доход/стоимость)
+  const sortedPackages = [...WELL_PACKAGES].sort((a, b) => 
+    (b.totalIncome / b.cost) - (a.totalIncome / a.cost)
+  );
+
+  for (const pkg of sortedPackages) {
+    if (currentIncome >= requiredBaseIncome) break;
+
+    const neededIncome = requiredBaseIncome - currentIncome;
+    const count = Math.ceil(neededIncome / pkg.totalIncome);
+
+    if (count > 0) {
+      packages.push({ package: pkg, count });
+      currentIncome += pkg.totalIncome * count;
+      totalCost += pkg.cost * count;
+    }
+  }
+
+  const actualIncome = currentIncome * boosterMultiplier;
+  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
+
+  return {
+    wells: [] as WellPurchase[],
+    packages,
+    booster,
+    totalCost,
+    actualIncome,
+    paybackDays,
+  };
+};
+
+// Расчет решения только с отдельными скважинами
+const calculateIndividualWellsSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
+  const wells: WellPurchase[] = [];
+  let currentIncome = 0;
+  let totalCost = booster ? booster.cost : 0;
+  const boosterMultiplier = booster ? booster.multiplier : 1.0;
+
+  // Сортируем по эффективности
+  const sortedWells = [...WELL_TYPES].sort((a, b) => b.efficiency - a.efficiency);
+
+  for (const well of sortedWells) {
+    if (currentIncome >= requiredBaseIncome) break;
+
+    const neededIncome = requiredBaseIncome - currentIncome;
+    const count = Math.ceil(neededIncome / well.dailyIncome);
+
+    if (count > 0) {
+      wells.push({ well, count });
+      currentIncome += well.dailyIncome * count;
+      totalCost += well.cost * count;
+    }
+  }
+
+  const actualIncome = currentIncome * boosterMultiplier;
+  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
+
+  return {
+    wells,
+    packages: [] as PackagePurchase[],
+    booster,
+    totalCost,
+    actualIncome,
+    paybackDays,
+  };
+};
+
+// Расчет комбинированного решения (пакеты + отдельные скважины)
+const calculateCombinedSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
+  const packages: PackagePurchase[] = [];
+  const wells: WellPurchase[] = [];
+  let currentIncome = 0;
+  let totalCost = booster ? booster.cost : 0;
+  const boosterMultiplier = booster ? booster.multiplier : 1.0;
+
+  // Сначала используем самый выгодный пакет
+  const bestPackage = [...WELL_PACKAGES].sort((a, b) => 
+    (b.totalIncome / b.cost) - (a.totalIncome / a.cost)
+  )[0];
+
+  if (bestPackage && currentIncome < requiredBaseIncome) {
+    const neededIncome = requiredBaseIncome - currentIncome;
+    const count = Math.floor(neededIncome / bestPackage.totalIncome);
+    
+    if (count > 0) {
+      packages.push({ package: bestPackage, count });
+      currentIncome += bestPackage.totalIncome * count;
+      totalCost += bestPackage.cost * count;
+    }
+  }
+
+  // Добираем отдельными скважинами
+  if (currentIncome < requiredBaseIncome) {
     const sortedWells = [...WELL_TYPES].sort((a, b) => b.efficiency - a.efficiency);
-
+    
     for (const well of sortedWells) {
       if (currentIncome >= requiredBaseIncome) break;
 
@@ -82,28 +253,25 @@ const calculateOptimalPurchases = (targetIncome: number): {
       const count = Math.ceil(neededIncome / well.dailyIncome);
 
       if (count > 0) {
-        purchases.push({ well, count });
+        wells.push({ well, count });
         currentIncome += well.dailyIncome * count;
         totalCost += well.cost * count;
+        break; // Берем только один тип скважин для добора
       }
-    }
-
-    const actualIncome = currentIncome * boosterMultiplier;
-    const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
-
-    // Сохраняем решение, если оно лучше
-    if (actualIncome >= targetIncome && totalCost < bestSolution.totalCost) {
-      bestSolution = {
-        wells: purchases,
-        booster: currentBooster,
-        totalCost,
-        actualIncome,
-        paybackDays,
-      };
     }
   }
 
-  return bestSolution;
+  const actualIncome = currentIncome * boosterMultiplier;
+  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
+
+  return {
+    wells,
+    packages,
+    booster,
+    totalCost,
+    actualIncome,
+    paybackDays,
+  };
 };
 
 export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) => {
@@ -274,6 +442,51 @@ export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) =>
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Пакеты скважин */}
+          {solution.packages.length > 0 && (
+            <div className="space-y-3">
+              {solution.packages.map((purchase, index) => (
+                <Card key={`pkg-${index}`} className="bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-500/30">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 bg-blue-500/30 rounded-xl">
+                          <Package className="h-8 w-8 text-blue-400" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <h4 className="text-xl font-bold text-blue-100">{purchase.package.name}</h4>
+                            <Badge className="bg-blue-500/30 text-blue-100 border-blue-400">
+                              x{purchase.count} шт
+                            </Badge>
+                            <Badge variant="outline" className="bg-green-500/20 text-green-100 border-green-400">
+                              {purchase.package.discount} скидка
+                            </Badge>
+                          </div>
+                          <p className="text-muted-foreground mb-3">
+                            Доход: {formatGameCurrency(purchase.package.totalIncome)}/день за пакет
+                          </p>
+                          <div className="text-sm text-muted-foreground mb-3">
+                            Включает: {purchase.package.wells.map(w => `${w.type} x${w.count}`).join(', ')}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant="outline" className="text-blue-100 border-blue-400">
+                              Цена за 1: {formatGameCurrency(purchase.package.cost)}
+                            </Badge>
+                            <Badge variant="secondary">
+                              Итого: {formatGameCurrency(purchase.package.cost * purchase.count)}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                      <Check className="h-6 w-6 text-blue-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           )}
 
           {/* Скважины */}
