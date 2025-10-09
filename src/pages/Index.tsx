@@ -162,61 +162,72 @@ const Index = () => {
       <div className="relative mt-12">
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-24 animate-fade-in">
-          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group animate-fade-in">
-            {/* Animated border */}
+          <div className="text-center mb-12">
+            <h2 className="luxury-gold-text text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+              ИГРОВАЯ ВАЛЮТА
+            </h2>
+            <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-yellow-400 to-primary bg-clip-text text-transparent mb-4">
+              {currencyConfig.game_currency_name}
+            </h3>
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Приобретайте игровую валюту для развития своей нефтяной империи
+            </p>
+          </div>
+          
+          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-            <CardHeader className="text-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <Coins className="h-8 w-8 text-primary" />
+            <CardHeader className="text-center pb-4">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="p-4 bg-primary/10 rounded-full border border-primary/30 shadow-lg">
+                  <Coins className="h-10 w-10 text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]" />
                 </div>
-                <div className="p-3 bg-accent/10 rounded-full">
-                  <Wallet className="h-8 w-8 text-accent" />
+                <div className="p-4 bg-accent/10 rounded-full border border-accent/30 shadow-lg">
+                  <Wallet className="h-10 w-10 text-accent drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]" />
                 </div>
               </div>
-              <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-                Игровая валюта {currencyConfig.game_currency_name}
-              </CardTitle>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Приобретайте игровую валюту для развития своей нефтяной империи
-              </p>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8 pt-0">
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-primary/5 rounded-xl border border-primary/10">
-                  <div className="text-4xl font-bold text-primary mb-2">{currencyConfig.exchange_rate}</div>
-                  <p className="text-sm text-muted-foreground">Прозрачный курс обмена</p>
+                <div className="text-center p-8 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl border border-primary/20 shadow-lg hover-scale group">
+                  <div className="text-5xl font-bold text-primary mb-3 drop-shadow-[0_0_20px_rgba(234,179,8,0.4)] group-hover:scale-110 transition-transform">
+                    {currencyConfig.exchange_rate}
+                  </div>
+                  <p className="text-base font-medium text-foreground/80">Прозрачный курс обмена</p>
                 </div>
-                <div className="text-center p-6 bg-accent/5 rounded-xl border border-accent/10">
-                  <div className="text-4xl font-bold text-accent mb-2">100%</div>
-                  <p className="text-sm text-muted-foreground">Безопасные платежи</p>
+                <div className="text-center p-8 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border border-accent/20 shadow-lg hover-scale group">
+                  <div className="text-5xl font-bold text-accent mb-3 drop-shadow-[0_0_20px_rgba(234,179,8,0.4)] group-hover:scale-110 transition-transform">
+                    100%
+                  </div>
+                  <p className="text-base font-medium text-foreground/80">Безопасные платежи</p>
                 </div>
               </div>
               
-              <div className="bg-muted/30 rounded-xl p-6">
-                <h4 className="font-semibold text-lg mb-3 text-center">Что такое {currencyConfig.game_currency_name}?</h4>
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div className="text-center space-y-2">
-                    <div className="p-2 bg-primary/10 rounded-lg inline-block">
-                      <Target className="h-5 w-5 text-primary" />
+              <div className="bg-gradient-to-br from-muted/40 to-muted/20 rounded-xl p-8 border border-primary/10">
+                <h4 className="font-bold text-2xl mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  Что такое {currencyConfig.game_currency_name}?
+                </h4>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center space-y-3">
+                    <div className="p-3 bg-primary/15 rounded-lg inline-block border border-primary/20">
+                      <Target className="h-7 w-7 text-primary drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
                     </div>
-                    <p className="font-medium">Игровая валюта</p>
-                    <p className="text-muted-foreground">{getGameCurrencyDescription()}</p>
+                    <p className="font-bold text-lg text-foreground">Игровая валюта</p>
+                    <p className="text-muted-foreground leading-relaxed">{getGameCurrencyDescription()}</p>
                   </div>
-                  <div className="text-center space-y-2">
-                    <div className="p-2 bg-accent/10 rounded-lg inline-block">
-                      <Shield className="h-5 w-5 text-accent" />
+                  <div className="text-center space-y-3">
+                    <div className="p-3 bg-accent/15 rounded-lg inline-block border border-accent/20">
+                      <Shield className="h-7 w-7 text-accent drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
                     </div>
-                    <p className="font-medium">Курс обмена</p>
-                    <p className="text-muted-foreground">{getExchangeDescription()}</p>
+                    <p className="font-bold text-lg text-foreground">Курс обмена</p>
+                    <p className="text-muted-foreground leading-relaxed">{getExchangeDescription()}</p>
                   </div>
-                  <div className="text-center space-y-2">
-                    <div className="p-2 bg-primary/10 rounded-lg inline-block">
-                      <Zap className="h-5 w-5 text-primary" />
+                  <div className="text-center space-y-3">
+                    <div className="p-3 bg-primary/15 rounded-lg inline-block border border-primary/20">
+                      <Zap className="h-7 w-7 text-primary drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
                     </div>
-                    <p className="font-medium">Мгновенное зачисление</p>
-                    <p className="text-muted-foreground">{currencyConfig.game_currency_name} поступают на игровой счет сразу после платежа</p>
+                    <p className="font-bold text-lg text-foreground">Мгновенное зачисление</p>
+                    <p className="text-muted-foreground leading-relaxed">{currencyConfig.game_currency_name} поступают на игровой счет сразу после платежа</p>
                   </div>
                 </div>
               </div>
@@ -286,74 +297,82 @@ const Index = () => {
         {/* Features Grid */}
         <div className="mb-24">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-playfair">Возможности игры</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Все инструменты для построения нефтяной империи</p>
+            <h2 className="luxury-gold-text text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+              ВОЗМОЖНОСТИ ИГРЫ
+            </h2>
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Все инструменты для построения нефтяной империи
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
-              {/* Animated background glow */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 container mx-auto px-4">
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-              <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
-                  <Fuel className="h-12 w-12 text-primary" />
+              <CardHeader className="relative z-10 pb-4">
+                <div className="mx-auto mb-4 p-5 bg-primary/15 rounded-full w-fit border border-primary/30 shadow-lg group-hover:scale-110 transition-transform">
+                  <Fuel className="h-14 w-14 text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.6)]" />
                 </div>
-                <CardTitle className="text-xl font-bold">Нефтяные скважины</CardTitle>
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent">
+                  Нефтяные скважины
+                </CardTitle>
               </CardHeader>
               <CardContent className="relative z-10">
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-foreground/80 leading-relaxed text-base">
                   Покупайте и развивайте скважины различных классов для изучения экономических принципов
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
-              {/* Animated background glow */}
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-              <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
-                  <TrendingUp className="h-12 w-12 text-accent" />
+              <CardHeader className="relative z-10 pb-4">
+                <div className="mx-auto mb-4 p-5 bg-accent/15 rounded-full w-fit border border-accent/30 shadow-lg group-hover:scale-110 transition-transform">
+                  <TrendingUp className="h-14 w-14 text-accent drop-shadow-[0_0_15px_rgba(234,179,8,0.6)]" />
                 </div>
-                <CardTitle className="text-xl font-bold">Стабильная прибыль</CardTitle>
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                  Стабильная прибыль
+                </CardTitle>
               </CardHeader>
               <CardContent className="relative z-10">
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-foreground/80 leading-relaxed text-base">
                   Изучайте основы экономики через игровые механики и получайте стабильный прогресс в игре
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
-              {/* Animated background glow */}
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-              <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
-                  <Users className="h-12 w-12 text-primary" />
+              <CardHeader className="relative z-10 pb-4">
+                <div className="mx-auto mb-4 p-5 bg-primary/15 rounded-full w-fit border border-primary/30 shadow-lg group-hover:scale-110 transition-transform">
+                  <Users className="h-14 w-14 text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.6)]" />
                 </div>
-                <CardTitle className="text-xl font-bold">Реферальная программа</CardTitle>
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent">
+                  Реферальная программа
+                </CardTitle>
               </CardHeader>
               <CardContent className="relative z-10">
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-foreground/80 leading-relaxed text-base">
                   Приглашайте друзей в игру и получайте бонусы за совместную игру в образовательной игре
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
-              {/* Animated background glow */}
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-              <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
-                  <Award className="h-12 w-12 text-accent" />
+              <CardHeader className="relative z-10 pb-4">
+                <div className="mx-auto mb-4 p-5 bg-accent/15 rounded-full w-fit border border-accent/30 shadow-lg group-hover:scale-110 transition-transform">
+                  <Award className="h-14 w-14 text-accent drop-shadow-[0_0_15px_rgba(234,179,8,0.6)]" />
                 </div>
-                <CardTitle className="text-xl font-bold">Система достижений</CardTitle>
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                  Система достижений
+                </CardTitle>
               </CardHeader>
               <CardContent className="relative z-10">
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-foreground/80 leading-relaxed text-base">
                   Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах игры
                 </p>
               </CardContent>
