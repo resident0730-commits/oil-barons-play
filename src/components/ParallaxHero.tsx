@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { Zap, Coins, BarChart3, Fuel } from 'lucide-react';
+import { Zap, BarChart3 } from 'lucide-react';
 import { OilParticles } from './OilParticles';
-import { LiveStatsCounter } from './LiveStatsCounter';
 import { useAuth } from '@/hooks/useAuth';
 
 export const ParallaxHero = () => {
@@ -35,92 +33,45 @@ export const ParallaxHero = () => {
       {/* Oil Particles */}
       <OilParticles />
 
-      {/* Parallax Background Layers */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"
-        style={{
-          transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`
-        }}
-      />
-      
-      {/* Animated gradient overlay */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 animate-pulse"
-        style={{
-          transform: `translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)`
-        }}
-      />
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 hero-luxury-background"
+          style={{
+            transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px) scale(1.1)`
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+      </div>
 
       {/* Content */}
-      <div className="relative z-20 container mx-auto px-4 py-20">
-        <div className="text-center space-y-12 animate-fade-in">
-          {/* Badge */}
-          <div 
-            className="relative inline-block"
-            style={{
-              transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`
-            }}
-          >
-            <Badge 
-              variant="secondary" 
-              className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-primary animate-scale-in border-2 border-primary/30"
-            >
-              <Fuel className="w-5 h-5 mr-2 animate-glow-pulse" />
-              Богатство из недр земли
-            </Badge>
-          </div>
-          
+      <div className="relative z-20 container mx-auto px-4 py-32">
+        <div className="text-center space-y-16 animate-fade-in">
           {/* Main Title with Holographic Effect */}
           <div 
-            className="space-y-8"
+            className="space-y-10"
             style={{
               transform: `translate(${mousePosition.x * -8}px, ${mousePosition.y * -8}px)`
             }}
           >
-            <h1 className="holographic-text text-6xl md:text-8xl lg:text-9xl font-bold font-playfair leading-tight">
+            <h1 className="holographic-text text-7xl md:text-9xl lg:text-[12rem] font-bold font-playfair leading-tight tracking-tight">
               Oil Tycoon
             </h1>
             
-            <div className="max-w-4xl mx-auto space-y-6">
-              <p className="text-2xl md:text-4xl text-foreground/90 font-bold leading-relaxed drop-shadow-lg">
+            <div className="max-w-5xl mx-auto space-y-8">
+              <p className="text-3xl md:text-5xl text-white font-bold leading-tight drop-shadow-2xl">
                 От первой капли нефти до нефтяной империи
               </p>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
                 Реальный заработок через игровую механику! Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
               </p>
-
-              {/* USP Points */}
-              <div 
-                className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-8"
-                style={{
-                  transform: `translate(${mousePosition.x * 12}px, ${mousePosition.y * 12}px)`
-                }}
-              >
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-sm rounded-2xl p-6 border border-primary/20 hover-scale">
-                  <div className="text-4xl mb-3">💰</div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Пассивный доход 24/7</h3>
-                  <p className="text-sm text-muted-foreground">Ваши скважины работают, пока вы спите</p>
-                </div>
-                
-                <div className="bg-gradient-to-br from-accent/10 to-accent/5 backdrop-blur-sm rounded-2xl p-6 border border-accent/20 hover-scale">
-                  <div className="text-4xl mb-3">🚀</div>
-                  <h3 className="text-xl font-bold mb-2 text-accent">От новичка до олигарха</h3>
-                  <p className="text-sm text-muted-foreground">Постройте империю за 30 дней</p>
-                </div>
-                
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-sm rounded-2xl p-6 border border-primary/20 hover-scale">
-                  <div className="text-4xl mb-3">🏆</div>
-                  <h3 className="text-xl font-bold mb-2 text-primary">Реальные призы</h3>
-                  <p className="text-sm text-muted-foreground">Конкурсы и розыгрыши каждую неделю</p>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* CTA Buttons */}
           <div 
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8"
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-12"
             style={{
               transform: `translate(${mousePosition.x * -12}px, ${mousePosition.y * -12}px)`
             }}
@@ -129,22 +80,22 @@ export const ParallaxHero = () => {
               <Link to="/dashboard">
                 <Button 
                   size="lg" 
-                  className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse group relative overflow-hidden"
+                  className="gradient-primary shadow-2xl text-2xl px-14 py-8 hover-scale animate-glow-pulse group relative overflow-hidden border-2 border-primary/30"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <Zap className="mr-3 h-6 w-6 relative z-10" />
-                  <span className="relative z-10">Продолжить империю</span>
+                  <Zap className="mr-3 h-7 w-7 relative z-10" />
+                  <span className="relative z-10 font-bold">Продолжить империю</span>
                 </Button>
               </Link>
             ) : (
               <Link to="/auth">
                 <Button 
                   size="lg" 
-                  className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse group relative overflow-hidden"
+                  className="gradient-primary shadow-2xl text-2xl px-14 py-8 hover-scale animate-glow-pulse group relative overflow-hidden border-2 border-primary/30"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <Coins className="mr-3 h-6 w-6 relative z-10" />
-                  <span className="relative z-10">Начать зарабатывать</span>
+                  <Zap className="mr-3 h-7 w-7 relative z-10" />
+                  <span className="relative z-10 font-bold">Начать зарабатывать</span>
                 </Button>
               </Link>
             )}
@@ -153,28 +104,18 @@ export const ParallaxHero = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-xl px-10 py-6 backdrop-blur-sm bg-card/30 border-primary/50 hover:bg-primary/10 hover-scale"
+                className="text-2xl px-12 py-8 backdrop-blur-md bg-white/5 border-2 border-white/20 hover:bg-white/10 hover-scale text-white"
               >
-                <BarChart3 className="mr-3 h-6 w-6" />
-                Узнать больше
+                <BarChart3 className="mr-3 h-7 w-7" />
+                <span className="font-bold">Узнать больше</span>
               </Button>
             </Link>
           </div>
 
-          {/* Live Stats Counter */}
-          <div 
-            className="pt-12"
-            style={{
-              transform: `translate(${mousePosition.x * 10}px, ${mousePosition.y * 10}px)`
-            }}
-          >
-            <LiveStatsCounter />
-          </div>
-
           {/* Scroll Indicator */}
-          <div className="pt-16 animate-bounce">
-            <div className="w-6 h-10 border-2 border-primary/30 rounded-full mx-auto flex items-start justify-center p-2">
-              <div className="w-1.5 h-3 bg-primary rounded-full animate-pulse"></div>
+          <div className="pt-20 animate-bounce">
+            <div className="w-8 h-12 border-2 border-white/40 rounded-full mx-auto flex items-start justify-center p-2">
+              <div className="w-2 h-4 bg-white/80 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>
