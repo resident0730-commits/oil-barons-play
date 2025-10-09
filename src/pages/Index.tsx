@@ -131,7 +131,7 @@ const Index = () => {
                   const calculatorSection = document.getElementById('calculator-section');
                   calculatorSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
-                className="hidden sm:flex items-center gap-2 relative overflow-hidden group
+                className="flex items-center gap-2 relative overflow-hidden group
                   bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 
                   hover:from-violet-500 hover:via-purple-500 hover:to-fuchsia-500
                   text-white font-bold shadow-lg hover:shadow-purple-500/50
@@ -139,8 +139,7 @@ const Index = () => {
                   transition-all duration-300 hover:scale-105
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent
                   before:-translate-x-full before:hover:translate-x-full before:transition-transform before:duration-700
-                  after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]
-                  animate-[pulse_30s_cubic-bezier(0.4,0,0.6,1)_infinite] hover:animate-none"
+                  after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]"
               >
                 <Calculator className="h-4 w-4 relative z-10 drop-shadow-md" />
                 <span className="hidden lg:inline relative z-10 drop-shadow-md">Калькулятор доходности</span>
