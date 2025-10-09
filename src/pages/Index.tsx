@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +30,8 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Gift
+  Gift,
+  Calculator
 } from "lucide-react";
 
 const Index = () => {
@@ -42,7 +42,6 @@ const Index = () => {
   const { currencyConfig, formatGameCurrency, getGameCurrencyDescription, getExchangeDescription } = useCurrency();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   // Обработка результата платежа
   useEffect(() => {
@@ -128,7 +127,10 @@ const Index = () => {
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               <Button 
                 size="sm" 
-                onClick={() => setIsCalculatorOpen(true)}
+                onClick={() => {
+                  const calculatorSection = document.getElementById('calculator-section');
+                  calculatorSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
                 className="hidden sm:flex items-center gap-2 relative overflow-hidden group
                   bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 
                   hover:from-violet-500 hover:via-purple-500 hover:to-fuchsia-500
@@ -138,7 +140,7 @@ const Index = () => {
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent
                   before:-translate-x-full before:hover:translate-x-full before:transition-transform before:duration-700
                   after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]
-                  animate-pulse hover:animate-none"
+                  animate-[pulse_3s_cubic-bezier(0.4,0,0.6,1)_infinite] hover:animate-none"
               >
                 <Calculator className="h-4 w-4 relative z-10 drop-shadow-md" />
                 <span className="hidden lg:inline relative z-10 drop-shadow-md">Калькулятор доходности</span>
@@ -180,13 +182,6 @@ const Index = () => {
 
       {/* Parallax Hero Section */}
       <ParallaxHero />
-
-      {/* Calculator Dialog */}
-      <ProfitabilityCalculator 
-        compact={false} 
-        isOpen={isCalculatorOpen}
-        onOpenChange={setIsCalculatorOpen}
-      />
 
       {/* Rest of the content with spacing */}
       <div className="relative mt-12">
@@ -322,7 +317,7 @@ const Index = () => {
         </div>
 
         {/* Profitability Calculator Section */}
-        <div className="container mx-auto px-4 mb-32 animate-fade-in">
+        <div id="calculator-section" className="container mx-auto px-4 mb-32 animate-fade-in">
           <ProfitabilityCalculator compact />
         </div>
 
