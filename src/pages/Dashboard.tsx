@@ -6,7 +6,6 @@ import {
   ShoppingCart, 
   Zap,
   Sparkles,
-  Gift,
   Calendar,
   History,
   Trophy,
@@ -24,7 +23,6 @@ import { useSound } from "@/hooks/useSound";
 import { useCurrency } from "@/hooks/useCurrency";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
-import { CaseSystem } from "@/components/CaseSystem";
 import DailyChest from "@/components/DailyChest";
 import { DailyBonus } from "@/components/DailyBonus";
 import { GameSection } from "@/components/GameSection";
@@ -54,7 +52,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily' | 'balance'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -83,7 +81,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'boosters', 'cases', 'daily', 'balance'];
+      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         // Очищаем параметр section из URL
@@ -470,7 +468,6 @@ const Dashboard = () => {
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
-                { id: 'cases', label: 'Кейсы', icon: Gift, shortLabel: 'Кейсы' },
                 { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
               ].map((section) => (
                 <Button
@@ -548,10 +545,6 @@ const Dashboard = () => {
             </div>
             <BoosterShop />
           </div>
-        )}
-
-        {activeSection === 'cases' && (
-          <CaseSystem />
         )}
 
         {activeSection === 'daily' && (
