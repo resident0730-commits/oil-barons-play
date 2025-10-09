@@ -23,7 +23,8 @@ import {
   Sparkles,
   Gem,
   Shield,
-  Rocket
+  Rocket,
+  Calendar
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -345,8 +346,9 @@ const GameGuide = () => {
         {/* Quick Start */}
         <div id="quick-start" className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              🚀 Быстрый старт
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Rocket className="h-12 w-12 md:h-16 md:w-16" />
+              Быстрый старт
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Первые шаги для успешного старта в Oil Tycoon
@@ -383,8 +385,9 @@ const GameGuide = () => {
         {/* Wells Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              ⛽ Типы скважин и их экономика
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Fuel className="h-12 w-12 md:h-16 md:w-16" />
+              Типы скважин и их экономика
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Подробный разбор каждого типа скважин с примерами доходности
@@ -436,8 +439,9 @@ const GameGuide = () => {
         {/* Upgrades Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              📈 Система улучшений
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <TrendingUp className="h-12 w-12 md:h-16 md:w-16" />
+              Система улучшений
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Как работают улучшения скважин и когда их стоит покупать
@@ -450,11 +454,13 @@ const GameGuide = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg text-white mb-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  🔧 Каждое улучшение увеличивает доход скважины на 20%
+                <p className="text-base md:text-lg text-white mb-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
+                  <Wrench className="h-5 w-5" />
+                  Каждое улучшение увеличивает доход скважины на 20%
                 </p>
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  📊 Стоимость улучшения растет с каждым уровнем: 50% → 60% → 72% от базовой цены
+                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Стоимость улучшения растет с каждым уровнем: 50% → 60% → 72% от базовой цены
                 </p>
               </div>
 
@@ -486,7 +492,10 @@ const GameGuide = () => {
               </div>
 
               <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">💰 Когда улучшать?</p>
+                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
+                  <Coins className="h-5 w-5" />
+                  Когда улучшать?
+                </p>
                 <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                   Улучшайте скважины когда у вас стабильный доход {formatGameCurrency(2000)}+ в день. 
                   Улучшение окупается за 5-10 дней, но дает прибыль навсегда!
@@ -499,8 +508,9 @@ const GameGuide = () => {
         {/* Boosters Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              🚀 Система бустеров
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Zap className="h-12 w-12 md:h-16 md:w-16" />
+              Система бустеров
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Подробное руководство по всем бустерам и их эффективному использованию
@@ -548,7 +558,10 @@ const GameGuide = () => {
 
           <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
             <CardHeader>
-              <CardTitle className="text-4xl md:text-5xl text-center text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">🧮 Калькулятор эффективности бустеров</CardTitle>
+              <CardTitle className="text-4xl md:text-5xl text-center text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-3">
+                <BarChart3 className="h-10 w-10" />
+                Калькулятор эффективности бустеров
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-3 gap-4 text-center">
@@ -569,7 +582,10 @@ const GameGuide = () => {
                 </div>
               </div>
               <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">⚡ Совет эксперта:</p>
+                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
+                  <Zap className="h-5 w-5" />
+                  Совет эксперта:
+                </p>
                 <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                   Бустеры эффективнее при высоком доходе! Если у вас менее {formatGameCurrency(2000)}/день - сначала купите больше скважин.
                 </p>
@@ -581,8 +597,9 @@ const GameGuide = () => {
         {/* Strategies */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              🎯 Стратегии развития
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Target className="h-12 w-12 md:h-16 md:w-16" />
+              Стратегии развития
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Проверенные стратегии для разных этапов игры
@@ -617,8 +634,9 @@ const GameGuide = () => {
         {/* Daily Activities */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              📅 Ежедневные активности
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Calendar className="h-12 w-12 md:h-16 md:w-16" />
+              Ежедневные активности
             </h2>
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Что делать каждый день для максимальной эффективности
@@ -662,8 +680,9 @@ const GameGuide = () => {
         {/* Advanced Tips */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-              🏆 Секреты профессионалов
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
+              <Trophy className="h-12 w-12 md:h-16 md:w-16" />
+              Секреты профессионалов
             </h2>
           </div>
 
