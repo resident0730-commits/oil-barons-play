@@ -81,6 +81,8 @@ const BOOSTERS = [
 
 interface CalculatorProps {
   compact?: boolean;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 interface WellPurchase {
@@ -231,10 +233,13 @@ const calculateOptimalPurchases = (targetIncome: number): {
   return bestSolution;
 };
 
-export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) => {
+export const ProfitabilityCalculator = ({ compact = false, isOpen: externalIsOpen, onOpenChange: externalOnOpenChange }: CalculatorProps) => {
   const { formatGameCurrency } = useCurrency();
   const [targetIncome, setTargetIncome] = useState(1000);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+
+  const isDialogOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsDialogOpen = externalOnOpenChange || setInternalIsOpen;
 
   const MIN_INCOME = 1000;
   const MAX_INCOME = 50000;

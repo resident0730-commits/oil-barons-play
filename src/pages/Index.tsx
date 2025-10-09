@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +42,7 @@ const Index = () => {
   const { currencyConfig, formatGameCurrency, getGameCurrencyDescription, getExchangeDescription } = useCurrency();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   // Обработка результата платежа
   useEffect(() => {
@@ -124,6 +126,15 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+              <Button 
+                size="sm" 
+                variant="gold"
+                onClick={() => setIsCalculatorOpen(true)}
+                className="hidden sm:flex items-center gap-2 animate-pulse hover:animate-none"
+              >
+                <Calculator className="h-4 w-4" />
+                <span className="hidden lg:inline">Калькулятор</span>
+              </Button>
               {user ? (
                 <div className="flex items-center gap-2 sm:gap-4">
                   <div className="hidden md:flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 shadow-md">
@@ -161,6 +172,13 @@ const Index = () => {
 
       {/* Parallax Hero Section */}
       <ParallaxHero />
+
+      {/* Calculator Dialog */}
+      <ProfitabilityCalculator 
+        compact={false} 
+        isOpen={isCalculatorOpen}
+        onOpenChange={setIsCalculatorOpen}
+      />
 
       {/* Rest of the content with spacing */}
       <div className="relative mt-12">
