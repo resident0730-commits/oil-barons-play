@@ -458,7 +458,7 @@ const Dashboard = () => {
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
-                { id: 'calculator', label: 'Калькулятор', icon: Calculator, shortLabel: 'Расчет' },
+                { id: 'calculator', label: 'Калькулятор', icon: Calculator, shortLabel: 'Калькулятор доходности' },
                 { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
               ].map((section) => (
                 <Button
