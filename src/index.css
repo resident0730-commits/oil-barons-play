@@ -8,72 +8,73 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 25 20% 8%;
-    --foreground: 45 95% 95%;
+    /* Light Premium Oil Empire Theme */
+    --background: 40 20% 97%;
+    --foreground: 25 40% 15%;
 
-    --card: 30 25% 12%;
-    --card-foreground: 45 95% 95%;
+    --card: 40 15% 99%;
+    --card-foreground: 25 40% 15%;
 
-    --popover: 30 25% 12%;
-    --popover-foreground: 45 95% 95%;
+    --popover: 40 15% 99%;
+    --popover-foreground: 25 40% 15%;
 
-    --primary: 45 100% 65%;
-    --primary-foreground: 25 20% 8%;
+    --primary: 45 65% 52%;
+    --primary-foreground: 40 20% 97%;
 
-    --secondary: 35 30% 18%;
-    --secondary-foreground: 45 95% 95%;
+    --secondary: 40 15% 94%;
+    --secondary-foreground: 25 40% 15%;
 
-    --muted: 35 25% 20%;
-    --muted-foreground: 40 35% 65%;
+    --muted: 40 10% 92%;
+    --muted-foreground: 25 20% 45%;
 
-    --accent: 42 85% 35%;
-    --accent-foreground: 45 95% 95%;
+    --accent: 43 74% 66%;
+    --accent-foreground: 25 40% 15%;
 
-    --destructive: 0 62.8% 55%;
-    --destructive-foreground: 45 95% 95%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 40 20% 97%;
 
-    --border: 35 25% 25%;
-    --input: 35 25% 22%;
-    --ring: 45 100% 65%;
+    --border: 45 30% 85%;
+    --input: 40 15% 94%;
+    --ring: 45 65% 52%;
 
     --radius: 0.75rem;
 
-    /* Oil Tycoon luxury colors */
-    --oil-gold: 45 100% 65%;
-    --oil-gold-light: 48 100% 75%;
-    --oil-gold-dark: 42 85% 45%;
-    --oil-amber: 35 85% 55%;
-    --oil-bronze: 30 60% 40%;
-    --oil-dark: 25 20% 8%;
-    --oil-darker: 20 15% 5%;
-    --oil-success: 142 76% 36%;
-    --oil-warning: 45 95% 53%;
-    --oil-danger: 0 62.8% 55%;
+    /* Oil Tycoon luxury colors - Light theme */
+    --oil-gold: 45 65% 52%;
+    --oil-gold-light: 43 74% 66%;
+    --oil-gold-dark: 42 70% 38%;
+    --oil-amber: 35 70% 60%;
+    --oil-bronze: 30 55% 48%;
+    --oil-dark: 25 40% 15%;
+    --oil-darker: 20 50% 10%;
+    --oil-success: 142 65% 45%;
+    --oil-warning: 45 90% 55%;
+    --oil-danger: 0 65% 55%;
 
-    /* Luxury gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(45, 100%, 65%) 0%, hsl(42, 85%, 45%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(48, 100%, 75%) 0%, hsl(45, 100%, 65%) 50%, hsl(42, 85%, 45%) 100%);
-    --gradient-amber: linear-gradient(135deg, hsl(35, 85%, 55%) 0%, hsl(30, 60%, 40%) 100%);
-    --gradient-oil: linear-gradient(135deg, hsl(25, 20%, 8%) 0%, hsl(30, 25%, 12%) 50%, hsl(35, 30%, 18%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(20, 15%, 5%) 0%, hsl(25, 20%, 8%) 30%, hsl(30, 25%, 12%) 70%, hsl(35, 30%, 18%) 100%);
-    --gradient-rich: linear-gradient(135deg, hsl(45, 100%, 65%) 0%, hsl(42, 85%, 45%) 25%, hsl(35, 85%, 55%) 75%, hsl(30, 60%, 40%) 100%);
-    --gradient-luxury: linear-gradient(135deg, hsl(48, 100%, 75%) 0%, hsl(45, 100%, 65%) 30%, hsl(42, 85%, 45%) 70%, hsl(35, 85%, 55%) 100%);
+    /* Luxury gradients - Light theme */
+    --gradient-primary: linear-gradient(135deg, hsl(43, 74%, 66%) 0%, hsl(45, 65%, 52%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(48, 90%, 70%) 0%, hsl(45, 65%, 52%) 50%, hsl(42, 70%, 38%) 100%);
+    --gradient-amber: linear-gradient(135deg, hsl(35, 70%, 60%) 0%, hsl(30, 55%, 48%) 100%);
+    --gradient-oil: linear-gradient(135deg, hsl(40, 20%, 97%) 0%, hsl(40, 15%, 94%) 50%, hsl(40, 10%, 92%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(40, 25%, 95%) 0%, hsl(40, 20%, 97%) 30%, hsl(43, 20%, 98%) 70%, hsl(45, 15%, 99%) 100%);
+    --gradient-rich: linear-gradient(135deg, hsl(43, 74%, 66%) 0%, hsl(45, 65%, 52%) 25%, hsl(42, 70%, 38%) 75%, hsl(35, 70%, 60%) 100%);
+    --gradient-luxury: linear-gradient(135deg, hsl(48, 90%, 70%) 0%, hsl(43, 74%, 66%) 30%, hsl(45, 65%, 52%) 70%, hsl(42, 70%, 38%) 100%);
 
-    /* Elegant shadows with gold glow */
-    --shadow-primary: 0 10px 30px -10px hsl(45 100% 65% / 0.5);
-    --shadow-gold: 0 15px 40px -15px hsl(48 100% 75% / 0.6);
-    --shadow-amber: 0 20px 50px -20px hsl(35 85% 55% / 0.4);
-    --shadow-oil: 0 25px 50px -12px hsl(25 20% 8% / 0.8);
-    --shadow-luxury: 0 0 60px hsl(45 100% 65% / 0.3);
+    /* Elegant shadows with gold glow - Light theme */
+    --shadow-primary: 0 8px 24px -6px hsl(45 65% 52% / 0.25);
+    --shadow-gold: 0 12px 32px -8px hsl(43 74% 66% / 0.3);
+    --shadow-amber: 0 16px 40px -12px hsl(35 70% 60% / 0.2);
+    --shadow-oil: 0 4px 16px -4px hsl(25 40% 15% / 0.1);
+    --shadow-luxury: 0 0 40px hsl(45 65% 52% / 0.15);
 
-    --sidebar-background: 30 25% 12%;
-    --sidebar-foreground: 45 95% 95%;
-    --sidebar-primary: 45 100% 65%;
-    --sidebar-primary-foreground: 25 20% 8%;
-    --sidebar-accent: 35 30% 18%;
-    --sidebar-accent-foreground: 45 95% 95%;
-    --sidebar-border: 35 25% 25%;
-    --sidebar-ring: 45 100% 65%;
+    --sidebar-background: 40 15% 99%;
+    --sidebar-foreground: 25 40% 15%;
+    --sidebar-primary: 45 65% 52%;
+    --sidebar-primary-foreground: 40 20% 97%;
+    --sidebar-accent: 40 15% 94%;
+    --sidebar-accent-foreground: 25 40% 15%;
+    --sidebar-border: 45 30% 85%;
+    --sidebar-ring: 45 65% 52%;
   }
 
   .dark {
@@ -107,11 +108,11 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background: linear-gradient(135deg, 
-      hsl(15, 15%, 6%) 0%, 
-      hsl(240, 15%, 8%) 25%, 
-      hsl(20, 15%, 7%) 50%, 
-      hsl(240, 12%, 6%) 75%, 
-      hsl(15, 15%, 6%) 100%
+      hsl(40, 25%, 95%) 0%, 
+      hsl(42, 20%, 97%) 25%, 
+      hsl(45, 18%, 98%) 50%, 
+      hsl(43, 20%, 96%) 75%, 
+      hsl(40, 25%, 95%) 100%
     );
     background-attachment: fixed;
     min-height: 100vh;
@@ -125,7 +126,7 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.4) 0%, hsl(30, 25%, 12% / 0.3) 50%, hsl(35, 30%, 18% / 0.2) 100%);
+    background: linear-gradient(135deg, hsl(48, 15%, 98% / 0.6) 0%, hsl(45, 12%, 96% / 0.5) 50%, hsl(42, 10%, 94% / 0.4) 100%);
     z-index: -1;
   }
 
@@ -176,30 +177,30 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.9) 0%, hsl(25, 20%, 8% / 0.85) 30%, hsl(30, 25%, 12% / 0.8) 70%, hsl(35, 30%, 18% / 0.75) 100%);
+    background: linear-gradient(135deg, hsl(40, 25%, 95% / 0.95) 0%, hsl(42, 20%, 97% / 0.92) 30%, hsl(45, 18%, 98% / 0.9) 70%, hsl(43, 20%, 96% / 0.88) 100%);
     z-index: -1;
   }
 
-  /* Enhanced text visibility for hero page */
+  /* Enhanced text visibility for hero page - Light theme */
   .hero-luxury-background .text-muted-foreground {
-    color: hsl(45, 95%, 92%) !important;
-    text-shadow: 2px 2px 6px hsl(0, 0%, 0% / 0.8);
+    color: hsl(25, 30%, 35%) !important;
+    text-shadow: 1px 1px 2px hsl(0, 0%, 100% / 0.6);
   }
 
   .hero-luxury-background h1, 
   .hero-luxury-background h2 {
-    color: hsl(45, 95%, 98%) !important;
-    text-shadow: 3px 3px 6px hsl(0, 0%, 0% / 0.9);
+    color: hsl(25, 40%, 15%) !important;
+    text-shadow: 2px 2px 4px hsl(0, 0%, 100% / 0.7);
   }
 
   .hero-luxury-background p {
-    color: hsl(45, 95%, 95%) !important;
-    text-shadow: 2px 2px 4px hsl(0, 0%, 0% / 0.8);
+    color: hsl(25, 35%, 25%) !important;
+    text-shadow: 1px 1px 2px hsl(0, 0%, 100% / 0.5);
     font-weight: 500;
   }
 
   .hero-luxury-background .bg-gradient-to-r {
-    background: linear-gradient(135deg, hsl(48, 100%, 85%) 0%, hsl(45, 100%, 75%) 50%, hsl(42, 85%, 65%) 100%) !important;
+    background: linear-gradient(135deg, hsl(45, 70%, 45%) 0%, hsl(42, 75%, 38%) 50%, hsl(40, 80%, 32%) 100%) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
   }
