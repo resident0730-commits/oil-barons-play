@@ -74,22 +74,22 @@ export default function Rules() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-secondary/20 rounded-lg p-4 space-y-3">
-              <h4 className="font-semibold">Способы получения оилкоинов:</h4>
+              <h4 className="font-semibold">Способы получения игровых рублей:</h4>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+100</Badge>
+                  <Badge variant="secondary">+100 ₽</Badge>
                   <span className="text-sm">Ежедневный бонус (каждые 24 часа)</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+20-1440</Badge>
+                  <Badge variant="secondary">+20-1440 ₽</Badge>
                   <span className="text-sm">Доходность скважин в день (автоматически)</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+1000</Badge>
+                  <Badge variant="secondary">+1000 ₽</Badge>
                   <span className="text-sm">Стартовый капитал для новых игроков</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+500-25,000</Badge>
+                  <Badge variant="secondary">+500-25,000 ₽</Badge>
                   <span className="text-sm">Награды за достижения</span>
                 </li>
                 <li className="flex items-center gap-2">
@@ -106,7 +106,7 @@ export default function Rules() {
               <div className="space-y-2 text-sm text-green-600 dark:text-green-400">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">Бесплатная игра:</span>
-                  <span>Ежедневные бонусы 100 оилкоинов каждые 24 часа</span>
+                  <span>Ежедневные бонусы 100 игровых рублей каждые 24 часа</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">Быстрый путь:</span>
@@ -166,7 +166,7 @@ export default function Rules() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Badge variant="outline">Обычный старт</Badge>
-                    <span>1,000 OC стартовый капитал</span>
+                    <span>1,000 игровых рублей стартовый капитал</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Badge variant="outline">Ускоренный рост</Badge>
@@ -208,11 +208,11 @@ export default function Rules() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Первая скважина</span>
-                    <Badge variant="outline">+500 OC</Badge>
+                    <Badge variant="outline">+500 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Миллионер</span>
-                    <Badge variant="outline">+10,000 OC</Badge>
+                    <Badge variant="outline">+10,000 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Промышленник (10 скважин)</span>
@@ -230,11 +230,11 @@ export default function Rules() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Разнообразие (все типы скважин)</span>
-                    <Badge variant="outline">+5,000 OC</Badge>
+                    <Badge variant="outline">+5,000 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Мастер усилителей</span>
-                    <Badge variant="outline">+3,000 OC</Badge>
+                    <Badge variant="outline">+3,000 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Крупный покупатель</span>
@@ -250,7 +250,7 @@ export default function Rules() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Постоянство (30 дней подряд)</span>
-                    <Badge variant="outline">+15,000 OC</Badge>
+                    <Badge variant="outline">+15,000 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Везунчик (100 бонусов)</span>
@@ -268,7 +268,7 @@ export default function Rules() {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Наставник (10 рефералов)</span>
-                    <Badge variant="outline">+25,000 OC</Badge>
+                    <Badge variant="outline">+25,000 ₽</Badge>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Амбассадор (100 рефералов)</span>
@@ -276,7 +276,7 @@ export default function Rules() {
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">Помощник (10 тикетов)</span>
-                    <Badge variant="outline">+2,000 OC</Badge>
+                    <Badge variant="outline">+2,000 ₽</Badge>
                   </div>
                 </div>
               </div>
@@ -369,64 +369,64 @@ export default function Rules() {
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">🌱 Мини-скважина</span>
                     <div className="text-right">
-                      <Badge variant="outline">1,000 OC</Badge>
-                      <div className="text-xs text-green-600">+20 OC/день</div>
+                      <Badge variant="outline">1,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+20 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">🔸 Стартовая скважина</span>
                     <div className="text-right">
-                      <Badge variant="outline">2,000 OC</Badge>
-                      <div className="text-xs text-green-600">+44 OC/день</div>
+                      <Badge variant="outline">2,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+44 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">⚡ Средняя скважина</span>
                     <div className="text-right">
-                       <Badge variant="outline">3,000 OC</Badge>
-                      <div className="text-xs text-green-600">+72 OC/день</div>
+                       <Badge variant="outline">3,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+72 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">🏭 Промышленная</span>
                     <div className="text-right">
-                      <Badge variant="outline">5,000 OC</Badge>
-                      <div className="text-xs text-green-600">+130 OC/день</div>
+                      <Badge variant="outline">5,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+130 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">💎 Супер скважина</span>
                     <div className="text-right">
-                      <Badge variant="outline">8,000 OC</Badge>
-                      <div className="text-xs text-green-600">+224 OC/день</div>
+                      <Badge variant="outline">8,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+224 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">👑 Премиум скважина</span>
                     <div className="text-right">
-                      <Badge variant="outline">12,000 OC</Badge>
-                      <div className="text-xs text-green-600">+360 OC/день</div>
+                      <Badge variant="outline">12,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+360 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">💠 Элитная скважина</span>
                     <div className="text-right">
-                      <Badge variant="outline">18,000 OC</Badge>
-                      <div className="text-xs text-green-600">+576 OC/день</div>
+                      <Badge variant="outline">18,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+576 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">🌟 Легендарная</span>
                     <div className="text-right">
-                      <Badge variant="outline">27,000 OC</Badge>
-                      <div className="text-xs text-green-600">+918 OC/день</div>
+                      <Badge variant="outline">27,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+918 ₽/день</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">🚀 Космическая</span>
                     <div className="text-right">
-                      <Badge variant="outline">40,000 OC</Badge>
-                      <div className="text-xs text-green-600">+1,440 OC/день</div>
+                      <Badge variant="outline">40,000 ₽</Badge>
+                      <div className="text-xs text-green-600">+1,440 ₽/день</div>
                     </div>
                   </div>
                 </div>
@@ -466,28 +466,28 @@ export default function Rules() {
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">👥 Квалифицированная бригада</span>
                     <div className="text-right">
-                      <Badge variant="outline">5,000+ OC</Badge>
+                      <Badge variant="outline">5,000+ ₽</Badge>
                       <div className="text-xs text-green-600">+10% за уровень</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">📊 Геологические исследования</span>
                     <div className="text-right">
-                      <Badge variant="outline">8,000+ OC</Badge>
+                      <Badge variant="outline">8,000+ ₽</Badge>
                       <div className="text-xs text-green-600">+15% за уровень</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">⚙️ Современное оборудование</span>
                     <div className="text-right">
-                      <Badge variant="outline">15,000+ OC</Badge>
+                      <Badge variant="outline">15,000+ ₽</Badge>
                       <div className="text-xs text-green-600">+25% за уровень</div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">✨ Автоматизация</span>
                     <div className="text-right">
-                      <Badge variant="outline">20,000+ OC</Badge>
+                      <Badge variant="outline">20,000+ ₽</Badge>
                       <div className="text-xs text-green-600">+20% за уровень</div>
                     </div>
                   </div>
@@ -500,7 +500,7 @@ export default function Rules() {
                   <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
                     <span className="text-sm">⚡ Турбо режим</span>
                     <div className="text-right">
-                      <Badge variant="outline">3,000 OC</Badge>
+                      <Badge variant="outline">3,000 ₽</Badge>
                       <div className="text-xs text-muted-foreground">+50% на 24 часа</div>
                     </div>
                   </div>
@@ -542,14 +542,14 @@ export default function Rules() {
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
                     <span>Обычная цена:</span>
-                    <span className="line-through">5,000 OC</span>
+                    <span className="line-through">5,000 ₽</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Со скидкой:</span>
-                    <Badge variant="secondary">3,800 OC (-24%)</Badge>
+                    <Badge variant="secondary">3,800 ₽ (-24%)</Badge>
                   </div>
                   <div className="text-green-600 text-xs">
-                    Доход: +104 OC/день
+                    Доход: +104 ₽/день
                   </div>
                 </div>
               </div>
@@ -564,14 +564,14 @@ export default function Rules() {
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
                     <span>Обычная цена:</span>
-                    <span className="line-through">16,000 OC</span>
+                    <span className="line-through">16,000 ₽</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Со скидкой:</span>
-                    <Badge variant="secondary">12,500 OC (-22%)</Badge>
+                    <Badge variant="secondary">12,500 ₽ (-22%)</Badge>
                   </div>
                   <div className="text-green-600 text-xs">
-                    Доход: +290 OC/день
+                    Доход: +290 ₽/день
                   </div>
                 </div>
               </div>
@@ -586,14 +586,14 @@ export default function Rules() {
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
                     <span>Обычная цена:</span>
-                    <span className="line-through">55,000 OC</span>
+                    <span className="line-through">55,000 ₽</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Со скидкой:</span>
-                    <Badge variant="secondary">42,000 OC (-24%)</Badge>
+                    <Badge variant="secondary">42,000 ₽ (-24%)</Badge>
                   </div>
                   <div className="text-green-600 text-xs">
-                    Доход: +1,208 OC/день
+                    Доход: +1,208 ₽/день
                   </div>
                 </div>
               </div>
@@ -608,14 +608,14 @@ export default function Rules() {
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
                     <span>Обычная цена:</span>
-                    <span className="line-through">96,000 OC</span>
+                    <span className="line-through">96,000 ₽</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Со скидкой:</span>
-                    <Badge variant="secondary">72,000 OC (-25%)</Badge>
+                    <Badge variant="secondary">72,000 ₽ (-25%)</Badge>
                   </div>
                   <div className="text-green-600 text-xs">
-                    Доход: +2,790 OC/день
+                    Доход: +2,790 ₽/день
                   </div>
                 </div>
               </div>
