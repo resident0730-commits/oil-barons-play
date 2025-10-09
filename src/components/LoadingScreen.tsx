@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Fuel, TrendingUp, Users } from 'lucide-react';
+import { TrendingUp, Users } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
@@ -62,11 +62,6 @@ export const LoadingScreen = ({ user, profile }: LoadingScreenProps) => {
           <CardContent className="pt-8 pb-8 space-y-6">
             {/* Logo and Title */}
             <div className="text-center space-y-4">
-              <div className="relative inline-block">
-                <Fuel className="h-20 w-20 text-primary mx-auto animate-pulse drop-shadow-[0_0_25px_rgba(234,179,8,0.5)]" />
-                <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse" />
-              </div>
-              
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-primary via-yellow-400 to-primary bg-clip-text text-transparent">
                   Oil Tycoon
@@ -124,7 +119,7 @@ export const LoadingScreen = ({ user, profile }: LoadingScreenProps) => {
               <CardContent className="pt-6 pb-6">
                 <div className="flex items-center gap-3">
                   <div className="p-3 rounded-lg bg-primary/10">
-                    <Fuel className="h-5 w-5 text-primary" />
+                    <TrendingUp className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-muted-foreground">Всего скважин</p>
