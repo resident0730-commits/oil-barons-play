@@ -164,10 +164,10 @@ const Index = () => {
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
             <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
-              Игровая валюта
+              Игровой рубль
             </h2>
             <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
-              {currencyConfig.game_currency_name} — внутренняя валюта для развития вашей нефтяной империи
+              Виртуальная валюта для развития вашей нефтяной империи
             </p>
           </div>
           
@@ -241,7 +241,7 @@ const Index = () => {
                   </div>
                   <h3 className="text-3xl font-bold text-pink-100 mb-4 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">Мгновенно</h3>
                   <p className="text-lg text-pink-50/90 leading-relaxed">
-                    {currencyConfig.game_currency_name} поступают на счет сразу после оплаты
+                    Игровые рубли поступают на счет сразу после оплаты
                   </p>
                 </CardContent>
               </Card>
@@ -257,9 +257,9 @@ const Index = () => {
                       <Wallet className="h-10 w-10 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]" />
                     </div>
                     <div>
-                      <h4 className="text-2xl font-bold text-cyan-100 mb-3">Использование валюты</h4>
+                      <h4 className="text-2xl font-bold text-cyan-100 mb-3">Что можно купить</h4>
                       <p className="text-lg text-cyan-50/80 leading-relaxed">
-                        {getGameCurrencyDescription()}
+                        За игровые рубли покупайте скважины, бустеры и улучшения для развития империи
                       </p>
                     </div>
                   </div>
