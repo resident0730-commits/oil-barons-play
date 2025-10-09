@@ -8,27 +8,28 @@ import { Calculator, TrendingUp, Fuel, Package, Calendar, ArrowRight, Check } fr
 import { useCurrency } from '@/hooks/useCurrency';
 import { Link } from 'react-router-dom';
 
-// Типы скважин и их характеристики (отсортированы по эффективности - доход/стоимость)
+// Типы скважин и их характеристики (данные из useGameData)
 const WELL_TYPES = [
-  { name: 'Премиум-скважина', dailyIncome: 1800, cost: 6000, efficiency: 0.3 },
-  { name: 'Легендарная скважина', dailyIncome: 4590, cost: 15000, efficiency: 0.306 },
-  { name: 'Космическая скважина', dailyIncome: 7500, cost: 25000, efficiency: 0.3 },
-  { name: 'Средняя скважина', dailyIncome: 450, cost: 2000, efficiency: 0.225 },
-  { name: 'Стартовая скважина', dailyIncome: 220, cost: 1100, efficiency: 0.2 },
-  { name: 'Мини-скважина', dailyIncome: 20, cost: 100, efficiency: 0.2 },
-  { name: 'Индустриальная скважина', dailyIncome: 2000, cost: 10000, efficiency: 0.2 },
-  { name: 'Элитная скважина', dailyIncome: 1560, cost: 8000, efficiency: 0.195 },
-  { name: 'Супер-скважина', dailyIncome: 224, cost: 1500, efficiency: 0.149 },
+  { name: 'Премиум-скважина', dailyIncome: 360, cost: 12000, efficiency: 0.03 },
+  { name: 'Легендарная скважина', dailyIncome: 918, cost: 27000, efficiency: 0.034 },
+  { name: 'Космическая скважина', dailyIncome: 1440, cost: 40000, efficiency: 0.036 },
+  { name: 'Элитная скважина', dailyIncome: 576, cost: 18000, efficiency: 0.032 },
+  { name: 'Супер-скважина', dailyIncome: 224, cost: 8000, efficiency: 0.028 },
+  { name: 'Промышленная скважина', dailyIncome: 130, cost: 5000, efficiency: 0.026 },
+  { name: 'Средняя скважина', dailyIncome: 72, cost: 3000, efficiency: 0.024 },
+  { name: 'Стартовая скважина', dailyIncome: 44, cost: 2000, efficiency: 0.022 },
+  { name: 'Мини-скважина', dailyIncome: 20, cost: 1000, efficiency: 0.02 },
 ];
 
-// Бустеры и их множители (постоянные)
+// Бустеры и их множители (постоянные улучшения, 1 уровень)
+// Данные из useGameData.tsx и BoosterShop.tsx
 const BOOSTERS = [
-  { name: 'Продвинутое оборудование', multiplier: 2.0, cost: 8000 },
-  { name: 'Автоматизация', multiplier: 1.8, cost: 6000 },
-  { name: 'Турбо ускорение', multiplier: 1.5, cost: 5000 },
-  { name: 'Геологическая разведка', multiplier: 1.3, cost: 3000 },
-  { name: 'Бригада рабочих', multiplier: 1.2, cost: 2000 },
-];
+  { name: 'Турбо режим', multiplier: 1.5, cost: 3000, temporary: true }, // 50% на 24ч - ВРЕМЕННЫЙ
+  { name: 'Современное оборудование', multiplier: 1.35, cost: 20000, temporary: false }, // 35% постоянно
+  { name: 'Геологические исследования', multiplier: 1.25, cost: 8000, temporary: false }, // 25% постоянно
+  { name: 'Автоматизация', multiplier: 1.2, cost: 15000, temporary: false }, // 20% постоянно
+  { name: 'Квалифицированная бригада', multiplier: 1.15, cost: 5000, temporary: false }, // 15% постоянно
+].filter(b => !b.temporary); // Исключаем временные бустеры из калькулятора
 
 interface CalculatorProps {
   compact?: boolean;
