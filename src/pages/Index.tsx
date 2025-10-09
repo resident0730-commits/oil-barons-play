@@ -166,10 +166,10 @@ const Index = () => {
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
-            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
               Игровой рубль
             </h2>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Виртуальная валюта для развития вашей нефтяной империи
             </p>
           </div>
@@ -192,13 +192,13 @@ const Index = () => {
                       {currencyConfig.game_currency_symbol}
                     </Badge>
                   </div>
-                  <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">Курс обмена</h3>
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Курс обмена</h3>
                   <div className="flex items-baseline gap-3 mb-4">
-                    <span className="text-7xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)]">
+                    <span className="text-7xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
                       {currencyConfig.exchange_rate}
                     </span>
                   </div>
-                  <p className="text-lg text-cyan-50/90 leading-relaxed">
+                  <p className="text-lg text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     {getExchangeDescription()}
                   </p>
                 </CardContent>
@@ -220,8 +220,8 @@ const Index = () => {
                       100%
                     </div>
                   </div>
-                  <h3 className="text-3xl font-bold text-purple-100 mb-4 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">Безопасность</h3>
-                  <p className="text-lg text-purple-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-purple-100 mb-4 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Безопасность</h3>
+                  <p className="text-lg text-purple-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Все платежи защищены банковским шифрованием. Надежные платежные системы гарантируют безопасность ваших средств
                   </p>
                 </CardContent>
@@ -241,8 +241,8 @@ const Index = () => {
                     </div>
                     <Sparkles className="h-16 w-16 text-pink-400/50 animate-spin-slow" />
                   </div>
-                  <h3 className="text-3xl font-bold text-pink-100 mb-4 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">Мгновенно</h3>
-                  <p className="text-lg text-pink-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-pink-100 mb-4 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Мгновенно</h3>
+                  <p className="text-lg text-pink-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Игровые рубли поступают на счет сразу после оплаты
                   </p>
                 </CardContent>
@@ -259,8 +259,8 @@ const Index = () => {
                       <Wallet className="h-10 w-10 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]" />
                     </div>
                     <div>
-                      <h4 className="text-2xl font-bold text-cyan-100 mb-3">Что можно купить</h4>
-                      <p className="text-lg text-cyan-50/80 leading-relaxed">
+                      <h4 className="text-2xl font-bold text-cyan-100 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Что можно купить</h4>
+                      <p className="text-lg text-cyan-50/80 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                         За игровые рубли покупайте скважины, бустеры и улучшения для развития империи
                       </p>
                     </div>
@@ -276,8 +276,8 @@ const Index = () => {
                       <Crown className="h-10 w-10 text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]" />
                     </div>
                     <div>
-                      <h4 className="text-2xl font-bold text-purple-100 mb-3">Премиум опыт</h4>
-                      <p className="text-lg text-purple-50/80 leading-relaxed">
+                      <h4 className="text-2xl font-bold text-purple-100 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Премиум опыт</h4>
+                      <p className="text-lg text-purple-50/80 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                         Получайте доступ к эксклюзивным возможностям и ускоряйте свой прогресс в игре
                       </p>
                     </div>
@@ -291,10 +291,10 @@ const Index = () => {
         {/* Features Grid */}
         <div className="mb-32">
           <div className="text-center mb-16">
-            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+            <h2 className="holographic-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
               Возможности игры
             </h2>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Все инструменты для построения успешной нефтяной империи
             </p>
           </div>
@@ -315,8 +315,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-emerald-400/30 group-hover:text-emerald-400/50 transition-colors duration-300">01</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-emerald-100 mb-4 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">Нефтяные скважины</h3>
-                  <p className="text-lg text-emerald-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-emerald-100 mb-4 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Нефтяные скважины</h3>
+                  <p className="text-lg text-emerald-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Покупайте и развивайте скважины различных классов для изучения экономических принципов
                   </p>
                 </CardContent>
@@ -336,8 +336,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-orange-400/30 group-hover:text-orange-400/50 transition-colors duration-300">02</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-orange-100 mb-4 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">Стабильная прибыль</h3>
-                  <p className="text-lg text-orange-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-orange-100 mb-4 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стабильная прибыль</h3>
+                  <p className="text-lg text-orange-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Изучайте основы экономики через игровые механики и получайте стабильный прогресс
                   </p>
                 </CardContent>
@@ -357,8 +357,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-blue-400/30 group-hover:text-blue-400/50 transition-colors duration-300">03</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-blue-100 mb-4 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">Реферальная программа</h3>
-                  <p className="text-lg text-blue-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-blue-100 mb-4 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Реферальная программа</h3>
+                  <p className="text-lg text-blue-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Приглашайте друзей и получайте бонусы за совместную игру в образовательной игре
                   </p>
                 </CardContent>
@@ -378,8 +378,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-violet-400/30 group-hover:text-violet-400/50 transition-colors duration-300">04</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-violet-100 mb-4 drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]">Система достижений</h3>
-                  <p className="text-lg text-violet-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-violet-100 mb-4 drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Система достижений</h3>
+                  <p className="text-lg text-violet-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах
                   </p>
                 </CardContent>
@@ -399,8 +399,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-yellow-400/30 group-hover:text-yellow-400/50 transition-colors duration-300">05</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-yellow-100 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]">Бустеры</h3>
-                  <p className="text-lg text-yellow-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-yellow-100 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Бустеры</h3>
+                  <p className="text-lg text-yellow-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Турбо-ускорение, автоматизация и улучшенное оборудование для максимальной эффективности
                   </p>
                 </CardContent>
@@ -420,8 +420,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-rose-400/30 group-hover:text-rose-400/50 transition-colors duration-300">06</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-rose-100 mb-4 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)]">Пакеты скважин</h3>
-                  <p className="text-lg text-rose-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-rose-100 mb-4 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Пакеты скважин</h3>
+                  <p className="text-lg text-rose-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Готовые наборы скважин - от стартового до империи. Быстрый старт и мгновенный доход
                   </p>
                 </CardContent>
@@ -441,8 +441,8 @@ const Index = () => {
                     </div>
                     <div className="text-5xl font-black text-teal-400/30 group-hover:text-teal-400/50 transition-colors duration-300">07</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-teal-100 mb-4 drop-shadow-[0_0_10px_rgba(20,184,166,0.5)]">Сундук с призами</h3>
-                  <p className="text-lg text-teal-50/90 leading-relaxed">
+                  <h3 className="text-3xl font-bold text-teal-100 mb-4 drop-shadow-[0_0_10px_rgba(20,184,166,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Сундук с призами</h3>
+                  <p className="text-lg text-teal-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Открывайте ежедневные сундуки и участвуйте в розыгрышах реальных призов и гаджетов
                   </p>
                 </CardContent>
@@ -456,10 +456,10 @@ const Index = () => {
           <div className="absolute inset-0 backdrop-blur-sm bg-muted/20 rounded-3xl"></div>
           <div className="relative max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair">
+              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                 Отзывы наших игроков
               </h2>
-              <p className="text-lg text-muted-foreground">Узнайте, что говорят реальные игроки о нашей игре</p>
+              <p className="text-lg text-muted-foreground [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Узнайте, что говорят реальные игроки о нашей игре</p>
             </div>
             <div className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl p-8 border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               {/* Animated border */}
@@ -516,8 +516,8 @@ const Index = () => {
             <Separator className="bg-primary/20" />
             
             <div className="space-y-2 text-muted-foreground">
-              <p className="font-medium">&copy; 2025 Oil Tycoon. Все права защищены.</p>
-              <p className="text-sm">Образовательная экономическая игра для изучения основ бизнеса. Возрастное ограничение: 18+</p>
+              <p className="font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">&copy; 2025 Oil Tycoon. Все права защищены.</p>
+              <p className="text-sm [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Образовательная экономическая игра для изучения основ бизнеса. Возрастное ограничение: 18+</p>
             </div>
           </div>
         </div>
