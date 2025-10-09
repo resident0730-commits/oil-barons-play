@@ -68,7 +68,7 @@ export const ShopSection = ({
             {wellTypes.map((wellType, index) => (
               <div 
                 key={wellType.name} 
-                className="animate-fade-in" 
+                className="wave-appear" 
                 style={{animationDelay: `${index * 100}ms`}}
               >
                 <AnimatedShopCard
