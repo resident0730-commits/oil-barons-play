@@ -163,77 +163,96 @@ const Index = () => {
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
-            <h2 className="luxury-gold-text text-3xl sm:text-5xl md:text-6xl font-bold font-playfair mb-4 leading-tight">
+            <h2 className="luxury-gold-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
               Игровая валюта
             </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
               {currencyConfig.game_currency_name} — внутренняя валюта для развития вашей нефтяной империи
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Exchange Rate Panel */}
-            <div className="flex items-center gap-8 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0">
-                <Coins className="h-12 w-12 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-2">Курс обмена</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  {getExchangeDescription()}
-                </p>
-              </div>
-              <div className="flex-shrink-0 text-right">
-                <div className="text-4xl font-bold text-primary">{currencyConfig.exchange_rate}</div>
-              </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              {/* Exchange Rate Card */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-transparent backdrop-blur-xl border-2 border-primary/40 hover:border-primary transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-primary/20 rounded-2xl backdrop-blur-sm">
+                      <Coins className="h-12 w-12 text-primary animate-gold-glow" />
+                    </div>
+                    <Badge className="bg-primary text-primary-foreground text-lg px-4 py-2 font-bold animate-pulse">
+                      ✓ Активно
+                    </Badge>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Курс обмена</h3>
+                  <div className="flex items-baseline gap-3 mb-4">
+                    <span className="text-7xl font-bold text-primary drop-shadow-[0_0_30px_rgba(251,191,36,0.5)]">
+                      {currencyConfig.exchange_rate}
+                    </span>
+                    <span className="text-2xl text-white/80 font-medium">₽</span>
+                  </div>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    {getExchangeDescription()}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Security Card */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-accent/10 via-accent/5 to-transparent backdrop-blur-xl border-2 border-accent/40 hover:border-accent transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-accent/20 rounded-full blur-3xl group-hover:bg-accent/30 transition-colors duration-500"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-accent/20 rounded-2xl backdrop-blur-sm">
+                      <Shield className="h-12 w-12 text-accent animate-gold-glow" />
+                    </div>
+                    <div className="text-6xl font-bold text-accent drop-shadow-[0_0_30px_rgba(251,191,36,0.5)]">
+                      100%
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Безопасность</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Все платежи защищены банковским шифрованием. Надежные платежные системы гарантируют безопасность ваших средств
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <Separator className="bg-primary/20" />
+            {/* Features Row */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="relative overflow-hidden bg-black/40 backdrop-blur-xl border-2 border-primary/30 hover:border-primary/60 transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-start gap-6">
+                    <div className="p-4 bg-primary/20 rounded-xl flex-shrink-0">
+                      <Zap className="h-10 w-10 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-white mb-3">Мгновенное зачисление</h4>
+                      <p className="text-lg text-white/80 leading-relaxed">
+                        {currencyConfig.game_currency_name} поступают на счет сразу после оплаты
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Security Panel */}
-            <div className="flex items-center gap-8 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0">
-                <Shield className="h-12 w-12 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-2">Безопасность платежей</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  Все транзакции защищены и проходят через проверенные платежные системы
-                </p>
-              </div>
-              <div className="flex-shrink-0 text-right">
-                <Badge className="bg-primary/20 text-primary border-primary/30 text-lg px-4 py-2">100%</Badge>
-              </div>
-            </div>
-
-            <Separator className="bg-primary/20" />
-
-            {/* Instant Credit Panel */}
-            <div className="flex items-center gap-8 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0">
-                <Zap className="h-12 w-12 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-2">Мгновенное зачисление</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  {currencyConfig.game_currency_name} поступают на игровой счет сразу после успешной оплаты
-                </p>
-              </div>
-            </div>
-
-            <Separator className="bg-primary/20" />
-
-            {/* Purpose Panel */}
-            <div className="flex items-center gap-8 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0">
-                <Target className="h-12 w-12 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-2">Использование валюты</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  {getGameCurrencyDescription()}
-                </p>
-              </div>
+              <Card className="relative overflow-hidden bg-black/40 backdrop-blur-xl border-2 border-primary/30 hover:border-primary/60 transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-start gap-6">
+                    <div className="p-4 bg-primary/20 rounded-xl flex-shrink-0">
+                      <Target className="h-10 w-10 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-white mb-3">Для чего нужна</h4>
+                      <p className="text-lg text-white/80 leading-relaxed">
+                        {getGameCurrencyDescription()}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -241,71 +260,87 @@ const Index = () => {
         {/* Features Grid */}
         <div className="mb-32">
           <div className="text-center mb-16">
-            <h2 className="luxury-gold-text text-3xl sm:text-5xl md:text-6xl font-bold font-playfair mb-4 leading-tight">
+            <h2 className="luxury-gold-text text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
               Возможности игры
             </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
               Все инструменты для построения успешной нефтяной империи
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto space-y-6 container px-4">
-            {/* Wells Panel */}
-            <div className="flex items-start gap-6 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0 mt-1">
-                <Fuel className="h-10 w-10 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-3">Нефтяные скважины</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  Покупайте и развивайте скважины различных классов для изучения экономических принципов
-                </p>
-              </div>
-            </div>
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Wells Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-primary/10 to-transparent backdrop-blur-xl border-2 border-primary/40 hover:border-primary transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-primary/20 rounded-2xl backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                      <Fuel className="h-16 w-16 text-primary" />
+                    </div>
+                    <div className="text-5xl font-black text-primary/20">01</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Нефтяные скважины</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Покупайте и развивайте скважины различных классов для изучения экономических принципов
+                  </p>
+                </CardContent>
+              </Card>
 
-            <Separator className="bg-primary/20" />
+              {/* Profit Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-accent/10 to-transparent backdrop-blur-xl border-2 border-accent/40 hover:border-accent transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-accent/20 rounded-2xl backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                      <TrendingUp className="h-16 w-16 text-accent" />
+                    </div>
+                    <div className="text-5xl font-black text-accent/20">02</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Стабильная прибыль</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Изучайте основы экономики через игровые механики и получайте стабильный прогресс
+                  </p>
+                </CardContent>
+              </Card>
 
-            {/* Profit Panel */}
-            <div className="flex items-start gap-6 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0 mt-1">
-                <TrendingUp className="h-10 w-10 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-3">Стабильная прибыль</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  Изучайте основы экономики через игровые механики и получайте стабильный прогресс в игре
-                </p>
-              </div>
-            </div>
+              {/* Referral Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-primary/10 to-transparent backdrop-blur-xl border-2 border-primary/40 hover:border-primary transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-primary/20 rounded-2xl backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                      <Users className="h-16 w-16 text-primary" />
+                    </div>
+                    <div className="text-5xl font-black text-primary/20">03</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Реферальная программа</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Приглашайте друзей и получайте бонусы за совместную игру в образовательной игре
+                  </p>
+                </CardContent>
+              </Card>
 
-            <Separator className="bg-primary/20" />
-
-            {/* Referral Panel */}
-            <div className="flex items-start gap-6 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0 mt-1">
-                <Users className="h-10 w-10 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-3">Реферальная программа</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  Приглашайте друзей в игру и получайте бонусы за совместную игру в образовательной игре
-                </p>
-              </div>
-            </div>
-
-            <Separator className="bg-primary/20" />
-
-            {/* Achievements Panel */}
-            <div className="flex items-start gap-6 p-8 bg-black/20 backdrop-blur-sm border-l-2 border-primary/50 hover:border-primary transition-colors">
-              <div className="flex-shrink-0 mt-1">
-                <Award className="h-10 w-10 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-primary mb-3">Система достижений</h3>
-                <p className="text-foreground/80 text-lg leading-relaxed">
-                  Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах игры
-                </p>
-              </div>
+              {/* Achievements Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-accent/10 to-transparent backdrop-blur-xl border-2 border-accent/40 hover:border-accent transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-accent/20 rounded-2xl backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                      <Award className="h-16 w-16 text-accent" />
+                    </div>
+                    <div className="text-5xl font-black text-accent/20">04</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Система достижений</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
