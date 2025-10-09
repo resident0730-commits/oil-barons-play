@@ -75,183 +75,140 @@ export const AnimatedShopCard = ({
   const wellImage = getWellImage(wellType.name);
   const rarityGlow = getRarityGlowClass(wellType.rarity);
   
-  const isLegendaryOrHigher = wellType.rarity === 'legendary' || wellType.rarity === 'mythic';
+  // Determine which special effects to show based on well type
+  const showSmoke = wellType.name.includes('Промышленная') || wellType.name.includes('Супер');
+  const showWaterWaves = wellType.name.includes('Космическая') || wellType.name.includes('Элитная');
+  const showSparks = wellType.name.includes('Промышленная') || wellType.name.includes('Легендарная');
 
   return (
-    <div 
+    <Card 
       className={`
-        game-card-flip
+        relative overflow-visible
+        isometric-card depth-shadow
+        ${rarityGlow} 
         ${!canAfford ? "opacity-60" : ""}
+        border-2 border-primary/30
+        h-[550px]
       `}
     >
-      <div className="game-card-inner">
-        {/* FRONT SIDE */}
-        <Card 
-          className={`
-            game-card-front
-            relative overflow-hidden
-            ${rarityGlow} 
-            ${isLegendaryOrHigher ? 'holographic-effect' : ''}
-            border-2 border-primary/30
-            shimmer-effect
-          `}
-        >
-          {/* Large well image */}
-          <div className="relative h-64 overflow-hidden">
-            <img
-              src={wellImage}
-              alt={wellType.name}
-              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-            />
-            
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-            
-            {/* Floating rarity badge */}
-            <div className="absolute top-4 left-4 floating-badge">
-              <Badge 
-                className={`
-                  ${getRarityBadgeColor(wellType.rarity)} 
-                  shadow-2xl backdrop-blur-sm border-2 border-white/30
-                  text-sm px-3 py-1
-                `}
-              >
-                <Sparkles className="h-4 w-4 mr-1" />
-                {wellType.rarity}
-              </Badge>
-            </div>
+      {/* Large well image */}
+      <div className="relative h-72 overflow-hidden">
+        <img
+          src={wellImage}
+          alt={wellType.name}
+          className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
+        />
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+        
+        {/* Twinkling lights on platforms */}
+        <div className="lights-container">
+          <div className="light"></div>
+          <div className="light"></div>
+          <div className="light"></div>
+          <div className="light"></div>
+        </div>
 
-            {/* Daily income badge */}
-            <div className="absolute top-4 right-4">
-              <div className="bg-gradient-to-br from-primary/90 to-primary/70 backdrop-blur-md rounded-xl p-3 border-2 border-primary/40 shadow-2xl">
-                <p className="font-bold text-xl text-white">{formatGameCurrency(wellType.baseIncome)}</p>
-                <p className="text-xs text-white/90 font-medium">в день</p>
-              </div>
-            </div>
-
-            {/* Well name overlay */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <h3 className="text-2xl font-bold text-white drop-shadow-2xl">
-                {wellType.name}
-              </h3>
-            </div>
+        {/* Animated smoke/steam */}
+        {showSmoke && (
+          <div className="smoke-container">
+            <div className="smoke"></div>
+            <div className="smoke"></div>
+            <div className="smoke"></div>
           </div>
+        )}
 
-          {/* Content section */}
-          <CardContent className="p-5 space-y-4">
-            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-              {wellType.description}
-            </p>
-
-            {/* Quick stats */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="text-center p-3 bg-gradient-to-br from-muted/60 to-muted/40 rounded-xl border border-border/50">
-                <p className="font-bold text-base">{formatGameCurrency(metrics.monthlyIncome)}</p>
-                <p className="text-xs text-muted-foreground">в месяц</p>
-              </div>
-              <div className="text-center p-3 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl border border-primary/30">
-                <p className="font-bold text-primary text-base">{formatProfitPercent(metrics.yearlyPercent)}</p>
-                <p className="text-xs text-muted-foreground">ROI/год</p>
-              </div>
-            </div>
-
-            {/* Price display */}
-            <div className="flex justify-between items-center px-2 py-3 bg-muted/30 rounded-lg">
-              <span className="text-muted-foreground text-sm">Цена:</span>
-              <span className="text-2xl font-bold text-foreground">{formatGameCurrency(wellType.price)}</span>
-            </div>
-
-            {/* Hover hint */}
-            <p className="text-center text-xs text-muted-foreground/70 italic">
-              Наведите для деталей
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* BACK SIDE */}
-        <Card 
-          className={`
-            game-card-back
-            ${rarityGlow}
-            border-2 border-primary/30
-            bg-gradient-to-br from-card via-card/95 to-card/90
-            overflow-hidden
-          `}
-        >
-          <div className="h-full overflow-y-auto">
-            <CardContent className="p-6 flex flex-col justify-between min-h-full">
-            {/* Header */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold">{wellType.name}</h3>
-                <Badge className={getRarityBadgeColor(wellType.rarity)}>
-                  {wellType.rarity}
-                </Badge>
-              </div>
-
-              {/* Detailed description */}
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {wellType.description}
-              </p>
-
-              {/* Detailed stats */}
-              <div className="space-y-3 bg-muted/30 rounded-xl p-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Доход в день:</span>
-                  <span className="font-bold text-primary">{formatGameCurrency(wellType.baseIncome)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Доход в месяц:</span>
-                  <span className="font-bold">{formatGameCurrency(metrics.monthlyIncome)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Доход в год:</span>
-                  <span className="font-bold">{formatGameCurrency(metrics.yearlyIncome)}</span>
-                </div>
-                <div className="flex justify-between text-sm border-t border-border pt-2">
-                  <span className="text-muted-foreground">ROI в год:</span>
-                  <span className="font-bold text-primary">{formatProfitPercent(metrics.yearlyPercent)}</span>
-                </div>
-              </div>
-
-              {/* Additional info */}
-              <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
-                <p className="text-xs text-center">
-                  💡 <span className="font-medium">Эта скважина окупится за {Math.ceil(wellType.price / wellType.baseIncome)} дней</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Purchase section */}
-            <div className="space-y-3">
-              <div className="flex justify-between items-center text-lg">
-                <span className="text-muted-foreground">Цена:</span>
-                <span className="text-2xl font-bold text-foreground">{formatGameCurrency(wellType.price)}</span>
-              </div>
-              
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onBuyWell(wellType);
-                }}
-                disabled={!canAfford}
-                className={`
-                  w-full py-6 text-lg font-bold 
-                  transition-all duration-300
-                  ${canAfford 
-                    ? 'bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95' 
-                    : 'bg-muted text-muted-foreground cursor-not-allowed'
-                  }
-                `}
-              >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                {canAfford ? 'Купить скважину' : 'Недостаточно средств'}
-              </Button>
-            </div>
-          </CardContent>
+        {/* Water waves */}
+        {showWaterWaves && (
+          <div className="water-waves">
+            <div className="wave"></div>
+            <div className="wave"></div>
           </div>
-        </Card>
+        )}
+
+        {/* Spark particles */}
+        {showSparks && (
+          <div className="sparks-container">
+            <div className="spark"></div>
+            <div className="spark"></div>
+            <div className="spark"></div>
+            <div className="spark"></div>
+          </div>
+        )}
+
+        {/* Rarity badge */}
+        <div className="absolute top-4 left-4 z-10">
+          <Badge 
+            className={`
+              ${getRarityBadgeColor(wellType.rarity)} 
+              shadow-2xl backdrop-blur-sm border-2 border-white/30
+              text-sm px-3 py-1
+            `}
+          >
+            <Sparkles className="h-4 w-4 mr-1" />
+            {wellType.rarity}
+          </Badge>
+        </div>
+
+        {/* Daily income badge */}
+        <div className="absolute top-4 right-4 z-10">
+          <div className="bg-gradient-to-br from-primary/90 to-primary/70 backdrop-blur-md rounded-xl p-3 border-2 border-primary/40 shadow-2xl">
+            <p className="font-bold text-xl text-white">{formatGameCurrency(wellType.baseIncome)}</p>
+            <p className="text-xs text-white/90 font-medium">в день</p>
+          </div>
+        </div>
+
+        {/* Well name overlay */}
+        <div className="absolute bottom-4 left-4 right-4 z-10">
+          <h3 className="text-2xl font-bold text-white drop-shadow-2xl">
+            {wellType.name}
+          </h3>
+        </div>
       </div>
-    </div>
+
+      {/* Content section */}
+      <CardContent className="p-5 space-y-4">
+        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+          {wellType.description}
+        </p>
+
+        {/* Stats grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="text-center p-3 bg-gradient-to-br from-muted/60 to-muted/40 rounded-xl border border-border/50 transition-all duration-300 hover:scale-105">
+            <p className="font-bold text-base">{formatGameCurrency(metrics.monthlyIncome)}</p>
+            <p className="text-xs text-muted-foreground">в месяц</p>
+          </div>
+          <div className="text-center p-3 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl border border-primary/30 transition-all duration-300 hover:scale-105">
+            <p className="font-bold text-primary text-base">{formatProfitPercent(metrics.yearlyPercent)}</p>
+            <p className="text-xs text-muted-foreground">ROI/год</p>
+          </div>
+        </div>
+
+        {/* Price and purchase */}
+        <div className="space-y-3">
+          <div className="flex justify-between items-center px-2 py-2 bg-muted/30 rounded-lg">
+            <span className="text-muted-foreground text-sm">Цена:</span>
+            <span className="text-2xl font-bold text-foreground">{formatGameCurrency(wellType.price)}</span>
+          </div>
+          
+          <Button
+            onClick={() => onBuyWell(wellType)}
+            disabled={!canAfford}
+            className={`
+              w-full py-6 text-lg font-bold 
+              transition-all duration-300
+              ${canAfford 
+                ? 'bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95' 
+                : 'bg-muted text-muted-foreground cursor-not-allowed'
+              }
+            `}
+          >
+            <ShoppingCart className="h-5 w-5 mr-2" />
+            {canAfford ? 'Купить скважину' : 'Недостаточно средств'}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
