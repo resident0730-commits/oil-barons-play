@@ -161,7 +161,7 @@ All colors MUST be HSL.
 @layer components {
   /* Hero luxury background for main page */
   .hero-luxury-background {
-    background-image: url('./assets/oil-background.jpg');
+    background-image: url('./assets/hero-light-oil.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -176,7 +176,7 @@ All colors MUST be HSL.
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, hsl(20, 15%, 5% / 0.9) 0%, hsl(25, 20%, 8% / 0.85) 30%, hsl(30, 25%, 12% / 0.8) 70%, hsl(35, 30%, 18% / 0.75) 100%);
+    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.3) 0%, hsl(30, 25%, 12% / 0.25) 30%, hsl(35, 30%, 18% / 0.2) 70%, hsl(40, 35%, 22% / 0.15) 100%);
     z-index: -1;
   }
 
@@ -276,10 +276,21 @@ All colors MUST be HSL.
   /* Dashboard light background */
   .dashboard-light-bg {
     position: relative;
-    background-image: url('./assets/oil-background.jpg');
+    background-image: url('./assets/dashboard-light-bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+  }
+
+  .dashboard-light-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, hsl(25, 20%, 8% / 0.25) 0%, hsl(30, 25%, 12% / 0.2) 50%, hsl(35, 30%, 18% / 0.15) 100%);
+    z-index: 0;
   }
 
   .dashboard-light-bg > * {
