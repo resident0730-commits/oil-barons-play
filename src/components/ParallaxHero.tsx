@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Zap, BarChart3 } from 'lucide-react';
 import { OilParticles } from './OilParticles';
 import { useAuth } from '@/hooks/useAuth';
-import oilTycoonLogo from '@/assets/oil-tycoon-logo.png';
+import oilTycoonLogo from '@/assets/oil-tycoon-logo-transparent.png';
 
 export const ParallaxHero = () => {
   const { user } = useAuth();
@@ -61,7 +61,6 @@ export const ParallaxHero = () => {
                 alt="Oil Tycoon"
                 className="w-full max-w-4xl h-auto animate-fade-in"
                 style={{
-                  mixBlendMode: 'lighten',
                   filter: 'drop-shadow(0 0 40px rgba(234, 179, 8, 0.6))'
                 }}
               />
