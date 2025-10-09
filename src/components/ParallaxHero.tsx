@@ -74,13 +74,6 @@ export const ParallaxHero = () => {
               </Button>
             </Link>
           </div>
-
-          {/* Scroll Indicator */}
-          <div className="pt-20 animate-bounce">
-            <div className="w-8 h-12 border-2 border-white/40 rounded-full mx-auto flex items-start justify-center p-2">
-              <div className="w-2 h-4 bg-white/80 rounded-full animate-pulse"></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
