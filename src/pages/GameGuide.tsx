@@ -345,10 +345,10 @@ const GameGuide = () => {
         {/* Quick Start */}
         <div id="quick-start" className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               🚀 Быстрый старт
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Первые шаги для успешного старта в Oil Tycoon
             </p>
           </div>
@@ -365,10 +365,10 @@ const GameGuide = () => {
                   <div className={`w-16 h-16 bg-gradient-to-r ${item.gradient} text-white rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg group-hover:animate-bounce`}>
                     {item.step}
                   </div>
-                  <CardTitle className="text-xl text-white">{item.title}</CardTitle>
+                  <CardTitle className="text-2xl md:text-3xl text-white font-bold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%)]">{item.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-white/70 text-sm leading-relaxed">
+                  <p className="text-white text-base md:text-lg leading-relaxed font-medium [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">
                     {item.desc}
                   </p>
                   <Badge className={`bg-gradient-to-r ${item.gradient} text-white border-0 shadow-md`}>
@@ -383,10 +383,10 @@ const GameGuide = () => {
         {/* Wells Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               ⛽ Типы скважин и их экономика
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Подробный разбор каждого типа скважин с примерами доходности
             </p> 
           </div>
@@ -401,29 +401,29 @@ const GameGuide = () => {
                       <div className={`p-3 bg-gradient-to-r ${well.gradient} rounded-full shadow-lg group-hover:animate-pulse`}>
                         {well.icon}
                       </div>
-                      <CardTitle className="text-xl text-white">{well.name}</CardTitle>
+                      <CardTitle className="text-2xl md:text-3xl text-white font-bold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%)]">{well.name}</CardTitle>
                     </div>
-                    <Badge className={`bg-gradient-to-r ${well.gradient} text-white border-0 font-bold shadow-md`}>
+                    <Badge className={`bg-gradient-to-r ${well.gradient} text-white border-0 font-bold shadow-md text-base`}>
                       {well.income}
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-white/60">Стоимость: {well.price}</span>
-                    <span className="text-green-400 font-medium">
+                  <div className="flex items-center justify-between text-base md:text-lg">
+                    <span className="text-white font-semibold [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">Стоимость: {well.price}</span>
+                    <span className="text-green-400 font-bold text-base md:text-lg [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">
                       Окупаемость: {Math.round(parseInt(well.price.replace(/[^\d]/g, '')) / parseInt(well.income.replace(/[^\d]/g, '')))} дней
                     </span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-white/70 leading-relaxed">
+                  <p className="text-white text-base md:text-lg leading-relaxed font-medium [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">
                     {well.description}
                   </p>
                   <div className={`p-4 bg-gradient-to-r ${well.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                    <p className="text-sm font-medium text-white mb-1 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
+                    <p className="text-base md:text-lg font-bold text-white mb-1 flex items-center gap-2 [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">
+                      <Sparkles className="h-5 w-5" />
                       Пример использования:
                     </p>
-                    <p className="text-sm text-white/80">
+                    <p className="text-base text-white font-medium [text-shadow:_1px_1px_3px_rgb(0_0_0_/_90%)]">
                       {well.example}
                     </p>
                   </div>
@@ -436,10 +436,10 @@ const GameGuide = () => {
         {/* Upgrades Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               📈 Система улучшений
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Как работают улучшения скважин и когда их стоит покупать
             </p>
           </div>
@@ -499,10 +499,10 @@ const GameGuide = () => {
         {/* Boosters Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               🚀 Система бустеров
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Подробное руководство по всем бустерам и их эффективному использованию
             </p>
           </div>
@@ -581,10 +581,10 @@ const GameGuide = () => {
         {/* Strategies */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               🎯 Стратегии развития
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Проверенные стратегии для разных этапов игры
             </p>
           </div>
@@ -617,10 +617,10 @@ const GameGuide = () => {
         {/* Daily Activities */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4 luxury-gold-text [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               📅 Ежедневные активности
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            <p className="text-white max-w-2xl mx-auto text-xl md:text-2xl font-semibold [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Что делать каждый день для максимальной эффективности
             </p>
           </div>
