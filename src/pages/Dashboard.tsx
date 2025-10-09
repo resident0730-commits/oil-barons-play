@@ -9,7 +9,8 @@ import {
   Calendar,
   History,
   Trophy,
-  Wallet
+  Wallet,
+  Calculator
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +35,7 @@ import { TopUpModal } from "@/components/dashboard/TopUpModal";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -53,7 +55,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance' | 'calculator'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -82,7 +84,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance'];
+      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance', 'calculator'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         // Очищаем параметр section из URL
@@ -456,6 +458,7 @@ const Dashboard = () => {
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
+                { id: 'calculator', label: 'Калькулятор', icon: Calculator, shortLabel: 'Расчет' },
                 { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
               ].map((section) => (
                 <Button
@@ -592,6 +595,26 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'calculator' && (
+          <div className="space-y-6">
+            <div className="text-center space-y-4 mb-8">
+              <div className="relative">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent animate-fade-in">
+                  💰 Калькулятор доходности 💰
+                </h2>
+                <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-500/20 blur-sm rounded-lg opacity-50 animate-pulse"></div>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Планируйте свою нефтяную империю! Рассчитайте потенциальный доход с учетом скважин, бустеров и бонусов
+              </p>
+            </div>
+
+            <div className="max-w-7xl mx-auto">
+              <ProfitabilityCalculator />
             </div>
           </div>
         )}
