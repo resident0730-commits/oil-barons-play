@@ -78,99 +78,104 @@ export const AnimatedShopCard = ({
   return (
     <Card 
       className={`
-        relative overflow-hidden group shop-card-3d 
+        relative overflow-hidden premium-shop-card
         ${rarityGlow} 
         ${!canAfford ? "opacity-60" : ""}
-        border-2 hover:border-primary/40
-        bg-gradient-to-br from-card via-card to-card/90
+        border-2 border-primary/20
+        min-h-[500px]
       `}
     >
-      {/* Oil bubbles animation */}
-      <div className="oil-bubbles">
-        <div className="oil-bubble"></div>
-        <div className="oil-bubble"></div>
-        <div className="oil-bubble"></div>
-        <div className="oil-bubble"></div>
-      </div>
-
-      {/* Rarity border glow */}
-      <div className={`absolute top-0 left-0 w-full h-1 ${getRarityColor(wellType.rarity)}`}></div>
-      
-      {/* Large well image section - 60% of card */}
-      <div className="relative h-48 overflow-hidden">
+      {/* Fullscreen background image with parallax */}
+      <div className="parallax-bg">
         <img
           src={wellImage}
           alt={wellType.name}
-          className="w-full h-full object-cover well-image-scale group-hover:brightness-110 transition-all duration-500"
+          className="w-full h-full object-cover"
         />
-        
-        {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-        
-        {/* Rarity badge - floating */}
-        <div className="absolute top-3 left-3">
-          <Badge className={`${getRarityBadgeColor(wellType.rarity)} animate-pulse shadow-lg`} variant="secondary">
-            <Sparkles className="h-3 w-3 mr-1" />
+      </div>
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 premium-gradient-overlay z-[1]"></div>
+
+      {/* Floating gold/oil particles */}
+      <div className="floating-particles z-[2]">
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+        <div className="particle"></div>
+      </div>
+
+      {/* Content - positioned relative to stack above background */}
+      <div className="relative z-[3] h-full flex flex-col">
+        {/* Top badges section */}
+        <div className="p-4 flex justify-between items-start">
+          <Badge 
+            className={`
+              ${getRarityBadgeColor(wellType.rarity)} 
+              rarity-badge-spin shadow-2xl backdrop-blur-sm
+              border-2 border-white/20
+            `}
+          >
+            <Sparkles className="h-4 w-4 mr-1" />
             {wellType.rarity}
           </Badge>
-        </div>
 
-        {/* Daily income - floating */}
-        <div className="absolute top-3 right-3 text-right">
-          <div className="bg-black/60 backdrop-blur-sm rounded-lg p-2 border border-primary/30">
-            <p className="font-bold text-lg text-primary animated-counter">{formatGameCurrency(wellType.baseIncome)}</p>
+          <div className="bg-black/70 backdrop-blur-md rounded-xl p-3 border border-primary/40 shadow-2xl">
+            <p className="font-bold text-2xl text-primary">{formatGameCurrency(wellType.baseIncome)}</p>
             <p className="text-xs text-white/90">в день</p>
           </div>
         </div>
 
-        {/* Well name - overlay at bottom */}
-        <div className="absolute bottom-3 left-3 right-3">
-          <h3 className="text-xl font-bold text-white drop-shadow-lg">{wellType.name}</h3>
-        </div>
-      </div>
-
-      {/* Content section - 40% of card */}
-      <CardContent className="p-4 space-y-4">
-        {/* Description */}
-        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-          {wellType.description}
-        </p>
-
-        {/* Animated metrics */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="text-center p-3 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl hover:from-muted/70 hover:to-muted/50 transition-all duration-300">
-            <p className="font-bold text-sm animated-counter">{formatGameCurrency(metrics.monthlyIncome)}</p>
-            <p className="text-xs text-muted-foreground">в месяц</p>
-          </div>
-          <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl hover:from-primary/20 hover:to-primary/10 transition-all duration-300">
-            <p className="font-bold text-primary text-sm animated-counter">{formatProfitPercent(metrics.yearlyPercent)}</p>
-            <p className="text-xs text-muted-foreground">ROI/год</p>
-          </div>
+        {/* Middle section - well name */}
+        <div className="flex-1 flex items-center justify-center px-4">
+          <h3 className="text-3xl font-bold text-white drop-shadow-2xl text-center">
+            {wellType.name}
+          </h3>
         </div>
 
-        {/* Price and buy button */}
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground text-sm">Цена:</span>
-            <span className="text-xl font-bold text-foreground">{formatGameCurrency(wellType.price)}</span>
+        {/* Bottom section - stats and purchase */}
+        <div className="p-6 space-y-4 bg-gradient-to-t from-black/90 via-black/70 to-transparent">
+          <p className="text-sm text-white/80 leading-relaxed text-center">
+            {wellType.description}
+          </p>
+
+          {/* Animated metrics */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="stat-card text-center p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+              <p className="font-bold text-lg text-white">{formatGameCurrency(metrics.monthlyIncome)}</p>
+              <p className="text-xs text-white/70">в месяц</p>
+            </div>
+            <div className="stat-card text-center p-4 bg-primary/20 backdrop-blur-md rounded-xl border border-primary/40">
+              <p className="font-bold text-primary text-lg">{formatProfitPercent(metrics.yearlyPercent)}</p>
+              <p className="text-xs text-white/70">ROI/год</p>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="flex justify-between items-center px-2">
+            <span className="text-white/70 text-sm">Цена:</span>
+            <span className="text-2xl font-bold text-white">{formatGameCurrency(wellType.price)}</span>
           </div>
           
+          {/* Morphing button */}
           <Button
             onClick={() => onBuyWell(wellType)}
             disabled={!canAfford}
             className={`
-              w-full py-3 text-base font-bold transition-all duration-300
+              w-full py-6 text-lg font-bold 
+              morph-button relative z-10
               ${canAfford 
-                ? 'gradient-primary hover:shadow-primary hover:scale-105 active:scale-95' 
+                ? 'bg-gradient-to-r from-primary via-primary/90 to-primary shadow-2xl border-2 border-primary/50' 
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
               }
             `}
           >
-            <ShoppingCart className="h-5 w-5 mr-2" />
+            <ShoppingCart className="h-6 w-6 mr-2" />
             {canAfford ? 'Купить скважину' : 'Недостаточно средств'}
           </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
