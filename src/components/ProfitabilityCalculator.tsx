@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calculator, TrendingUp, Fuel, Package, Calendar, ArrowRight, Check } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
 import { Link } from 'react-router-dom';
@@ -233,6 +234,7 @@ const calculateOptimalPurchases = (targetIncome: number): {
 export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) => {
   const { formatGameCurrency } = useCurrency();
   const [targetIncome, setTargetIncome] = useState(1000);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const MIN_INCOME = 1000;
   const MAX_INCOME = 50000;
@@ -245,48 +247,288 @@ export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) =>
 
   if (compact) {
     return (
-      <Card className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border-2 border-emerald-500/50 hover:border-emerald-400 transition-all duration-500">
-        <div className="absolute -right-16 -top-16 w-48 h-48 bg-emerald-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-emerald-400/40 transition-all duration-500"></div>
-        <CardHeader>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-emerald-500/30 rounded-xl">
-              <Calculator className="h-8 w-8 text-emerald-400" />
+      <>
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-primary/20 via-accent/10 to-primary/5 backdrop-blur-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-500">
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-primary/30 transition-all duration-500"></div>
+          <CardHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-3 bg-primary/30 rounded-xl backdrop-blur-sm">
+                <Calculator className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  Калькулятор доходности
+                </CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Рассчитайте свой потенциальный доход
+                </CardDescription>
+              </div>
             </div>
-            <div>
-              <CardTitle className="text-2xl text-emerald-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                Калькулятор доходности
-              </CardTitle>
-              <CardDescription className="text-emerald-50/70">
-                Рассчитайте свой потенциальный доход
-              </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-4 bg-primary/10 backdrop-blur-sm rounded-xl border border-primary/20">
+                <Calendar className="h-6 w-6 text-primary mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground mb-1">Цель в день</p>
+                <p className="text-2xl font-bold text-primary">
+                  {formatGameCurrency(targetIncome)}
+                </p>
+              </div>
+              <div className="text-center p-4 bg-accent/10 backdrop-blur-sm rounded-xl border border-accent/20">
+                <Package className="h-6 w-6 text-accent mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground mb-1">Бюджет</p>
+                <p className="text-2xl font-bold text-accent">
+                  {formatGameCurrency(solution.totalCost)}
+                </p>
+              </div>
             </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-emerald-500/20 rounded-xl">
-              <Calendar className="h-6 w-6 text-emerald-400 mx-auto mb-2" />
-              <p className="text-sm text-emerald-50/70 mb-1">Цель в день</p>
-              <p className="text-2xl font-bold text-emerald-100">
-                {formatGameCurrency(targetIncome)}
-              </p>
-            </div>
-            <div className="text-center p-4 bg-emerald-500/20 rounded-xl">
-              <Package className="h-6 w-6 text-emerald-400 mx-auto mb-2" />
-              <p className="text-sm text-emerald-50/70 mb-1">Бюджет</p>
-              <p className="text-2xl font-bold text-emerald-100">
-                {formatGameCurrency(solution.totalCost)}
-              </p>
-            </div>
-          </div>
-          <Link to="/dashboard?section=calculator">
-            <Button className="w-full gradient-primary" size="lg">
+            <Button 
+              className="w-full gradient-primary shadow-primary hover-scale" 
+              size="lg"
+              onClick={() => setIsDialogOpen(true)}
+            >
               <Calculator className="mr-2 h-5 w-5" />
               Открыть полный калькулятор
             </Button>
-          </Link>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        {/* Full Calculator Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-3xl flex items-center gap-3">
+                <Calculator className="h-8 w-8 text-primary" />
+                Калькулятор доходности
+              </DialogTitle>
+              <DialogDescription className="text-lg">
+                Узнайте, что нужно купить для достижения желаемого дохода
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-8 py-4">
+              {/* Выбор желаемого дохода */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <Label className="text-lg font-semibold">Желаемый доход в день</Label>
+                  <Badge variant="secondary" className="text-xl px-4 py-2">
+                    {formatGameCurrency(targetIncome)}
+                  </Badge>
+                </div>
+                <Slider
+                  value={[targetIncome]}
+                  onValueChange={(value) => setTargetIncome(value[0])}
+                  min={MIN_INCOME}
+                  max={MAX_INCOME}
+                  step={STEP}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{formatGameCurrency(MIN_INCOME)}</span>
+                  <span>{formatGameCurrency(MAX_INCOME)}</span>
+                </div>
+              </div>
+
+              {/* Результаты расчета */}
+              <div className="grid md:grid-cols-3 gap-4">
+                <Card className="bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30">
+                  <CardContent className="p-6 text-center">
+                    <Package className="h-8 w-8 text-primary mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground mb-2">Необходимый бюджет</p>
+                    <p className="text-3xl font-bold text-primary">
+                      {formatGameCurrency(solution.totalCost)}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-accent/20 to-accent/5 border-accent/30">
+                  <CardContent className="p-6 text-center">
+                    <TrendingUp className="h-8 w-8 text-accent mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground mb-2">Реальный доход в день</p>
+                    <p className="text-3xl font-bold text-accent">
+                      {formatGameCurrency(Math.floor(solution.actualIncome))}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border-emerald-500/30">
+                  <CardContent className="p-6 text-center">
+                    <Calendar className="h-8 w-8 text-emerald-400 mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground mb-2">Срок окупаемости</p>
+                    <p className="text-3xl font-bold text-emerald-400">
+                      {solution.paybackDays} дней
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* План покупок */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="h-6 w-6 text-primary" />
+                  <h3 className="text-2xl font-bold">План покупок</h3>
+                </div>
+
+                {/* Бустер */}
+                {solution.booster && (
+                  <Card className="bg-gradient-to-r from-purple-500/10 to-purple-500/5 border-purple-500/30">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="p-3 bg-purple-500/30 rounded-xl">
+                            <Package className="h-8 w-8 text-purple-400" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <h4 className="text-xl font-bold text-purple-100">{solution.booster.name}</h4>
+                              <Badge className="bg-purple-500/30 text-purple-100 border-purple-400">
+                                x{solution.booster.multiplier} множитель
+                              </Badge>
+                            </div>
+                            <p className="text-muted-foreground mb-3">
+                              Увеличивает доход от всех скважин в {solution.booster.multiplier} раз
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="text-purple-100 border-purple-400">
+                                {formatGameCurrency(solution.booster.cost)}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                        <Check className="h-6 w-6 text-purple-400" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Пакеты скважин */}
+                {solution.packages.length > 0 && (
+                  <div className="space-y-3">
+                    {solution.packages.map((purchase, index) => (
+                      <Card key={`pkg-${index}`} className="bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-500/30">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-start gap-4">
+                              <div className="p-3 bg-blue-500/30 rounded-xl">
+                                <Package className="h-8 w-8 text-blue-400" />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-3 mb-2">
+                                  <h4 className="text-xl font-bold text-blue-100">{purchase.package.name}</h4>
+                                  <Badge className="bg-blue-500/30 text-blue-100 border-blue-400">
+                                    x{purchase.count} шт
+                                  </Badge>
+                                  <Badge variant="outline" className="bg-green-500/20 text-green-100 border-green-400">
+                                    {purchase.package.discount} скидка
+                                  </Badge>
+                                </div>
+                                <p className="text-muted-foreground mb-3">
+                                  Доход: {formatGameCurrency(purchase.package.totalIncome)}/день за пакет
+                                </p>
+                                <div className="text-sm text-muted-foreground mb-3">
+                                  Включает: {purchase.package.wells.map(w => `${w.type} x${w.count}`).join(', ')}
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <Badge variant="outline" className="text-blue-100 border-blue-400">
+                                    Цена за 1: {formatGameCurrency(purchase.package.cost)}
+                                  </Badge>
+                                  <Badge variant="secondary">
+                                    Итого: {formatGameCurrency(purchase.package.cost * purchase.count)}
+                                  </Badge>
+                                </div>
+                              </div>
+                            </div>
+                            <Check className="h-6 w-6 text-blue-400" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+
+                {/* Скважины */}
+                {solution.wells.length > 0 && (
+                  <div className="space-y-3">
+                    {solution.wells.map((purchase, index) => (
+                      <Card key={index} className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-start gap-4">
+                              <div className="p-3 bg-primary/20 rounded-xl">
+                                <Fuel className="h-8 w-8 text-primary" />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-3 mb-2">
+                                  <h4 className="text-xl font-bold">{purchase.well.name}</h4>
+                                  <Badge className="bg-primary/30 text-primary-foreground">
+                                    x{purchase.count} шт
+                                  </Badge>
+                                </div>
+                                <p className="text-muted-foreground mb-3">
+                                  Доход: {formatGameCurrency(purchase.well.dailyIncome)}/день за 1 шт
+                                </p>
+                                <div className="flex items-center gap-3">
+                                  <Badge variant="outline">
+                                    Цена за 1: {formatGameCurrency(purchase.well.cost)}
+                                  </Badge>
+                                  <Badge variant="secondary">
+                                    Итого: {formatGameCurrency(purchase.well.cost * purchase.count)}
+                                  </Badge>
+                                </div>
+                              </div>
+                            </div>
+                            <Check className="h-6 w-6 text-primary" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Прогноз доходности */}
+              <Card className="bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-emerald-500/30">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Calendar className="h-6 w-6 text-emerald-400" />
+                    Прогноз доходности
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Доход за неделю</p>
+                      <p className="text-2xl font-bold text-emerald-400">
+                        {formatGameCurrency(Math.floor(solution.actualIncome * 7))}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Доход за месяц</p>
+                      <p className="text-2xl font-bold text-emerald-400">
+                        {formatGameCurrency(Math.floor(solution.actualIncome * 30))}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Прибыль после окупаемости</p>
+                      <p className="text-2xl font-bold text-emerald-400">
+                        {formatGameCurrency(Math.floor(solution.actualIncome * 30 - solution.totalCost))}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">За первый месяц</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Подсказка */}
+              <Card className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-blue-500/30">
+                <CardContent className="p-4">
+                  <p className="text-sm text-center text-blue-100">
+                    💡 <strong>Совет:</strong> Для достижения дохода {formatGameCurrency(targetIncome)} в день вам понадобится бюджет {formatGameCurrency(solution.totalCost)}. 
+                    Инвестиция окупится за {solution.paybackDays} дней!
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
