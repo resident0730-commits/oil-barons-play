@@ -98,10 +98,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen hero-luxury-background overflow-x-hidden">
         {/* Header */}
       <header className="relative z-50 container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between backdrop-blur-sm bg-card/80 rounded-2xl p-4 shadow-oil border border-primary/20">
+        <nav className="flex items-center justify-between backdrop-blur-sm bg-background/20 rounded-2xl p-4 shadow-luxury">
           <div className="flex items-center space-x-3">
             <div className="relative">
               <Fuel className="h-10 w-10 text-primary animate-glow-pulse" />
@@ -138,7 +138,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-20">
         <div className="text-center space-y-12 mb-24 animate-fade-in">
           <div className="relative">
-            <Badge variant="default" className="text-lg px-6 py-3 shadow-primary animate-scale-in border border-primary/30">
+            <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-primary animate-scale-in">
               <Fuel className="w-5 h-5 mr-2" />
               Богатство из недр земли
             </Badge>
@@ -181,7 +181,7 @@ const Index = () => {
               </Link>
             )}
             <Link to="/guide">
-              <Button size="lg" variant="outline" className="text-xl px-10 py-6 hover-scale">
+              <Button size="lg" variant="outline" className="text-xl px-10 py-6 backdrop-blur-sm bg-card/30 border-primary/50 hover:bg-primary/10 hover-scale">
                 <BarChart3 className="mr-3 h-6 w-6" />
                 Узнать больше
               </Button>
@@ -197,9 +197,10 @@ const Index = () => {
       <div className="relative mt-12">
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-24 animate-fade-in">
-          <Card className="max-w-4xl mx-auto bg-card/95 backdrop-blur-xl border-2 border-primary/20 shadow-gold overflow-hidden relative group animate-fade-in">
+          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group animate-fade-in">
             {/* Animated border */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="p-3 bg-primary/10 rounded-full">
@@ -266,9 +267,10 @@ const Index = () => {
               <p className="text-xl text-muted-foreground">Текущие достижения и активы</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <Card className="relative overflow-hidden group hover-scale bg-card backdrop-blur-xl border-2 border-primary/20 shadow-primary">
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
                 {/* Animated border */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-luxury"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Капитал</CardTitle>
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -281,9 +283,10 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden group hover-scale bg-card backdrop-blur-xl border-2 border-primary/20 shadow-primary">
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
                 {/* Animated border */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-luxury"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Ежедневный доход</CardTitle>
                   <div className="p-2 bg-accent/10 rounded-lg">
@@ -296,9 +299,10 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden group hover-scale bg-card backdrop-blur-xl border-2 border-primary/20 shadow-primary">
+              <Card className="relative overflow-hidden group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl">
                 {/* Animated border */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-luxury"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10 blur-sm"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                   <CardTitle className="text-lg font-medium">Нефтяные активы</CardTitle>
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -322,10 +326,12 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center group hover-scale bg-card border-2 border-primary/20 shadow-primary relative overflow-hidden animate-fade-in">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
+                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Fuel className="h-12 w-12 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-bold">Нефтяные скважины</CardTitle>
@@ -337,10 +343,12 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-card border-2 border-primary/20 shadow-primary relative overflow-hidden animate-fade-in">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit">
+                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <TrendingUp className="h-12 w-12 text-accent" />
                 </div>
                 <CardTitle className="text-xl font-bold">Стабильная прибыль</CardTitle>
@@ -352,10 +360,12 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-card border-2 border-primary/20 shadow-primary relative overflow-hidden animate-fade-in">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
+                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Users className="h-12 w-12 text-primary" />
                 </div>
                 <CardTitle className="text-xl font-bold">Реферальная программа</CardTitle>
@@ -367,10 +377,12 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-card border-2 border-primary/20 shadow-primary relative overflow-hidden animate-fade-in">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden animate-fade-in">
+              {/* Animated background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10">
-                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit">
+                <div className="mx-auto mb-4 p-4 bg-accent/10 rounded-full w-fit group-hover:animate-glow-pulse">
                   <Award className="h-12 w-12 text-accent" />
                 </div>
                 <CardTitle className="text-xl font-bold">Система достижений</CardTitle>
@@ -428,8 +440,10 @@ const Index = () => {
               </h2>
               <p className="text-lg text-muted-foreground">Узнайте, что говорят реальные игроки о нашей игре</p>
             </div>
-            <div className="bg-card rounded-2xl p-8 border-2 border-primary/20 shadow-primary relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-luxury"></div>
+            <div className="bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl p-8 border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+              {/* Animated border */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 animate-glow-pulse -z-10 blur-sm"></div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <div className="relative z-10">
                 <GameReviews />
               </div>
@@ -441,8 +455,10 @@ const Index = () => {
         <div className="text-center py-12">
           <div className="relative max-w-4xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 blur-3xl rounded-full"></div>
-            <Card className="relative bg-card backdrop-blur-xl border-2 border-primary/20 shadow-gold overflow-hidden group animate-fade-in">
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-luxury"></div>
+            <Card className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden group animate-fade-in">
+              {/* Animated border */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="text-center py-8">
                 <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair">
                   Готовы изучать экономику через игру?
