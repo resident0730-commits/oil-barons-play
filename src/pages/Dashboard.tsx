@@ -603,12 +603,12 @@ const Dashboard = () => {
           <div className="space-y-6">
             <div className="text-center space-y-4 mb-8">
               <div className="relative">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent animate-fade-in">
-                  💰 Калькулятор доходности 💰
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent animate-fade-in [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Калькулятор доходности
                 </h2>
-                <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-500/20 blur-sm rounded-lg opacity-50 animate-pulse"></div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
               </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                 Планируйте свою нефтяную империю! Рассчитайте потенциальный доход с учетом скважин, бустеров и бонусов
               </p>
             </div>
