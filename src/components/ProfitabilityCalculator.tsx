@@ -115,163 +115,119 @@ const calculateOptimalPurchases = (targetIncome: number): {
     paybackDays: Infinity,
   };
 
-  // Пробуем с бустером и без
-  for (let useBooster = 0; useBooster <= 1; useBooster++) {
-    const currentBooster = useBooster ? BOOSTERS[0] : null; // Берем лучший бустер
+  // Пробуем без бустера и с каждым бустером
+  const boosterOptions = [null, ...BOOSTERS];
+  
+  for (const currentBooster of boosterOptions) {
     const boosterMultiplier = currentBooster ? currentBooster.multiplier : 1.0;
     const requiredBaseIncome = targetIncome / boosterMultiplier;
+    const boosterCost = currentBooster ? currentBooster.cost : 0;
 
-    // Вариант 1: Покупка только пакетов
-    let packageSolution = calculatePackagesSolution(requiredBaseIncome, currentBooster);
+    // Перебираем все возможные комбинации
     
-    // Вариант 2: Покупка только отдельных скважин
-    let individualSolution = calculateIndividualWellsSolution(requiredBaseIncome, currentBooster);
-    
-    // Вариант 3: Комбинация пакетов и отдельных скважин
-    let combinedSolution = calculateCombinedSolution(requiredBaseIncome, currentBooster);
-
-    // Выбираем лучшее решение
-    const solutions = [packageSolution, individualSolution, combinedSolution];
-    const bestCurrent = solutions.reduce((best, current) => 
-      current.totalCost < best.totalCost ? current : best
-    );
-
-    if (bestCurrent.actualIncome >= targetIncome && bestCurrent.totalCost < bestSolution.totalCost) {
-      bestSolution = bestCurrent;
+    // 1. Только одна скважина нужного типа
+    for (const well of WELL_TYPES) {
+      const count = Math.ceil(requiredBaseIncome / well.dailyIncome);
+      const totalCost = well.cost * count + boosterCost;
+      const actualIncome = well.dailyIncome * count * boosterMultiplier;
+      
+      if (actualIncome >= targetIncome && totalCost < bestSolution.totalCost) {
+        bestSolution = {
+          wells: [{ well, count }],
+          packages: [],
+          booster: currentBooster,
+          totalCost,
+          actualIncome,
+          paybackDays: totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0,
+        };
+      }
     }
-  }
 
-  return bestSolution;
-};
-
-// Расчет решения только с пакетами
-const calculatePackagesSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
-  const packages: PackagePurchase[] = [];
-  let currentIncome = 0;
-  let totalCost = booster ? booster.cost : 0;
-  const boosterMultiplier = booster ? booster.multiplier : 1.0;
-
-  // Сортируем пакеты по эффективности (доход/стоимость)
-  const sortedPackages = [...WELL_PACKAGES].sort((a, b) => 
-    (b.totalIncome / b.cost) - (a.totalIncome / a.cost)
-  );
-
-  for (const pkg of sortedPackages) {
-    if (currentIncome >= requiredBaseIncome) break;
-
-    const neededIncome = requiredBaseIncome - currentIncome;
-    const count = Math.ceil(neededIncome / pkg.totalIncome);
-
-    if (count > 0) {
-      packages.push({ package: pkg, count });
-      currentIncome += pkg.totalIncome * count;
-      totalCost += pkg.cost * count;
+    // 2. Только один пакет
+    for (const pkg of WELL_PACKAGES) {
+      const count = Math.ceil(requiredBaseIncome / pkg.totalIncome);
+      const totalCost = pkg.cost * count + boosterCost;
+      const actualIncome = pkg.totalIncome * count * boosterMultiplier;
+      
+      if (actualIncome >= targetIncome && totalCost < bestSolution.totalCost) {
+        bestSolution = {
+          wells: [],
+          packages: [{ package: pkg, count }],
+          booster: currentBooster,
+          totalCost,
+          actualIncome,
+          paybackDays: totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0,
+        };
+      }
     }
-  }
 
-  const actualIncome = currentIncome * boosterMultiplier;
-  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
-
-  return {
-    wells: [] as WellPurchase[],
-    packages,
-    booster,
-    totalCost,
-    actualIncome,
-    paybackDays,
-  };
-};
-
-// Расчет решения только с отдельными скважинами
-const calculateIndividualWellsSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
-  const wells: WellPurchase[] = [];
-  let currentIncome = 0;
-  let totalCost = booster ? booster.cost : 0;
-  const boosterMultiplier = booster ? booster.multiplier : 1.0;
-
-  // Сортируем по эффективности
-  const sortedWells = [...WELL_TYPES].sort((a, b) => b.efficiency - a.efficiency);
-
-  for (const well of sortedWells) {
-    if (currentIncome >= requiredBaseIncome) break;
-
-    const neededIncome = requiredBaseIncome - currentIncome;
-    const count = Math.ceil(neededIncome / well.dailyIncome);
-
-    if (count > 0) {
-      wells.push({ well, count });
-      currentIncome += well.dailyIncome * count;
-      totalCost += well.cost * count;
+    // 3. Комбинация: пакет + скважины для добора
+    for (const pkg of WELL_PACKAGES) {
+      // Берем максимально возможное количество пакетов без превышения бюджета
+      const maxPackages = Math.floor(requiredBaseIncome / pkg.totalIncome);
+      
+      for (let packageCount = 1; packageCount <= Math.min(maxPackages + 1, 3); packageCount++) {
+        const incomeFromPackages = pkg.totalIncome * packageCount;
+        const remainingIncome = requiredBaseIncome - incomeFromPackages;
+        
+        if (remainingIncome <= 0) continue;
+        
+        // Добираем одним типом скважин
+        for (const well of WELL_TYPES) {
+          const wellCount = Math.ceil(remainingIncome / well.dailyIncome);
+          const totalCost = pkg.cost * packageCount + well.cost * wellCount + boosterCost;
+          const actualIncome = (incomeFromPackages + well.dailyIncome * wellCount) * boosterMultiplier;
+          
+          if (actualIncome >= targetIncome && totalCost < bestSolution.totalCost) {
+            bestSolution = {
+              wells: [{ well, count: wellCount }],
+              packages: [{ package: pkg, count: packageCount }],
+              booster: currentBooster,
+              totalCost,
+              actualIncome,
+              paybackDays: totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0,
+            };
+          }
+        }
+      }
     }
-  }
 
-  const actualIncome = currentIncome * boosterMultiplier;
-  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
-
-  return {
-    wells,
-    packages: [] as PackagePurchase[],
-    booster,
-    totalCost,
-    actualIncome,
-    paybackDays,
-  };
-};
-
-// Расчет комбинированного решения (пакеты + отдельные скважины)
-const calculateCombinedSolution = (requiredBaseIncome: number, booster: typeof BOOSTERS[0] | null) => {
-  const packages: PackagePurchase[] = [];
-  const wells: WellPurchase[] = [];
-  let currentIncome = 0;
-  let totalCost = booster ? booster.cost : 0;
-  const boosterMultiplier = booster ? booster.multiplier : 1.0;
-
-  // Сначала используем самый выгодный пакет
-  const bestPackage = [...WELL_PACKAGES].sort((a, b) => 
-    (b.totalIncome / b.cost) - (a.totalIncome / a.cost)
-  )[0];
-
-  if (bestPackage && currentIncome < requiredBaseIncome) {
-    const neededIncome = requiredBaseIncome - currentIncome;
-    const count = Math.floor(neededIncome / bestPackage.totalIncome);
-    
-    if (count > 0) {
-      packages.push({ package: bestPackage, count });
-      currentIncome += bestPackage.totalIncome * count;
-      totalCost += bestPackage.cost * count;
-    }
-  }
-
-  // Добираем отдельными скважинами
-  if (currentIncome < requiredBaseIncome) {
-    const sortedWells = [...WELL_TYPES].sort((a, b) => b.efficiency - a.efficiency);
-    
-    for (const well of sortedWells) {
-      if (currentIncome >= requiredBaseIncome) break;
-
-      const neededIncome = requiredBaseIncome - currentIncome;
-      const count = Math.ceil(neededIncome / well.dailyIncome);
-
-      if (count > 0) {
-        wells.push({ well, count });
-        currentIncome += well.dailyIncome * count;
-        totalCost += well.cost * count;
-        break; // Берем только один тип скважин для добора
+    // 4. Комбинация нескольких типов скважин (2-3 типа максимум для простоты)
+    for (let i = 0; i < WELL_TYPES.length; i++) {
+      for (let j = i + 1; j < WELL_TYPES.length; j++) {
+        const well1 = WELL_TYPES[i];
+        const well2 = WELL_TYPES[j];
+        
+        // Пробуем разные соотношения
+        for (let count1 = 1; count1 <= 5; count1++) {
+          const income1 = well1.dailyIncome * count1;
+          const remaining = requiredBaseIncome - income1;
+          
+          if (remaining > 0) {
+            const count2 = Math.ceil(remaining / well2.dailyIncome);
+            const totalCost = well1.cost * count1 + well2.cost * count2 + boosterCost;
+            const actualIncome = (income1 + well2.dailyIncome * count2) * boosterMultiplier;
+            
+            if (actualIncome >= targetIncome && totalCost < bestSolution.totalCost) {
+              bestSolution = {
+                wells: [
+                  { well: well1, count: count1 },
+                  { well: well2, count: count2 }
+                ],
+                packages: [],
+                booster: currentBooster,
+                totalCost,
+                actualIncome,
+                paybackDays: totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0,
+              };
+            }
+          }
+        }
       }
     }
   }
 
-  const actualIncome = currentIncome * boosterMultiplier;
-  const paybackDays = totalCost > 0 ? Math.ceil(totalCost / actualIncome) : 0;
-
-  return {
-    wells,
-    packages,
-    booster,
-    totalCost,
-    actualIncome,
-    paybackDays,
-  };
+  return bestSolution;
 };
 
 export const ProfitabilityCalculator = ({ compact = false }: CalculatorProps) => {
