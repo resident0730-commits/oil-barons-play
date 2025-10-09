@@ -15,7 +15,6 @@ export const ParallaxHero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 hero-luxury-background" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
       </div>
 
       {/* Content */}
