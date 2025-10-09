@@ -471,8 +471,11 @@ export function useGameData() {
 
     try {
       console.log('🔍 Loading game data for user:', user.id);
+      console.log('📱 User agent:', navigator.userAgent);
+      console.log('📶 Connection:', navigator.onLine ? 'Online' : 'Offline');
       
-      // Load profile with simple timeout for mobile
+      // Load profile with extended timeout for mobile devices
+      const profileStartTime = Date.now();
       const result = await Promise.race([
         supabase
           .from('profiles')
@@ -480,12 +483,15 @@ export function useGameData() {
           .eq('user_id', user.id)
           .maybeSingle(),
         new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Profile load timeout')), 8000)
+          setTimeout(() => reject(new Error('Profile load timeout')), 15000) // Increased to 15 seconds
         )
       ]).catch(err => {
         console.error('❌ Profile loading error:', err);
+        console.error('⏱️ Profile load time:', Date.now() - profileStartTime, 'ms');
         return { data: null, error: err };
       }) as { data: any; error: any };
+      
+      console.log('⏱️ Profile load time:', Date.now() - profileStartTime, 'ms');
 
       const profileData = result.data;
       const profileError = result.error;

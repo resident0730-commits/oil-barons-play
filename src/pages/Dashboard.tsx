@@ -129,16 +129,8 @@ const Dashboard = () => {
     sounds.error();
   };
 
-  // Если профиль не загружен - показываем базовый профиль (избегаем зависания)
-  const currentProfile = profile || {
-    id: '',
-    user_id: user?.id || '',
-    nickname: user?.user_metadata?.nickname || 'Игрок',
-    balance: 1000,
-    daily_income: 0,
-    last_login: new Date().toISOString(),
-    created_at: new Date().toISOString()
-  };
+  // Ждем реальный профиль - не используем дефолтные значения
+  const currentProfile = profile;
 
   // Memoized utility functions for performance
   const getWellIcon = useCallback((wellTypeName: string) => {
@@ -269,6 +261,8 @@ const Dashboard = () => {
   }, [currentProfile?.daily_income, referralMultiplier, addIncome, updateReferralEarnings]);
 
   const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
+    if (!currentProfile) return;
+    
     if (currentProfile.balance < wellType.price) {
       setIsTopUpOpen(true);
       toast({
@@ -295,6 +289,8 @@ const Dashboard = () => {
   };
 
   const handleBuyPackage = async (wellPackage: typeof wellPackages[0]) => {
+    if (!currentProfile) return;
+    
     if (currentProfile.balance < wellPackage.discountedPrice) {
       setIsTopUpOpen(true);
       toast({
@@ -321,6 +317,8 @@ const Dashboard = () => {
   };
 
   const handleUpgradeWell = async (wellId: string) => {
+    if (!currentProfile) return;
+    
     const well = wells.find(w => w.id === wellId);
     const wellType = wellTypes.find(wt => wt.name === well?.well_type);
     const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * Math.pow(1.2, (well?.level || 1) - 1));
@@ -433,7 +431,7 @@ const Dashboard = () => {
     }
   };
 
-  if (loading || !user) {
+  if (loading || !user || !profile) {
     return <LoadingScreen user={user} profile={profile} />;
   }
 
@@ -481,7 +479,7 @@ const Dashboard = () => {
         </div>
 
         {/* Dynamic Content */}
-        {activeSection === 'overview' && (
+        {activeSection === 'overview' && currentProfile && (
           <OverviewSection 
             profile={currentProfile} 
             wells={wells} 
@@ -490,14 +488,14 @@ const Dashboard = () => {
           />
         )}
 
-        {activeSection === 'balance' && (
+        {activeSection === 'balance' && currentProfile && (
           <BalanceSection 
             onTopUp={handleTopUp}
             topUpLoading={false}
           />
         )}
 
-        {activeSection === 'wells' && (
+        {activeSection === 'wells' && currentProfile && (
           <WellsSection
             wells={wells}
             profile={currentProfile}
@@ -511,7 +509,7 @@ const Dashboard = () => {
           />
         )}
 
-        {activeSection === 'shop' && (
+        {activeSection === 'shop' && currentProfile && (
           <ShopSection
             profile={currentProfile}
             onBuyWell={handleBuyWell}
@@ -537,7 +535,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeSection === 'daily' && (
+        {activeSection === 'daily' && currentProfile && (
           <div className="space-y-6">
             {/* Hero Section */}
             <div className="text-center space-y-4 mb-8">
@@ -558,7 +556,7 @@ const Dashboard = () => {
               <div className="w-full">
               <DailyChest 
                 userId={user?.id} 
-                userIncome={currentProfile?.daily_income || 0}
+                userIncome={currentProfile.daily_income}
                 devMode={isAdmin} // Админы имеют неограниченные попытки для тестирования
               />
               </div>
@@ -573,22 +571,22 @@ const Dashboard = () => {
                 {/* Statistics Cards */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200">
-                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">{profile?.total_daily_chests_opened || 0}</div>
+                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">{currentProfile.total_daily_chests_opened || 0}</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Сундуков открыто</div>
                   </div>
                   <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.1s' }}>
-                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">{profile?.daily_chest_streak || 0}</div>
+                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">{currentProfile.daily_chest_streak || 0}</div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Текущая серия</div>
                   </div>
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.2s' }}>
                     <div className="text-xl sm:text-2xl font-bold text-primary mb-1">
-                      {Math.max(profile?.daily_chest_streak || 0, profile?.total_daily_chests_opened || 0)}
+                      {Math.max(currentProfile.daily_chest_streak || 0, currentProfile.total_daily_chests_opened || 0)}
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Лучшая серия</div>
                   </div>
                   <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.3s' }}>
                     <div className="text-xl sm:text-2xl font-bold text-accent mb-1">
-                      {((profile?.total_daily_chests_opened || 0) * 650).toLocaleString()}
+                      {((currentProfile.total_daily_chests_opened || 0) * 650).toLocaleString()}
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">Всего получено OC</div>
                   </div>
