@@ -174,8 +174,8 @@ const Index = () => {
             </p>
           </div>
           
-          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
+          <Card className="max-w-4xl mx-auto bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden relative group">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 animate-glow-pulse -z-10 blur-sm"></div>
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center gap-4 mb-6">
@@ -306,7 +306,7 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 container mx-auto px-4">
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+            <Card className="text-center group hover-scale bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10 pb-4">
@@ -324,7 +324,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+            <Card className="text-center group hover-scale bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10 pb-4">
@@ -342,7 +342,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+            <Card className="text-center group hover-scale bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10 pb-4">
@@ -360,7 +360,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center group hover-scale bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
+            <Card className="text-center group hover-scale bg-gradient-to-br from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-2 border-primary/30 shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
               <CardHeader className="relative z-10 pb-4">
