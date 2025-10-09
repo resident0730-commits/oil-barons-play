@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
-  Fuel, 
   Wallet, 
   User,
   BarChart3,
@@ -30,11 +29,7 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5"></div>
       <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 relative z-10">
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <Link to="/" className="group flex items-center space-x-2 sm:space-x-3 hover-scale min-w-0">
-            <div className="relative flex-shrink-0">
-              <Fuel className="h-8 w-8 sm:h-10 sm:w-10 text-primary drop-shadow-lg transition-transform duration-300 group-hover:rotate-12" />
-              <div className="absolute -inset-2 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
+          <Link to="/" className="group hover-scale min-w-0">
             <div className="space-y-1 min-w-0">
               <h1 className="text-xl sm:text-3xl font-playfair font-bold bg-gradient-to-r from-primary via-oil-gold to-accent bg-clip-text text-transparent truncate">
                 Oil Tycoon
