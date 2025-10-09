@@ -494,6 +494,7 @@ All colors MUST be HSL.
   .game-card-flip {
     perspective: 1000px;
     cursor: pointer;
+    height: 600px;
   }
 
   .game-card-inner {
@@ -515,6 +516,8 @@ All colors MUST be HSL.
     height: 100%;
     backface-visibility: hidden;
     border-radius: inherit;
+    top: 0;
+    left: 0;
   }
 
   .game-card-back {
