@@ -130,19 +130,18 @@ const Index = () => {
                 size="sm" 
                 onClick={() => setIsCalculatorOpen(true)}
                 className="hidden sm:flex items-center gap-2 relative overflow-hidden group
-                  bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 
-                  hover:from-amber-400 hover:via-yellow-400 hover:to-amber-400
-                  text-black font-bold shadow-lg hover:shadow-amber-500/50
-                  border-2 border-amber-300/50 hover:border-amber-200
+                  bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 
+                  hover:from-violet-500 hover:via-purple-500 hover:to-fuchsia-500
+                  text-white font-bold shadow-lg hover:shadow-purple-500/50
+                  border-2 border-purple-400/50 hover:border-purple-300
                   transition-all duration-300 hover:scale-105
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent
                   before:-translate-x-full before:hover:translate-x-full before:transition-transform before:duration-700
-                  after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.3)]
+                  after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]
                   animate-pulse hover:animate-none"
               >
                 <Calculator className="h-4 w-4 relative z-10 drop-shadow-md" />
                 <span className="hidden lg:inline relative z-10 drop-shadow-md">Калькулятор доходности</span>
-                <Sparkles className="h-3 w-3 relative z-10 animate-spin-slow" />
               </Button>
               {user ? (
                 <div className="flex items-center gap-2 sm:gap-4">
