@@ -124,15 +124,15 @@ export const AnimatedWellCard = ({
       
       {/* УЛУЧШЕННЫЕ ПОДПИСИ */}
       <div className="text-center mt-3 sm:mt-4 space-y-1">
-        <h3 className="text-xs sm:text-sm md:text-base font-bold text-primary group-hover:scale-105 transition-transform duration-300 leading-tight px-1 drop-shadow-md">
+        <h3 className="text-xs sm:text-sm md:text-base font-bold group-hover:scale-105 transition-transform duration-300 leading-tight px-1 drop-shadow-md" style={{ color: 'hsl(45, 100%, 65%)' }}>
           {wellType.name}
         </h3>
         <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-          <Badge variant="outline" className="text-xs bg-background/80 backdrop-blur-sm px-1.5 py-0.5 border-primary/20">
+          <Badge variant="outline" className="text-xs bg-background/80 backdrop-blur-sm px-1.5 py-0.5 border-amber-500/30">
             {wellType.rarity}
           </Badge>
           <span className="text-muted-foreground">•</span>
-          <span className="font-bold text-xs sm:text-sm bg-gradient-to-r from-primary via-oil-gold-light to-primary bg-clip-text text-transparent">
+          <span className="font-bold text-xs sm:text-sm" style={{ color: 'hsl(45, 100%, 65%)' }}>
             {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}/день
           </span>
         </div>
