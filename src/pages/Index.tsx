@@ -26,7 +26,10 @@ import {
   User,
   Shield,
   Crown,
-  Sparkles
+  Sparkles,
+  Rocket,
+  Package,
+  Gift
 } from "lucide-react";
 
 const Index = () => {
@@ -379,6 +382,69 @@ const Index = () => {
                   <h3 className="text-3xl font-bold text-violet-100 mb-4 drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]">Система достижений</h3>
                   <p className="text-lg text-violet-50/90 leading-relaxed">
                     Соревнуйтесь с другими игроками за звание лучшего стратега в рейтингах
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Boosters Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-400">
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-yellow-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-yellow-400/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-400"></div>
+                </div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-yellow-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      <Rocket className="h-16 w-16 text-yellow-400 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]" />
+                    </div>
+                    <div className="text-5xl font-black text-yellow-400/30 group-hover:text-yellow-400/50 transition-colors duration-300">05</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-yellow-100 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]">Бустеры</h3>
+                  <p className="text-lg text-yellow-50/90 leading-relaxed">
+                    Турбо-ускорение, автоматизация и улучшенное оборудование для максимальной эффективности
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Well Packages Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-rose-500/20 via-rose-500/10 to-transparent backdrop-blur-xl border-2 border-rose-500/50 hover:border-rose-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-rose-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-rose-400/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-500"></div>
+                </div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-rose-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
+                      <Package className="h-16 w-16 text-rose-400 drop-shadow-[0_0_20px_rgba(244,63,94,0.8)]" />
+                    </div>
+                    <div className="text-5xl font-black text-rose-400/30 group-hover:text-rose-400/50 transition-colors duration-300">06</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-rose-100 mb-4 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)]">Пакеты скважин</h3>
+                  <p className="text-lg text-rose-50/90 leading-relaxed">
+                    Готовые наборы скважин - от стартового до империи. Быстрый старт и мгновенный доход
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Treasure Chest Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-600">
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-teal-400/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-600"></div>
+                </div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-teal-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      <Gift className="h-16 w-16 text-teal-400 drop-shadow-[0_0_20px_rgba(20,184,166,0.8)]" />
+                    </div>
+                    <div className="text-5xl font-black text-teal-400/30 group-hover:text-teal-400/50 transition-colors duration-300">07</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-teal-100 mb-4 drop-shadow-[0_0_10px_rgba(20,184,166,0.5)]">Сундук с призами</h3>
+                  <p className="text-lg text-teal-50/90 leading-relaxed">
+                    Открывайте ежедневные сундуки и участвуйте в розыгрышах реальных призов и гаджетов
                   </p>
                 </CardContent>
               </Card>
