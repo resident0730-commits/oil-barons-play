@@ -12,9 +12,6 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
-import { StatisticMetrics } from "@/components/StatisticMetrics";
-import { InteractiveChart } from "@/components/InteractiveChart";
-import { RealTimeVisualizer } from "@/components/RealTimeVisualizer";
 import { ParallaxHero } from "@/components/ParallaxHero";
 import { 
   Fuel, 
@@ -364,40 +361,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Enhanced Data Visualization Section */}
-        <div className="py-12 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-slate-900/50 rounded-3xl"></div>
-          <div className="relative max-w-6xl mx-auto space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-3 font-playfair">
-                📊 Аналитика & Метрики
-              </h2>
-              <p className="text-lg text-slate-300 mb-6">Современная визуализация игровых данных в реальном времени</p>
-            </div>
-
-            {/* Real-time visualizer */}
-            <div className="mb-8">
-              <RealTimeVisualizer />
-            </div>
-            
-            {/* Metrics grid */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                ⚡ Ключевые показатели
-              </h3>
-              <StatisticMetrics />
-            </div>
-            
-            {/* Interactive chart */}
-            <div>
-              <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                📈 Динамика роста
-              </h3>
-              <InteractiveChart />
-            </div>
-          </div>
-        </div>
-
         {/* Reviews Section */}
         <div className="py-12 relative">
           <div className="absolute inset-0 backdrop-blur-sm bg-muted/20 rounded-3xl"></div>
@@ -419,63 +382,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center py-12">
-          <div className="relative max-w-4xl mx-auto">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 blur-3xl rounded-full"></div>
-            <Card className="relative bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-primary/30 shadow-2xl overflow-hidden group animate-fade-in">
-              {/* Animated border */}
-              <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30 animate-glow-pulse -z-10 blur-sm"></div>
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary animate-glow-pulse"></div>
-              <CardHeader className="text-center py-8">
-                <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 font-playfair">
-                  Готовы изучать экономику через игру?
-                </CardTitle>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                  Присоединяйтесь к тысячам игроков в образовательной игре. Изучайте основы экономики и бизнеса в безопасной игровой среде!
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-8 pb-12">
-                <Separator className="bg-primary/20" />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                  <div className="flex flex-col items-center space-y-3 p-4 rounded-xl bg-primary/5">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Coins className="h-8 w-8 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-primary">Стартовые ресурсы</div>
-                      <div className="text-sm text-muted-foreground">1000 игровых монет</div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center space-y-3 p-4 rounded-xl bg-accent/5">
-                    <div className="p-3 bg-accent/10 rounded-full">
-                      <Target className="h-8 w-8 text-accent" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-accent">Обучение через игру</div>
-                      <div className="text-sm text-muted-foreground">Изучайте экономику</div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center space-y-3 p-4 rounded-xl bg-primary/5">
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <Award className="h-8 w-8 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-primary">Игровые награды</div>
-                      <div className="text-sm text-muted-foreground">За активность в игре</div>
-                    </div>
-                  </div>
-                </div>
-                <Link to={user ? "/dashboard" : "/auth"} className="block">
-                  <Button size="lg" className="gradient-primary shadow-primary w-full md:w-auto text-xl px-16 py-6 hover-scale animate-glow-pulse">
-                    <Zap className="mr-3 h-6 w-6" />
-                    {user ? "Продолжить игру" : "Начать обучение игрой"}
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
       </div>
 
       {/* Footer */}
