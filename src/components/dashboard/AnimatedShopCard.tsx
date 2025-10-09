@@ -80,11 +80,12 @@ export const AnimatedShopCard = ({
   return (
     <div 
       className={`
-        game-card-flip h-full
+        game-card-flip
         ${!canAfford ? "opacity-60" : ""}
       `}
+      style={{ height: '600px' }}
     >
-      <div className="game-card-inner h-full min-h-[550px]">
+      <div className="game-card-inner" style={{ height: '600px' }}>
         {/* FRONT SIDE */}
         <Card 
           className={`
@@ -95,6 +96,7 @@ export const AnimatedShopCard = ({
             border-2 border-primary/30
             shimmer-effect
           `}
+          style={{ height: '600px' }}
         >
           {/* Large well image */}
           <div className="relative h-64 overflow-hidden">
@@ -176,8 +178,9 @@ export const AnimatedShopCard = ({
             border-2 border-primary/30
             bg-gradient-to-br from-card via-card/95 to-card/90
           `}
+          style={{ height: '600px' }}
         >
-          <CardContent className="p-6 h-full flex flex-col justify-between min-h-[550px]">
+          <CardContent className="p-6 h-full flex flex-col justify-between overflow-y-auto" style={{ height: '600px' }}>
             {/* Header */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
