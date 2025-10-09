@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Zap, BarChart3 } from 'lucide-react';
 import { OilParticles } from './OilParticles';
 import { useAuth } from '@/hooks/useAuth';
+import oilTycoonLogo from '@/assets/oil-tycoon-logo.png';
 
 export const ParallaxHero = () => {
   const { user } = useAuth();
@@ -54,9 +55,17 @@ export const ParallaxHero = () => {
               transform: `translate(${mousePosition.x * -8}px, ${mousePosition.y * -8}px)`
             }}
           >
-            <h1 className="holographic-text text-7xl md:text-9xl lg:text-[12rem] font-bold font-playfair leading-tight tracking-tight">
-              Oil Tycoon
-            </h1>
+            <div className="flex justify-center mb-8">
+              <img 
+                src={oilTycoonLogo} 
+                alt="Oil Tycoon"
+                className="w-full max-w-4xl h-auto animate-fade-in"
+                style={{
+                  mixBlendMode: 'lighten',
+                  filter: 'drop-shadow(0 0 40px rgba(234, 179, 8, 0.6))'
+                }}
+              />
+            </div>
             
             <div className="max-w-5xl mx-auto space-y-8">
               <p className="text-3xl md:text-5xl text-white font-bold leading-tight drop-shadow-2xl">
