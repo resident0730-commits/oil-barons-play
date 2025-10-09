@@ -69,15 +69,10 @@ export const AnimatedPackageCard = ({
 
             {/* Package name overlay */}
             <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-center gap-2">
-                <div className="text-3xl">{wellPackage.icon}</div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white drop-shadow-2xl">
-                    {wellPackage.name}
-                  </h3>
-                  <p className="text-sm text-white/80">{wellPackage.description}</p>
-                </div>
-              </div>
+              <h3 className="text-2xl font-bold text-white drop-shadow-2xl">
+                {wellPackage.name}
+              </h3>
+              <p className="text-sm text-white/80 mt-1">{wellPackage.description}</p>
             </div>
           </div>
 
@@ -129,10 +124,7 @@ export const AnimatedPackageCard = ({
               {/* Header */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl">{wellPackage.icon}</span>
-                    <h3 className="text-xl font-bold">{wellPackage.name}</h3>
-                  </div>
+                  <h3 className="text-xl font-bold">{wellPackage.name}</h3>
                   <Badge className="bg-red-500 hover:bg-red-600 text-white">
                     -{wellPackage.discount}%
                   </Badge>
