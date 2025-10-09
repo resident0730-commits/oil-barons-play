@@ -483,7 +483,12 @@ const Index = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center space-y-8">
             <div className="flex items-center justify-center space-x-3 mb-8">
-              <Fuel className="h-8 w-8 text-primary animate-glow-pulse" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative p-2 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full border border-primary/30">
+                  <Crown className="h-6 w-6 text-primary drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
+                </div>
+              </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Oil Tycoon</span>
             </div>
             
