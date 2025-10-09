@@ -100,36 +100,36 @@ const Index = () => {
     <div className="min-h-screen hero-luxury-background overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-gradient-to-b from-background/95 to-background/80 border-b border-primary/10 shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="relative group">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          <nav className="flex items-center justify-between gap-2">
+            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-shrink">
+              <div className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                <div className="relative p-2.5 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full border border-primary/30">
-                  <Crown className="h-7 w-7 text-primary drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
+                <div className="relative p-1.5 sm:p-2.5 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full border border-primary/30">
+                  <Crown className="h-5 w-5 sm:h-7 sm:w-7 text-primary drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
                 </div>
               </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg truncate">
                   Oil Tycoon
                 </h1>
-                <div className="flex items-center gap-1 mt-0.5">
+                <div className="hidden sm:flex items-center gap-1 mt-0.5">
                   <Sparkles className="h-3 w-3 text-accent/70" />
                   <span className="text-xs text-muted-foreground font-medium">Нефтяная империя</span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-5 py-2.5 border border-primary/20 shadow-md">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="hidden md:flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 shadow-md">
                     <div className="p-1 bg-primary/20 rounded-full">
                       <User className="h-3.5 w-3.5 text-primary" />
                     </div>
-                    <span className="font-semibold text-foreground">{profile?.nickname || 'Игрок'}</span>
+                    <span className="font-semibold text-foreground max-w-[100px] truncate">{profile?.nickname || 'Игрок'}</span>
                   </div>
                   <Link to="/dashboard">
-                    <Button className="gradient-primary shadow-primary hover-scale relative overflow-hidden group">
+                    <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
                       <span className="relative z-10">В игру</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                     </Button>
@@ -137,14 +137,14 @@ const Index = () => {
                 </div>
               ) : (
                 <>
-                  <Link to="/auth">
-                    <Button variant="ghost" className="backdrop-blur-sm border border-primary/20 hover:bg-primary/10">
+                  <Link to="/auth" className="hidden sm:block">
+                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-primary/20 hover:bg-primary/10 text-xs sm:text-sm">
                       Войти
                     </Button>
                   </Link>
                   <Link to="/dashboard">
-                    <Button className="gradient-primary shadow-primary hover-scale relative overflow-hidden group">
-                      <span className="relative z-10">Начать игру</span>
+                    <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
+                      <span className="relative z-10 whitespace-nowrap">Начать игру</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                     </Button>
                   </Link>
