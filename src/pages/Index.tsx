@@ -12,7 +12,6 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
-import { PromoBanner } from "@/components/PromoBanner";
 import { StatisticMetrics } from "@/components/StatisticMetrics";
 import { InteractiveChart } from "@/components/InteractiveChart";
 import { RealTimeVisualizer } from "@/components/RealTimeVisualizer";
@@ -190,8 +189,6 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Promo Banner */}
-      <PromoBanner />
 
       {/* Rest of the content with spacing */}
       <div className="relative mt-12">

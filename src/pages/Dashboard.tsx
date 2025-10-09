@@ -35,7 +35,6 @@ import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
 import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
-import PremiumGiveaway from "@/components/PremiumGiveaway";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -55,7 +54,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily' | 'giveaway' | 'balance'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'cases' | 'daily' | 'balance'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -84,7 +83,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'boosters', 'cases', 'daily', 'giveaway', 'balance'];
+      const validSections = ['overview', 'wells', 'shop', 'boosters', 'cases', 'daily', 'balance'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         // Очищаем параметр section из URL
@@ -464,31 +463,8 @@ const Dashboard = () => {
         {/* Section Navigation */}
         <div className="flex items-center justify-center">
           <div className="section-toolbar w-full max-w-full overflow-x-auto">
-            {/* Таймер розыгрыша */}
-            <div className="text-center mb-2">
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 px-3 py-1 rounded-full animate-glow-pulse">
-                  <Trophy className="h-3 w-3 text-primary animate-glow-pulse" />
-                <span className="text-xs font-bold text-primary">
-                  {(() => {
-                    const endDate = new Date('2025-10-18T23:59:59');
-                    const now = new Date();
-                    const timeLeft = endDate.getTime() - now.getTime();
-                    const daysLeft = Math.max(0, Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
-                    const getDaysText = (days: number) => {
-                      if (days % 10 === 1 && days % 100 !== 11) return 'день';
-                      if ([2, 3, 4].includes(days % 10) && ![12, 13, 14].includes(days % 100)) return 'дня';
-                      return 'дней';
-                    };
-                    return `${daysLeft} ${getDaysText(daysLeft)} до розыгрыша!`;
-                  })()}
-                </span>
-                <Trophy className="h-3 w-3 text-primary animate-glow-pulse" />
-              </div>
-            </div>
-            
             <div className="flex space-x-1 bg-card/50 p-1 rounded-lg min-w-max">
               {[
-                { id: 'giveaway', label: 'Розыгрыш', icon: Trophy, shortLabel: 'Розыгрыш', special: true },
                 { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
                 { id: 'balance', label: 'Баланс', icon: Wallet, shortLabel: 'Баланс' },
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
@@ -505,15 +481,10 @@ const Dashboard = () => {
                   className={`${
                     activeSection === section.id 
                       ? 'gradient-primary text-primary-foreground shadow-primary' 
-                      : section.special 
-                        ? 'bg-gradient-to-r from-primary/20 via-accent/30 to-primary/20 border border-primary/40 text-primary font-bold animate-glow-pulse hover:from-primary/30 hover:via-accent/40 hover:to-primary/30'
-                        : ''
-                  } whitespace-nowrap flex-shrink-0 ${section.special ? 'relative' : ''}`}
+                      : ''
+                  } whitespace-nowrap flex-shrink-0`}
                 >
-                  {section.special && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-ping"></div>
-                  )}
-                  <section.icon className={`h-4 w-4 sm:mr-2 ${section.special ? 'animate-glow-pulse' : ''}`} />
+                  <section.icon className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">{section.label}</span>
                   <span className="inline sm:hidden ml-1 text-xs">{section.shortLabel}</span>
                 </Button>
@@ -642,13 +613,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        )}
-
-        {activeSection === 'giveaway' && (
-          <PremiumGiveaway 
-            profile={currentProfile}
-            wells={wells}
-          />
         )}
       </main>
 
