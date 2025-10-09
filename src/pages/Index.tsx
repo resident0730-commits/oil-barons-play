@@ -15,6 +15,7 @@ import { GameReviews } from "@/components/GameReviews";
 import { StatisticMetrics } from "@/components/StatisticMetrics";
 import { InteractiveChart } from "@/components/InteractiveChart";
 import { RealTimeVisualizer } from "@/components/RealTimeVisualizer";
+import { ParallaxHero } from "@/components/ParallaxHero";
 import { 
   Fuel, 
   TrendingUp, 
@@ -98,97 +99,45 @@ const Index = () => {
 
   return (
     <div className="min-h-screen hero-luxury-background overflow-x-hidden">
-        {/* Header */}
-      <header className="relative z-50 container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between backdrop-blur-sm bg-background/20 rounded-2xl p-4 shadow-luxury">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <Fuel className="h-10 w-10 text-primary animate-glow-pulse" />
-              <div className="absolute inset-0 h-10 w-10 text-primary/30 animate-pulse" />
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Oil Tycoon</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 text-sm bg-card/50 backdrop-blur-sm rounded-full px-4 py-2">
-                  <User className="h-4 w-4 text-primary" />
-                  <span className="font-medium">{profile?.nickname || 'Игрок'}</span>
-                </div>
-                <Link to="/dashboard">
-                  <Button className="gradient-primary shadow-primary hover-scale">В игру</Button>
-                </Link>
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/50">
+        <div className="container mx-auto px-4 py-4">
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <Fuel className="h-10 w-10 text-primary animate-glow-pulse" />
+                <div className="absolute inset-0 h-10 w-10 text-primary/30 animate-pulse" />
               </div>
-            ) : (
-              <>
-                <Link to="/auth">
-                  <Button variant="ghost" className="backdrop-blur-sm">Войти</Button>
-                </Link>
-                <Link to="/dashboard">
-                  <Button className="gradient-primary shadow-primary hover-scale">Начать игру</Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Oil Tycoon</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 text-sm bg-card/50 backdrop-blur-sm rounded-full px-4 py-2">
+                    <User className="h-4 w-4 text-primary" />
+                    <span className="font-medium">{profile?.nickname || 'Игрок'}</span>
+                  </div>
+                  <Link to="/dashboard">
+                    <Button className="gradient-primary shadow-primary hover-scale">В игру</Button>
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Link to="/auth">
+                    <Button variant="ghost" className="backdrop-blur-sm">Войти</Button>
+                  </Link>
+                  <Link to="/dashboard">
+                    <Button className="gradient-primary shadow-primary hover-scale">Начать игру</Button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </nav>
+        </div>
       </header>
 
-      {/* Hero Section - Main focal point */}
-      <main className="container mx-auto px-4 py-20">
-        <div className="text-center space-y-12 mb-24 animate-fade-in">
-          <div className="relative">
-            <Badge variant="secondary" className="text-lg px-6 py-3 bg-card/50 backdrop-blur-md shadow-primary animate-scale-in">
-              <Fuel className="w-5 h-5 mr-2" />
-              Богатство из недр земли
-            </Badge>
-          </div>
-          
-          <div className="space-y-8 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent blur-3xl" />
-            <h1 className="relative text-6xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-scale-in font-playfair leading-tight">
-              Oil Tycoon
-            </h1>
-            <div className="relative max-w-4xl mx-auto space-y-4">
-              <p className="text-2xl md:text-3xl text-foreground/90 font-medium leading-relaxed">
-                Постройте нефтяную империю
-              </p>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Реальный заработок через игровую механику! Управляйте скважинами, развивайте бизнес и выводите заработанные средства. Ваши навыки магната превращаются в реальный доход.
-              </p>
-              <div className="pt-4">
-                <p className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                  Зарабатывайте реальные деньги, развивая свою нефтяную империю
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
-            {user ? (
-              <Link to="/dashboard">
-                <Button size="lg" className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse">
-                  <Zap className="mr-3 h-6 w-6" />
-                  Продолжить империю
-                </Button>
-              </Link>
-            ) : (
-              <Link to="/auth">
-                <Button size="lg" className="gradient-primary shadow-primary text-xl px-12 py-6 hover-scale animate-glow-pulse">
-                  <Coins className="mr-3 h-6 w-6" />
-                  Начать игру бесплатно
-                </Button>
-              </Link>
-            )}
-            <Link to="/guide">
-              <Button size="lg" variant="outline" className="text-xl px-10 py-6 backdrop-blur-sm bg-card/30 border-primary/50 hover:bg-primary/10 hover-scale">
-                <BarChart3 className="mr-3 h-6 w-6" />
-                Узнать больше
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </main>
-
+      {/* Parallax Hero Section */}
+      <ParallaxHero />
 
       {/* Rest of the content with spacing */}
       <div className="relative mt-12">

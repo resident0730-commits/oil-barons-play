@@ -97,6 +97,35 @@ All colors MUST be HSL.
     --input: 240 15% 18%;
     --ring: 193 100% 55%;
   }
+
+  /* Holographic Text Effect */
+  .holographic-text {
+    background: linear-gradient(
+      45deg,
+      hsl(45, 100%, 65%) 0%,
+      hsl(48, 100%, 75%) 20%,
+      hsl(200, 100%, 70%) 40%,
+      hsl(280, 100%, 70%) 60%,
+      hsl(48, 100%, 75%) 80%,
+      hsl(45, 100%, 65%) 100%
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: holographic-shift 8s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px hsl(45 100% 65% / 0.5))
+            drop-shadow(0 0 60px hsl(200 100% 70% / 0.3));
+  }
+
+  @keyframes holographic-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
 }
 
 @layer base {
