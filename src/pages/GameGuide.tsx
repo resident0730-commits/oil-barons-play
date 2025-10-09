@@ -38,7 +38,7 @@ const GameGuide = () => {
       income: `20 ${currencyConfig.game_currency_symbol}/день`,
       description: "Компактная установка для первых шагов в нефтяной индустрии.",
       example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(200)} в день.`,
-      gradient: "from-gray-500 to-slate-500",
+      gradient: "from-yellow-600 to-yellow-700",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
@@ -47,7 +47,7 @@ const GameGuide = () => {
       income: `44 ${currencyConfig.game_currency_symbol}/день`,
       description: "Проверенная временем установка с оптимизированной системой добычи.",
       example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы получите ${formatGameCurrency(220)} в день.`,
-      gradient: "from-blue-500 to-cyan-500",
+      gradient: "from-amber-500 to-yellow-600",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
@@ -56,7 +56,7 @@ const GameGuide = () => {
       income: `72 ${currencyConfig.game_currency_symbol}/день`,
       description: "Сбалансированное решение с улучшенной системой извлечения.",
       example: `3 средние скважины дают ${formatGameCurrency(216)} в день и окупаются за 8.3 дня.`,
-      gradient: "from-green-500 to-emerald-500",
+      gradient: "from-yellow-500 to-amber-500",
       icon: <Target className="h-8 w-8 text-white" />
     },
     {
@@ -65,7 +65,7 @@ const GameGuide = () => {
       income: `130 ${currencyConfig.game_currency_symbol}/день`,
       description: "Мощная установка промышленного класса с глубоким бурением.",
       example: `2 промышленные скважины приносят ${formatGameCurrency(260)} в день и окупаются за 7.7 дня.`,
-      gradient: "from-purple-500 to-indigo-500",
+      gradient: "from-orange-500 to-amber-600",
       icon: <Settings className="h-8 w-8 text-white" />
     },
     {
@@ -74,7 +74,7 @@ const GameGuide = () => {
       income: `224 ${currencyConfig.game_currency_symbol}/день`,
       description: "Высокотехнологичная установка с турбонаддувом и многоступенчатой системой.",
       example: `1 супер-скважина окупается за 7.1 дня и дает ${formatGameCurrency(224)} ежедневно.`,
-      gradient: "from-orange-500 to-red-500",
+      gradient: "from-amber-600 to-orange-600",
       icon: <Zap className="h-8 w-8 text-white" />
     },
     {
@@ -83,7 +83,7 @@ const GameGuide = () => {
       income: `360 ${currencyConfig.game_currency_symbol}/день`,
       description: "Эксклюзивная установка с алмазным буровым оборудованием и ИИ.",
       example: `1 премиум-скважина окупается за 6.7 дня и дает стабильные ${formatGameCurrency(360)} ежедневно.`,
-      gradient: "from-pink-500 to-purple-500",
+      gradient: "from-yellow-400 to-amber-500",
       icon: <Gem className="h-8 w-8 text-white" />
     },
     {
@@ -101,7 +101,7 @@ const GameGuide = () => {
       income: `918 ${currencyConfig.game_currency_symbol}/день`,
       description: "Мифическая установка с нанотехнологиями и квантовыми процессорами.",
       example: `1 легендарная скважина окупается за 5.9 дня и дает невероятные ${formatGameCurrency(918)} ежедневно.`,
-      gradient: "from-violet-500 to-purple-500",
+      gradient: "from-amber-400 to-yellow-500",
       icon: <Star className="h-8 w-8 text-white" />
     },
     {
@@ -110,7 +110,7 @@ const GameGuide = () => {
       income: `1,440 ${currencyConfig.game_currency_symbol}/день`,
       description: "Футуристическая установка внеземных технологий с антигравитационным двигателем.",
       example: `1 космическая скважина окупается за 5.6 дня и дает фантастические ${formatGameCurrency(1440)} ежедневно.`,
-      gradient: "from-cyan-500 to-blue-500",
+      gradient: "from-orange-400 to-amber-500",
       icon: <Rocket className="h-8 w-8 text-white" />
     }
   ];
@@ -123,7 +123,7 @@ const GameGuide = () => {
       price: `1,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Увеличивает доходность всех скважин",
       example: `При доходе ${formatGameCurrency(3000)}/день, бригада 2-го уровня (+20%) добавит ${formatGameCurrency(600)} в день`,
-      gradient: "from-orange-500 to-red-500",
+      gradient: "from-amber-500 to-orange-500",
       icon: <Users className="h-6 w-6 text-white" />
     },
     {
@@ -133,7 +133,7 @@ const GameGuide = () => {
       price: `2,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Находит более продуктивные места для бурения",
       example: `Разведка 1-го уровня (+15%) превратит ${formatGameCurrency(2000)}/день в ${formatGameCurrency(2300)}/день`,
-      gradient: "from-teal-500 to-cyan-500",
+      gradient: "from-yellow-500 to-amber-600",
       icon: <Target className="h-6 w-6 text-white" />
     },
     {
@@ -143,7 +143,7 @@ const GameGuide = () => {
       price: `5,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Современное оборудование для максимальной добычи",
       example: `Оборудование 1-го уровня увеличит доход с ${formatGameCurrency(5000)} до ${formatGameCurrency(6250)} в день`,
-      gradient: "from-violet-500 to-purple-500",
+      gradient: "from-orange-500 to-amber-700",
       icon: <Settings className="h-6 w-6 text-white" />
     },
     {
@@ -153,7 +153,7 @@ const GameGuide = () => {
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
       description: "Временное, но мощное ускорение всех процессов",
       example: `За 24 часа доход ${formatGameCurrency(4000)}/день превратится в ${formatGameCurrency(6000)}/день`,
-      gradient: "from-pink-500 to-rose-500",
+      gradient: "from-yellow-400 to-orange-600",
       icon: <Zap className="h-6 w-6 text-white" />
     },
     {
@@ -163,7 +163,7 @@ const GameGuide = () => {
       price: `4,000 ${currencyConfig.game_currency_symbol} за уровень`, 
       description: "Автоматические системы управления скважинами",
       example: `Автоматизация 2-го уровня (+40%) увеличит ${formatGameCurrency(3000)}/день до ${formatGameCurrency(4200)}/день`,
-      gradient: "from-emerald-500 to-teal-500",
+      gradient: "from-amber-600 to-yellow-500",
       icon: <Wrench className="h-6 w-6 text-white" />
     }
   ];
@@ -174,21 +174,21 @@ const GameGuide = () => {
       cost: "50% от цены скважины",
       effect: "+20% к доходу",
       example: `Стартовая скважина: ${formatGameCurrency(500)} → доход 44 → 53 ${currencyConfig.game_currency_symbol}/день`,
-      gradient: "from-blue-500 to-indigo-500"
+      gradient: "from-yellow-500 to-amber-600"
     },
     {
       level: "2 → 3", 
       cost: "60% от цены скважины",
       effect: "+20% к новому доходу",
       example: `Средняя скважина: ${formatGameCurrency(1800)} → доход 72 → 86 ${currencyConfig.game_currency_symbol}/день`,
-      gradient: "from-green-500 to-teal-500"
+      gradient: "from-amber-500 to-orange-500"
     },
     {
       level: "3 → 4",
       cost: "72% от цены скважины", 
       effect: "+20% к новому доходу",
       example: `Промышленная: ${formatGameCurrency(4680)} → доход 130 → 156 ${currencyConfig.game_currency_symbol}/день`,
-      gradient: "from-purple-500 to-pink-500"
+      gradient: "from-orange-500 to-amber-600"
     }
   ];
 
@@ -198,21 +198,21 @@ const GameGuide = () => {
       title: "Стратегия новичка",
       description: "Начните с 3-5 стартовых скважин, затем переходите к средним",
       details: `Стартовые скважины дают быструю окупаемость за 4.5 дня. Накопив ${formatGameCurrency(15000)}, покупайте средние скважины.`,
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "from-yellow-500 to-amber-500"
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-white" />,
       title: "Средний уровень",
       description: "Комбинируйте улучшения скважин с покупкой постоянных бустеров",
       details: "Улучшайте скважины до 3-4 уровня, покупайте бригаду рабочих для +10-30% ко всему доходу.",
-      gradient: "from-green-500 to-emerald-500"
+      gradient: "from-amber-500 to-orange-500"
     },
     {
       icon: <Crown className="h-8 w-8 text-white" />,
       title: "Продвинутая игра",
       description: "Инвестируйте в элитные скважины и дорогие бустеры",
       details: "Элитные скважины + продвинутое оборудование могут дать +25% к огромному доходу.",
-      gradient: "from-yellow-500 to-orange-500"
+      gradient: "from-orange-500 to-amber-600"
     }
   ];
 
@@ -223,7 +223,7 @@ const GameGuide = () => {
       description: "Каждый день получайте бесплатную награду. Серия увеличивает размер награды.",
       tip: `Не пропускайте дни! Серия из 7 дней даст ${formatGameCurrency(800)}, а из 14 дней - ${formatGameCurrency(1400)}.`,
       icon: <Gift className="h-6 w-6 text-white" />,
-      gradient: "from-pink-500 to-rose-500"
+      gradient: "from-yellow-500 to-amber-600"
     },
     {
       activity: "Сбор прибыли", 
@@ -231,7 +231,7 @@ const GameGuide = () => {
       description: "Прибыль накапливается даже когда вы офлайн до 24 часов.",
       tip: "Заходите в игру хотя бы раз в день, чтобы не потерять накопленный доход.",
       icon: <Coins className="h-6 w-6 text-white" />,
-      gradient: "from-yellow-500 to-amber-500"
+      gradient: "from-amber-500 to-orange-500"
     },
     {
       activity: "Планирование покупок",
@@ -239,34 +239,34 @@ const GameGuide = () => {
       description: "Решайте, что покупать: новые скважины, улучшения или бустеры.",
       tip: `При доходе менее ${formatGameCurrency(1000)}/день - покупайте скважины. Свыше ${formatGameCurrency(3000)}/день - улучшайте и используйте бустеры.`,
       icon: <BarChart3 className="h-6 w-6 text-white" />,
-      gradient: "from-purple-500 to-indigo-500"
+      gradient: "from-orange-500 to-amber-700"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen hero-luxury-background">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/30 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/40 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-amber-500/30 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-white/10 backdrop-blur-md bg-black/20">
+      <header className="relative z-10 border-b border-primary/20 backdrop-blur-md bg-black/40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center text-white/70 hover:text-white transition-colors">
+            <Link to="/" className="flex items-center text-primary/70 hover:text-primary transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Назад на главную
             </Link>
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <Fuel className="h-6 w-6 text-yellow-400 animate-pulse" />
-                <div className="absolute inset-0 h-6 w-6 text-yellow-400/30 animate-ping"></div>
+                <Fuel className="h-6 w-6 text-primary animate-pulse" />
+                <div className="absolute inset-0 h-6 w-6 text-primary/30 animate-ping"></div>
               </div>
-              <span className="font-bold text-white">Oil Tycoon</span>
-              <div className="px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full text-xs font-bold text-black">
+              <span className="font-bold luxury-gold-text">Oil Tycoon</span>
+              <div className="px-3 py-1 gradient-primary text-xs font-bold text-black rounded-full">
                 ГАЙД
               </div>
             </div>
@@ -278,15 +278,15 @@ const GameGuide = () => {
         {/* Hero Section */}
         <div className="text-center space-y-8 animate-fade-in">
           <div className="relative">
-            <Badge variant="secondary" className="text-sm px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg animate-scale-in">
+            <Badge variant="secondary" className="text-sm px-6 py-3 gradient-primary text-black border-0 shadow-luxury animate-scale-in">
               <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
               Подробное руководство
             </Badge>
           </div>
           
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 blur-3xl opacity-30 animate-pulse"></div>
-            <h1 className="relative text-5xl md:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent font-playfair leading-tight animate-scale-in">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-amber-500 to-primary blur-3xl opacity-30 animate-pulse"></div>
+            <h1 className="relative text-5xl md:text-7xl font-bold luxury-gold-text font-playfair leading-tight animate-scale-in">
               Как играть в Oil Tycoon
             </h1>
           </div>
@@ -312,25 +312,25 @@ const GameGuide = () => {
 
           {/* Currency Info */}
           <div className="max-w-2xl mx-auto mt-12">
-            <Card className="bg-black/40 border-white/20 backdrop-blur-md shadow-2xl">
+            <Card className="bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
               <CardHeader className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
-                  <div className="p-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full">
-                    <Coins className="h-6 w-6 text-white" />
+                  <div className="p-3 gradient-primary rounded-full">
+                    <Coins className="h-6 w-6 text-black" />
                   </div>
                 </div>
-                <CardTitle className="text-2xl font-bold text-white">
+                <CardTitle className="text-2xl font-bold luxury-gold-text">
                   Игровая валюта: {currencyConfig.game_currency_name}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-center space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/20">
-                    <div className="text-2xl font-bold text-purple-300">{currencyConfig.exchange_rate}</div>
+                  <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
+                    <div className="text-2xl font-bold text-primary">{currencyConfig.exchange_rate}</div>
                     <p className="text-sm text-white/60">Курс обмена</p>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg border border-green-500/20">
-                    <div className="text-2xl font-bold text-green-300">100%</div>
+                  <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
+                    <div className="text-2xl font-bold text-primary">100%</div>
                     <p className="text-sm text-white/60">Безопасно</p>
                   </div>
                 </div>
@@ -345,7 +345,7 @@ const GameGuide = () => {
         {/* Quick Start */}
         <div id="quick-start" className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               🚀 Быстрый старт
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -355,12 +355,12 @@ const GameGuide = () => {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-blue-500 to-cyan-500" },
-              { step: "2", title: "Первая скважина", desc: `Купите стартовую скважину за ${formatGameCurrency(1000)}`, badge: `220 ${currencyConfig.game_currency_symbol}/день`, gradient: "from-green-500 to-emerald-500" },
-              { step: "3", title: "Ждите доход", desc: "Через 24 часа получите первую прибыль", badge: "Автоматически", gradient: "from-purple-500 to-pink-500" },
-              { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины и улучшения", badge: "Масштабируйте", gradient: "from-orange-500 to-red-500" }
+              { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-primary to-amber-500" },
+              { step: "2", title: "Первая скважина", desc: `Купите стартовую скважину за ${formatGameCurrency(1000)}`, badge: `220 ${currencyConfig.game_currency_symbol}/день`, gradient: "from-amber-500 to-yellow-600" },
+              { step: "3", title: "Ждите доход", desc: "Через 24 часа получите первую прибыль", badge: "Автоматически", gradient: "from-yellow-600 to-orange-500" },
+              { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины и улучшения", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
             ].map((item, index) => (
-              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-black/40 border-white/20 backdrop-blur-md hover-scale group">
+              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group animate-border-glow">
                 <CardHeader>
                   <div className={`w-16 h-16 bg-gradient-to-r ${item.gradient} text-white rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg group-hover:animate-bounce`}>
                     {item.step}
@@ -383,7 +383,7 @@ const GameGuide = () => {
         {/* Wells Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               ⛽ Типы скважин и их экономика
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -393,7 +393,7 @@ const GameGuide = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {wellTypes.map((well, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-black/40 border-white/20 backdrop-blur-md hover-scale group overflow-hidden">
+              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${well.gradient}`}></div>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -436,7 +436,7 @@ const GameGuide = () => {
         {/* Upgrades Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               📈 Система улучшений
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -444,12 +444,12 @@ const GameGuide = () => {
             </p>
           </div>
 
-          <Card className="max-w-4xl mx-auto bg-black/40 border-white/20 backdrop-blur-md shadow-2xl">
+          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
             <CardHeader>
-              <CardTitle className="text-3xl text-center text-white">Механика улучшений</CardTitle>
+              <CardTitle className="text-3xl text-center luxury-gold-text">Механика улучшений</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="text-center p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/20">
+              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
                 <p className="text-sm text-white/80 mb-2">
                   🔧 Каждое улучшение увеличивает доход скважины на 20%
                 </p>
@@ -460,7 +460,7 @@ const GameGuide = () => {
 
               <div className="grid md:grid-cols-3 gap-6">
                 {upgradeExamples.map((upgrade, index) => (
-                  <Card key={index} className="bg-black/20 border-white/10 backdrop-blur-sm hover-scale group">
+                  <Card key={index} className="bg-transparent border border-primary/20 backdrop-blur-sm hover-scale group">
                     <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${upgrade.gradient}`}></div>
                     <CardHeader className="text-center pb-3">
                       <Badge className={`bg-gradient-to-r ${upgrade.gradient} text-white border-0 font-bold mb-2`}>
@@ -485,8 +485,8 @@ const GameGuide = () => {
                 ))}
               </div>
 
-              <div className="text-center p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg border border-green-500/20">
-                <p className="text-sm font-medium text-green-300 mb-1">💰 Когда улучшать?</p>
+              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
+                <p className="text-sm font-medium text-primary mb-1">💰 Когда улучшать?</p>
                 <p className="text-sm text-white/80">
                   Улучшайте скважины когда у вас стабильный доход {formatGameCurrency(2000)}+ в день. 
                   Улучшение окупается за 5-10 дней, но дает прибыль навсегда!
@@ -499,7 +499,7 @@ const GameGuide = () => {
         {/* Boosters Guide */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               🚀 Система бустеров
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -509,7 +509,7 @@ const GameGuide = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boosterTypes.map((booster, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-black/40 border-white/20 backdrop-blur-md hover-scale group overflow-hidden">
+              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${booster.gradient}`}></div>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -546,30 +546,30 @@ const GameGuide = () => {
             ))}
           </div>
 
-          <Card className="max-w-4xl mx-auto bg-black/40 border-white/20 backdrop-blur-md shadow-2xl">
+          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
             <CardHeader>
-              <CardTitle className="text-3xl text-center text-white">🧮 Калькулятор эффективности бустеров</CardTitle>
+              <CardTitle className="text-3xl text-center luxury-gold-text">🧮 Калькулятор эффективности бустеров</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-lg border border-blue-500/20">
+                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
                   <p className="text-sm text-white/60 mb-1">При доходе {formatGameCurrency(1000)}/день</p>
-                  <p className="font-bold text-blue-300">Бригада 1 ур. → +{formatGameCurrency(100)}/день</p>
-                  <p className="text-xs text-green-400">Окупается за 10 дней</p>
+                  <p className="font-bold text-primary">Бригада 1 ур. → +{formatGameCurrency(100)}/день</p>
+                  <p className="text-xs text-amber-400">Окупается за 10 дней</p>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/20">
+                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
                   <p className="text-sm text-white/60 mb-1">При доходе {formatGameCurrency(5000)}/день</p>
-                  <p className="font-bold text-purple-300">Оборудование 1 ур. → +{formatGameCurrency(1250)}/день</p>
-                  <p className="text-xs text-green-400">Окупается за 4 дня</p>
+                  <p className="font-bold text-primary">Оборудование 1 ур. → +{formatGameCurrency(1250)}/день</p>
+                  <p className="text-xs text-amber-400">Окупается за 4 дня</p>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-lg border border-orange-500/20">
+                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
                   <p className="text-sm text-white/60 mb-1">При доходе {formatGameCurrency(10000)}/день</p>
-                  <p className="font-bold text-orange-300">Все бустеры → +{formatGameCurrency(7000)}/день</p>
-                  <p className="text-xs text-green-400">Окупается за 2-3 дня</p>
+                  <p className="font-bold text-primary">Все бустеры → +{formatGameCurrency(7000)}/день</p>
+                  <p className="text-xs text-amber-400">Окупается за 2-3 дня</p>
                 </div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-r from-yellow-500/20 to-amber-500/20 rounded-lg border border-yellow-500/20">
-                <p className="text-sm font-medium text-yellow-300 mb-1">⚡ Совет эксперта:</p>
+              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
+                <p className="text-sm font-medium text-primary mb-1">⚡ Совет эксперта:</p>
                 <p className="text-sm text-white/80">
                   Бустеры эффективнее при высоком доходе! Если у вас менее {formatGameCurrency(2000)}/день - сначала купите больше скважин.
                 </p>
@@ -581,7 +581,7 @@ const GameGuide = () => {
         {/* Strategies */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               🎯 Стратегии развития
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -591,7 +591,7 @@ const GameGuide = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {strategyTips.map((strategy, index) => (
-              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-black/40 border-white/20 backdrop-blur-md hover-scale group h-full overflow-hidden">
+              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group h-full overflow-hidden animate-border-glow">
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${strategy.gradient}`}></div>
                 <CardHeader>
                   <div className={`mx-auto mb-4 p-4 bg-gradient-to-r ${strategy.gradient} rounded-full w-fit shadow-lg group-hover:animate-pulse`}>
@@ -617,7 +617,7 @@ const GameGuide = () => {
         {/* Daily Activities */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               📅 Ежедневные активности
             </h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -627,7 +627,7 @@ const GameGuide = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             {dailyActivities.map((activity, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-black/40 border-white/20 backdrop-blur-md hover-scale group overflow-hidden">
+              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${activity.gradient}`}></div>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -662,23 +662,23 @@ const GameGuide = () => {
         {/* Advanced Tips */}
         <div className="space-y-10">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 luxury-gold-text">
               🏆 Секреты профессионалов
             </h2>
           </div>
 
-          <Card className="max-w-4xl mx-auto bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/20 backdrop-blur-md shadow-2xl overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 to-orange-500"></div>
+          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury overflow-hidden animate-border-glow">
+            <div className="absolute top-0 left-0 w-full h-1 gradient-primary"></div>
             <CardHeader>
-              <CardTitle className="text-3xl text-center flex items-center justify-center gap-3 text-white">
-                <Crown className="h-8 w-8 text-yellow-400 animate-pulse" />
+              <CardTitle className="text-3xl text-center flex items-center justify-center gap-3 luxury-gold-text">
+                <Crown className="h-8 w-8 text-primary animate-pulse" />
                 Формула успеха в Oil Tycoon
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-primary flex items-center gap-2">
                     <BarChart3 className="h-5 w-5" />
                     Математика прибыли
                   </h3>
@@ -690,7 +690,7 @@ const GameGuide = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-orange-400 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-amber-400 flex items-center gap-2">
                     <Clock className="h-5 w-5" />
                     Тайминг решений
                   </h3>
@@ -705,8 +705,8 @@ const GameGuide = () => {
               
               <Separator className="bg-white/10" />
               
-              <div className="text-center p-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/20">
-                <p className="font-bold text-purple-300 mb-2 flex items-center justify-center gap-2">
+              <div className="text-center p-6 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
+                <p className="font-bold text-primary mb-2 flex items-center justify-center gap-2">
                   <Target className="h-5 w-5" />
                   Главное правило
                 </p>
@@ -721,9 +721,9 @@ const GameGuide = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <Card className="max-w-2xl mx-auto bg-black/40 border-white/20 backdrop-blur-md shadow-2xl">
+          <Card className="max-w-2xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
             <CardHeader>
-              <CardTitle className="text-3xl text-white">Готовы применить знания?</CardTitle>
+              <CardTitle className="text-3xl luxury-gold-text">Готовы применить знания?</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-white/70 leading-relaxed">
