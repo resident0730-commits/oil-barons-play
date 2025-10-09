@@ -140,7 +140,7 @@ const Index = () => {
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent
                   before:-translate-x-full before:hover:translate-x-full before:transition-transform before:duration-700
                   after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]
-                  animate-[pulse_3s_cubic-bezier(0.4,0,0.6,1)_infinite] hover:animate-none"
+                  animate-[pulse_30s_cubic-bezier(0.4,0,0.6,1)_infinite] hover:animate-none"
               >
                 <Calculator className="h-4 w-4 relative z-10 drop-shadow-md" />
                 <span className="hidden lg:inline relative z-10 drop-shadow-md">Калькулятор доходности</span>
