@@ -163,13 +163,13 @@ const Index = () => {
         {/* Currency Exchange Information */}
         <div className="container mx-auto px-4 mb-24 animate-fade-in">
           <div className="text-center mb-12">
-            <h2 className="luxury-gold-text text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+            <h2 className="luxury-gold-text text-3xl sm:text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight px-4">
               ИГРОВАЯ ВАЛЮТА
             </h2>
-            <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-yellow-400 to-primary bg-clip-text text-transparent mb-4">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-yellow-400 to-primary bg-clip-text text-transparent mb-4 px-4">
               {currencyConfig.game_currency_name}
             </h3>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg px-4">
               Приобретайте игровую валюту для развития своей нефтяной империи
             </p>
           </div>
@@ -238,10 +238,10 @@ const Index = () => {
         {/* Features Grid */}
         <div className="mb-24">
           <div className="text-center mb-16">
-            <h2 className="luxury-gold-text text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
+            <h2 className="luxury-gold-text text-3xl sm:text-5xl md:text-7xl font-bold font-playfair mb-6 leading-tight">
               ВОЗМОЖНОСТИ ИГРЫ
             </h2>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg px-4">
               Все инструменты для построения нефтяной империи
             </p>
           </div>

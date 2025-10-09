@@ -564,33 +564,33 @@ const Dashboard = () => {
               </div>
 
               {/* Secondary Features Row */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {/* Daily Bonus */}
-                <div className="lg:col-span-1">
+                <div className="w-full">
                   <DailyBonus />
                 </div>
                 
                 {/* Statistics Cards */}
-                <div className="lg:col-span-2 grid grid-cols-2 gap-4">
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200">
-                    <div className="text-2xl font-bold text-primary mb-1">{profile?.total_daily_chests_opened || 0}</div>
-                    <div className="text-sm text-muted-foreground">Сундуков открыто</div>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200">
+                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">{profile?.total_daily_chests_opened || 0}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Сундуков открыто</div>
                   </div>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.1s' }}>
-                    <div className="text-2xl font-bold text-accent mb-1">{profile?.daily_chest_streak || 0}</div>
-                    <div className="text-sm text-muted-foreground">Текущая серия</div>
+                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.1s' }}>
+                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">{profile?.daily_chest_streak || 0}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Текущая серия</div>
                   </div>
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.2s' }}>
-                    <div className="text-2xl font-bold text-primary mb-1">
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.2s' }}>
+                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">
                       {Math.max(profile?.daily_chest_streak || 0, profile?.total_daily_chests_opened || 0)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Лучшая серия</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Лучшая серия</div>
                   </div>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.3s' }}>
-                    <div className="text-2xl font-bold text-accent mb-1">
+                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.3s' }}>
+                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">
                       {((profile?.total_daily_chests_opened || 0) * 650).toLocaleString()}
                     </div>
-                    <div className="text-sm text-muted-foreground">Всего получено OC</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Всего получено OC</div>
                   </div>
                 </div>
               </div>
