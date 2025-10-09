@@ -161,7 +161,7 @@ All colors MUST be HSL.
 @layer components {
   /* Hero luxury background for main page */
   .hero-luxury-background {
-    background-image: url('./assets/hero-light-oil.jpg');
+    background-image: url('./assets/hero-cloudy-oil.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
