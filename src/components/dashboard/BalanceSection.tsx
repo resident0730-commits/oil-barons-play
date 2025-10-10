@@ -464,7 +464,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
             <span>Произвольная сумма</span>
           </CardTitle>
           <CardDescription>
-            Введите желаемую сумму для пополнения (минимум 1000 ₽)
+            Введите желаемую сумму для пополнения (минимум 10 ₽)
             <br />
             <span className="text-primary font-medium">💡 Совет: для получения бонусов воспользуйтесь готовыми пакетами ниже</span>
           </CardDescription>
@@ -479,10 +479,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
                 placeholder="Введите сумму..."
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
-                min="1000"
+                min="10"
                 className="mt-1"
               />
-              {customAmount && parseFloat(customAmount) >= 1000 && (
+              {customAmount && parseFloat(customAmount) >= 10 && (
                 <p className="text-sm text-muted-foreground mt-1">
                   1 ₽ = 1 ₽
                 </p>
@@ -491,7 +491,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
             <div className="flex items-end">
               <Button 
                 onClick={handleCustomTopUp}
-                disabled={!customAmount || parseFloat(customAmount) < 1000 || topUpLoading}
+                disabled={!customAmount || parseFloat(customAmount) < 10 || topUpLoading}
                 className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
               >
                 Пополнить
