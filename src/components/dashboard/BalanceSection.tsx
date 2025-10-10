@@ -174,10 +174,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (isNaN(amount) || amount < 1000) {
+    if (isNaN(amount) || amount < 10) {
       toast({
         title: "Некорректная сумма",
-        description: "Минимальная сумма пополнения 1000 ₽",
+        description: "Минимальная сумма пополнения 10 ₽",
         variant: "destructive"
       });
       return;
