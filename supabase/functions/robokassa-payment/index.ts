@@ -85,11 +85,8 @@ serve(async (req) => {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase(); // Robokassa требует uppercase
 
-    // Получаем домен для URL возврата
-    const referer = req.headers.get('referer') || 'https://your-domain.com';
-    const baseUrl = new URL(referer).origin;
-
     // Параметры для Robokassa (включая user_id)
+    // Success и Fail URL будут использоваться из настроек магазина
     const params = {
       MerchantLogin: merchantLogin,
       OutSum: amountStr,
@@ -98,9 +95,7 @@ serve(async (req) => {
       SignatureValue: signature,
       Culture: 'ru',
       Shp_user_id: userId, // Передаем user_id как дополнительный параметр
-      ResultURL: `https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result`,
-      SuccessURL: `${baseUrl}/?payment=success`,
-      FailURL: `${baseUrl}/?payment=fail`
+      ResultURL: `https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result`
     };
 
     console.log('✅ Payment parameters prepared:', {
