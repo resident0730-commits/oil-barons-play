@@ -25,7 +25,7 @@ serve(async (req) => {
       params[key] = value.toString();
     }
     
-    console.log('Robokassa webhook received:', params);
+    console.log('Robokassa webhook received:', JSON.stringify(params));
 
     const merchantLogin = Deno.env.get('ROBOKASSA_MERCHANT_LOGIN');
     const password2 = Deno.env.get('ROBOKASSA_PASSWORD2');
@@ -67,8 +67,8 @@ serve(async (req) => {
     // Получаем текущий баланс пользователя
     const { data: profile, error: fetchError } = await supabaseClient
       .from('profiles')
-      .select('balance')
-      .eq('id', userId)
+      .select('balance, user_id')
+      .eq('user_id', userId)
       .single();
 
     if (fetchError) {
@@ -83,7 +83,7 @@ serve(async (req) => {
     const { error: balanceError } = await supabaseClient
       .from('profiles')
       .update({ balance: newBalance })
-      .eq('id', userId);
+      .eq('user_id', userId);
 
     if (balanceError) {
       console.error('Error updating user balance:', balanceError);

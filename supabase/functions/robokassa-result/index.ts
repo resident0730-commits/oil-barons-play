@@ -108,12 +108,14 @@ serve(async (req) => {
     const rubAmount = parseFloat(outSum)
 
     console.log(`Processing payment for user ${userId}, OC amount: ${amount}, RUB amount: ${rubAmount}`)
+    console.log(`Current balance: ${profile.balance}, New balance will be: ${profile.balance + amount}`)
 
     // Update user balance
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ 
-        balance: profile.balance + amount 
+        balance: profile.balance + amount,
+        updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
 
@@ -129,10 +131,10 @@ serve(async (req) => {
     const { error: logError } = await supabase
       .from('money_transfers')
       .insert({
-        from_user_id: userId, // Система как отправитель
-        to_user_id: userId,   // Пользователь как получатель
+        from_user_id: userId,
+        to_user_id: userId,
         amount: amount,
-        transfer_type: 'deposit',
+        transfer_type: 'topup',
         description: `Пополнение через Robokassa (${rubAmount}₽ → ${amount.toLocaleString()} OC, Invoice: ${invId})`,
         status: 'completed',
         created_by: userId
