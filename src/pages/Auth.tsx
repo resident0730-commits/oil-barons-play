@@ -3,7 +3,7 @@ import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Fuel, Zap, Shield, TrendingUp, Users, Gift } from "lucide-react";
+import { Zap, Shield, TrendingUp, Users, Gift } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ const Auth = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Fuel className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
+          <div className="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p>Загрузка...</p>
         </div>
       </div>
@@ -65,10 +65,7 @@ const Auth = () => {
         {/* Left side - Benefits */}
         <div className="hidden lg:block space-y-6">
           <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <Fuel className="h-10 w-10 text-primary" />
-              <h1 className="text-4xl font-bold heading-contrast">Oil Tycoon</h1>
-            </div>
+            <h1 className="text-4xl font-bold heading-contrast">Oil Tycoon</h1>
             <p className="text-xl subtitle-contrast">
               Добывайте нефть, развивайте бизнес, становитесь магнатом!
             </p>
@@ -102,13 +99,10 @@ const Auth = () => {
         {/* Right side - Auth Form */}
         <div className="w-full max-w-md mx-auto space-y-6">
           {/* Mobile Header */}
-          <div className="lg:hidden text-center space-y-2">
-            <div className="flex items-center justify-center space-x-2">
-              <Fuel className="h-8 w-8 text-primary" />
-              <h1 className="text-3xl font-bold heading-contrast">Oil Tycoon</h1>
-            </div>
-            <p className="subtitle-contrast">
-              Добывайте нефть, развивайте бизнес!
+          <div className="lg:hidden text-center space-y-3 mb-6">
+            <h1 className="text-3xl font-bold heading-contrast">Oil Tycoon</h1>
+            <p className="subtitle-contrast text-sm">
+              Добывайте нефть, развивайте бизнес, становитесь магнатом!
             </p>
           </div>
 
@@ -131,18 +125,32 @@ const Auth = () => {
           </div>
 
           {/* Mobile Benefits Preview */}
-          <div className="lg:hidden grid grid-cols-2 gap-3 mt-6">
-            {benefits.slice(0, 4).map((benefit, index) => (
-              <div 
-                key={index}
-                className="p-3 rounded-lg bg-background/10 backdrop-blur-sm border border-primary/20 text-center"
-              >
-                <benefit.icon className="h-5 w-5 text-primary mx-auto mb-2" />
-                <p className="text-xs font-medium heading-contrast">
-                  {benefit.title}
-                </p>
-              </div>
-            ))}
+          <div className="lg:hidden space-y-3 mt-8">
+            <h3 className="text-center text-sm font-semibold heading-contrast mb-4">
+              Почему выбирают Oil Tycoon?
+            </h3>
+            <div className="space-y-3">
+              {benefits.map((benefit, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center space-x-3 p-3 rounded-lg bg-background/10 backdrop-blur-sm border border-primary/20"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center">
+                      <benefit.icon className="h-5 w-5 text-primary-foreground" />
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-semibold heading-contrast">
+                      {benefit.title}
+                    </p>
+                    <p className="text-xs subtitle-contrast">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
