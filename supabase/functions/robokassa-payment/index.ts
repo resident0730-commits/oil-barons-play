@@ -66,17 +66,18 @@ serve(async (req) => {
     const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
     
     // Создаем подпись MD5 для Robokassa (по официальной документации)
-    // Формат с дополнительными параметрами: MerchantLogin:OutSum:InvoiceID:Shp_user_id=value:Password#1
-    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:Shp_user_id=${userId}:${password1}`;
+    // ВАЖНО: в формуле подписи shp_ параметры должны быть строчными (lowercase)
+    // Формат: MerchantLogin:OutSum:InvoiceID:shp_user_id=value:Password#1
+    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:${password1}`;
     
     console.log('🔐 Signature generation:', {
-      formula: 'MerchantLogin:OutSum:InvoiceID:Shp_user_id=value:Password#1',
+      formula: 'MerchantLogin:OutSum:InvoiceID:shp_user_id=value:Password#1',
       merchantLogin,
       amount: amountStr,
       invoiceId,
       userId,
       passwordLength: password1.length,
-      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:Shp_user_id=${userId}:***`
+      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:***`
     });
     
     const encoder = new TextEncoder();
@@ -115,10 +116,10 @@ serve(async (req) => {
         paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
         params: params,
         invoiceId: invoiceId,
-        debug: {
-          signatureString: `${merchantLogin}:${amountStr}:${invoiceId}:***`,
-          signatureValue: signature
-        }
+      debug: {
+        signatureString: `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:***`,
+        signatureValue: signature
+      }
       }),
       { 
         status: 200,
