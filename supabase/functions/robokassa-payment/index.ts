@@ -12,10 +12,20 @@ serve(async (req) => {
   }
 
   try {
-    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
+    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.3');
     
-    const { amount, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
-    console.log('💰 Received payment request:', { amount, description });
+    const { amount, userId, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
+    console.log('💰 Received payment request:', { amount, userId, description });
+
+    if (!userId) {
+      console.error('❌ User ID not provided');
+      return new Response(
+        JSON.stringify({ error: 'ID пользователя не указан' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('👤 User ID:', userId);
 
     // Валидация суммы
     if (!amount || amount <= 0 || typeof amount !== 'number') {
@@ -56,16 +66,17 @@ serve(async (req) => {
     const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
     
     // Создаем подпись MD5 для Robokassa (по официальной документации)
-    // Формат: MerchantLogin:OutSum:InvoiceID:Password#1
-    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:${password1}`;
+    // Формат с дополнительными параметрами: MerchantLogin:OutSum:InvoiceID:Shp_user_id=value:Password#1
+    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:Shp_user_id=${userId}:${password1}`;
     
     console.log('🔐 Signature generation:', {
-      formula: 'MerchantLogin:OutSum:InvoiceID:Password#1',
+      formula: 'MerchantLogin:OutSum:InvoiceID:Shp_user_id=value:Password#1',
       merchantLogin,
       amount: amountStr,
       invoiceId,
+      userId,
       passwordLength: password1.length,
-      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:***`
+      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:Shp_user_id=${userId}:***`
     });
     
     const encoder = new TextEncoder();
@@ -78,7 +89,7 @@ serve(async (req) => {
     const referer = req.headers.get('referer') || 'https://your-domain.com';
     const baseUrl = new URL(referer).origin;
 
-    // Параметры для Robokassa
+    // Параметры для Robokassa (включая user_id)
     const params = {
       MerchantLogin: merchantLogin,
       OutSum: amountStr,
@@ -86,6 +97,8 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
+      Shp_user_id: userId, // Передаем user_id как дополнительный параметр
+      ResultURL: `https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result`,
       SuccessURL: `${baseUrl}/?payment=success`,
       FailURL: `${baseUrl}/?payment=fail`
     };
@@ -94,6 +107,7 @@ serve(async (req) => {
       merchantLogin,
       outSum: amountStr,
       invoiceId,
+      userId,
       signature: signature.substring(0, 8) + '...',
       signatureLength: signature.length,
       paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
