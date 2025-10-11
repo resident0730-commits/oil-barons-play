@@ -47,24 +47,52 @@ serve(async (req) => {
     }
 
     // Verify signature БЕЗ дополнительных параметров
-    // Формат: OutSum:InvId:Password#2
-    // ВАЖНО: OutSum должна быть в формате с 2 знаками после запятой
+    // Формат для Result URL: OutSum:InvId:Password#2
+    // Robokassa передает сумму в разных форматах, попробуем все варианты
     const outSumFormatted = parseFloat(outSum).toFixed(2)
-    const signatureString = `${outSumFormatted}:${invId}:${password2}`
+    
+    // Вариант 1: с .00
+    const signatureString1 = `${outSumFormatted}:${invId}:${password2}`
+    // Вариант 2: как пришло
+    const signatureString2 = `${outSum}:${invId}:${password2}`
+    // Вариант 3: как целое число
+    const signatureString3 = `${Math.floor(parseFloat(outSum))}:${invId}:${password2}`
+    
+    console.log('Testing multiple signature formats:', {
+      variant1: signatureString1,
+      variant2: signatureString2,
+      variant3: signatureString3,
+      received: signatureValue
+    })
+    
     const encoder = new TextEncoder();
-    const data = encoder.encode(signatureString);
-    const hashBuffer = await crypto.subtle.digest('MD5', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const calculatedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+    
+    // Проверяем все варианты
+    const variants = [signatureString1, signatureString2, signatureString3]
+    let isValid = false
+    let matchedVariant = ''
+    
+    for (const variant of variants) {
+      const data = encoder.encode(variant);
+      const hashBuffer = await crypto.subtle.digest('MD5', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const calculatedSignature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+      
+      if (calculatedSignature === signatureValue) {
+        isValid = true
+        matchedVariant = variant
+        console.log('✅ Signature matched with variant:', variant)
+        break
+      }
+    }
 
-    console.log('Signature verification:', { 
-      received: signatureValue, 
-      calculated: calculatedSignature,
-      match: signatureValue === calculatedSignature,
-      signatureString: signatureString 
+    console.log('Signature verification result:', { 
+      received: signatureValue,
+      isValid,
+      matchedVariant
     })
 
-    if (signatureValue !== calculatedSignature) {
+    if (!isValid) {
       console.error('Invalid signature')
       return new Response('Invalid signature', { 
         status: 400,
