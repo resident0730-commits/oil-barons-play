@@ -293,6 +293,87 @@ export type Database = {
         }
         Relationships: []
       }
+      promo_code_usage: {
+        Row: {
+          bonus_received: number
+          id: string
+          invoice_id: string | null
+          promo_code_id: string
+          used_at: string
+          user_id: string
+        }
+        Insert: {
+          bonus_received: number
+          id?: string
+          invoice_id?: string | null
+          promo_code_id: string
+          used_at?: string
+          user_id: string
+        }
+        Update: {
+          bonus_received?: number
+          id?: string
+          invoice_id?: string | null
+          promo_code_id?: string
+          used_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_code_usage_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "payment_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promo_code_usage_promo_code_id_fkey"
+            columns: ["promo_code_id"]
+            isOneToOne: false
+            referencedRelation: "promo_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      promo_codes: {
+        Row: {
+          bonus_amount: number
+          code: string
+          created_at: string
+          created_by: string
+          current_uses: number
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          updated_at: string
+        }
+        Insert: {
+          bonus_amount?: number
+          code: string
+          created_at?: string
+          created_by: string
+          current_uses?: number
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          updated_at?: string
+        }
+        Update: {
+          bonus_amount?: number
+          code?: string
+          created_at?: string
+          created_by?: string
+          current_uses?: number
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       referral_rewards_claimed: {
         Row: {
           claimed_at: string
@@ -522,6 +603,10 @@ export type Database = {
       add_user_balance: {
         Args: { amount_to_add: number; user_id: string }
         Returns: undefined
+      }
+      apply_promo_code: {
+        Args: { p_code: string; p_invoice_id: string; p_user_id: string }
+        Returns: Json
       }
       calculate_status_multiplier: {
         Args: { user_titles: string[] }

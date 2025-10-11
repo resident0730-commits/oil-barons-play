@@ -132,6 +132,8 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   const [showPayment, setShowPayment] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState<'robokassa' | null>(null);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
   const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -145,8 +147,47 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
       setShowPayment(false);
       setPaymentAmount(0);
       setPaymentMethod(null);
+      setPromoCode("");
+      setPromoApplied(false);
     }
   }, [isOpen]);
+
+  const handleApplyPromoCode = async () => {
+    if (!promoCode.trim() || !user) return;
+
+    try {
+      const { data, error } = await supabase.rpc('apply_promo_code', {
+        p_code: promoCode.trim(),
+        p_user_id: user.id,
+        p_invoice_id: null
+      });
+
+      if (error) throw error;
+
+      const result = data as { success: boolean; error?: string; message?: string };
+
+      if (result.success) {
+        setPromoApplied(true);
+        toast({
+          title: "Промокод применен!",
+          description: result.message,
+        });
+      } else {
+        toast({
+          title: "Ошибка",
+          description: result.error,
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Error applying promo code:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось применить промокод",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
@@ -254,6 +295,39 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
               <div className="text-sm text-muted-foreground text-center">
                 Пополнение на {paymentAmount}₽ → {formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}
               </div>
+
+              {/* Промокод */}
+              {!promoApplied && (
+                <Card>
+                  <CardContent className="p-3">
+                    <Label htmlFor="promo" className="text-sm">Есть промокод?</Label>
+                    <div className="flex gap-2 mt-2">
+                      <Input
+                        id="promo"
+                        placeholder="Введите промокод"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                        className="text-sm"
+                      />
+                      <Button 
+                        onClick={handleApplyPromoCode}
+                        disabled={!promoCode.trim()}
+                        size="sm"
+                        variant="secondary"
+                      >
+                        Применить
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {promoApplied && (
+                <div className="flex items-center gap-2 p-2 bg-green-500/10 border border-green-500/20 rounded-md">
+                  <Gift className="h-4 w-4 text-green-500" />
+                  <span className="text-sm text-green-500">Промокод успешно применен!</span>
+                </div>
+              )}
               
               <RobokassaWidget
                 amount={paymentAmount}

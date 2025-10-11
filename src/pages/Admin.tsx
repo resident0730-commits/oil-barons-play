@@ -18,6 +18,7 @@ import { PageVisibilityManager } from '@/components/admin/PageVisibilityManager'
 import { CompanyContentManager } from '@/components/admin/CompanyContentManager';
 import { DatabaseMigration } from '@/components/admin/DatabaseMigration';
 import { CurrencyManager } from '@/components/admin/CurrencyManager';
+import { PromoCodeManager } from '@/components/admin/PromoCodeManager';
 
 // Admin component for managing game and users
 export default function Admin() {
@@ -141,6 +142,11 @@ export default function Admin() {
             <BoosterManager />
           </div>
 
+          {/* Promo Code Management */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Управление промокодами</h2>
+            <PromoCodeManager />
+          </div>
 
           {/* Withdrawal Processing */}
           <div>
