@@ -370,35 +370,37 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-3">
-          {/* PROMO CODE FIELD */}
-          <div style={{ display: 'block', width: '100%', backgroundColor: 'rgba(255, 215, 0, 0.1)', border: '2px solid gold', borderRadius: '8px', padding: '12px' }}>
-            <div style={{ marginBottom: '8px', fontWeight: 'bold', fontSize: '14px' }}>
-              🎁 Введите промокод
-            </div>
-            {!promoApplied ? (
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Input
-                  id="promo-input"
-                  placeholder="Ваш промокод"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  style={{ flex: 1 }}
-                />
-                <Button 
-                  onClick={handleApplyPromoCode}
-                  disabled={!promoCode.trim()}
-                  size="sm"
-                >
-                  Применить
-                </Button>
-              </div>
-            ) : (
-              <div style={{ padding: '8px', backgroundColor: 'rgba(0, 255, 0, 0.1)', border: '1px solid green', borderRadius: '4px' }}>
-                ✅ Промокод применен!
-              </div>
-            )}
+        {/* PROMO CODE - SUPER VISIBLE */}
+        <div style={{ 
+          backgroundColor: '#FFD700', 
+          border: '4px solid #FF0000', 
+          padding: '20px', 
+          margin: '10px 0',
+          borderRadius: '10px',
+          position: 'relative',
+          zIndex: 9999
+        }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#000', marginBottom: '10px' }}>
+            🎁 ПРОМОКОД ЗДЕСЬ 🎁
+          </h2>
+          <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+            <Input
+              placeholder="Введите промокод"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+              style={{ backgroundColor: 'white', color: 'black', padding: '10px' }}
+            />
+            <Button 
+              onClick={handleApplyPromoCode}
+              disabled={!promoCode.trim()}
+              style={{ backgroundColor: '#00FF00', color: '#000', fontWeight: 'bold', padding: '10px' }}
+            >
+              ПРИМЕНИТЬ ПРОМОКОД
+            </Button>
           </div>
+        </div>
+
+        <div className="grid gap-3">
 
           {/* Custom Amount Section */}
           <Card>
