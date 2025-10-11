@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Fuel } from 'lucide-react';
+import gameFieldBg from '@/assets/game-field-background.jpg';
 
 interface Well {
   id: string;
@@ -119,44 +120,12 @@ export const GameField = () => {
     <div 
       className="relative w-full min-h-screen overflow-auto"
       style={{
-        background: 'linear-gradient(to bottom, #c2946f 0%, #d4a574 30%, #e0b589 60%, #d4a574 100%)',
+        backgroundImage: `url(${gameFieldBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat',
       }}
     >
-      {/* Desert sand texture */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 30%, rgba(0,0,0,0.1) 1px, transparent 1px),
-            radial-gradient(circle at 60% 70%, rgba(0,0,0,0.1) 1px, transparent 1px),
-            radial-gradient(circle at 80% 20%, rgba(0,0,0,0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '100px 100px, 120px 120px, 90px 90px',
-        }}
-      />
-      
-      {/* Sand dunes pattern */}
-      <div 
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(120deg, transparent, transparent 100px, rgba(0,0,0,.1) 100px, rgba(0,0,0,.1) 200px)',
-        }}
-      />
-      
-      {/* Scattered rocks and details */}
-      <div 
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse at 15% 25%, rgba(101, 67, 33, 0.4) 0%, transparent 3%),
-            radial-gradient(ellipse at 45% 65%, rgba(101, 67, 33, 0.3) 0%, transparent 2%),
-            radial-gradient(ellipse at 75% 35%, rgba(101, 67, 33, 0.35) 0%, transparent 4%),
-            radial-gradient(ellipse at 25% 85%, rgba(101, 67, 33, 0.3) 0%, transparent 3%),
-            radial-gradient(ellipse at 85% 75%, rgba(101, 67, 33, 0.4) 0%, transparent 2.5%)
-          `,
-          backgroundSize: '600px 600px',
-        }}
-      />
 
       {/* Stats overlay */}
       <div className="absolute top-4 right-4 bg-card/95 backdrop-blur rounded-lg p-4 shadow-2xl border border-primary/20 z-30">
