@@ -27,14 +27,102 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface BalanceSectionProps {
-  onTopUpClick: () => void;
+  onTopUp: (customAmount?: number, packageData?: any, paymentMethod?: string) => Promise<void>;
+  topUpLoading?: boolean;
 }
 
-export const BalanceSection = ({ onTopUpClick }: BalanceSectionProps) => {
+interface TopUpPackage {
+  id: string;
+  name: string;
+  rubAmount: number;
+  baseOC: number;
+  bonusOC: number;
+  totalOC: number;
+  badge: string | null;
+  popular: boolean;
+  bonusPercent: number;
+}
+
+const topUpPackages: TopUpPackage[] = [
+  {
+    id: 'mega_bonus',
+    name: '🚀 Мега бонус!',
+    rubAmount: 10000,
+    baseOC: 10000,
+    bonusOC: 10000,
+    totalOC: 20000,
+    badge: '100% БОНУС',
+    popular: true,
+    bonusPercent: 100
+  },
+  {
+    id: 'premium_plus',
+    name: 'Премиум+',
+    rubAmount: 5000,
+    baseOC: 5000,
+    bonusOC: 1000,
+    totalOC: 6000,
+    badge: '+20%',
+    popular: false,
+    bonusPercent: 20
+  },
+  {
+    id: 'advanced',
+    name: 'Продвинутый',
+    rubAmount: 4000,
+    baseOC: 4000,
+    bonusOC: 600,
+    totalOC: 4600,
+    badge: '+15%',
+    popular: false,
+    bonusPercent: 15
+  },
+  {
+    id: 'standard_3k',
+    name: 'Стандарт+',
+    rubAmount: 3000,
+    baseOC: 3000,
+    bonusOC: 300,
+    totalOC: 3300,
+    badge: '+10%',
+    popular: false,
+    bonusPercent: 10
+  },
+  {
+    id: 'standard_2k',
+    name: 'Стандарт',
+    rubAmount: 2000,
+    baseOC: 2000,
+    bonusOC: 200,
+    totalOC: 2200,
+    badge: '+10%',
+    popular: false,
+    bonusPercent: 10
+  },
+  {
+    id: 'basic',
+    name: 'Базовый',
+    rubAmount: 1000,
+    baseOC: 1000,
+    bonusOC: 0,
+    totalOC: 1000,
+    badge: null,
+    popular: false,
+    bonusPercent: 0
+  }
+];
+
+export const BalanceSection = ({ onTopUp, topUpLoading = false }: BalanceSectionProps) => {
   const { profile } = useGameData();
   const { user } = useAuth();
   const { formatGameCurrency } = useCurrency();
   const { toast } = useToast();
+  
+  // Top-up form states
+  const [customAmount, setCustomAmount] = useState<string>('');
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [paymentMethod, setPaymentMethod] = useState<string>('robokassa');
+  const [promoCode, setPromoCode] = useState<string>('');
   
   // Withdrawal form states
   const [withdrawalAmount, setWithdrawalAmount] = useState<string>('');
@@ -165,20 +253,109 @@ export const BalanceSection = ({ onTopUpClick }: BalanceSectionProps) => {
         </CardContent>
       </Card>
 
-      {/* Top Up Button */}
+      {/* Top Up Section */}
       <Card>
-        <CardContent className="p-6 text-center">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <CreditCard className="h-5 w-5" />
+            <span>Пополнение баланса</span>
+          </CardTitle>
+          <CardDescription>
+            Выберите пакет или введите сумму для пополнения
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Packages */}
+          <div className="space-y-3">
+            <Label>Выберите пакет</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {topUpPackages.map((pkg) => (
+                <div
+                  key={pkg.name}
+                  onClick={() => {
+                    setSelectedPackage(pkg);
+                    setCustomAmount('');
+                  }}
+                  className={`cursor-pointer p-4 rounded-lg border-2 transition-all ${
+                    selectedPackage?.name === pkg.name
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                >
+                  <div className="font-semibold">{pkg.name}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {pkg.rubAmount} ₽ = {pkg.totalOC.toLocaleString()} OC
+                  </div>
+                  {pkg.bonusPercent > 0 && (
+                    <div className="text-xs text-green-600 mt-1">
+                      +{pkg.bonusPercent}% бонус!
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Custom Amount */}
+          <div className="space-y-2">
+            <Label htmlFor="custom-amount">Или введите свою сумму (₽)</Label>
+            <Input
+              id="custom-amount"
+              type="number"
+              placeholder="Минимум 10 ₽"
+              value={customAmount}
+              onChange={(e) => {
+                setCustomAmount(e.target.value);
+                setSelectedPackage(null);
+              }}
+              min="10"
+            />
+          </div>
+
+          {/* Promo Code */}
+          <div className="space-y-2">
+            <Label htmlFor="promo-code">Промокод (необязательно)</Label>
+            <Input
+              id="promo-code"
+              type="text"
+              placeholder="Введите промокод..."
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+            />
+            <p className="text-xs text-muted-foreground">
+              Промокод применится автоматически после успешной оплаты
+            </p>
+          </div>
+
+          {/* Payment Method */}
+          <div className="space-y-2">
+            <Label htmlFor="payment-method">Способ оплаты</Label>
+            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+              <SelectTrigger id="payment-method">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="robokassa">Robokassa (Карты, СБП)</SelectItem>
+                <SelectItem value="yookassa">YooKassa</SelectItem>
+                <SelectItem value="tbank">Т-Банк</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <Button 
-            onClick={onTopUpClick}
+            onClick={() => {
+              if (selectedPackage) {
+                onTopUp(undefined, selectedPackage, paymentMethod);
+              } else if (customAmount) {
+                onTopUp(parseFloat(customAmount), undefined, paymentMethod);
+              }
+            }}
+            disabled={topUpLoading || (!customAmount && !selectedPackage)}
+            className="w-full"
             size="lg"
-            className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg"
           >
-            <CreditCard className="h-5 w-5 mr-2" />
-            Пополнить баланс
+            {topUpLoading ? 'Обработка...' : 'Перейти к оплате'}
           </Button>
-          <p className="text-sm text-muted-foreground mt-2">
-            Минимальная сумма пополнения: 10 ₽. Промокоды применяются при оплате.
-          </p>
         </CardContent>
       </Card>
 

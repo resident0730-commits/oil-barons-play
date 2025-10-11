@@ -493,7 +493,7 @@ const Dashboard = () => {
 
         {activeSection === 'balance' && currentProfile && (
           <BalanceSection 
-            onTopUpClick={() => setIsTopUpOpen(true)}
+            onTopUp={handleTopUp}
           />
         )}
 
