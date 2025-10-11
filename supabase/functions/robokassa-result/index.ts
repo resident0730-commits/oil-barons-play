@@ -48,7 +48,9 @@ serve(async (req) => {
 
     // Verify signature БЕЗ дополнительных параметров
     // Формат: OutSum:InvId:Password#2
-    const signatureString = `${outSum}:${invId}:${password2}`
+    // ВАЖНО: OutSum должна быть в формате с 2 знаками после запятой
+    const outSumFormatted = parseFloat(outSum).toFixed(2)
+    const signatureString = `${outSumFormatted}:${invId}:${password2}`
     const encoder = new TextEncoder();
     const data = encoder.encode(signatureString);
     const hashBuffer = await crypto.subtle.digest('MD5', data);
