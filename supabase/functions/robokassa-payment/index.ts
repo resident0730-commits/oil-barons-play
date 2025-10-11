@@ -12,20 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.3');
+    console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
     
-    const { amount, userId, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
-    console.log('💰 Received payment request:', { amount, userId, description });
-
-    if (!userId) {
-      console.error('❌ User ID not provided');
-      return new Response(
-        JSON.stringify({ error: 'ID пользователя не указан' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    console.log('👤 User ID:', userId);
+    const { amount, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
+    console.log('💰 Received payment request:', { amount, description });
 
     // Валидация суммы
     if (!amount || amount <= 0 || typeof amount !== 'number') {
@@ -59,25 +49,23 @@ serve(async (req) => {
       );
     }
 
-    // Приводим сумму к строке с двумя десятичными знаками (требование Robokassa)
-    const amountStr = amount.toFixed(2);
+    // Приводим сумму к строке для формирования подписи
+    const amountStr = amount.toString();
     
     // Генерируем уникальный ID заказа согласно требованиям Robokassa (1 - 9223372036854775807)
     const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
     
     // Создаем подпись MD5 для Robokassa (по официальной документации)
-    // ВАЖНО: в формуле подписи shp_ параметры должны быть строчными (lowercase)
-    // Формат: MerchantLogin:OutSum:InvoiceID:shp_user_id=value:Password#1
-    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:${password1}`;
+    // Формат: MerchantLogin:OutSum:InvoiceID:Password#1
+    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:${password1}`;
     
     console.log('🔐 Signature generation:', {
-      formula: 'MerchantLogin:OutSum:InvoiceID:shp_user_id=value:Password#1',
+      formula: 'MerchantLogin:OutSum:InvoiceID:Password#1',
       merchantLogin,
       amount: amountStr,
       invoiceId,
-      userId,
       passwordLength: password1.length,
-      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:***`
+      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:***`
     });
     
     const encoder = new TextEncoder();
@@ -86,8 +74,11 @@ serve(async (req) => {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase(); // Robokassa требует uppercase
 
-    // Параметры для Robokassa (включая user_id)
-    // Success и Fail URL будут использоваться из настроек магазина
+    // Получаем домен для URL возврата
+    const referer = req.headers.get('referer') || 'https://your-domain.com';
+    const baseUrl = new URL(referer).origin;
+
+    // Параметры для Robokassa
     const params = {
       MerchantLogin: merchantLogin,
       OutSum: amountStr,
@@ -95,14 +86,14 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
-      Shp_user_id: userId // Передаем user_id как дополнительный параметр
+      SuccessURL: `${baseUrl}/?payment=success`,
+      FailURL: `${baseUrl}/?payment=fail`
     };
 
     console.log('✅ Payment parameters prepared:', {
       merchantLogin,
       outSum: amountStr,
       invoiceId,
-      userId,
       signature: signature.substring(0, 8) + '...',
       signatureLength: signature.length,
       paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
@@ -115,10 +106,10 @@ serve(async (req) => {
         paymentUrl: 'https://auth.robokassa.ru/Merchant/Index.aspx',
         params: params,
         invoiceId: invoiceId,
-      debug: {
-        signatureString: `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:***`,
-        signatureValue: signature
-      }
+        debug: {
+          signatureString: `${merchantLogin}:${amountStr}:${invoiceId}:***`,
+          signatureValue: signature
+        }
       }),
       { 
         status: 200,

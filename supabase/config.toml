@@ -11,9 +11,3 @@ verify_jwt = false
 
 [functions.robokassa-payment]
 verify_jwt = false
-
-[functions.robokassa-result]
-verify_jwt = false
-
-[functions.robokassa-webhook]
-verify_jwt = false

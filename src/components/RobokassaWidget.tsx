@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
 
 interface RobokassaWidgetProps {
   amount: number;
@@ -15,28 +14,17 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [paymentParams, setPaymentParams] = useState<any>(null);
   const { toast } = useToast();
-  const { user } = useAuth();
 
   const createPayment = async () => {
     console.log('🎯 Starting payment creation process');
     
-    if (!user) {
-      toast({
-        title: "Ошибка",
-        description: "Необходимо войти в аккаунт",
-        variant: "destructive"
-      });
-      return;
-    }
-    
     setLoading(true);
-    console.log('💰 Creating payment for amount:', amount, 'User ID:', user.id);
+    console.log('💰 Creating payment for amount:', amount);
     
     try {
       const { data, error } = await supabase.functions.invoke('robokassa-payment', {
         body: {
           amount: amount,
-          userId: user.id,
           description: `Пополнение баланса Oil Tycoon на ${amount}₽`
         }
       });
