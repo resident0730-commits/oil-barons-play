@@ -293,6 +293,30 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_rewards_claimed: {
+        Row: {
+          claimed_at: string
+          id: string
+          reward_amount: number
+          reward_tier: number
+          user_id: string
+        }
+        Insert: {
+          claimed_at?: string
+          id?: string
+          reward_amount: number
+          reward_tier: number
+          user_id: string
+        }
+        Update: {
+          claimed_at?: string
+          id?: string
+          reward_amount?: number
+          reward_tier?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       referrals: {
         Row: {
           bonus_earned: number
@@ -502,6 +526,10 @@ export type Database = {
       calculate_status_multiplier: {
         Args: { user_titles: string[] }
         Returns: number
+      }
+      check_and_award_referral_milestones: {
+        Args: { p_referrer_id: string }
+        Returns: undefined
       }
       generate_referral_code: {
         Args: Record<PropertyKey, never>
