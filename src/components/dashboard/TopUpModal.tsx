@@ -370,39 +370,38 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4">
-          {/* Promo Code Section */}
-          {!promoApplied && (
-            <Card className="border-2 border-primary/20">
-              <CardContent className="p-3">
-                <Label htmlFor="promo-main" className="text-sm font-semibold">🎁 Есть промокод?</Label>
-                <div className="flex gap-2 mt-2">
-                  <Input
-                    id="promo-main"
-                    placeholder="Введите промокод"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    className="text-sm"
-                  />
-                  <Button 
-                    onClick={handleApplyPromoCode}
-                    disabled={!promoCode.trim()}
-                    size="sm"
-                    variant="secondary"
-                  >
-                    Применить
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {promoApplied && (
-            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
-              <Gift className="h-4 w-4 text-green-500" />
-              <span className="text-sm text-green-500 font-medium">Промокод успешно применен!</span>
+        <div className="space-y-4">
+          {/* Promo Code Section - Always visible at top */}
+          <div className="bg-primary/5 border-2 border-primary/30 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Gift className="h-5 w-5 text-primary" />
+              <Label htmlFor="promo-main" className="text-base font-bold text-primary">Есть промокод?</Label>
             </div>
-          )}
+            {!promoApplied ? (
+              <div className="flex gap-2">
+                <Input
+                  id="promo-main"
+                  placeholder="Введите промокод здесь"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  className="text-sm flex-1"
+                />
+                <Button 
+                  onClick={handleApplyPromoCode}
+                  disabled={!promoCode.trim()}
+                  size="sm"
+                  className="px-4"
+                >
+                  Применить
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
+                <Gift className="h-4 w-4 text-green-500" />
+                <span className="text-sm text-green-500 font-medium">Промокод успешно применен!</span>
+              </div>
+            )}
+          </div>
 
           {/* Custom Amount Section */}
           <Card>
