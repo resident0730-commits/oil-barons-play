@@ -14,14 +14,14 @@ serve(async (req) => {
   }
 
   try {
-    // Parse query parameters from URL
-    const url = new URL(req.url)
-    const outSum = url.searchParams.get('OutSum')
-    const invId = url.searchParams.get('InvId')
-    const signatureValue = url.searchParams.get('SignatureValue')
-    const userId = url.searchParams.get('Shp_user_id')  // Верхний регистр S в URL
+    // Parse POST data from form body
+    const formData = await req.formData()
+    const outSum = formData.get('OutSum')?.toString()
+    const invId = formData.get('InvId')?.toString()
+    const signatureValue = formData.get('SignatureValue')?.toString()
+    const userId = formData.get('Shp_user_id')?.toString()  // Верхний регистр S
 
-    console.log('Robokassa Result callback received:', { 
+    console.log('Robokassa Result callback received (POST):', { 
       outSum, 
       invId, 
       signatureValue, 
