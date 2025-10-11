@@ -457,20 +457,23 @@ export const ReferralSystem = () => {
       <Card>
         <CardHeader>
           <CardTitle>Реферальные награды</CardTitle>
+          <CardDescription>
+            Награды выдаются только за рефералов, которые пополнили счет
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             <div className="flex justify-between p-2 border rounded">
-              <span>5 рефералов</span>
-              <Badge>Бесплатная Starter Well</Badge>
+              <span>5 рефералов с пополнением</span>
+              <Badge>5,000 ₽</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
-              <span>15 рефералов</span>
-              <Badge>Turbo Boost на 30 дней</Badge>
+              <span>15 рефералов с пополнением</span>
+              <Badge>15,000 ₽</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
-              <span>50 рефералов</span>
-              <Badge>Premium Well бесплатно</Badge>
+              <span>50 рефералов с пополнением</span>
+              <Badge>50,000 ₽</Badge>
             </div>
             <div className="flex justify-between p-2 border rounded">
               <span>100 рефералов</span>
