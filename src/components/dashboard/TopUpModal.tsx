@@ -154,14 +154,14 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     }
   }, [isOpen, showPayment, promoApplied]);
 
-  const handleApplyPromoCode = async (invoiceId: string) => {
+  const handleApplyPromoCode = async () => {
     if (!promoCode.trim() || !user) return;
 
     try {
       const { data, error } = await supabase.rpc('apply_promo_code', {
         p_code: promoCode.trim(),
         p_user_id: user.id,
-        p_invoice_id: invoiceId
+        p_invoice_id: null
       });
 
       if (error) throw error;
@@ -298,34 +298,42 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                 Пополнение на {paymentAmount}₽ → {formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}
               </div>
 
-              {/* Промокод - информация */}
-              <Card>
-                <CardContent className="p-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="promo" className="text-sm font-semibold">💎 Есть промокод?</Label>
-                    <p className="text-xs text-muted-foreground">
-                      Промокод будет применен автоматически после успешной оплаты
-                    </p>
-                    <Input
-                      id="promo"
-                      placeholder="Введите промокод (необязательно)"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                      className="text-sm"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Промокод */}
+              {!promoApplied && (
+                <Card>
+                  <CardContent className="p-3">
+                    <Label htmlFor="promo" className="text-sm">Есть промокод?</Label>
+                    <div className="flex gap-2 mt-2">
+                      <Input
+                        id="promo"
+                        placeholder="Введите промокод"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                        className="text-sm"
+                      />
+                      <Button 
+                        onClick={handleApplyPromoCode}
+                        disabled={!promoCode.trim()}
+                        size="sm"
+                        variant="secondary"
+                      >
+                        Применить
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
+              {promoApplied && (
+                <div className="flex items-center gap-2 p-2 bg-green-500/10 border border-green-500/20 rounded-md">
+                  <Gift className="h-4 w-4 text-green-500" />
+                  <span className="text-sm text-green-500">Промокод успешно применен!</span>
+                </div>
+              )}
               
               <RobokassaWidget
                 amount={paymentAmount}
-                promoCode={promoCode.trim()}
-                onSuccess={(invoiceId) => {
-                  // Если есть промокод, применяем его после создания инвойса
-                  if (promoCode.trim() && invoiceId) {
-                    handleApplyPromoCode(invoiceId);
-                  }
+                onSuccess={() => {
                   toast({
                     title: "Оплата создана",
                     description: "Переходим к оплате...",
@@ -358,6 +366,34 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             Пополнение баланса
           </DialogTitle>
           
+          {/* ПОЛЕ ПРОМОКОДА - ПРЯМО В ЗАГОЛОВКЕ */}
+          <div style={{ 
+            backgroundColor: '#FFD700', 
+            border: '4px solid #FF0000', 
+            padding: '15px', 
+            borderRadius: '8px',
+            marginTop: '10px',
+            marginBottom: '10px'
+          }}>
+            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#000', marginBottom: '10px', textAlign: 'center' }}>
+              🎁 ПРОМОКОД 🎁
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+              <Input
+                placeholder="Введите ваш промокод"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                style={{ backgroundColor: '#FFFFFF', color: '#000', border: '2px solid #000' }}
+              />
+              <Button 
+                onClick={handleApplyPromoCode}
+                disabled={!promoCode.trim()}
+                style={{ backgroundColor: '#00FF00', color: '#000', fontWeight: 'bold' }}
+              >
+                ПРИМЕНИТЬ
+              </Button>
+            </div>
+          </div>
 
           <DialogDescription className="text-xs sm:text-sm">
             Выберите сумму для пополнения или готовые пакеты с бонусами
@@ -365,27 +401,6 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         </DialogHeader>
 
         <div className="grid gap-3">
-          {/* Поле промокода */}
-          <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10">
-            <CardContent className="p-3">
-              <div className="space-y-2">
-                <Label htmlFor="promo-main" className="text-sm font-semibold flex items-center gap-2">
-                  <Gift className="h-4 w-4 text-primary" />
-                  💎 Есть промокод?
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  Введите промокод сейчас - он будет применен автоматически после успешной оплаты
-                </p>
-                <Input
-                  id="promo-main"
-                  placeholder="Введите промокод (необязательно)"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  className="text-sm"
-                />
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Custom Amount Section */}
           <Card>

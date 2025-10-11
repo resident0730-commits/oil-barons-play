@@ -494,6 +494,7 @@ const Dashboard = () => {
         {activeSection === 'balance' && currentProfile && (
           <BalanceSection 
             onTopUp={handleTopUp}
+            topUpLoading={false}
           />
         )}
 
