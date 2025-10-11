@@ -76,70 +76,159 @@ export const WellNode3D = ({
 
   return (
     <group position={position}>
-      {/* Platform/Base */}
+      {/* Concrete platform with texture */}
       <Box 
-        args={[1.5, 0.2, 1.5]} 
-        position={[0, 0.1, 0]}
+        args={[2, 0.3, 2]} 
+        position={[0, 0.15, 0]}
         onClick={handleClick}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
+        castShadow
+        receiveShadow
       >
-        <meshStandardMaterial color="#94a3b8" />
+        <meshStandardMaterial 
+          color="#d4d4d8" 
+          roughness={0.8}
+          metalness={0.2}
+        />
       </Box>
 
-      {/* Main structure */}
+      {/* Base structure - industrial box */}
       <Box 
-        ref={meshRef}
-        args={[0.6, 0.8, 0.6]} 
+        args={[1.2, 0.6, 1.2]} 
         position={[0, 0.6, 0]}
         onClick={handleClick}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
+        castShadow
+      >
+        <meshStandardMaterial 
+          color="#52525b" 
+          metalness={0.5}
+          roughness={0.4}
+        />
+      </Box>
+
+      {/* Main tower body */}
+      <Box 
+        ref={meshRef}
+        args={[0.8, 1.2, 0.8]} 
+        position={[0, 1.5, 0]}
+        onClick={handleClick}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        castShadow
       >
         <meshStandardMaterial 
           color={config.color} 
-          metalness={0.6}
+          metalness={0.7}
           roughness={0.3}
         />
       </Box>
 
-      {/* Derrick tower */}
+      {/* Derrick tower - detailed structure */}
+      <group position={[0, 2.1, 0]}>
+        {/* Main derrick */}
+        <Cylinder 
+          args={[0.15, 0.15, config.derrickHeight, 8]} 
+          position={[0, config.derrickHeight / 2, 0]}
+          onClick={handleClick}
+          onPointerOver={() => setHovered(true)}
+          onPointerOut={() => setHovered(false)}
+          castShadow
+        >
+          <meshStandardMaterial 
+            color={config.color} 
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </Cylinder>
+
+        {/* Support beams */}
+        {[0, 90, 180, 270].map((angle, i) => (
+          <Cylinder
+            key={i}
+            args={[0.05, 0.08, config.derrickHeight * 0.8, 4]}
+            position={[
+              Math.cos((angle * Math.PI) / 180) * 0.3,
+              config.derrickHeight * 0.4,
+              Math.sin((angle * Math.PI) / 180) * 0.3
+            ]}
+            rotation={[0.2, 0, 0]}
+            castShadow
+          >
+            <meshStandardMaterial 
+              color="#71717a" 
+              metalness={0.8}
+              roughness={0.2}
+            />
+          </Cylinder>
+        ))}
+
+        {/* Top platform */}
+        <Cylinder 
+          args={[0.4, 0.4, 0.15, 8]} 
+          position={[0, config.derrickHeight, 0]}
+          castShadow
+        >
+          <meshStandardMaterial 
+            color="#27272a" 
+            metalness={0.6}
+            roughness={0.4}
+          />
+        </Cylinder>
+
+        {/* Warning light on top */}
+        <Sphere 
+          args={[0.2, 16, 16]} 
+          position={[0, config.derrickHeight + 0.25, 0]}
+          castShadow
+        >
+          <meshStandardMaterial 
+            color="#fbbf24" 
+            metalness={0.9}
+            roughness={0.1}
+            emissive="#fbbf24"
+            emissiveIntensity={hovered ? 1 : 0.5}
+          />
+        </Sphere>
+      </group>
+
+      {/* Pipeline accessories */}
       <Cylinder 
-        args={[config.radius * 0.3, config.radius * 0.3, config.derrickHeight, 8]} 
-        position={[0, 0.8 + config.derrickHeight / 2, 0]}
-        onClick={handleClick}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        args={[0.1, 0.1, 0.8, 8]} 
+        position={[0.6, 0.7, 0]}
+        rotation={[0, 0, Math.PI / 2]}
+        castShadow
       >
         <meshStandardMaterial 
-          color={config.color} 
+          color="#a1a1aa" 
           metalness={0.8}
           roughness={0.2}
         />
       </Cylinder>
 
-      {/* Top cap */}
-      <Sphere 
-        args={[config.radius * 0.4, 16, 16]} 
-        position={[0, 0.8 + config.derrickHeight + 0.2, 0]}
+      {/* Storage tank */}
+      <Cylinder 
+        args={[0.3, 0.3, 0.6, 16]} 
+        position={[-0.7, 0.6, 0]}
+        castShadow
       >
         <meshStandardMaterial 
-          color="#fbbf24" 
-          metalness={0.9}
-          roughness={0.1}
-          emissive="#fbbf24"
-          emissiveIntensity={0.3}
+          color="#71717a" 
+          metalness={0.6}
+          roughness={0.3}
         />
-      </Sphere>
+      </Cylinder>
 
-      {/* Income label */}
+      {/* Income label with better styling */}
       <Text
-        position={[0, -0.5, 0]}
-        fontSize={0.3}
-        color="#ffffff"
+        position={[0, -0.3, 0]}
+        fontSize={0.25}
+        color="#10b981"
         anchorX="center"
         anchorY="middle"
-        outlineWidth={0.02}
+        outlineWidth={0.03}
         outlineColor="#000000"
       >
         {dailyIncome.toLocaleString()}₽/д
@@ -147,34 +236,60 @@ export const WellNode3D = ({
 
       {/* Coins indicator */}
       {coins > 0 && (
-        <Text
-          position={[0, config.derrickHeight + 1.5, 0]}
-          fontSize={0.4}
-          color="#fbbf24"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.03}
-          outlineColor="#000000"
-        >
-          💰 {coins}
-        </Text>
+        <group position={[0, config.derrickHeight + 2.5, 0]}>
+          <Sphere args={[0.3, 16, 16]}>
+            <meshStandardMaterial 
+              color="#fbbf24" 
+              emissive="#fbbf24"
+              emissiveIntensity={0.5}
+            />
+          </Sphere>
+          <Text
+            position={[0, 0, 0]}
+            fontSize={0.3}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            +{coins}
+          </Text>
+        </group>
       )}
 
-      {/* Hover effect - glowing ring */}
+      {/* Hover effect - glowing ring on ground */}
       {hovered && (
-        <Cylinder 
-          args={[1, 1, 0.05, 32]} 
-          position={[0, 0.05, 0]}
-          rotation={[Math.PI / 2, 0, 0]}
-        >
-          <meshStandardMaterial 
-            color="#fbbf24" 
-            transparent
-            opacity={0.3}
-            emissive="#fbbf24"
-            emissiveIntensity={0.5}
-          />
-        </Cylinder>
+        <>
+          <Cylinder 
+            args={[1.2, 1.2, 0.05, 32]} 
+            position={[0, 0.05, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+          >
+            <meshStandardMaterial 
+              color="#fbbf24" 
+              transparent
+              opacity={0.4}
+              emissive="#fbbf24"
+              emissiveIntensity={0.8}
+            />
+          </Cylinder>
+          
+          {/* Animated rings */}
+          <Cylinder 
+            args={[1.5, 1.5, 0.02, 32]} 
+            position={[0, 0.1, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+          >
+            <meshStandardMaterial 
+              color="#22c55e" 
+              transparent
+              opacity={0.3}
+              emissive="#22c55e"
+              emissiveIntensity={0.6}
+            />
+          </Cylinder>
+        </>
       )}
     </group>
   );

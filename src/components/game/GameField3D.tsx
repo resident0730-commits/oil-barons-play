@@ -65,24 +65,28 @@ export const GameField3D = () => {
     }
   };
 
-  // Calculate positions for wells in 3D space
+  // Calculate positions for wells in 3D space with better layout
   const calculateWellPositions = (): [number, number, number][] => {
     const positions: [number, number, number][] = [];
-    const gridSize = 8;
-    const spacing = 5;
+    
+    // Create a more compact, organized layout
+    const cols = Math.ceil(Math.sqrt(wells.length));
+    const spacing = 6;
+    const offsetX = (cols * spacing) / 2;
+    const offsetZ = (cols * spacing) / 2;
 
     wells.forEach((well, index) => {
-      const row = Math.floor(index / gridSize);
-      const col = index % gridSize;
+      const row = Math.floor(index / cols);
+      const col = index % cols;
       
-      // Add some randomness for organic placement
-      const randomX = (Math.random() - 0.5) * 2;
-      const randomZ = (Math.random() - 0.5) * 2;
+      // Small random offset for organic feel
+      const randomX = (Math.random() - 0.5) * 1.5;
+      const randomZ = (Math.random() - 0.5) * 1.5;
       
       positions.push([
-        col * spacing - (gridSize * spacing) / 2 + randomX,
+        col * spacing - offsetX + randomX,
         0,
-        row * spacing - (gridSize * spacing) / 2 + randomZ,
+        row * spacing - offsetZ + randomZ,
       ]);
     });
 
@@ -129,41 +133,107 @@ export const GameField3D = () => {
       </div>
 
       {/* Instructions */}
-      <div className="absolute bottom-4 left-4 bg-black/70 rounded-lg p-3 text-white text-sm z-30">
-        <p>🖱️ Вращайте камеру мышью</p>
-        <p>🔍 Приближайте колесиком мыши</p>
-        <p>👆 Кликайте на скважины для сбора монет</p>
+      <div className="absolute bottom-4 left-4 bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur rounded-xl p-4 text-white text-sm z-30 border border-white/10 shadow-2xl">
+        <div className="font-bold mb-2 text-lg">🎮 Управление</div>
+        <div className="space-y-1.5">
+          <p className="flex items-center gap-2"><span className="text-amber-400">🖱️</span> Левая кнопка мыши + перемещение = вращение</p>
+          <p className="flex items-center gap-2"><span className="text-blue-400">🔍</span> Колесико мыши = увеличение/уменьшение</p>
+          <p className="flex items-center gap-2"><span className="text-green-400">👆</span> Клик по скважине = собрать монеты</p>
+          <p className="flex items-center gap-2"><span className="text-purple-400">✨</span> Наведите мышь для подсветки</p>
+        </div>
       </div>
 
       {/* 3D Canvas */}
       <Canvas
-        camera={{ position: [15, 15, 15], fov: 60 }}
+        camera={{ 
+          position: [0, 25, 30], 
+          fov: 50,
+          near: 0.1,
+          far: 1000
+        }}
         shadows
+        gl={{ antialias: true }}
       >
         <Suspense fallback={null}>
-          {/* Lighting */}
-          <ambientLight intensity={0.5} />
+          {/* Improved Lighting Setup */}
+          <ambientLight intensity={0.6} />
+          
+          {/* Main sun light */}
           <directionalLight 
-            position={[10, 10, 5]} 
-            intensity={1} 
+            position={[20, 30, 20]} 
+            intensity={1.2} 
             castShadow
             shadow-mapSize-width={2048}
             shadow-mapSize-height={2048}
+            shadow-camera-far={100}
+            shadow-camera-left={-50}
+            shadow-camera-right={50}
+            shadow-camera-top={50}
+            shadow-camera-bottom={-50}
           />
-          <pointLight position={[-10, 10, -10]} intensity={0.5} />
+          
+          {/* Fill lights for better visibility */}
+          <pointLight position={[-20, 15, -20]} intensity={0.4} color="#60a5fa" />
+          <pointLight position={[20, 15, -20]} intensity={0.4} color="#fbbf24" />
 
-          {/* Environment */}
-          <Sky sunPosition={[100, 20, 100]} />
+          {/* Beautiful sky with sunset colors */}
+          <Sky 
+            distance={450000}
+            sunPosition={[100, 20, 100]}
+            inclination={0.6}
+            azimuth={0.25}
+            rayleigh={0.5}
+            turbidity={10}
+            mieCoefficient={0.005}
+            mieDirectionalG={0.8}
+          />
+          
+          {/* Soft environment lighting */}
           <Environment preset="sunset" />
+          
+          {/* Fog for depth */}
+          <fog attach="fog" args={['#87ceeb', 30, 100]} />
 
-          {/* Ground plane */}
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
-            <planeGeometry args={[100, 100]} />
-            <meshStandardMaterial color="#86efac" />
+          {/* Improved ground with grass texture effect */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+            <planeGeometry args={[150, 150]} />
+            <meshStandardMaterial 
+              color="#4ade80" 
+              roughness={0.9}
+              metalness={0}
+            />
           </mesh>
 
-          {/* Grid helper for orientation */}
-          <gridHelper args={[100, 20, '#64748b', '#94a3b8']} position={[0, 0, 0]} />
+          {/* Dirt paths/roads for visual interest */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
+            <planeGeometry args={[8, 150]} />
+            <meshStandardMaterial 
+              color="#a16207" 
+              roughness={1}
+              metalness={0}
+              opacity={0.6}
+              transparent
+            />
+          </mesh>
+
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
+            <planeGeometry args={[150, 8]} />
+            <meshStandardMaterial 
+              color="#a16207" 
+              roughness={1}
+              metalness={0}
+              opacity={0.6}
+              transparent
+            />
+          </mesh>
+
+          {/* Subtle grid for industrial feel - less prominent */}
+          <gridHelper 
+            args={[150, 30, '#94a3b8', '#cbd5e1']} 
+            position={[0, 0.02, 0]}
+            material-opacity={0.2}
+            material-transparent={true}
+          />
 
           {/* Wells */}
           {wells.map((well, index) => (
@@ -178,14 +248,19 @@ export const GameField3D = () => {
             />
           ))}
 
-          {/* Camera controls */}
+          {/* Improved Camera controls */}
           <OrbitControls 
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
-            minDistance={5}
-            maxDistance={50}
-            maxPolarAngle={Math.PI / 2.1}
+            minDistance={10}
+            maxDistance={60}
+            maxPolarAngle={Math.PI / 2.2}
+            minPolarAngle={Math.PI / 6}
+            target={[0, 0, 0]}
+            zoomSpeed={0.8}
+            rotateSpeed={0.5}
+            panSpeed={0.5}
           />
         </Suspense>
       </Canvas>
