@@ -27,15 +27,14 @@ interface WellNodeProps {
 }
 
 const WELL_IMAGES: Record<string, string> = {
-  'starter-well': starterWell,
-  'mini-well': starterWell,
-  'medium-well': mediumWell,
-  'premium-well': premiumWell,
-  'elite-well': eliteWell,
-  'industrial-well': industrialWell,
-  'super-well': superWell,
-  'legendary-well': legendaryWell,
-  'cosmic-well': cosmicWell,
+  'мини-скважина': starterWell,
+  'стандартная скважина': mediumWell,
+  'премиум-скважина': premiumWell,
+  'супер-скважина': superWell,
+  'промышленная скважина': industrialWell,
+  'элитная скважина': eliteWell,
+  'легендарная скважина': legendaryWell,
+  'космическая скважина': cosmicWell,
 };
 
 const COIN_VALUE = 10; // Each coin worth 10₽
@@ -105,11 +104,12 @@ export const WellNode = ({
   };
 
   const wellImage = WELL_IMAGES[type.toLowerCase()] || starterWell;
-  const wellSize = type.includes('legendary') || type.includes('cosmic') ? 200 : 
-                   type.includes('industrial') || type.includes('super') ? 170 :
-                   type.includes('elite') ? 140 :
-                   type.includes('premium') ? 120 :
-                   type.includes('medium') ? 100 : 80;
+  const lowerType = type.toLowerCase();
+  const wellSize = lowerType.includes('легендарн') || lowerType.includes('космическ') ? 200 : 
+                   lowerType.includes('промышленн') || lowerType.includes('супер') ? 170 :
+                   lowerType.includes('элитн') ? 140 :
+                   lowerType.includes('премиум') ? 120 :
+                   lowerType.includes('стандартн') ? 100 : 80;
 
   return (
     <div
