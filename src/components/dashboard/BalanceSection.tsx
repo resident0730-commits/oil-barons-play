@@ -213,10 +213,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
 
   const handleCustomTopUp = () => {
     const amount = parseFloat(customAmount);
-    if (isNaN(amount) || amount < 10) {
+    if (isNaN(amount) || amount < 1000) {
       toast({
         title: "Некорректная сумма",
-        description: "Минимальная сумма пополнения 10 ₽",
+        description: "Минимальная сумма пополнения 1000 ₽",
         variant: "destructive"
       });
       return;
@@ -558,10 +558,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
                 placeholder="Введите сумму..."
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
-                min="10"
+                min="1000"
                 className="mt-1"
               />
-              {customAmount && parseFloat(customAmount) >= 10 && (
+              {customAmount && parseFloat(customAmount) >= 1000 && (
                 <p className="text-sm text-muted-foreground mt-1">
                   1 ₽ = 1 ₽
                 </p>
@@ -570,7 +570,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
             <div className="flex items-end">
               <Button 
                 onClick={handleCustomTopUp}
-                disabled={!customAmount || parseFloat(customAmount) < 10 || topUpLoading}
+                disabled={!customAmount || parseFloat(customAmount) < 1000 || topUpLoading}
                 className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
               >
                 Пополнить
