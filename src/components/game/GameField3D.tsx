@@ -1,7 +1,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sky, Environment } from '@react-three/drei';
-import { DetailedWell3D } from './DetailedWell3D';
+import { StylizedWell3D } from './StylizedWell3D';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -235,9 +235,9 @@ export const GameField3D = () => {
             material-transparent={true}
           />
 
-          {/* Wells with detailed models */}
+          {/* Stylized wells matching shop references */}
           {wells.map((well, index) => (
-            <DetailedWell3D
+            <StylizedWell3D
               key={well.id}
               id={well.id}
               type={well.well_type}
