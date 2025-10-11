@@ -30,6 +30,32 @@ export const PaymentHistory = () => {
     }
   }, [user]);
 
+  // Автоматическое обновление при изменениях в money_transfers
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('payment_updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'money_transfers',
+          filter: `to_user_id=eq.${user.id}`
+        },
+        () => {
+          console.log('New payment detected, reloading history...');
+          loadPaymentHistory();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   const loadPaymentHistory = async () => {
     if (!user) return;
 
