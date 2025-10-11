@@ -28,6 +28,7 @@ import Achievements from "./pages/Achievements";
 import Careers from "./pages/Careers";
 import Season from "./pages/Season";
 import { NewYearJackpot } from "./pages/NewYearJackpot";
+import GameView from "./pages/GameView";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,7 @@ const App = () => (
           <Route path="/guide" element={<GameGuide />} />
           <Route path="/new-year-jackpot" element={<NewYearJackpot />} />
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />
+          <Route path="/game-view" element={<GameView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
