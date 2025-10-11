@@ -300,35 +300,39 @@ export const ReferralSystem = () => {
 
       if (currentProfile?.referred_by) {
         console.log('❌ User already has referrer:', currentProfile.referred_by);
-        
-        // Check if referral record exists
-        const { data: existingReferral, error: refError } = await supabase
-          .from('referrals')
-          .select('*')
-          .eq('referred_id', user.id)
-          .eq('referrer_id', currentProfile.referred_by)
-          .maybeSingle();
-          
-        console.log('🔍 Existing referral record:', existingReferral);
-        console.log('❓ Referral check error:', refError);
-        
         toast({
           title: "Ошибка",
-          description: `У вас уже есть реферер: ${currentProfile.referred_by}`,
+          description: "У вас уже есть реферер. Нельзя изменить реферера после регистрации.",
           variant: "destructive"
         });
         return;
       }
 
-      // Since direct insert is blocked by RLS, let's inform user about the connection
-      console.log('📝 User already has referrer, informing about connection...');
+      // Apply referral code - update profile with referrer
+      console.log('✅ Applying referral code, updating profile...');
       
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ referred_by: referrer.user_id })
+        .eq('user_id', user.id);
+
+      if (updateError) {
+        console.error('❌ Error updating profile with referrer:', updateError);
+        toast({
+          title: "Ошибка",
+          description: "Не удалось применить реферальный код",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      console.log('✅ Referral code applied successfully');
       toast({
-        title: "Информация",
-        description: "Связь с реферером уже установлена в профиле. Обратитесь к администратору для синхронизации таблиц.",
+        title: "Успех!",
+        description: "Реферальный код успешно применен",
       });
 
-      // Still refresh data to show current state
+      // Refresh data to show updated state
       fetchReferralData();
       fetchReferrals();
     } catch (error) {
