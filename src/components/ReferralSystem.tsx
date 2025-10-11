@@ -14,6 +14,7 @@ interface Referral {
   bonus_earned: number;
   created_at: string;
   is_active: boolean;
+  nickname?: string;
 }
 
 export const ReferralSystem = () => {
@@ -94,7 +95,10 @@ export const ReferralSystem = () => {
     console.log('🔍 Fetching referrals for user:', user.id);
     const { data, error } = await supabase
       .from('referrals')
-      .select('*')
+      .select(`
+        *,
+        profiles!referrals_referred_id_fkey(nickname)
+      `)
       .eq('referrer_id', user.id)
       .order('created_at', { ascending: false });
 
@@ -121,10 +125,16 @@ export const ReferralSystem = () => {
     }
 
     if (data) {
-      setReferrals(data);
-      const total = data.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
+      // Преобразуем данные, извлекая nickname из вложенного profiles объекта
+      const transformedData = data.map((ref: any) => ({
+        ...ref,
+        nickname: ref.profiles?.nickname || 'Игрок'
+      }));
+      
+      setReferrals(transformedData);
+      const total = transformedData.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
       setTotalBonus(total);
-      console.log('✅ Loaded referrals count:', data.length, 'Total bonus:', total);
+      console.log('✅ Loaded referrals count:', transformedData.length, 'Total bonus:', total);
     }
   };
 
@@ -416,7 +426,7 @@ export const ReferralSystem = () => {
               {referrals.map((referral) => (
                 <div key={referral.id} className="flex justify-between items-center p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">Реферал #{referral.id.slice(-8)}</p>
+                    <p className="font-medium">{referral.nickname || 'Игрок'}</p>
                     <p className="text-sm text-muted-foreground">
                       Присоединился {new Date(referral.created_at).toLocaleDateString()}
                     </p>
