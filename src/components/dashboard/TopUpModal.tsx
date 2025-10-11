@@ -365,6 +365,27 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         </DialogHeader>
 
         <div className="grid gap-3">
+          {/* Поле промокода */}
+          <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10">
+            <CardContent className="p-3">
+              <div className="space-y-2">
+                <Label htmlFor="promo-main" className="text-sm font-semibold flex items-center gap-2">
+                  <Gift className="h-4 w-4 text-primary" />
+                  💎 Есть промокод?
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Введите промокод сейчас - он будет применен автоматически после успешной оплаты
+                </p>
+                <Input
+                  id="promo-main"
+                  placeholder="Введите промокод (необязательно)"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  className="text-sm"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Custom Amount Section */}
           <Card>
