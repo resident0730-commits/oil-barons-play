@@ -551,11 +551,11 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
         <CardContent className="space-y-4">
           <div className="flex space-x-4">
             <div className="flex-1">
-              <Label htmlFor="custom-amount">Сумма в рублях</Label>
+              <Label htmlFor="custom-amount">Сумма в рублях (минимум 1000 ₽)</Label>
               <Input
                 id="custom-amount"
                 type="number"
-                placeholder="Введите сумму..."
+                placeholder="Введите сумму от 1000 ₽..."
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
                 min="1000"
