@@ -105,11 +105,11 @@ export const WellNode = ({
 
   const wellImage = WELL_IMAGES[type.toLowerCase()] || starterWell;
   const lowerType = type.toLowerCase();
-  const wellSize = lowerType.includes('легендарн') || lowerType.includes('космическ') ? 280 : 
-                   lowerType.includes('промышленн') || lowerType.includes('супер') ? 240 :
-                   lowerType.includes('элитн') ? 200 :
-                   lowerType.includes('премиум') ? 180 :
-                   lowerType.includes('стандартн') ? 150 : 120;
+  const wellSize = lowerType.includes('легендарн') || lowerType.includes('космическ') ? 320 : 
+                   lowerType.includes('промышленн') || lowerType.includes('супер') ? 280 :
+                   lowerType.includes('элитн') ? 240 :
+                   lowerType.includes('премиум') ? 200 :
+                   lowerType.includes('стандартн') ? 180 : 140;
 
   return (
     <div
@@ -121,9 +121,9 @@ export const WellNode = ({
         height: `${wellSize}px`,
       }}
     >
-      {/* Well Image */}
+      {/* Well Image - game asset style */}
       <div
-        className={`relative cursor-pointer transition-all duration-300 hover:scale-110 ${
+        className={`relative cursor-pointer transition-all duration-300 hover:scale-105 ${
           isAnimating ? 'animate-pulse' : ''
         }`}
         onClick={handleWellClick}
@@ -135,34 +135,25 @@ export const WellNode = ({
         <img
           src={wellImage}
           alt={`${type} well`}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain select-none"
           style={{
-            filter: 'drop-shadow(0 8px 30px rgba(0, 0, 0, 0.5))',
             animation: isAnimating ? 'bounce 0.5s ease-in-out' : undefined,
+            imageRendering: 'crisp-edges',
           }}
-        />
-
-        {/* Subtle ground shadow for integration */}
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full opacity-40 blur-2xl"
-          style={{
-            background: 'radial-gradient(ellipse, rgba(0, 0, 0, 0.6) 0%, transparent 70%)',
-            transform: 'translateX(-50%) translateY(50%)',
-          }}
+          draggable={false}
         />
 
         {/* Coin counter badge */}
         {coins.length > 0 && (
-          <div className="absolute -top-2 -right-2 bg-amber-500 text-white rounded-full px-2 py-1 text-xs font-bold shadow-lg flex items-center gap-1 z-10 animate-bounce">
-            <Coins className="w-3 h-3" />
+          <div className="absolute -top-3 -right-3 bg-gradient-to-br from-amber-400 to-amber-600 text-white rounded-full px-3 py-1.5 text-sm font-bold shadow-xl flex items-center gap-1.5 z-10 animate-bounce border-2 border-white">
+            <Coins className="w-4 h-4" />
             {coins.length}
           </div>
         )}
 
-        {/* Income indicator */}
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-card/90 backdrop-blur px-2 py-1 rounded text-xs font-medium whitespace-nowrap shadow-lg border border-primary/20">
-          <span className="text-primary">{dailyIncome.toLocaleString()}₽</span>
-          <span className="text-muted-foreground">/день</span>
+        {/* Income indicator - farm game style */}
+        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-gradient-to-br from-green-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-sm font-bold whitespace-nowrap shadow-lg border-2 border-white">
+          <span className="drop-shadow">{dailyIncome.toLocaleString()}₽/день</span>
         </div>
       </div>
 

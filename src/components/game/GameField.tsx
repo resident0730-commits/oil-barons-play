@@ -65,25 +65,28 @@ export const GameField = () => {
     }
   };
 
-  // Calculate positions for wells in a grid with varied spacing
+  // Calculate positions for wells in organic farm-game style layout
   const calculateWellPositions = () => {
     const positions: { x: number; y: number }[] = [];
-    const padding = 80;
-    const baseSpacing = 250;
-    const cols = Math.ceil(Math.sqrt(wells.length));
-
+    const padding = 150;
+    const minSpacing = 300;
+    const maxSpacing = 400;
+    
     wells.forEach((well, index) => {
-      const row = Math.floor(index / cols);
-      const col = index % cols;
-      
-      // Add slight randomness to positions for more organic look
-      const randomOffsetX = (Math.random() - 0.5) * 40;
-      const randomOffsetY = (Math.random() - 0.5) * 40;
-      
-      positions.push({
-        x: padding + col * baseSpacing + randomOffsetX,
-        y: padding + row * baseSpacing + randomOffsetY,
-      });
+      if (index === 0) {
+        // First well in a nice starting position
+        positions.push({ x: padding + 200, y: padding + 200 });
+      } else {
+        // Place subsequent wells in a more organic pattern
+        const prevPos = positions[index - 1];
+        const angle = (index * 137.5) * (Math.PI / 180); // Golden angle for natural distribution
+        const distance = minSpacing + Math.random() * (maxSpacing - minSpacing);
+        
+        positions.push({
+          x: prevPos.x + Math.cos(angle) * distance + (Math.random() - 0.5) * 100,
+          y: prevPos.y + Math.sin(angle) * distance + (Math.random() - 0.5) * 100,
+        });
+      }
     });
 
     return positions;
@@ -121,23 +124,24 @@ export const GameField = () => {
       className="relative w-full min-h-screen overflow-auto"
       style={{
         backgroundImage: `url(${gameFieldBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: '800px 800px',
+        backgroundPosition: '0 0',
         backgroundRepeat: 'repeat',
       }}
     >
 
-      {/* Stats overlay */}
-      <div className="absolute top-4 right-4 bg-card/95 backdrop-blur rounded-lg p-4 shadow-2xl border border-primary/20 z-30">
-        <div className="text-sm text-muted-foreground mb-1">Собрано за сессию</div>
-        <div className="text-2xl font-bold text-primary">{collectedAmount.toLocaleString()}₽</div>
-        <div className="text-xs text-muted-foreground mt-2">
-          Активных скважин: {wells.length}
+      {/* Stats overlay - farm game style */}
+      <div className="absolute top-4 right-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 shadow-2xl border-4 border-white z-30 min-w-[200px]">
+        <div className="text-xs text-white/90 mb-1 font-bold uppercase tracking-wide">Собрано за сессию</div>
+        <div className="text-3xl font-black text-white drop-shadow-lg">{collectedAmount.toLocaleString()}₽</div>
+        <div className="text-xs text-white/80 mt-2 flex items-center gap-2">
+          <Fuel className="w-4 h-4" />
+          <span>Скважин: {wells.length}</span>
         </div>
       </div>
 
-      {/* Wells */}
-      <div className="relative" style={{ width: '2000px', height: '2000px' }}>
+      {/* Wells - positioned organically like farm game */}
+      <div className="relative" style={{ width: '3000px', height: '3000px' }}>
         {wells.map((well, index) => (
           <WellNode
             key={well.id}
