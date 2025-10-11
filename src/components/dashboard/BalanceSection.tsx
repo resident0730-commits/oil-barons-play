@@ -155,8 +155,6 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
   const [showPayment, setShowPayment] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState<'robokassa' | 'qr' | null>(null);
-  const [promoCode, setPromoCode] = useState<string>('');
-  const [promoApplied, setPromoApplied] = useState(false);
   
   // Withdrawal form states
   const [withdrawalAmount, setWithdrawalAmount] = useState<string>('');
@@ -165,42 +163,6 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
   const [withdrawalDescription, setWithdrawalDescription] = useState<string>('');
   const [withdrawalLoading, setWithdrawalLoading] = useState(false);
 
-  const handleApplyPromoCode = async () => {
-    if (!promoCode.trim() || !user) return;
-
-    try {
-      const { data, error } = await supabase.rpc('apply_promo_code', {
-        p_code: promoCode.trim(),
-        p_user_id: user.id,
-        p_invoice_id: null
-      });
-
-      if (error) throw error;
-
-      const result = data as { success: boolean; error?: string; message?: string };
-
-      if (result.success) {
-        setPromoApplied(true);
-        toast({
-          title: "Промокод применен!",
-          description: result.message,
-        });
-      } else {
-        toast({
-          title: "Ошибка",
-          description: result.error,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('Error applying promo code:', error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось применить промокод",
-        variant: "destructive"
-      });
-    }
-  };
 
   // Reset state when needed
   useEffect(() => {
@@ -496,44 +458,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
         </CardContent>
       </Card>
 
-      {/* PROMO CODE SECTION */}
-      <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-accent/5">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-primary">
-            <Gift className="h-5 w-5" />
-            <span>У вас есть промокод?</span>
-          </CardTitle>
-          <CardDescription>
-            Введите промокод для получения бонуса на баланс
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {!promoApplied ? (
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <Input
-                  placeholder="Введите промокод"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  className="text-base"
-                />
-              </div>
-              <Button 
-                onClick={handleApplyPromoCode}
-                disabled={!promoCode.trim()}
-                className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
-              >
-                Применить
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
-              <Gift className="h-5 w-5 text-green-500" />
-              <span className="text-green-500 font-medium">Промокод успешно применен!</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* PROMO CODE REMOVED - теперь применяется только при оплате */}
 
       {/* Custom Amount Input */}
       <Card>

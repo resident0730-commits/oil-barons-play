@@ -5,15 +5,17 @@ import { useToast } from '@/hooks/use-toast';
 
 interface RobokassaWidgetProps {
   amount: number;
-  totalAmount?: number; // Сумма с бонусом
-  onSuccess?: () => void;
+  totalAmount?: number;
+  promoCode?: string;
+  onSuccess?: (invoiceId?: string) => void;
   onError?: (error: string) => void;
 }
 
-export const RobokassaWidget = ({ amount, totalAmount, onSuccess, onError }: RobokassaWidgetProps) => {
+export const RobokassaWidget = ({ amount, totalAmount, promoCode, onSuccess, onError }: RobokassaWidgetProps) => {
   const [loading, setLoading] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [paymentParams, setPaymentParams] = useState<any>(null);
+  const [invoiceId, setInvoiceId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const createPayment = async () => {
@@ -67,9 +69,11 @@ export const RobokassaWidget = ({ amount, totalAmount, onSuccess, onError }: Rob
         console.log('🎉 Payment created successfully!');
         console.log('🔗 Payment URL:', data.paymentUrl);
         console.log('📝 Payment params:', data.params);
+        console.log('🆔 Invoice ID:', data.invoiceId);
         
         setPaymentUrl(data.paymentUrl);
         setPaymentParams(data.params);
+        setInvoiceId(data.invoiceId);
         
         // Сразу перенаправляем на оплату
         setTimeout(() => {
@@ -93,7 +97,7 @@ export const RobokassaWidget = ({ amount, totalAmount, onSuccess, onError }: Rob
               title: "Переход к оплате",
               description: "Открыта страница оплаты Robokassa",
             });
-            onSuccess?.();
+            onSuccess?.(data.invoiceId);
           } else {
             console.error('❌ Failed to open payment window - popup blocked?');
             toast({
