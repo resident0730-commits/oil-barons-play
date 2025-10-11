@@ -95,10 +95,7 @@ export const ReferralSystem = () => {
     console.log('🔍 Fetching referrals for user:', user.id);
     const { data, error } = await supabase
       .from('referrals')
-      .select(`
-        *,
-        profiles!referrals_referred_id_fkey(nickname)
-      `)
+      .select('*')
       .eq('referrer_id', user.id)
       .order('created_at', { ascending: false });
 
@@ -124,17 +121,30 @@ export const ReferralSystem = () => {
       console.log('👥 Alexandr referrals:', alexandrRefs);
     }
 
-    if (data) {
-      // Преобразуем данные, извлекая nickname из вложенного profiles объекта
-      const transformedData = data.map((ref: any) => ({
+    if (data && data.length > 0) {
+      // Получаем nicknames для всех referred_id
+      const referredIds = data.map(ref => ref.referred_id);
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('user_id, nickname')
+        .in('user_id', referredIds);
+      
+      // Создаем map для быстрого доступа к nickname
+      const nicknameMap = new Map(profiles?.map(p => [p.user_id, p.nickname]) || []);
+      
+      // Добавляем nickname к каждому рефералу
+      const transformedData = data.map(ref => ({
         ...ref,
-        nickname: ref.profiles?.nickname || 'Игрок'
+        nickname: nicknameMap.get(ref.referred_id) || 'Игрок'
       }));
       
       setReferrals(transformedData);
       const total = transformedData.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
       setTotalBonus(total);
       console.log('✅ Loaded referrals count:', transformedData.length, 'Total bonus:', total);
+    } else {
+      setReferrals([]);
+      setTotalBonus(0);
     }
   };
 
