@@ -89,12 +89,16 @@ export const PaymentHistory = () => {
     return `${amount.toLocaleString()} ₽`;
   };
 
-  const formatOC = (amount: number) => {
-    return `${amount.toLocaleString()} OC`;
+  const formatGameRub = (amount: number) => {
+    return `${amount.toLocaleString()} ₽`;
   };
 
-  const getOCAmount = (payment: PaymentRecord): number => {
-    // Парсим OC из описания если есть паттерн "X OC"
+  const getGameRubAmount = (payment: PaymentRecord): number => {
+    // Парсим сумму из описания если есть паттерн "X ₽" или "X OC"
+    const rubMatch = payment.description.match(/=\s*(\d+(?:,\d{3})*)\s*₽/);
+    if (rubMatch) {
+      return parseInt(rubMatch[1].replace(/,/g, ''));
+    }
     const ocMatch = payment.description.match(/\((\d+(?:,\d{3})*)\s*OC\)/);
     if (ocMatch) {
       return parseInt(ocMatch[1].replace(/,/g, ''));
@@ -198,7 +202,7 @@ export const PaymentHistory = () => {
                   <div className="flex items-center justify-center gap-1">
                     <Coins className="h-4 w-4 text-primary" />
                     <span className="font-semibold text-primary">
-                      {formatOC(getOCAmount(payment))}
+                      {formatGameRub(getGameRubAmount(payment))}
                     </span>
                   </div>
                 </div>
@@ -224,9 +228,9 @@ export const PaymentHistory = () => {
                 <div>
                   <div className="text-sm text-muted-foreground">Всего получено</div>
                   <div className="text-lg font-bold text-primary">
-                    {formatOC(payments
+                    {formatGameRub(payments
                       .filter(p => p.status === 'completed' || p.status === 'success')
-                      .reduce((sum, p) => sum + getOCAmount(p), 0))}
+                      .reduce((sum, p) => sum + getGameRubAmount(p), 0))}
                   </div>
                 </div>
               </div>

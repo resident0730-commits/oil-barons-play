@@ -194,7 +194,7 @@ serve(async (req) => {
         to_user_id: userId,
         amount: amount,
         transfer_type: 'topup',
-        description: `Пополнение через Robokassa (${amount}₽ = ${amount} OC) #${invId}`,
+        description: `Пополнение через Robokassa (${amount}₽ = ${amount}₽) #${invId}`,
         status: 'completed',
         created_by: userId
       })
