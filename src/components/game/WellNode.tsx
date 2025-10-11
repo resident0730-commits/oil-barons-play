@@ -9,6 +9,8 @@ import premiumWell from '@/assets/game-wells/premium-well-top.png';
 import eliteWell from '@/assets/game-wells/elite-well-top.png';
 import industrialWell from '@/assets/game-wells/industrial-well-top.png';
 import legendaryWell from '@/assets/game-wells/legendary-well-top.png';
+import superWell from '@/assets/game-wells/super-well-top.png';
+import cosmicWell from '@/assets/game-wells/cosmic-well-top.png';
 
 interface Coin {
   id: string;
@@ -25,15 +27,15 @@ interface WellNodeProps {
 }
 
 const WELL_IMAGES: Record<string, string> = {
-  'starter': starterWell,
-  'mini': starterWell,
-  'medium': mediumWell,
-  'premium': premiumWell,
-  'elite': eliteWell,
-  'industrial': industrialWell,
-  'super': industrialWell,
-  'legendary': legendaryWell,
-  'cosmic': legendaryWell,
+  'starter-well': starterWell,
+  'mini-well': starterWell,
+  'medium-well': mediumWell,
+  'premium-well': premiumWell,
+  'elite-well': eliteWell,
+  'industrial-well': industrialWell,
+  'super-well': superWell,
+  'legendary-well': legendaryWell,
+  'cosmic-well': cosmicWell,
 };
 
 const COIN_VALUE = 10; // Each coin worth 10₽
@@ -103,11 +105,11 @@ export const WellNode = ({
   };
 
   const wellImage = WELL_IMAGES[type.toLowerCase()] || starterWell;
-  const wellSize = type === 'legendary' || type === 'cosmic' ? 180 : 
-                   type === 'industrial' || type === 'super' ? 150 :
-                   type === 'elite' ? 130 :
-                   type === 'premium' ? 110 :
-                   type === 'medium' ? 90 : 70;
+  const wellSize = type.includes('legendary') || type.includes('cosmic') ? 200 : 
+                   type.includes('industrial') || type.includes('super') ? 170 :
+                   type.includes('elite') ? 140 :
+                   type.includes('premium') ? 120 :
+                   type.includes('medium') ? 100 : 80;
 
   return (
     <div

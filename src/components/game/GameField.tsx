@@ -64,19 +64,24 @@ export const GameField = () => {
     }
   };
 
-  // Calculate positions for wells in a grid
+  // Calculate positions for wells in a grid with varied spacing
   const calculateWellPositions = () => {
     const positions: { x: number; y: number }[] = [];
-    const padding = 50;
-    const spacing = 200;
+    const padding = 80;
+    const baseSpacing = 250;
     const cols = Math.ceil(Math.sqrt(wells.length));
 
-    wells.forEach((_, index) => {
+    wells.forEach((well, index) => {
       const row = Math.floor(index / cols);
       const col = index % cols;
+      
+      // Add slight randomness to positions for more organic look
+      const randomOffsetX = (Math.random() - 0.5) * 40;
+      const randomOffsetY = (Math.random() - 0.5) * 40;
+      
       positions.push({
-        x: padding + col * spacing,
-        y: padding + row * spacing,
+        x: padding + col * baseSpacing + randomOffsetX,
+        y: padding + row * baseSpacing + randomOffsetY,
       });
     });
 
@@ -114,17 +119,42 @@ export const GameField = () => {
     <div 
       className="relative w-full min-h-screen overflow-auto"
       style={{
-        backgroundImage: 'url(/api/placeholder/1920/1080)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: '#d4a574',
+        background: 'linear-gradient(to bottom, #c2946f 0%, #d4a574 30%, #e0b589 60%, #d4a574 100%)',
       }}
     >
-      {/* Desert background with texture */}
+      {/* Desert sand texture */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 20% 30%, rgba(0,0,0,0.1) 1px, transparent 1px),
+            radial-gradient(circle at 60% 70%, rgba(0,0,0,0.1) 1px, transparent 1px),
+            radial-gradient(circle at 80% 20%, rgba(0,0,0,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '100px 100px, 120px 120px, 90px 90px',
+        }}
+      />
+      
+      {/* Sand dunes pattern */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: 'repeating-linear-gradient(120deg, transparent, transparent 100px, rgba(0,0,0,.1) 100px, rgba(0,0,0,.1) 200px)',
+        }}
+      />
+      
+      {/* Scattered rocks and details */}
       <div 
         className="absolute inset-0 opacity-20"
         style={{
-          backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,.05) 10px, rgba(0,0,0,.05) 20px)',
+          backgroundImage: `
+            radial-gradient(ellipse at 15% 25%, rgba(101, 67, 33, 0.4) 0%, transparent 3%),
+            radial-gradient(ellipse at 45% 65%, rgba(101, 67, 33, 0.3) 0%, transparent 2%),
+            radial-gradient(ellipse at 75% 35%, rgba(101, 67, 33, 0.35) 0%, transparent 4%),
+            radial-gradient(ellipse at 25% 85%, rgba(101, 67, 33, 0.3) 0%, transparent 3%),
+            radial-gradient(ellipse at 85% 75%, rgba(101, 67, 33, 0.4) 0%, transparent 2.5%)
+          `,
+          backgroundSize: '600px 600px',
         }}
       />
 
