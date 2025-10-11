@@ -191,6 +191,36 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_invoices: {
+        Row: {
+          amount: number
+          completed_at: string | null
+          created_at: string
+          id: string
+          invoice_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          invoice_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           balance: number

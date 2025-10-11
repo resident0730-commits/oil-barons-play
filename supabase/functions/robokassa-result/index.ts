@@ -19,16 +19,14 @@ serve(async (req) => {
     const outSum = formData.get('OutSum')?.toString()
     const invId = formData.get('InvId')?.toString()
     const signatureValue = formData.get('SignatureValue')?.toString()
-    const userId = formData.get('Shp_user_id')?.toString()  // Верхний регистр S
 
     console.log('Robokassa Result callback received (POST):', { 
       outSum, 
       invId, 
-      signatureValue, 
-      userId
+      signatureValue
     })
 
-    if (!outSum || !invId || !signatureValue || !userId) {
+    if (!outSum || !invId || !signatureValue) {
       console.error('Missing required parameters')
       return new Response('Missing parameters', { 
         status: 400,
@@ -48,10 +46,9 @@ serve(async (req) => {
       })
     }
 
-    // Verify signature (with shp_user_id parameter)
-    // Формат: OutSum:InvId:Password#2:Shp_user_id=VALUE
-    // ВАЖНО: shp_ параметры в НИЖНЕМ регистре в формуле
-    const signatureString = `${outSum}:${invId}:${password2}:Shp_user_id=${userId}`
+    // Verify signature БЕЗ дополнительных параметров
+    // Формат: OutSum:InvId:Password#2
+    const signatureString = `${outSum}:${invId}:${password2}`
     const encoder = new TextEncoder();
     const data = encoder.encode(signatureString);
     const hashBuffer = await crypto.subtle.digest('MD5', data);
@@ -78,6 +75,32 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
+
+    // Получаем userId из таблицы payment_invoices
+    const { data: invoice, error: invoiceError } = await supabase
+      .from('payment_invoices')
+      .select('user_id, status')
+      .eq('invoice_id', invId)
+      .single()
+
+    if (invoiceError || !invoice) {
+      console.error('Invoice not found:', invoiceError)
+      return new Response('Invoice not found', { 
+        status: 404,
+        headers: corsHeaders 
+      })
+    }
+
+    if (invoice.status === 'completed') {
+      console.log('Invoice already processed, skipping')
+      return new Response('OK', {
+        status: 200,
+        headers: corsHeaders
+      })
+    }
+
+    const userId = invoice.user_id
+    console.log('Found userId from invoice:', userId)
 
     // Get user profile by the provided user ID
     const { data: profile, error: profileError } = await supabase
@@ -123,6 +146,15 @@ serve(async (req) => {
         headers: corsHeaders 
       })
     }
+
+    // Обновляем статус инвойса
+    await supabase
+      .from('payment_invoices')
+      .update({ 
+        status: 'completed',
+        completed_at: new Date().toISOString()
+      })
+      .eq('invoice_id', invId)
 
     // Log the transaction
     const { error: logError } = await supabase
