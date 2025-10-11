@@ -367,6 +367,39 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         </DialogHeader>
 
         <div className="grid gap-4">
+          {/* Promo Code Section */}
+          {!promoApplied && (
+            <Card>
+              <CardContent className="p-3">
+                <Label htmlFor="promo-main" className="text-sm font-semibold">🎁 Есть промокод?</Label>
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="promo-main"
+                    placeholder="Введите промокод"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                    className="text-sm"
+                  />
+                  <Button 
+                    onClick={handleApplyPromoCode}
+                    disabled={!promoCode.trim()}
+                    size="sm"
+                    variant="secondary"
+                  >
+                    Применить
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {promoApplied && (
+            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
+              <Gift className="h-4 w-4 text-green-500" />
+              <span className="text-sm text-green-500 font-medium">Промокод успешно применен!</span>
+            </div>
+          )}
+
           {/* Custom Amount Section */}
           <Card>
             <CardContent className="p-3">
