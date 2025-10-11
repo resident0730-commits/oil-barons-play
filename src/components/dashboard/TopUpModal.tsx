@@ -360,45 +360,45 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto p-3">
-        <DialogHeader>
+        <DialogHeader className="space-y-4">
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
             <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
             Пополнение баланса
           </DialogTitle>
+          
+          {/* ПОЛЕ ПРОМОКОДА - ПРЯМО В ЗАГОЛОВКЕ */}
+          <div style={{ 
+            backgroundColor: '#FFD700', 
+            border: '4px solid #FF0000', 
+            padding: '15px', 
+            borderRadius: '8px',
+            marginTop: '10px',
+            marginBottom: '10px'
+          }}>
+            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#000', marginBottom: '10px', textAlign: 'center' }}>
+              🎁 ПРОМОКОД 🎁
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+              <Input
+                placeholder="Введите ваш промокод"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                style={{ backgroundColor: '#FFFFFF', color: '#000', border: '2px solid #000' }}
+              />
+              <Button 
+                onClick={handleApplyPromoCode}
+                disabled={!promoCode.trim()}
+                style={{ backgroundColor: '#00FF00', color: '#000', fontWeight: 'bold' }}
+              >
+                ПРИМЕНИТЬ
+              </Button>
+            </div>
+          </div>
+
           <DialogDescription className="text-xs sm:text-sm">
             Выберите сумму для пополнения или готовые пакеты с бонусами
           </DialogDescription>
         </DialogHeader>
-
-        {/* PROMO CODE - SUPER VISIBLE */}
-        <div style={{ 
-          backgroundColor: '#FFD700', 
-          border: '4px solid #FF0000', 
-          padding: '20px', 
-          margin: '10px 0',
-          borderRadius: '10px',
-          position: 'relative',
-          zIndex: 9999
-        }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#000', marginBottom: '10px' }}>
-            🎁 ПРОМОКОД ЗДЕСЬ 🎁
-          </h2>
-          <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-            <Input
-              placeholder="Введите промокод"
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-              style={{ backgroundColor: 'white', color: 'black', padding: '10px' }}
-            />
-            <Button 
-              onClick={handleApplyPromoCode}
-              disabled={!promoCode.trim()}
-              style={{ backgroundColor: '#00FF00', color: '#000', fontWeight: 'bold', padding: '10px' }}
-            >
-              ПРИМЕНИТЬ ПРОМОКОД
-            </Button>
-          </div>
-        </div>
 
         <div className="grid gap-3">
 
