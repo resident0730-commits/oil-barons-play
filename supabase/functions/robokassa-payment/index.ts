@@ -15,8 +15,8 @@ serve(async (req) => {
   try {
     console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
     
-    const { amount, userId, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
-    console.log('💰 Received payment request:', { amount, userId, description });
+    const { amount, userId, description = 'Пополнение баланса Oil Tycoon', totalAmount } = await req.json();
+    console.log('💰 Received payment request:', { amount, userId, totalAmount, description });
     
     // Проверка userId
     if (!userId) {
@@ -76,6 +76,7 @@ serve(async (req) => {
         invoice_id: invoiceId,
         user_id: userId,
         amount: amount,
+        total_amount: totalAmount || amount, // Если totalAmount не передан, используем amount
         status: 'pending'
       });
     

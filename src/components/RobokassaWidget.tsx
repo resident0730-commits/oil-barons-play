@@ -5,11 +5,12 @@ import { useToast } from '@/hooks/use-toast';
 
 interface RobokassaWidgetProps {
   amount: number;
+  totalAmount?: number; // Сумма с бонусом
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
 
-export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetProps) => {
+export const RobokassaWidget = ({ amount, totalAmount, onSuccess, onError }: RobokassaWidgetProps) => {
   const [loading, setLoading] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [paymentParams, setPaymentParams] = useState<any>(null);
@@ -41,8 +42,9 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
       const { data, error } = await supabase.functions.invoke('robokassa-payment', {
         body: {
           amount: amount,
+          totalAmount: totalAmount || amount, // Передаем сумму с бонусом
           userId: user.id,
-          description: `Пополнение баланса Oil Tycoon на ${amount}₽`
+          description: `Пополнение баланса Oil Tycoon на ${amount}₽${totalAmount && totalAmount > amount ? ` (получите ${totalAmount}₽)` : ''}`
         }
       });
 
@@ -169,6 +171,11 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
           <div className="text-lg font-semibold">
             Сумма к оплате: {amount} ₽
           </div>
+          {totalAmount && totalAmount > amount && (
+            <div className="text-sm text-primary font-medium">
+              Вы получите: {totalAmount} ₽ (бонус: +{totalAmount - amount} ₽)
+            </div>
+          )}
           
           {!paymentUrl ? (
             <Button 

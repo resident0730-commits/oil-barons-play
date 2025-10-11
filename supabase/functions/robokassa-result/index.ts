@@ -109,7 +109,7 @@ serve(async (req) => {
     // Получаем userId из таблицы payment_invoices
     const { data: invoice, error: invoiceError } = await supabase
       .from('payment_invoices')
-      .select('user_id, status')
+      .select('user_id, status, total_amount')
       .eq('invoice_id', invId)
       .single()
 
@@ -130,7 +130,8 @@ serve(async (req) => {
     }
 
     const userId = invoice.user_id
-    console.log('Found userId from invoice:', userId)
+    const totalAmount = invoice.total_amount || parseFloat(outSum) // Используем total_amount с бонусом
+    console.log('Found userId from invoice:', userId, 'Total amount with bonus:', totalAmount)
 
     // Get user profile by the provided user ID
     const { data: profile, error: profileError } = await supabase
@@ -155,16 +156,16 @@ serve(async (req) => {
       })
     }
 
-    const amount = parseFloat(outSum) // Сумма в рублях = сумма в OC
+    const rubPaid = parseFloat(outSum) // Сумма в рублях, которую заплатил пользователь
     
-    console.log(`Processing payment for user ${userId}, amount: ${amount} OC`)
-    console.log(`Current balance: ${profile.balance}, New balance will be: ${profile.balance + amount}`)
+    console.log(`Processing payment for user ${userId}, paid: ${rubPaid}₽, will receive: ${totalAmount}₽ (bonus: ${totalAmount - rubPaid}₽)`)
+    console.log(`Current balance: ${profile.balance}, New balance will be: ${profile.balance + totalAmount}`)
 
-    // Update user balance
+    // Update user balance - зачисляем сумму с бонусом
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ 
-        balance: profile.balance + amount,
+        balance: profile.balance + totalAmount,
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
@@ -187,14 +188,15 @@ serve(async (req) => {
       .eq('invoice_id', invId)
 
     // Log the transaction
+    const bonusAmount = totalAmount - rubPaid
     const { error: logError } = await supabase
       .from('money_transfers')
       .insert({
         from_user_id: userId,
         to_user_id: userId,
-        amount: amount,
+        amount: rubPaid,
         transfer_type: 'topup',
-        description: `Пополнение через Robokassa (${amount}₽ = ${amount}₽) #${invId}`,
+        description: `Пополнение через Robokassa (${rubPaid}₽ = ${totalAmount}₽${bonusAmount > 0 ? `, бонус: +${bonusAmount}₽` : ''}) #${invId}`,
         status: 'completed',
         created_by: userId
       })

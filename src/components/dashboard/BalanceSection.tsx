@@ -355,6 +355,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
           <CardContent className="p-6">
             <RobokassaWidget
               amount={paymentAmount}
+              totalAmount={selectedPackage?.totalOC || paymentAmount}
               onSuccess={() => {
                 toast({
                   title: "Успешно!",
