@@ -105,11 +105,11 @@ export const WellNode = ({
 
   const wellImage = WELL_IMAGES[type.toLowerCase()] || starterWell;
   const lowerType = type.toLowerCase();
-  const wellSize = lowerType.includes('легендарн') || lowerType.includes('космическ') ? 200 : 
-                   lowerType.includes('промышленн') || lowerType.includes('супер') ? 170 :
-                   lowerType.includes('элитн') ? 140 :
-                   lowerType.includes('премиум') ? 120 :
-                   lowerType.includes('стандартн') ? 100 : 80;
+  const wellSize = lowerType.includes('легендарн') || lowerType.includes('космическ') ? 280 : 
+                   lowerType.includes('промышленн') || lowerType.includes('супер') ? 240 :
+                   lowerType.includes('элитн') ? 200 :
+                   lowerType.includes('премиум') ? 180 :
+                   lowerType.includes('стандартн') ? 150 : 120;
 
   return (
     <div
@@ -135,19 +135,19 @@ export const WellNode = ({
         <img
           src={wellImage}
           alt={`${type} well`}
-          className="w-full h-full object-contain drop-shadow-2xl"
+          className="w-full h-full object-contain"
           style={{
-            filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3))',
+            filter: 'drop-shadow(0 8px 30px rgba(0, 0, 0, 0.5))',
             animation: isAnimating ? 'bounce 0.5s ease-in-out' : undefined,
           }}
         />
 
-        {/* Glow effect for working wells */}
+        {/* Subtle ground shadow for integration */}
         <div
-          className="absolute inset-0 rounded-full opacity-30 blur-xl"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full opacity-40 blur-2xl"
           style={{
-            background: 'radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, transparent 70%)',
-            animation: 'pulse 2s ease-in-out infinite',
+            background: 'radial-gradient(ellipse, rgba(0, 0, 0, 0.6) 0%, transparent 70%)',
+            transform: 'translateX(-50%) translateY(50%)',
           }}
         />
 
