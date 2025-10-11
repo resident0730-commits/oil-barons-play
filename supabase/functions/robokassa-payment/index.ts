@@ -59,8 +59,8 @@ serve(async (req) => {
       );
     }
 
-    // Приводим сумму к строке для формирования подписи
-    const amountStr = amount.toString();
+    // Приводим сумму к строке с двумя десятичными знаками (требование Robokassa)
+    const amountStr = amount.toFixed(2);
     
     // Генерируем уникальный ID заказа согласно требованиям Robokassa (1 - 9223372036854775807)
     const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
@@ -95,8 +95,7 @@ serve(async (req) => {
       Description: description,
       SignatureValue: signature,
       Culture: 'ru',
-      Shp_user_id: userId, // Передаем user_id как дополнительный параметр
-      ResultURL: `https://efaohdwvitrxanzzlgew.supabase.co/functions/v1/robokassa-result`
+      Shp_user_id: userId // Передаем user_id как дополнительный параметр
     };
 
     console.log('✅ Payment parameters prepared:', {
