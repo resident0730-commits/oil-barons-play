@@ -14,8 +14,17 @@ serve(async (req) => {
   try {
     console.log('🎯 ROBOKASSA PAYMENT FUNCTION STARTED - v1.2 - FORCE UPDATE');
     
-    const { amount, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
-    console.log('💰 Received payment request:', { amount, description });
+    const { amount, userId, description = 'Пополнение баланса Oil Tycoon' } = await req.json();
+    console.log('💰 Received payment request:', { amount, userId, description });
+    
+    // Проверка userId
+    if (!userId) {
+      console.error('❌ Missing userId');
+      return new Response(
+        JSON.stringify({ error: 'UserId обязателен' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Валидация суммы
     if (!amount || amount <= 0 || typeof amount !== 'number') {
@@ -56,16 +65,18 @@ serve(async (req) => {
     const invoiceId = (Math.floor(Math.random() * 1000000) + Date.now() % 1000000).toString();
     
     // Создаем подпись MD5 для Robokassa (по официальной документации)
-    // Формат: MerchantLogin:OutSum:InvoiceID:Password#1
-    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:${password1}`;
+    // Формат: MerchantLogin:OutSum:InvoiceID:shp_user_id=VALUE:Password#1
+    // ВАЖНО: shp_ параметры в НИЖНЕМ регистре в формуле, в алфавитном порядке
+    const signatureString = `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:${password1}`;
     
     console.log('🔐 Signature generation:', {
-      formula: 'MerchantLogin:OutSum:InvoiceID:Password#1',
+      formula: 'MerchantLogin:OutSum:InvoiceID:shp_user_id=VALUE:Password#1',
       merchantLogin,
       amount: amountStr,
       invoiceId,
+      userId,
       passwordLength: password1.length,
-      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:***`
+      fullString: `${merchantLogin}:${amountStr}:${invoiceId}:shp_user_id=${userId}:***`
     });
     
     const encoder = new TextEncoder();
@@ -79,12 +90,14 @@ serve(async (req) => {
     const baseUrl = new URL(referer).origin;
 
     // Параметры для Robokassa
+    // ВАЖНО: Shp_ параметры в ВЕРХНЕМ регистре (S) в URL параметрах
     const params = {
       MerchantLogin: merchantLogin,
       OutSum: amountStr,
       InvoiceID: invoiceId,
       Description: description,
       SignatureValue: signature,
+      Shp_user_id: userId,  // Верхний регистр S в URL параметрах
       Culture: 'ru',
       SuccessURL: `${baseUrl}/?payment=success`,
       FailURL: `${baseUrl}/?payment=fail`

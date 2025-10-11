@@ -22,9 +22,26 @@ export const RobokassaWidget = ({ amount, onSuccess, onError }: RobokassaWidgetP
     console.log('💰 Creating payment for amount:', amount);
     
     try {
+      // Получаем текущего пользователя
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        console.error('❌ User not authenticated');
+        onError?.('Необходимо войти в систему');
+        toast({
+          title: "Ошибка аутентификации",
+          description: "Войдите в систему для продолжения",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      console.log('👤 User ID:', user.id);
+      
       const { data, error } = await supabase.functions.invoke('robokassa-payment', {
         body: {
           amount: amount,
+          userId: user.id,
           description: `Пополнение баланса Oil Tycoon на ${amount}₽`
         }
       });

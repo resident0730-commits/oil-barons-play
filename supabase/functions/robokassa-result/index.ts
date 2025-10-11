@@ -19,17 +19,13 @@ serve(async (req) => {
     const outSum = url.searchParams.get('OutSum')
     const invId = url.searchParams.get('InvId')
     const signatureValue = url.searchParams.get('SignatureValue')
-    const userId = url.searchParams.get('Shp_UserId')
-    const shpAmount = url.searchParams.get('Shp_Amount')
-    const shpCurrency = url.searchParams.get('Shp_Currency')
+    const userId = url.searchParams.get('Shp_user_id')  // Верхний регистр S в URL
 
     console.log('Robokassa Result callback received:', { 
       outSum, 
       invId, 
       signatureValue, 
-      userId, 
-      shpAmount, 
-      shpCurrency 
+      userId
     })
 
     if (!outSum || !invId || !signatureValue || !userId) {
@@ -52,8 +48,10 @@ serve(async (req) => {
       })
     }
 
-    // Verify signature (with additional parameters)
-    const signatureString = `${outSum}:${invId}:${password2}:Shp_Amount=${shpAmount}:Shp_Currency=${shpCurrency}:Shp_UserId=${userId}`
+    // Verify signature (with shp_user_id parameter)
+    // Формат: OutSum:InvId:Password#2:Shp_user_id=VALUE
+    // ВАЖНО: shp_ параметры в НИЖНЕМ регистре в формуле
+    const signatureString = `${outSum}:${invId}:${password2}:Shp_user_id=${userId}`
     const encoder = new TextEncoder();
     const data = encoder.encode(signatureString);
     const hashBuffer = await crypto.subtle.digest('MD5', data);
@@ -104,10 +102,9 @@ serve(async (req) => {
       })
     }
 
-    const amount = parseFloat(shpCurrency || outSum) // Use OC amount if available
-    const rubAmount = parseFloat(outSum)
-
-    console.log(`Processing payment for user ${userId}, OC amount: ${amount}, RUB amount: ${rubAmount}`)
+    const amount = parseFloat(outSum) // Сумма в рублях = сумма в OC
+    
+    console.log(`Processing payment for user ${userId}, amount: ${amount} OC`)
     console.log(`Current balance: ${profile.balance}, New balance will be: ${profile.balance + amount}`)
 
     // Update user balance
@@ -135,7 +132,7 @@ serve(async (req) => {
         to_user_id: userId,
         amount: amount,
         transfer_type: 'topup',
-        description: `Пополнение через Robokassa (${rubAmount}₽ → ${amount.toLocaleString()} OC, Invoice: ${invId})`,
+        description: `Пополнение через Robokassa (${amount}₽, Invoice: ${invId})`,
         status: 'completed',
         created_by: userId
       })
