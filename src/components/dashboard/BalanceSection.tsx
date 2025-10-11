@@ -261,70 +261,203 @@ export const BalanceSection = ({ onTopUp, topUpLoading = false }: BalanceSection
             <span>Пополнение баланса</span>
           </CardTitle>
           <CardDescription>
-            Выберите пакет или введите сумму для пополнения
+            Выберите сумму для пополнения или готовые пакеты с бонусами
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Packages */}
-          <div className="space-y-3">
-            <Label>Выберите пакет</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {topUpPackages.map((pkg) => (
-                <div
-                  key={pkg.name}
+          {/* Promo Code Card */}
+          <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10">
+            <CardContent className="p-4">
+              <div className="space-y-2">
+                <Label htmlFor="promo-code" className="text-sm font-semibold flex items-center gap-2">
+                  💎 Есть промокод?
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Введите промокод сейчас - он будет применен автоматически после успешной оплаты
+                </p>
+                <Input
+                  id="promo-code"
+                  type="text"
+                  placeholder="Введите промокод (необязательно)"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  className="text-sm"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Custom Amount */}
+          <Card>
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                <Label htmlFor="custom-amount" className="text-sm">Произвольная сумма (мин. 10 ₽)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="custom-amount"
+                    type="number"
+                    placeholder="10"
+                    min="10"
+                    value={customAmount}
+                    onChange={(e) => {
+                      setCustomAmount(e.target.value);
+                      setSelectedPackage(null);
+                    }}
+                    className="text-sm"
+                  />
+                  <Button 
+                    onClick={() => {
+                      const amount = parseFloat(customAmount);
+                      if (amount >= 10) {
+                        onTopUp(amount, undefined, paymentMethod);
+                      }
+                    }}
+                    disabled={!customAmount || parseFloat(customAmount) < 10 || topUpLoading}
+                    size="sm"
+                  >
+                    Пополнить
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Special Offer */}
+          <div>
+            <h3 className="text-sm font-bold mb-3 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              🔥 Особое предложение
+            </h3>
+            
+            {topUpPackages.filter(pkg => pkg.popular).map((pkg) => (
+              <Card 
+                key={pkg.id} 
+                className="relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-primary/25 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/30 hover:border-primary/50 overflow-hidden group"
+                onClick={() => {
+                  setSelectedPackage(pkg);
+                  setCustomAmount('');
+                  onTopUp(undefined, pkg, paymentMethod);
+                }}
+              >
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/20 to-transparent rounded-full translate-y-12 -translate-x-12 group-hover:scale-110 transition-transform"></div>
+                
+                <CardContent className="p-6 relative z-10">
+                  <div className="text-center space-y-6">
+                    <div className="space-y-2">
+                      <h4 className="font-bold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        {pkg.name}
+                      </h4>
+                      <p className="text-muted-foreground text-sm">
+                        Удвойте свои инвестиции прямо сейчас!
+                      </p>
+                    </div>
+                    
+                    <div className="bg-card/70 rounded-xl p-6 border border-primary/20">
+                      <div className="flex items-center justify-center space-x-4 mb-4">
+                        <div className="text-center space-y-1">
+                          <div className="text-sm text-muted-foreground">Вы платите</div>
+                          <div className="text-2xl font-bold text-primary">
+                            {pkg.rubAmount} ₽
+                          </div>
+                        </div>
+                        
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
+                          →
+                        </div>
+                        
+                        <div className="text-center space-y-1">
+                          <div className="text-sm text-muted-foreground">Вы получаете</div>
+                          <div className="text-3xl font-bold text-accent">
+                            {formatGameCurrency(pkg.totalOC)}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="text-center space-y-2">
+                        <div className="text-sm text-muted-foreground">
+                          <span className="line-through">{formatGameCurrency(pkg.baseOC)}</span>
+                          <span className="ml-2 text-accent font-bold">+ {formatGameCurrency(pkg.bonusOC)} БОНУС</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button 
+                      size="lg"
+                      disabled={topUpLoading}
+                      className="w-full h-14 text-lg font-bold bg-gradient-to-r from-primary via-accent to-primary hover:from-primary/90 hover:via-accent/90 hover:to-primary/90 text-white shadow-xl"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPackage(pkg);
+                        setCustomAmount('');
+                        onTopUp(undefined, pkg, paymentMethod);
+                      }}
+                    >
+                      {topUpLoading ? 'Обработка...' : 'Получить удвоенный бонус'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Regular Packages */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Другие пакеты пополнения</h3>
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {topUpPackages.filter(pkg => !pkg.popular).map((pkg) => (
+                <Card 
+                  key={pkg.id} 
+                  className="relative cursor-pointer transition-all duration-300 hover:shadow-lg"
                   onClick={() => {
                     setSelectedPackage(pkg);
                     setCustomAmount('');
+                    onTopUp(undefined, pkg, paymentMethod);
                   }}
-                  className={`cursor-pointer p-4 rounded-lg border-2 transition-all ${
-                    selectedPackage?.name === pkg.name
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border hover:border-primary/50'
-                  }`}
                 >
-                  <div className="font-semibold">{pkg.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {pkg.rubAmount} ₽ = {pkg.totalOC.toLocaleString()} OC
-                  </div>
-                  {pkg.bonusPercent > 0 && (
-                    <div className="text-xs text-green-600 mt-1">
-                      +{pkg.bonusPercent}% бонус!
+                  <CardContent className="p-4">
+                    <div className="text-center space-y-3">
+                      <h4 className="font-bold text-lg">{pkg.name}</h4>
+                      
+                      <div className="space-y-2">
+                        <div className="text-2xl font-bold text-primary">
+                          {formatGameCurrency(pkg.totalOC)}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {pkg.rubAmount} ₽
+                        </div>
+                      </div>
+
+                      {pkg.bonusOC > 0 && (
+                        <div className="space-y-1">
+                          <div className="text-sm text-muted-foreground">
+                            {formatGameCurrency(pkg.baseOC)} + {formatGameCurrency(pkg.bonusOC)} бонус
+                          </div>
+                          {pkg.badge && (
+                            <div className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                              {pkg.badge}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <Button 
+                        disabled={topUpLoading}
+                        className="w-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPackage(pkg);
+                          setCustomAmount('');
+                          onTopUp(undefined, pkg, paymentMethod);
+                        }}
+                      >
+                        {topUpLoading ? 'Обработка...' : 'Выбрать'}
+                      </Button>
                     </div>
-                  )}
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </div>
-
-          {/* Custom Amount */}
-          <div className="space-y-2">
-            <Label htmlFor="custom-amount">Или введите свою сумму (₽)</Label>
-            <Input
-              id="custom-amount"
-              type="number"
-              placeholder="Минимум 10 ₽"
-              value={customAmount}
-              onChange={(e) => {
-                setCustomAmount(e.target.value);
-                setSelectedPackage(null);
-              }}
-              min="10"
-            />
-          </div>
-
-          {/* Promo Code */}
-          <div className="space-y-2">
-            <Label htmlFor="promo-code">Промокод (необязательно)</Label>
-            <Input
-              id="promo-code"
-              type="text"
-              placeholder="Введите промокод..."
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-            />
-            <p className="text-xs text-muted-foreground">
-              Промокод применится автоматически после успешной оплаты
-            </p>
           </div>
 
           {/* Payment Method */}
@@ -341,21 +474,6 @@ export const BalanceSection = ({ onTopUp, topUpLoading = false }: BalanceSection
               </SelectContent>
             </Select>
           </div>
-
-          <Button 
-            onClick={() => {
-              if (selectedPackage) {
-                onTopUp(undefined, selectedPackage, paymentMethod);
-              } else if (customAmount) {
-                onTopUp(parseFloat(customAmount), undefined, paymentMethod);
-              }
-            }}
-            disabled={topUpLoading || (!customAmount && !selectedPackage)}
-            className="w-full"
-            size="lg"
-          >
-            {topUpLoading ? 'Обработка...' : 'Перейти к оплате'}
-          </Button>
         </CardContent>
       </Card>
 
