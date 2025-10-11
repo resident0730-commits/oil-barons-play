@@ -149,8 +149,10 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
       setPaymentMethod(null);
       setPromoCode("");
       setPromoApplied(false);
+    } else {
+      console.log('TopUpModal opened. showPayment:', showPayment, 'promoApplied:', promoApplied);
     }
-  }, [isOpen]);
+  }, [isOpen, showPayment, promoApplied]);
 
   const handleApplyPromoCode = async () => {
     if (!promoCode.trim() || !user) return;
@@ -353,6 +355,8 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
     }
   }
 
+  console.log('🔍 TopUpModal render. showPayment:', showPayment, 'promoApplied:', promoApplied);
+
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto p-3">
@@ -369,7 +373,7 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
         <div className="grid gap-4">
           {/* Promo Code Section */}
           {!promoApplied && (
-            <Card>
+            <Card className="border-2 border-primary/20">
               <CardContent className="p-3">
                 <Label htmlFor="promo-main" className="text-sm font-semibold">🎁 Есть промокод?</Label>
                 <div className="flex gap-2 mt-2">
