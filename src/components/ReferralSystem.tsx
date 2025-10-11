@@ -385,7 +385,7 @@ export const ReferralSystem = () => {
             <Gift className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalBonus.toLocaleString()} OC</div>
+            <div className="text-2xl font-bold">{totalBonus.toLocaleString()} ₽</div>
           </CardContent>
         </Card>
 
@@ -422,7 +422,7 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{referral.bonus_earned.toLocaleString()} OC</p>
+                    <p className="font-medium">{referral.bonus_earned.toLocaleString()} ₽</p>
                     <Badge variant={referral.is_active ? "default" : "secondary"}>
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
