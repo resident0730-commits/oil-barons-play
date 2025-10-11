@@ -370,35 +370,32 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
-          {/* Promo Code Section - Always visible at top */}
-          <div className="bg-primary/5 border-2 border-primary/30 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <Gift className="h-5 w-5 text-primary" />
-              <Label htmlFor="promo-main" className="text-base font-bold text-primary">Есть промокод?</Label>
+        <div className="grid gap-3">
+          {/* PROMO CODE FIELD */}
+          <div style={{ display: 'block', width: '100%', backgroundColor: 'rgba(255, 215, 0, 0.1)', border: '2px solid gold', borderRadius: '8px', padding: '12px' }}>
+            <div style={{ marginBottom: '8px', fontWeight: 'bold', fontSize: '14px' }}>
+              🎁 Введите промокод
             </div>
             {!promoApplied ? (
-              <div className="flex gap-2">
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <Input
-                  id="promo-main"
-                  placeholder="Введите промокод здесь"
+                  id="promo-input"
+                  placeholder="Ваш промокод"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  className="text-sm flex-1"
+                  style={{ flex: 1 }}
                 />
                 <Button 
                   onClick={handleApplyPromoCode}
                   disabled={!promoCode.trim()}
                   size="sm"
-                  className="px-4"
                 >
                   Применить
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
-                <Gift className="h-4 w-4 text-green-500" />
-                <span className="text-sm text-green-500 font-medium">Промокод успешно применен!</span>
+              <div style={{ padding: '8px', backgroundColor: 'rgba(0, 255, 0, 0.1)', border: '1px solid green', borderRadius: '4px' }}>
+                ✅ Промокод применен!
               </div>
             )}
           </div>
