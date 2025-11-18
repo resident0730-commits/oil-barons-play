@@ -289,7 +289,7 @@ export const wellPackages: WellPackage[] = [
     icon: '📦',
     image: starterPackageImg,
     rarity: 'starter',
-    totalDailyIncome: 104
+    totalDailyIncome: 104000
   },
   {
     name: 'Пакет роста',
@@ -305,7 +305,7 @@ export const wellPackages: WellPackage[] = [
     icon: '🚀',
     image: growthPackageImg,
     rarity: 'growth',
-    totalDailyIncome: 290
+    totalDailyIncome: 362000
   },
   {
     name: 'Бизнес пакет',
@@ -321,7 +321,7 @@ export const wellPackages: WellPackage[] = [
     icon: '🏢',
     image: businessPackageImg,
     rarity: 'business',
-    totalDailyIncome: 1208
+    totalDailyIncome: 1198000
   },
   {
     name: 'Империя пакет',
@@ -337,7 +337,7 @@ export const wellPackages: WellPackage[] = [
     icon: '👑',
     image: empirePackageImg,
     rarity: 'empire',
-    totalDailyIncome: 2790
+    totalDailyIncome: 2790000
   }
 ];
 

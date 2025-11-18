@@ -184,6 +184,93 @@ export default function Rules() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Gift className="h-5 w-5 text-purple-500" />
+              Пакеты скважин
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-lg p-4 border border-blue-500/20">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold flex items-center gap-2">
+                      📦 Стартовый пакет
+                      <Badge variant="outline" className="ml-2">-24%</Badge>
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">3× Мини + 1× Стартовая</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm line-through text-muted-foreground">5,000 OC</p>
+                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">3,800 OC</Badge>
+                  </div>
+                </div>
+                <p className="text-sm font-medium text-green-400">104,000 BBL/день</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold flex items-center gap-2">
+                      🚀 Пакет роста
+                      <Badge variant="outline" className="ml-2">-22%</Badge>
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">2× Стартовая + 2× Средняя + 1× Промышленная</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm line-through text-muted-foreground">16,000 OC</p>
+                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">12,500 OC</Badge>
+                  </div>
+                </div>
+                <p className="text-sm font-medium text-green-400">362,000 BBL/день</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-lg p-4 border border-orange-500/20">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold flex items-center gap-2">
+                      🏢 Бизнес пакет
+                      <Badge variant="outline" className="ml-2">-24%</Badge>
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">3× Промышленная + 2× Супер + 1× Премиум</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm line-through text-muted-foreground">55,000 OC</p>
+                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">42,000 OC</Badge>
+                  </div>
+                </div>
+                <p className="text-sm font-medium text-green-400">1,198,000 BBL/день</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-500/20">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold flex items-center gap-2">
+                      👑 Империя пакет
+                      <Badge variant="outline" className="ml-2 border-purple-500/30">-25%</Badge>
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">2× Премиум + 2× Элитная + 1× Легендарная</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm line-through text-muted-foreground">96,000 OC</p>
+                    <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">72,000 OC</Badge>
+                  </div>
+                </div>
+                <p className="text-sm font-medium text-purple-400">2,790,000 BBL/день</p>
+              </div>
+            </div>
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 mt-4">
+              <h5 className="font-semibold text-amber-700 dark:text-amber-300 flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4" />
+                Выгода до 25%
+              </h5>
+              <p className="text-xs text-muted-foreground">Пакеты дешевле покупки скважин по отдельности</p>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="text-center space-y-4 py-8">
           <h2 className="text-2xl font-bold">Готовы начать?</h2>
           <div className="flex gap-4 justify-center flex-wrap">
