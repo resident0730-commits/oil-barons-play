@@ -144,14 +144,10 @@ export const AnimatedShopCard = ({
             </p>
 
             {/* Quick stats */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               <div className="text-center p-3 bg-gradient-to-br from-muted/60 to-muted/40 rounded-xl border border-border/50">
                 <p className="font-bold text-base">{formatBarrels(metrics.monthlyIncome)}</p>
                 <p className="text-xs text-muted-foreground">в месяц</p>
-              </div>
-              <div className="text-center p-3 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl border border-primary/30">
-                <p className="font-bold text-primary text-base">{formatProfitPercent(metrics.yearlyPercent)}</p>
-                <p className="text-xs text-muted-foreground">ROI/год</p>
               </div>
             </div>
 
@@ -208,16 +204,12 @@ export const AnimatedShopCard = ({
                   <span className="text-muted-foreground">Доход в год:</span>
                   <span className="font-bold">{formatBarrels(metrics.yearlyIncome)}</span>
                 </div>
-                <div className="flex justify-between text-sm border-t border-border pt-2">
-                  <span className="text-muted-foreground">ROI в год:</span>
-                  <span className="font-bold text-primary">{formatProfitPercent(metrics.yearlyPercent)}</span>
-                </div>
               </div>
 
               {/* Additional info */}
               <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
                 <p className="text-xs text-center">
-                  💡 <span className="font-medium">Эта скважина окупится за {Math.ceil(wellType.price / wellType.baseIncome)} дней</span>
+                  💡 <span className="font-medium">Максимальный уровень: {wellType.maxLevel}</span>
                 </p>
               </div>
             </div>

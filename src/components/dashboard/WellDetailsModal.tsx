@@ -125,7 +125,7 @@ export const WellDetailsModal = ({
           </Card>
 
           {/* Profit Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card className="text-center">
               <CardContent className="p-4">
                 <div className="flex items-center justify-center space-x-2 mb-2">
@@ -146,18 +146,6 @@ export const WellDetailsModal = ({
                 </div>
                 <div className="font-bold text-lg text-green-500">
                   {formatBarrels(Math.round(well.daily_income * boosterMultiplier * 365))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center bg-gradient-to-br from-primary/10 to-primary/20 border-primary/30">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  <span className="text-sm text-muted-foreground">ROI/год</span>
-                </div>
-                <div className="font-bold text-lg text-primary">
-                  {formatProfitPercent(metrics.yearlyPercent)}
                 </div>
               </CardContent>
             </Card>
