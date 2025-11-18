@@ -31,7 +31,7 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
         <div className="flex items-center justify-between flex-wrap gap-3">
           <Link to="/" className="group hover-scale min-w-0">
             <div className="space-y-1 min-w-0">
-              <h1 className="text-xl sm:text-3xl font-playfair font-bold bg-gradient-to-r from-primary via-oil-gold to-accent bg-clip-text text-transparent truncate">
+              <h1 className="text-xl sm:text-3xl font-playfair font-bold text-primary truncate">
                 Oil Tycoon
               </h1>
               <p className="text-xs text-muted-foreground font-medium tracking-wide hidden sm:block">Нефтяная Империя</p>
