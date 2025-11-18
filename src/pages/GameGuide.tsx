@@ -826,6 +826,118 @@ const GameGuide = () => {
           </Card>
         </div>
 
+        {/* FAQ Section */}
+        <div id="faq">
+          <Card className="bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
+            <CardHeader className="text-center pb-8">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Sparkles className="h-8 w-8 text-white animate-pulse" />
+                <CardTitle className="text-4xl md:text-5xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Часто задаваемые вопросы
+                </CardTitle>
+                <Sparkles className="h-8 w-8 text-white animate-pulse" />
+              </div>
+              <p className="text-lg text-white/80 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                Ответы на популярные вопросы о валютной системе
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Question 1 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <Coins className="h-5 w-5 text-primary" />
+                  Зачем нужны три вида валюты?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Система из трёх валют создаёт многоуровневую экономику: <strong>Баррели</strong> вы добываете скважинами, 
+                  <strong>OilCoins</strong> получаете за обмен и используете для покупок в игре, а <strong>Рубли</strong> - это реальная 
+                  валюта, которую можно вывести. Такая система делает игру интереснее и даёт больше возможностей для стратегии.
+                </p>
+              </div>
+
+              {/* Question 2 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <ArrowRight className="h-5 w-5 text-amber-500" />
+                  Как получить OilCoins?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Есть несколько способов: обменять баррели на OilCoins в разделе "Обмен валют", получить в награду за достижения, 
+                  открыть в ежедневных сундуках, получить бонусы от рефералов или просто пополнить баланс. OilCoins нужны для покупки 
+                  скважин, бустеров и участия в розыгрышах.
+                </p>
+              </div>
+
+              {/* Question 3 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <Shield className="h-5 w-5 text-green-500" />
+                  Могу ли я вывести OilCoins?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Нет, OilCoins — это внутриигровая валюта, которую нельзя напрямую вывести. Но вы можете обменять OilCoins на рубли 
+                  по курсу 1:1, а затем вывести рубли. Важно помнить, что обратный обмен (рубли на OilCoins) тоже доступен, если вам 
+                  нужна игровая валюта.
+                </p>
+              </div>
+
+              {/* Question 4 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <BarChart3 className="h-5 w-5 text-blue-500" />
+                  Какой курс обмена валют?
+                </h3>
+                <p className="text-white/90 leading-relaxed mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Курсы обмена фиксированные и прозрачные:
+                </p>
+                <ul className="space-y-2 text-white/90 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <li>• <strong>Баррели → OilCoins:</strong> курс зависит от текущих настроек игры</li>
+                  <li>• <strong>OilCoins ⇄ Рубли:</strong> 1 OC = 1 ₽ (обмен в обе стороны)</li>
+                </ul>
+              </div>
+
+              {/* Question 5 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <Clock className="h-5 w-5 text-orange-500" />
+                  Как часто можно собирать баррели?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Баррели накапливаются автоматически от ваших скважин 24/7. Собирать их можно в любое время без ограничений - 
+                  просто заходите в игру и нажимайте кнопку "Собрать баррели". Рекомендуется заходить минимум раз в день, чтобы 
+                  не терять накопленные баррели и не пропускать ежедневные бонусы.
+                </p>
+              </div>
+
+              {/* Question 6 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <Gem className="h-5 w-5 text-purple-500" />
+                  Что лучше: копить баррели или сразу обменивать?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Зависит от вашей стратегии! Если вы хотите быстро купить новую скважину или бустер - обменивайте баррели на OilCoins 
+                  сразу. Если у вас уже есть хороший доход и вы играете долгосрочно - можете копить баррели и обменивать крупными 
+                  суммами. Помните: баррели не теряются и не обесцениваются, так что выбор за вами!
+                </p>
+              </div>
+
+              {/* Question 7 */}
+              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  <Trophy className="h-5 w-5 text-yellow-500" />
+                  Можно ли потерять валюту?
+                </h3>
+                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Нет, вся ваша валюта в безопасности! Баррели, OilCoins и рубли хранятся на вашем аккаунте и никуда не пропадут. 
+                  Единственный способ потратить валюту - это сделать покупку или обмен самостоятельно. Даже если вы долго не заходите 
+                  в игру, ваши средства остаются нетронутыми.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* CTA */}
         <div className="text-center">
           <Card className="max-w-2xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
