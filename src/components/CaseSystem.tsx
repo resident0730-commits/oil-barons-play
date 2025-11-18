@@ -152,7 +152,7 @@ const getRarityGlow = (rarity: string) => {
 export const CaseSystem = () => {
   const { profile, buyWell, buyBooster, addIncome, reload } = useGameData();
   const { user } = useAuth();
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const { toast } = useToast();
   const sounds = useSound();
   const [openingCase, setOpeningCase] = useState<CaseType | null>(null);
@@ -161,7 +161,7 @@ export const CaseSystem = () => {
 
   const getRewardDescription = (reward: CaseReward) => {
     if (reward.type === 'money' && reward.amount) {
-      return formatGameCurrency(reward.amount);
+      return formatOilCoins(reward.amount);
     }
     return reward.description;
   };

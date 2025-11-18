@@ -122,6 +122,72 @@ export type Database = {
         }
         Relationships: []
       }
+      exchange_rates: {
+        Row: {
+          created_at: string
+          from_currency: string
+          id: string
+          is_active: boolean
+          rate: number
+          to_currency: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          from_currency: string
+          id?: string
+          is_active?: boolean
+          rate: number
+          to_currency: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          from_currency?: string
+          id?: string
+          is_active?: boolean
+          rate?: number
+          to_currency?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      exchange_transactions: {
+        Row: {
+          created_at: string
+          exchange_rate: number
+          from_amount: number
+          from_currency: string
+          id: string
+          to_amount: number
+          to_currency: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          exchange_rate: number
+          from_amount: number
+          from_currency: string
+          id?: string
+          to_amount: number
+          to_currency: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          exchange_rate?: number
+          from_amount?: number
+          from_currency?: string
+          id?: string
+          to_amount?: number
+          to_currency?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       game_statistics: {
         Row: {
           created_at: string
@@ -230,6 +296,7 @@ export type Database = {
           ban_reason: string | null
           banned_at: string | null
           banned_by: string | null
+          barrel_balance: number
           created_at: string
           daily_chest_streak: number | null
           daily_income: number
@@ -239,9 +306,11 @@ export type Database = {
           last_daily_chest_claim: string | null
           last_login: string | null
           nickname: string
+          oilcoin_balance: number
           referral_bonus_expires_at: string | null
           referral_code: string | null
           referred_by: string | null
+          ruble_balance: number
           status_titles: string[] | null
           total_daily_chests_opened: number | null
           updated_at: string
@@ -252,6 +321,7 @@ export type Database = {
           ban_reason?: string | null
           banned_at?: string | null
           banned_by?: string | null
+          barrel_balance?: number
           created_at?: string
           daily_chest_streak?: number | null
           daily_income?: number
@@ -261,9 +331,11 @@ export type Database = {
           last_daily_chest_claim?: string | null
           last_login?: string | null
           nickname: string
+          oilcoin_balance?: number
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
+          ruble_balance?: number
           status_titles?: string[] | null
           total_daily_chests_opened?: number | null
           updated_at?: string
@@ -274,6 +346,7 @@ export type Database = {
           ban_reason?: string | null
           banned_at?: string | null
           banned_by?: string | null
+          barrel_balance?: number
           created_at?: string
           daily_chest_streak?: number | null
           daily_income?: number
@@ -283,9 +356,11 @@ export type Database = {
           last_daily_chest_claim?: string | null
           last_login?: string | null
           nickname?: string
+          oilcoin_balance?: number
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
+          ruble_balance?: number
           status_titles?: string[] | null
           total_daily_chests_opened?: number | null
           updated_at?: string
@@ -615,6 +690,15 @@ export type Database = {
       check_and_award_referral_milestones: {
         Args: { p_referrer_id: string }
         Returns: undefined
+      }
+      exchange_currency: {
+        Args: {
+          p_from_amount: number
+          p_from_currency: string
+          p_to_currency: string
+          p_user_id: string
+        }
+        Returns: Json
       }
       generate_referral_code: { Args: never; Returns: string }
       get_leaderboard: {

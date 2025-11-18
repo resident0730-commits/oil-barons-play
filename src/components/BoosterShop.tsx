@@ -33,7 +33,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   const { profile, boosters, buyBooster, cancelBooster, loading, getActiveBoosterMultiplier } = useGameData();
   const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
   const { toast } = useToast();
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
 
   // Calculate booster multiplier for display
   const getBoosterMultiplier = () => {
@@ -199,7 +199,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     if (result.success) {
       toast({
         title: "Бустер отменен!",
-        description: `${booster.name} ${currentLevel === 1 ? 'удален' : 'понижен до уровня ' + (currentLevel - 1)}. Возврат: ${formatGameCurrency(result.refundAmount || 0)} (50%)`,
+        description: `${booster.name} ${currentLevel === 1 ? 'удален' : 'понижен до уровня ' + (currentLevel - 1)}. Возврат: ${formatOilCoins(result.refundAmount || 0)} (50%)`,
       });
     } else {
       toast({
@@ -234,7 +234,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
     if (profile.balance < cost) {
       toast({
         title: "Недостаточно средств",
-        description: `Нужно ${formatGameCurrency(cost)}`,
+        description: `Нужно ${formatOilCoins(cost)}`,
         variant: "destructive"
       });
       return;
