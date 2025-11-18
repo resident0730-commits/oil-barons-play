@@ -616,12 +616,9 @@ export type Database = {
         Args: { p_referrer_id: string }
         Returns: undefined
       }
-      generate_referral_code: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_referral_code: { Args: never; Returns: string }
       get_leaderboard: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           balance: number
           created_at: string
@@ -631,7 +628,7 @@ export type Database = {
         }[]
       }
       get_user_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           active_users: number
           banned_users: number
@@ -680,10 +677,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      update_daily_statistics: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      update_daily_statistics: { Args: never; Returns: undefined }
       update_referral_bonus: {
         Args: { earned_amount: number; referrer_user_id: string }
         Returns: undefined
