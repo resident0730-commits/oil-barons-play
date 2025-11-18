@@ -11,15 +11,15 @@ import { Link } from 'react-router-dom';
 
 // Типы скважин и их характеристики (данные из useGameData.tsx)
 const WELL_TYPES = [
-  { name: 'Космическая скважина', dailyIncome: 1440, cost: 40000, efficiency: 0.036 },
-  { name: 'Легендарная скважина', dailyIncome: 918, cost: 27000, efficiency: 0.034 },
-  { name: 'Элитная скважина', dailyIncome: 576, cost: 18000, efficiency: 0.032 },
-  { name: 'Премиум-скважина', dailyIncome: 360, cost: 12000, efficiency: 0.03 },
-  { name: 'Супер-скважина', dailyIncome: 224, cost: 8000, efficiency: 0.028 },
-  { name: 'Промышленная скважина', dailyIncome: 130, cost: 5000, efficiency: 0.026 },
-  { name: 'Средняя скважина', dailyIncome: 72, cost: 3000, efficiency: 0.024 },
-  { name: 'Стартовая скважина', dailyIncome: 44, cost: 2000, efficiency: 0.022 },
-  { name: 'Мини-скважина', dailyIncome: 20, cost: 1000, efficiency: 0.02 },
+  { name: 'Космическая скважина', dailyIncome: 1440000, cost: 40000, efficiency: 0.036 },
+  { name: 'Легендарная скважина', dailyIncome: 918000, cost: 27000, efficiency: 0.034 },
+  { name: 'Элитная скважина', dailyIncome: 576000, cost: 18000, efficiency: 0.032 },
+  { name: 'Премиум-скважина', dailyIncome: 360000, cost: 12000, efficiency: 0.03 },
+  { name: 'Супер-скважина', dailyIncome: 224000, cost: 8000, efficiency: 0.028 },
+  { name: 'Промышленная скважина', dailyIncome: 130000, cost: 5000, efficiency: 0.026 },
+  { name: 'Средняя скважина', dailyIncome: 72000, cost: 3000, efficiency: 0.024 },
+  { name: 'Стартовая скважина', dailyIncome: 44000, cost: 2000, efficiency: 0.022 },
+  { name: 'Мини-скважина', dailyIncome: 20000, cost: 1000, efficiency: 0.02 },
 ];
 
 // Пакеты скважин (данные из useGameData.tsx - wellPackages)
@@ -27,44 +27,44 @@ const WELL_PACKAGES = [
   { 
     name: 'Стартовый пакет', 
     wells: [
-      { type: 'Мини-скважина', count: 3, dailyIncome: 20 },
-      { type: 'Стартовая скважина', count: 1, dailyIncome: 44 }
+      { type: 'Мини-скважина', count: 3, dailyIncome: 20000 },
+      { type: 'Стартовая скважина', count: 1, dailyIncome: 44000 }
     ],
     cost: 3800, 
-    totalIncome: 104,
+    totalIncome: 104000,
     discount: '24%'
   },
   { 
     name: 'Пакет роста', 
     wells: [
-      { type: 'Стартовая скважина', count: 2, dailyIncome: 44 },
-      { type: 'Средняя скважина', count: 2, dailyIncome: 72 },
-      { type: 'Промышленная скважина', count: 1, dailyIncome: 130 }
+      { type: 'Стартовая скважина', count: 2, dailyIncome: 44000 },
+      { type: 'Средняя скважина', count: 2, dailyIncome: 72000 },
+      { type: 'Промышленная скважина', count: 1, dailyIncome: 130000 }
     ],
     cost: 12500, 
-    totalIncome: 290,
+    totalIncome: 290000,
     discount: '22%'
   },
   { 
     name: 'Бизнес пакет', 
     wells: [
-      { type: 'Промышленная скважина', count: 3, dailyIncome: 130 },
-      { type: 'Супер-скважина', count: 2, dailyIncome: 224 },
-      { type: 'Премиум-скважина', count: 1, dailyIncome: 360 }
+      { type: 'Промышленная скважина', count: 3, dailyIncome: 130000 },
+      { type: 'Супер-скважина', count: 2, dailyIncome: 224000 },
+      { type: 'Премиум-скважина', count: 1, dailyIncome: 360000 }
     ],
     cost: 42000, 
-    totalIncome: 1208,
+    totalIncome: 1208000,
     discount: '24%'
   },
   { 
     name: 'Империя пакет', 
     wells: [
-      { type: 'Премиум-скважина', count: 2, dailyIncome: 360 },
-      { type: 'Элитная скважина', count: 2, dailyIncome: 576 },
-      { type: 'Легендарная скважина', count: 1, dailyIncome: 918 }
+      { type: 'Премиум-скважина', count: 2, dailyIncome: 360000 },
+      { type: 'Элитная скважина', count: 2, dailyIncome: 576000 },
+      { type: 'Легендарная скважина', count: 1, dailyIncome: 918000 }
     ],
     cost: 72000, 
-    totalIncome: 2790,
+    totalIncome: 2790000,
     discount: '25%'
   }
 ];
