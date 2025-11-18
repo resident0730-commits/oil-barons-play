@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 export function DailyBonus() {
   const { user } = useAuth();
-  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
+  const { formatOilCoins, formatOilCoinsWithName } = useCurrency();
   const { toast } = useToast();
   const [canClaim, setCanClaim] = useState(false);
   const [timeUntilNext, setTimeUntilNext] = useState('');
@@ -97,7 +97,7 @@ export function DailyBonus() {
 
       toast({
         title: "Ежедневный бонус получен!",
-        description: `+${formatGameCurrency(bonusAmount)} добавлено на баланс`,
+        description: `+${formatOilCoins(bonusAmount)} добавлено на баланс`,
       });
 
       setCanClaim(false);
@@ -133,7 +133,7 @@ export function DailyBonus() {
             +{bonusAmount.toLocaleString()}
           </div>
           <p className="text-sm text-muted-foreground font-medium">
-            {formatGameCurrencyWithName(0).split(' ')[1]} каждые 24 часа
+            {formatOilCoinsWithName(0).split(' ')[1]} каждые 24 часа
           </p>
         </div>
         

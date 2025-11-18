@@ -13,7 +13,7 @@ interface PremiumGiveawayProps {
 }
 
 const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const navigate = useNavigate();
   
   // Дата окончания розыгрыша
@@ -98,7 +98,7 @@ const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => 
       return (
         <Badge variant="secondary" className="bg-primary/30 text-primary-foreground border-primary/50 text-lg py-2 px-4 animate-glow-pulse">
           <AlertCircle className="h-4 w-4 mr-2" />
-          ⚠️ Доход: {formatGameCurrency(dailyIncome)}/день (нужно ≥2000₽)
+          ⚠️ Доход: {formatOilCoins(dailyIncome)}/день (нужно ≥2000₽)
         </Badge>
       );
     }
@@ -158,7 +158,7 @@ const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => 
             <div className="text-center p-4 rounded-xl bg-card/30 border border-accent/20 hover-scale backdrop-blur-sm">
               <div className="text-4xl font-bold mb-2">💰</div>
               <div className="text-3xl font-bold text-accent mb-1">
-                {formatGameCurrency(dailyIncome)}
+                {formatOilCoins(dailyIncome)}
               </div>
               <p className="text-sm text-muted-foreground">Доход в день</p>
             </div>
@@ -206,7 +206,7 @@ const PremiumGiveaway: React.FC<PremiumGiveawayProps> = ({ profile, wells }) => 
                 className="w-full h-4 mb-4"
               />
               <p className="text-sm text-muted-foreground font-semibold">
-                💪 Осталось: {formatGameCurrency(2000 - dailyIncome)}
+                💪 Осталось: {formatOilCoins(2000 - dailyIncome)}
               </p>
             </div>
           )}

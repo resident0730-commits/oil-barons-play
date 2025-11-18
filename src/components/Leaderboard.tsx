@@ -29,19 +29,19 @@ const getRankBadgeVariant = (position: number) => {
 
 export const Leaderboard: React.FC<{ maxEntries?: number }> = ({ maxEntries = 10 }) => {
   const { leaderboard, loading, refetch } = useLeaderboard();
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
 
   const formatCurrency = (amount: number) => {
     if (amount >= 1_000_000_000) {
-      return `${(amount / 1_000_000_000).toFixed(1)}B ${formatGameCurrency(0).split(' ')[1]}`;
+      return `${(amount / 1_000_000_000).toFixed(1)}B ${formatOilCoins(0).split(' ')[1]}`;
     }
     if (amount >= 1_000_000) {
-      return `${(amount / 1_000_000).toFixed(1)}M ${formatGameCurrency(0).split(' ')[1]}`;
+      return `${(amount / 1_000_000).toFixed(1)}M ${formatOilCoins(0).split(' ')[1]}`;
     }
     if (amount >= 1_000) {
-      return `${(amount / 1_000).toFixed(1)}K ${formatGameCurrency(0).split(' ')[1]}`;
+      return `${(amount / 1_000).toFixed(1)}K ${formatOilCoins(0).split(' ')[1]}`;
     }
-    return formatGameCurrency(amount);
+    return formatOilCoins(amount);
   };
 
   // Manual refresh button functionality

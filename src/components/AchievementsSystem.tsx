@@ -34,7 +34,7 @@ interface UserAchievement {
 
 export const AchievementsSystem = () => {
   const { user } = useAuth();
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const { toast } = useToast();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
@@ -216,7 +216,7 @@ export const AchievementsSystem = () => {
   const getRewardText = (achievement: Achievement) => {
     switch (achievement.reward_type) {
       case 'coins':
-        return `+${formatGameCurrency(achievement.reward_amount)}`;
+        return `+${formatOilCoins(achievement.reward_amount)}`;
       case 'booster':
         return 'Бустер добавлен в инвентарь';
       case 'title':

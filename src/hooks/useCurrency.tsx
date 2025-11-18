@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 
 export interface CurrencyConfig {
-  game_currency_name: string;
-  game_currency_symbol: string;
-  real_currency_name: string;
-  real_currency_symbol: string;
-  exchange_rate: string;
+  barrel_name: string;
+  barrel_symbol: string;
+  oilcoin_name: string;
+  oilcoin_symbol: string;
+  ruble_name: string;
+  ruble_symbol: string;
 }
 
 const DEFAULT_CONFIG: CurrencyConfig = {
-  game_currency_name: 'Рубль',
-  game_currency_symbol: '₽',
-  real_currency_name: 'российский рубль',
-  real_currency_symbol: '₽',
-  exchange_rate: '1 ₽ = 1 ₽'
+  barrel_name: 'Баррель',
+  barrel_symbol: '🛢️',
+  oilcoin_name: 'ОилКоин',
+  oilcoin_symbol: '💰',
+  ruble_name: 'Рубль',
+  ruble_symbol: '₽'
 };
 
 export const useCurrency = () => {
@@ -50,40 +52,40 @@ export const useCurrency = () => {
   };
 
   // Утилиты для форматирования валют
-  const formatGameCurrency = (amount: number): string => {
-    return `${amount.toLocaleString()} ${currencyConfig.game_currency_symbol}`;
+  const formatBarrels = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.barrel_symbol}`;
   };
 
-  const formatRealCurrency = (amount: number): string => {
-    return `${amount.toLocaleString()} ${currencyConfig.real_currency_symbol}`;
+  const formatOilCoins = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.oilcoin_symbol}`;
   };
 
-  const formatGameCurrencyWithName = (amount: number): string => {
-    return `${amount.toLocaleString()} ${currencyConfig.game_currency_name}`;
+  const formatRubles = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.ruble_symbol}`;
   };
 
-  const getGameCurrencyDescription = (): string => {
-    return `Используется только внутри игры для покупки скважин и улучшений`;
+  const formatBarrelsWithName = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.barrel_name}`;
   };
 
-  const getExchangeDescription = (): string => {
-    return `${currencyConfig.exchange_rate}, фиксированный курс обмена`;
+  const formatOilCoinsWithName = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.oilcoin_name}`;
   };
 
-  const getRealCurrencyName = (): string => {
-    return currencyConfig.real_currency_name;
+  const formatRublesWithName = (amount: number): string => {
+    return `${Math.floor(amount).toLocaleString()} ${currencyConfig.ruble_name}`;
   };
 
   return {
     currencyConfig,
     loading,
     updateCurrencyConfig,
-    formatGameCurrency,
-    formatRealCurrency,
-    formatGameCurrencyWithName,
-    getGameCurrencyDescription,
-    getExchangeDescription,
-    getRealCurrencyName,
+    formatBarrels,
+    formatOilCoins,
+    formatRubles,
+    formatBarrelsWithName,
+    formatOilCoinsWithName,
+    formatRublesWithName,
     refreshConfig: loadCurrencyConfig
   };
 };

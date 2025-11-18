@@ -64,7 +64,7 @@ export const AnimatedBoosterCard = ({
   onCancel,
   expiresAt
 }: AnimatedBoosterCardProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const canAfford = balance >= cost;
   const progress = (currentLevel / booster.maxLevel) * 100;
 
@@ -223,7 +223,7 @@ export const AnimatedBoosterCard = ({
               <span className="text-sm text-muted-foreground">
                 {currentLevel > 0 ? 'Улучшить' : 'Цена'}:
               </span>
-              <span className="text-2xl font-bold">{formatGameCurrency(cost)}</span>
+              <span className="text-2xl font-bold">{formatOilCoins(cost)}</span>
             </div>
           </div>
         )}
