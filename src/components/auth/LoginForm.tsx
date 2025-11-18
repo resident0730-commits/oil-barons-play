@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -14,12 +16,23 @@ interface LoginFormProps {
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!acceptedTerms) {
+      toast({
+        variant: "destructive",
+        title: "Требуется согласие",
+        description: "Необходимо согласиться с условиями использования и публичной офертой",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -78,10 +91,30 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               required
             />
           </div>
+          <div className="flex items-start space-x-2">
+            <Checkbox
+              id="terms"
+              checked={acceptedTerms}
+              onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+            />
+            <label
+              htmlFor="terms"
+              className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Я согласен с{" "}
+              <Link to="/terms" className="text-primary hover:underline" target="_blank">
+                условиями использования
+              </Link>
+              {" "}и{" "}
+              <Link to="/offer" className="text-primary hover:underline" target="_blank">
+                публичной офертой
+              </Link>
+            </label>
+          </div>
           <Button 
             type="submit" 
             className="w-full gradient-primary shadow-primary"
-            disabled={loading}
+            disabled={loading || !acceptedTerms}
           >
             {loading ? "Вход..." : "Войти"}
           </Button>
