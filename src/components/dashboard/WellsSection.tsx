@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Sparkles, ArrowUpDown, TrendingDown, TrendingUp, Calendar, CalendarDays } from "lucide-react";
+import { Plus, Sparkles, ArrowUpDown, TrendingDown, TrendingUp, Calendar, CalendarDays, Droplet } from "lucide-react";
 import { useState } from "react";
 import { UserWell, UserProfile, UserBooster } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -13,6 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "@/hooks/use-toast";
 
 interface WellsSectionProps {
   wells: UserWell[];
@@ -46,6 +49,61 @@ export const WellsSection = ({
   const [selectedWell, setSelectedWell] = useState<UserWell | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [sortType, setSortType] = useState<'default' | 'income-desc' | 'income-asc' | 'level-desc' | 'level-asc'>('default');
+  const [claimingBarrels, setClaimingBarrels] = useState(false);
+  const { user } = useAuth();
+
+  // Calculate accumulated barrels based on daily income and time since last claim
+  const calculateAccumulatedBarrels = () => {
+    if (!profile.last_barrel_claim) return profile.daily_income / 24; // At least 1 hour worth
+    
+    const lastClaim = new Date(profile.last_barrel_claim);
+    const now = new Date();
+    const hoursPassed = Math.max(1, (now.getTime() - lastClaim.getTime()) / (1000 * 60 * 60));
+    const accumulated = (profile.daily_income / 24) * hoursPassed;
+    
+    return Math.floor(accumulated);
+  };
+
+  const accumulatedBarrels = calculateAccumulatedBarrels();
+
+  const handleClaimBarrels = async () => {
+    if (!user) return;
+    
+    setClaimingBarrels(true);
+    try {
+      const { data, error } = await supabase.rpc('claim_accumulated_barrels', {
+        p_user_id: user.id
+      });
+
+      if (error) throw error;
+
+      const result = data as { success: boolean; barrels_earned: number; hours_passed: number; error?: string };
+
+      if (result.success) {
+        toast({
+          title: "Баррели собраны!",
+          description: `Вы получили ${formatBarrels(Math.round(result.barrels_earned))} за ${result.hours_passed.toFixed(1)} часов`,
+        });
+        
+        window.location.reload();
+      } else {
+        toast({
+          title: "Ошибка",
+          description: result.error,
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Error claiming barrels:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось собрать баррели",
+        variant: "destructive"
+      });
+    } finally {
+      setClaimingBarrels(false);
+    }
+  };
   
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
@@ -89,6 +147,35 @@ export const WellsSection = ({
   };
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Barrel Collection Banner */}
+      {accumulatedBarrels > 0 && (
+        <Card className="bg-gradient-to-r from-oil-amber/10 to-oil-bronze/10 border-oil-amber/30 hover:border-oil-amber/50 transition-all">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 sm:p-3 rounded-full bg-oil-amber/20">
+                  <Droplet className="h-5 w-5 sm:h-6 sm:w-6 text-oil-amber" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Добыто баррелей</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-oil-amber">
+                    {formatBarrels(accumulatedBarrels)}
+                  </p>
+                </div>
+              </div>
+              <Button 
+                onClick={handleClaimBarrels}
+                disabled={claimingBarrels}
+                className="w-full sm:w-auto bg-gradient-to-r from-oil-amber to-oil-bronze hover:from-oil-amber/90 hover:to-oil-bronze/90 text-primary-foreground"
+                size="lg"
+              >
+                {claimingBarrels ? "Собираем..." : "Собрать"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold heading-contrast bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">

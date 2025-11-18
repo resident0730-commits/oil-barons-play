@@ -52,6 +52,7 @@ export interface UserProfile {
   created_at?: string;
   updated_at?: string;
   last_bonus_claim?: string;
+  last_barrel_claim?: string;
   status_titles?: string[];
   is_banned?: boolean;
   ban_reason?: string;
