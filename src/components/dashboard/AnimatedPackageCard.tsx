@@ -17,7 +17,7 @@ export const AnimatedPackageCard = ({
   onBuyPackage
 }: AnimatedPackageCardProps) => {
   const { formatBarrels, formatOilCoins } = useCurrency();
-  const canAfford = profile.balance >= wellPackage.discountedPrice;
+  const canAfford = profile.oilcoin_balance >= wellPackage.discountedPrice;
   const savings = wellPackage.originalPrice - wellPackage.discountedPrice;
 
   return (

@@ -46,7 +46,7 @@ export const ShopSection = ({
             <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
             <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Доступно:</span>
             <Badge className="gradient-gold text-primary-foreground text-xs sm:text-sm">
-              {formatOilCoins(profile.balance)}
+              {formatOilCoins(profile.oilcoin_balance)}
             </Badge>
           </div>
         </div>

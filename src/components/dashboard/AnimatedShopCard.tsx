@@ -70,7 +70,7 @@ export const AnimatedShopCard = ({
   formatProfitPercent 
 }: AnimatedShopCardProps) => {
   const { formatBarrels, formatOilCoins } = useCurrency();
-  const canAfford = profile.balance >= wellType.price;
+  const canAfford = profile.oilcoin_balance >= wellType.price;
   const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
   const wellImage = getWellImage(wellType.name);
   const rarityGlow = getRarityGlowClass(wellType.rarity);
