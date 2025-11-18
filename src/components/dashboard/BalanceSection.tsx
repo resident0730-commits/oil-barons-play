@@ -147,7 +147,7 @@ const topUpPackages: TopUpPackage[] = [
 export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) => {
   const { profile } = useGameData();
   const { user } = useAuth();
-  const { formatOilCoins, formatRubles } = useCurrency();
+  const { formatBarrels, formatOilCoins, formatRubles } = useCurrency();
   const formatGameCurrency = formatOilCoins;
   const formatRealCurrency = formatRubles;
   const { toast } = useToast();
@@ -475,28 +475,59 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
         </div>
       </div>
 
-      {/* Current Balance */}
-      <Card className="bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">Текущий баланс</p>
-              <p className="text-4xl font-bold text-primary">
-                {formatGameCurrency(profile?.balance || 0)}
-              </p>
+      {/* Three Currency Balances */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Barrels Balance */}
+        <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">BBL</Badge>
+              <TrendingUp className="h-5 w-5 text-amber-500" />
             </div>
-            <div className="text-right">
-              <div className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-green-500" />
-                <span className="text-sm text-green-500 font-medium">Активен</span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                Доступно для использования
-              </p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">Barrels</p>
+            <p className="text-3xl font-bold text-amber-400">
+              {formatBarrels(profile?.barrel_balance || 0)}
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Производственная валюта
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* OilCoins Balance */}
+        <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Badge className="bg-green-500/20 text-green-300 border-green-500/30">OC</Badge>
+              <Wallet className="h-5 w-5 text-green-500" />
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            <p className="text-sm font-medium text-muted-foreground mb-1">OilCoins</p>
+            <p className="text-3xl font-bold text-green-400">
+              {formatOilCoins(profile?.oilcoin_balance || 0)}
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Основная игровая валюта
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Rubles Balance */}
+        <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">₽</Badge>
+              <DollarSign className="h-5 w-5 text-blue-500" />
+            </div>
+            <p className="text-sm font-medium text-muted-foreground mb-1">Rubles</p>
+            <p className="text-3xl font-bold text-blue-400">
+              {formatRubles(profile?.ruble_balance || 0)}
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Премиум валюта
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* PROMO CODE SECTION */}
       <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-accent/5">

@@ -64,54 +64,84 @@ export default function Rules() {
           </CardContent>
         </Card>
 
-        {/* Игровая валюта */}
+        {/* Трехвалютная система */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Coins className="h-5 w-5 text-yellow-500" />
-              Игровая валюта
+              Трехвалютная экономическая система
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-secondary/20 rounded-lg p-4 space-y-3">
-              <h4 className="font-semibold">Способы получения игровых рублей:</h4>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+100 ₽</Badge>
-                  <span className="text-sm">Ежедневный бонус (каждые 24 часа)</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+20-1440 ₽</Badge>
-                  <span className="text-sm">Доходность скважин в день (автоматически)</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+1000 ₽</Badge>
-                  <span className="text-sm">Стартовый капитал для новых игроков</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+500-25,000 ₽</Badge>
-                  <span className="text-sm">Награды за достижения</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Badge variant="secondary">+10%</Badge>
-                  <span className="text-sm">Реферальные бонусы с доходов друзей</span>
-                </li>
-              </ul>
-            </div>
+            <p className="text-muted-foreground">
+              В игре работает продвинутая экономическая модель с тремя типами валют, каждая из которых имеет свою роль:
+            </p>
             
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-              <h4 className="font-semibold text-green-700 dark:text-green-300 mb-2">
-                🎮 Два пути к успеху
-              </h4>
-              <div className="space-y-2 text-sm text-green-600 dark:text-green-400">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">Бесплатная игра:</span>
-                  <span>Ежедневные бонусы 100 игровых рублей каждые 24 часа</span>
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Barrels */}
+              <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-lg p-4 border border-amber-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">BBL</Badge>
+                  <h4 className="font-semibold">Barrels</h4>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">Быстрый путь:</span>
-                  <span>Пополнение реальными деньгами для ускорения</span>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Производственная валюта. Добывается скважинами автоматически каждый день.
+                </p>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>• Добыча: 20-1440 BBL/день</li>
+                  <li>• Источник: скважины + бустеры</li>
+                  <li>• Обмен: можно конвертировать</li>
+                </ul>
+              </div>
+
+              {/* OilCoins */}
+              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30">OC</Badge>
+                  <h4 className="font-semibold">OilCoins</h4>
                 </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Основная игровая валюта для покупки скважин, бустеров и улучшений.
+                </p>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>• Стартовый бонус: 1000 OC</li>
+                  <li>• Ежедневный бонус: 100 OC</li>
+                  <li>• Получение: обмен или пополнение</li>
+                </ul>
+              </div>
+
+              {/* Rubles */}
+              <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-lg p-4 border border-blue-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">₽</Badge>
+                  <h4 className="font-semibold">Rubles</h4>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Премиум валюта для пополнения баланса и обмена на игровую валюту.
+                </p>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>• Пополнение: реальными деньгами</li>
+                  <li>• Курс обмена: 1₽ = 1 OC</li>
+                  <li>• Вывод: доступен при условиях</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-secondary/20 rounded-lg p-4 space-y-3">
+              <h4 className="font-semibold">Как работает экономика:</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>
+                  <strong className="text-foreground">1. Добыча:</strong> Ваши скважины производят Barrels (BBL) каждый день автоматически
+                </p>
+                <p>
+                  <strong className="text-foreground">2. Обмен:</strong> Конвертируйте BBL в OilCoins через виджет обмена по текущему курсу
+                </p>
+                <p>
+                  <strong className="text-foreground">3. Развитие:</strong> Покупайте новые скважины и бустеры за OilCoins
+                </p>
+                <p>
+                  <strong className="text-foreground">4. Пополнение:</strong> Пополняйте Rubles и обменивайте на OC (1₽ = 1 OC)
+                </p>
               </div>
             </div>
           </CardContent>
