@@ -30,7 +30,7 @@ interface OverviewSectionProps {
 }
 
 export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: OverviewSectionProps) => {
-  const { formatOilCoins, formatOilCoinsWithName } = useCurrency();
+  const { formatBarrels, formatOilCoins, formatOilCoinsWithName } = useCurrency();
   const formatGameCurrency = formatOilCoins;
   const formatGameCurrencyWithName = formatOilCoinsWithName;
   const { boosters, getActiveBoosterMultiplier } = useGameData();
@@ -141,8 +141,8 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{profile.daily_income.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">{formatGameCurrency(0).split(' ')[1]} в день</p>
+            <div className="text-2xl font-bold text-amber-400">{formatBarrels(profile.daily_income)}</div>
+            <p className="text-xs text-muted-foreground">в день</p>
           </CardContent>
         </Card>
 
