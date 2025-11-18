@@ -525,6 +525,7 @@ const Dashboard = () => {
             formatProfitPercent={formatProfitPercent}
             boosters={boosters}
             getActiveBoosterMultiplier={getActiveBoosterMultiplier}
+            onBarrelsClaimed={() => reload(true)}
           />
         )}
 

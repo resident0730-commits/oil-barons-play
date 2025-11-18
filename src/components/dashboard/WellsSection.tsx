@@ -31,6 +31,7 @@ interface WellsSectionProps {
   formatProfitPercent: (percent: number) => string;
   boosters: UserBooster[];
   getActiveBoosterMultiplier: () => number;
+  onBarrelsClaimed?: () => void;
 }
 
 export const WellsSection = ({ 
@@ -42,7 +43,8 @@ export const WellsSection = ({
   calculateProfitMetrics, 
   formatProfitPercent,
   boosters,
-  getActiveBoosterMultiplier
+  getActiveBoosterMultiplier,
+  onBarrelsClaimed
 }: WellsSectionProps) => {
   const { formatBarrels, formatOilCoins } = useCurrency();
   const formatGameCurrency = formatOilCoins;
@@ -98,7 +100,10 @@ export const WellsSection = ({
           description: `Вы получили ${formatBarrels(Math.round(result.barrels_earned))} за ${result.hours_passed.toFixed(1)} часов`,
         });
         
-        window.location.reload();
+        // Trigger reload callback to update data without full page reload
+        if (onBarrelsClaimed) {
+          onBarrelsClaimed();
+        }
       } else {
         toast({
           title: "Ошибка",
