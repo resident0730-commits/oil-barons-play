@@ -48,7 +48,7 @@ export const AnimatedWellCard = ({
   boosters,
   getActiveBoosterMultiplier
 }: AnimatedWellCardProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const wellType = wellTypes.find(wt => wt.name === well.well_type);
   const boosterMultiplier = getActiveBoosterMultiplier();
   const hasActiveBoosters = boosters.some(booster => 
@@ -102,7 +102,7 @@ export const AnimatedWellCard = ({
         <div className="absolute inset-0 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-15">
           <div className="text-center text-white">
             <div className="text-sm sm:text-lg md:text-xl font-bold">
-              {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}
+              {formatOilCoins(Math.round(well.daily_income * boosterMultiplier))}
             </div>
             <div className="text-xs sm:text-sm opacity-90">в день</div>
           </div>
@@ -120,7 +120,7 @@ export const AnimatedWellCard = ({
           </Badge>
           <span className="text-muted-foreground">•</span>
           <span className="font-bold text-xs sm:text-sm" style={{ color: 'hsl(45, 100%, 65%)' }}>
-            {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}/день
+            {formatOilCoins(Math.round(well.daily_income * boosterMultiplier))}/день
           </span>
         </div>
       </div>

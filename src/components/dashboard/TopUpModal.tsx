@@ -134,7 +134,9 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
   const [paymentMethod, setPaymentMethod] = useState<'robokassa' | null>(null);
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
-  const { currencyConfig, formatRealCurrency, formatGameCurrency } = useCurrency();
+  const { currencyConfig, formatRubles, formatOilCoins } = useCurrency();
+  const formatRealCurrency = formatRubles;
+  const formatGameCurrency = formatOilCoins;
   const { user } = useAuth();
   const { toast } = useToast();
 

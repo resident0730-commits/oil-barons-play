@@ -147,7 +147,9 @@ const topUpPackages: TopUpPackage[] = [
 export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) => {
   const { profile } = useGameData();
   const { user } = useAuth();
-  const { formatGameCurrency, formatRealCurrency } = useCurrency();
+  const { formatOilCoins, formatRubles } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
+  const formatRealCurrency = formatRubles;
   const { toast } = useToast();
   
   const [customAmount, setCustomAmount] = useState<string>('');

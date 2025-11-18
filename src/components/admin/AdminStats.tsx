@@ -15,7 +15,7 @@ interface Stats {
 export function AdminStats() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
-  const { formatRealCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -90,8 +90,8 @@ export function AdminStats() {
       className: 'text-amber-600'
     },
     {
-      title: 'Общий баланс',
-      value: formatRealCurrency(Number(stats.total_balance)),
+      title: 'Общий баланс (ОилКоины)',
+      value: formatOilCoins(Number(stats.total_balance)),
       icon: DollarSign,
       className: 'text-emerald-600'
     }

@@ -16,7 +16,7 @@ export const AnimatedPackageCard = ({
   profile, 
   onBuyPackage
 }: AnimatedPackageCardProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const canAfford = profile.balance >= wellPackage.discountedPrice;
   const savings = wellPackage.originalPrice - wellPackage.discountedPrice;
 
@@ -62,7 +62,7 @@ export const AnimatedPackageCard = ({
             {/* Daily income badge */}
             <div className="absolute top-4 right-4">
               <div className="bg-gradient-to-br from-primary/90 to-primary/70 backdrop-blur-md rounded-xl p-3 border-2 border-primary/40 shadow-2xl">
-                <p className="font-bold text-xl text-white">{formatGameCurrency(wellPackage.totalDailyIncome)}</p>
+                <p className="font-bold text-xl text-white">{formatOilCoins(wellPackage.totalDailyIncome)}</p>
                 <p className="text-xs text-white/90 font-medium">в день</p>
               </div>
             </div>
@@ -85,7 +85,7 @@ export const AnimatedPackageCard = ({
                 <p className="text-xs text-muted-foreground">скважин</p>
               </div>
               <div className="text-center p-3 bg-gradient-to-br from-green-500/20 to-green-500/10 rounded-xl border border-green-500/30">
-                <p className="font-bold text-green-600 text-base">{formatGameCurrency(savings)}</p>
+                <p className="font-bold text-green-600 text-base">{formatOilCoins(savings)}</p>
                 <p className="text-xs text-muted-foreground">экономия</p>
               </div>
             </div>
@@ -93,12 +93,12 @@ export const AnimatedPackageCard = ({
             {/* Price display */}
             <div className="space-y-2">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground line-through">{formatGameCurrency(wellPackage.originalPrice)}</span>
+                <span className="text-muted-foreground line-through">{formatOilCoins(wellPackage.originalPrice)}</span>
                 <Badge className="gradient-gold text-primary-foreground">Хит продаж</Badge>
               </div>
               <div className="flex justify-between items-center px-2 py-3 bg-muted/30 rounded-lg">
                 <span className="text-muted-foreground text-sm">Цена пакета:</span>
-                <span className="text-2xl font-bold text-foreground">{formatGameCurrency(wellPackage.discountedPrice)}</span>
+                <span className="text-2xl font-bold text-foreground">{formatOilCoins(wellPackage.discountedPrice)}</span>
               </div>
             </div>
 
@@ -155,22 +155,22 @@ export const AnimatedPackageCard = ({
                 <div className="space-y-3 bg-muted/30 rounded-xl p-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Доход в день:</span>
-                    <span className="font-bold text-primary">{formatGameCurrency(wellPackage.totalDailyIncome)}</span>
+                    <span className="font-bold text-primary">{formatOilCoins(wellPackage.totalDailyIncome)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Доход в месяц:</span>
-                    <span className="font-bold">{formatGameCurrency(wellPackage.totalDailyIncome * 30)}</span>
+                    <span className="font-bold">{formatOilCoins(wellPackage.totalDailyIncome * 30)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Доход в год:</span>
-                    <span className="font-bold">{formatGameCurrency(wellPackage.totalDailyIncome * 365)}</span>
+                    <span className="font-bold">{formatOilCoins(wellPackage.totalDailyIncome * 365)}</span>
                   </div>
                 </div>
 
                 {/* Savings highlight */}
                 <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/20">
                   <p className="text-xs text-center">
-                    💰 <span className="font-medium text-green-600">Экономия {formatGameCurrency(savings)} при покупке пакета!</span>
+                    💰 <span className="font-medium text-green-600">Экономия {formatOilCoins(savings)} при покупке пакета!</span>
                   </p>
                 </div>
               </div>
@@ -180,11 +180,11 @@ export const AnimatedPackageCard = ({
                 <div className="space-y-1">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground line-through">Обычная цена:</span>
-                    <span className="text-muted-foreground line-through">{formatGameCurrency(wellPackage.originalPrice)}</span>
+                    <span className="text-muted-foreground line-through">{formatOilCoins(wellPackage.originalPrice)}</span>
                   </div>
                   <div className="flex justify-between items-center text-lg">
                     <span className="text-muted-foreground">Цена пакета:</span>
-                    <span className="text-2xl font-bold text-foreground">{formatGameCurrency(wellPackage.discountedPrice)}</span>
+                    <span className="text-2xl font-bold text-foreground">{formatOilCoins(wellPackage.discountedPrice)}</span>
                   </div>
                 </div>
                 
