@@ -166,6 +166,47 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
   const [withdrawalDetails, setWithdrawalDetails] = useState<string>('');
   const [withdrawalDescription, setWithdrawalDescription] = useState<string>('');
   const [withdrawalLoading, setWithdrawalLoading] = useState(false);
+  const [claimingBarrels, setClaimingBarrels] = useState(false);
+
+  const handleClaimBarrels = async () => {
+    if (!user) return;
+    
+    setClaimingBarrels(true);
+    try {
+      const { data, error } = await supabase.rpc('claim_accumulated_barrels', {
+        p_user_id: user.id
+      });
+
+      if (error) throw error;
+
+      const result = data as { success: boolean; barrels_earned: number; hours_passed: number; error?: string };
+
+      if (result.success) {
+        toast({
+          title: "Баррели собраны!",
+          description: `Вы получили ${formatBarrels(Math.round(result.barrels_earned))} за ${result.hours_passed.toFixed(1)} часов`,
+        });
+        
+        // Reload page to update balance
+        window.location.reload();
+      } else {
+        toast({
+          title: "Ошибка",
+          description: result.error,
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Error claiming barrels:', error);
+      toast({
+        title: "Ошибка",
+        description: "Не удалось собрать баррели",
+        variant: "destructive"
+      });
+    } finally {
+      setClaimingBarrels(false);
+    }
+  };
 
   const handleApplyPromoCode = async () => {
     if (!promoCode.trim() || !user) return;
@@ -488,9 +529,17 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
             <p className="text-3xl font-bold text-amber-400">
               {formatBarrels(profile?.barrel_balance || 0)}
             </p>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-muted-foreground mt-2 mb-3">
               Производственная валюта
             </p>
+            <Button 
+              onClick={handleClaimBarrels}
+              disabled={claimingBarrels}
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+              size="sm"
+            >
+              {claimingBarrels ? "Собираем..." : "Собрать баррели"}
+            </Button>
           </CardContent>
         </Card>
 
