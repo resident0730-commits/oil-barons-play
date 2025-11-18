@@ -744,6 +744,7 @@ export type Database = {
         Args: { p_admin_id?: string; p_status: string; p_transfer_id: string }
         Returns: boolean
       }
+      recalculate_well_income: { Args: never; Returns: undefined }
       record_daily_stats: {
         Args: {
           p_balance_end?: number
