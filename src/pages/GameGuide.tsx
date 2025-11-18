@@ -227,19 +227,27 @@ const GameGuide = () => {
       gradient: "from-yellow-500 to-amber-600"
     },
     {
-      activity: "Сбор прибыли", 
-      reward: "Весь накопленный доход",
-      description: "Прибыль накапливается даже когда вы офлайн до 24 часов.",
-      tip: "Заходите в игру хотя бы раз в день, чтобы не потерять накопленный доход.",
-      icon: <Coins className="h-6 w-6 text-white" />,
+      activity: "Сбор баррелей", 
+      reward: "Накопленные баррели",
+      description: "Скважины добывают баррели 24/7 в реальном времени. Собирайте их вручную в разделе 'Скважины'.",
+      tip: "Баррели накапливаются постоянно, даже когда вы офлайн. Чем чаще собираете - тем больше баррелей! Обменивайте их на OilCoins через биржу.",
+      icon: <Fuel className="h-6 w-6 text-white" />,
       gradient: "from-amber-500 to-orange-500"
+    },
+    {
+      activity: "Обмен валют",
+      reward: "OilCoins и рубли",
+      description: "Используйте биржу для обмена баррелей на OilCoins, а OilCoins на рубли (1 OC = 1 ₽).",
+      tip: "Обменивайте баррели на OilCoins для покупки новых скважин, а OilCoins на рубли для вывода средств или участия в розыгрышах.",
+      icon: <BarChart3 className="h-6 w-6 text-white" />,
+      gradient: "from-purple-500 to-pink-500"
     },
     {
       activity: "Планирование покупок",
       reward: "Оптимизация роста",
       description: "Решайте, что покупать: новые скважины, улучшения или бустеры.",
       tip: `При доходе менее ${formatGameCurrency(1000)}/день - покупайте скважины. Свыше ${formatGameCurrency(3000)}/день - улучшайте и используйте бустеры.`,
-      icon: <BarChart3 className="h-6 w-6 text-white" />,
+      icon: <Coins className="h-6 w-6 text-white" />,
       gradient: "from-orange-500 to-amber-700"
     }
   ];
@@ -312,7 +320,7 @@ const GameGuide = () => {
           </div>
 
           {/* Currency Info */}
-          <div className="max-w-2xl mx-auto mt-12">
+          <div className="max-w-4xl mx-auto mt-12">
             <Card className="bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
               <CardHeader className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
@@ -321,21 +329,80 @@ const GameGuide = () => {
                   </div>
                 </div>
                 <CardTitle className="text-3xl md:text-4xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Игровая валюта: Игровой рубль
+                  Система валют
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-center space-y-4">
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Все операции в игре проводятся в игровых рублях
+              <CardContent className="space-y-6">
+                <p className="text-base md:text-lg text-white text-center [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                  Oil Tycoon использует трехвалютную систему для полноценной игровой экономики
                 </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                    <div className="text-2xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{currencyConfig.exchange_rate}</div>
-                    <p className="text-sm text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Курс обмена</p>
+                
+                <div className="grid md:grid-cols-3 gap-4">
+                  {/* OilCoins */}
+                  <div className="p-6 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg border-2 border-primary/40">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <Coins className="h-8 w-8 text-primary" />
+                      <h3 className="text-2xl font-bold text-white">OilCoins</h3>
+                    </div>
+                    <Badge className="mb-3 w-full justify-center text-lg">OC</Badge>
+                    <p className="text-white text-center mb-3">Основная валюта для покупок</p>
+                    <ul className="text-sm text-white/90 space-y-2">
+                      <li>✓ Покупка скважин</li>
+                      <li>✓ Покупка бустеров</li>
+                      <li>✓ Улучшение скважин</li>
+                      <li>✓ Покупка пакетов</li>
+                    </ul>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                    <div className="text-2xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">100%</div>
-                    <p className="text-sm text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Безопасно</p>
+
+                  {/* Barrels */}
+                  <div className="p-6 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg border-2 border-amber-500/40">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <Fuel className="h-8 w-8 text-amber-500" />
+                      <h3 className="text-2xl font-bold text-white">Баррели</h3>
+                    </div>
+                    <Badge className="mb-3 w-full justify-center text-lg bg-amber-500/20 text-amber-300 border-amber-500/40">BBL</Badge>
+                    <p className="text-white text-center mb-3">Производственная валюта</p>
+                    <ul className="text-sm text-white/90 space-y-2">
+                      <li>✓ Добываются скважинами 24/7</li>
+                      <li>✓ Накапливаются в реальном времени</li>
+                      <li>✓ Собирайте вручную</li>
+                      <li>✓ Обменивайте на OilCoins</li>
+                    </ul>
+                  </div>
+
+                  {/* Rubles */}
+                  <div className="p-6 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border-2 border-green-500/40">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <BarChart3 className="h-8 w-8 text-green-500" />
+                      <h3 className="text-2xl font-bold text-white">Рубли</h3>
+                    </div>
+                    <Badge className="mb-3 w-full justify-center text-lg bg-green-500/20 text-green-300 border-green-500/40">₽</Badge>
+                    <p className="text-white text-center mb-3">Игровая валюта для вывода</p>
+                    <ul className="text-sm text-white/90 space-y-2">
+                      <li>✓ Получайте через обмен OC</li>
+                      <li>✓ 1 OC = 1 рубль</li>
+                      <li>✓ Выводите на реальные средства</li>
+                      <li>✓ Участвуйте в розыгрышах</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Exchange System */}
+                <div className="p-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border-2 border-purple-500/40 mt-6">
+                  <h3 className="text-2xl font-bold text-white text-center mb-4 flex items-center justify-center gap-2">
+                    <ArrowRight className="h-6 w-6" />
+                    Биржа обмена
+                    <ArrowRight className="h-6 w-6" />
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="text-center p-4 bg-black/20 rounded-lg">
+                      <p className="text-white font-bold mb-2">Баррели → OilCoins</p>
+                      <p className="text-white/80 text-sm">Обменивайте добытые баррели на OilCoins для покупок</p>
+                    </div>
+                    <div className="text-center p-4 bg-black/20 rounded-lg">
+                      <p className="text-white font-bold mb-2">OilCoins → Рубли</p>
+                      <p className="text-white/80 text-sm">Фиксированный курс: 1 OC = 1 рубль</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -358,9 +425,9 @@ const GameGuide = () => {
           <div className="grid md:grid-cols-4 gap-8">
             {[
               { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-primary to-amber-500" },
-              { step: "2", title: "Первая скважина", desc: `Купите стартовую скважину за ${formatGameCurrency(2000)}`, badge: `44 ${currencyConfig.game_currency_symbol}/день`, gradient: "from-amber-500 to-yellow-600" },
-              { step: "3", title: "Ждите доход", desc: "Через 24 часа получите первую прибыль", badge: "Автоматически", gradient: "from-yellow-600 to-orange-500" },
-              { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины и улучшения", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
+              { step: "2", title: "Первая скважина", desc: `Купите скважину за OilCoins. Она начнёт добывать баррели 24/7`, badge: "44 BBL/день", gradient: "from-amber-500 to-yellow-600" },
+              { step: "3", title: "Собирайте баррели", desc: "Собирайте накопленные баррели в разделе 'Скважины' и обменивайте на OC через биржу", badge: "Каждый час", gradient: "from-yellow-600 to-orange-500" },
+              { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины, обменивайте валюты и выводите средства", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
             ].map((item, index) => (
               <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group animate-border-glow">
                 <CardHeader>
@@ -392,6 +459,27 @@ const GameGuide = () => {
             <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
               Подробный разбор каждого типа скважин с примерами доходности
             </p>
+          </div>
+
+          {/* Important Note */}
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-2 border-amber-500/40 backdrop-blur-xl">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-amber-500/30 rounded-full flex-shrink-0">
+                    <Fuel className="h-6 w-6 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">Важно: О доходах скважин</h3>
+                    <p className="text-white/90 leading-relaxed">
+                      Все скважины добывают <span className="font-bold text-amber-400">баррели (BBL)</span> в реальном времени 24/7. 
+                      Указанный доход - это количество баррелей в день. Собирайте баррели вручную в разделе "Скважины" и 
+                      обменивайте их на <span className="font-bold text-primary">OilCoins</span> через биржу для покупки новых активов.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
