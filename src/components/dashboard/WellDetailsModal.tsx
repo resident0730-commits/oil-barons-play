@@ -58,7 +58,7 @@ export const WellDetailsModal = ({
   );
 
   const upgradeCost = Math.round(wellType.price * 0.5 * Math.pow(1.2, well.level - 1));
-  const canUpgrade = well.level < wellType.maxLevel && profile.balance >= upgradeCost;
+  const canUpgrade = well.level < wellType.maxLevel && profile.oilcoin_balance >= upgradeCost;
   const isMaxLevel = well.level >= wellType.maxLevel;
   const upgradeProgress = (well.level / wellType.maxLevel) * 100;
   

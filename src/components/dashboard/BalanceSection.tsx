@@ -258,10 +258,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
       return;
     }
 
-    if (amount > profile.balance) {
+    if (amount > profile.ruble_balance) {
       toast({
         title: "Недостаточно средств",
-        description: "На вашем балансе недостаточно средств для вывода",
+        description: "На вашем балансе недостаточно рублей для вывода",
         variant: "destructive",
       });
       return;
@@ -298,11 +298,11 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
 
       if (transferError) throw transferError;
 
-      // Deduct balance
+      // Deduct balance from rubles
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ 
-          balance: profile.balance - amount,
+          ruble_balance: profile.ruble_balance - amount,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id);
