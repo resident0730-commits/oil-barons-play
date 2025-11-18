@@ -7,6 +7,10 @@ export interface CurrencyConfig {
   oilcoin_symbol: string;
   ruble_name: string;
   ruble_symbol: string;
+  // Алиасы для обратной совместимости
+  game_currency_symbol?: string;
+  real_currency_symbol?: string;
+  exchange_rate?: string;
 }
 
 const DEFAULT_CONFIG: CurrencyConfig = {
@@ -15,7 +19,11 @@ const DEFAULT_CONFIG: CurrencyConfig = {
   oilcoin_name: 'ОилКоин',
   oilcoin_symbol: '💰',
   ruble_name: 'Рубль',
-  ruble_symbol: '₽'
+  ruble_symbol: '₽',
+  // Алиасы для обратной совместимости
+  game_currency_symbol: '💰',
+  real_currency_symbol: '₽',
+  exchange_rate: '1 рубль = 1 ОилКоин'
 };
 
 export const useCurrency = () => {
@@ -33,7 +41,14 @@ export const useCurrency = () => {
       const saved = localStorage.getItem('currency_config');
       if (saved) {
         const config = JSON.parse(saved);
-        setCurrencyConfig({ ...DEFAULT_CONFIG, ...config });
+        setCurrencyConfig({ 
+          ...DEFAULT_CONFIG, 
+          ...config,
+          // Ensure backward compatibility aliases
+          game_currency_symbol: config.oilcoin_symbol || config.game_currency_symbol || DEFAULT_CONFIG.oilcoin_symbol,
+          real_currency_symbol: config.ruble_symbol || config.real_currency_symbol || DEFAULT_CONFIG.ruble_symbol,
+          exchange_rate: '1 рубль = 1 ОилКоин'
+        });
       } else {
         setCurrencyConfig(DEFAULT_CONFIG);
       }
@@ -76,6 +91,14 @@ export const useCurrency = () => {
     return `${Math.floor(amount).toLocaleString()} ${currencyConfig.ruble_name}`;
   };
 
+  // Алиасы для обратной совместимости (временно)
+  const formatGameCurrency = formatOilCoins;
+  const formatRealCurrency = formatRubles;
+  const formatGameCurrencyWithName = formatOilCoinsWithName;
+  const getGameCurrencyDescription = () => "Основная игровая валюта для покупки скважин и улучшений";
+  const getExchangeDescription = () => "1 рубль = 1 ОилКоин, фиксированный курс";
+  const getRealCurrencyName = () => currencyConfig.ruble_name;
+
   return {
     currencyConfig,
     loading,
@@ -86,6 +109,13 @@ export const useCurrency = () => {
     formatBarrelsWithName,
     formatOilCoinsWithName,
     formatRublesWithName,
+    // Алиасы для обратной совместимости
+    formatGameCurrency,
+    formatRealCurrency,
+    formatGameCurrencyWithName,
+    getGameCurrencyDescription,
+    getExchangeDescription,
+    getRealCurrencyName,
     refreshConfig: loadCurrencyConfig
   };
 };
