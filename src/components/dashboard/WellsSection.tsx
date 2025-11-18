@@ -202,8 +202,6 @@ export const WellsSection = ({
         getRarityColor={getRarityColor}
         calculateProfitMetrics={calculateProfitMetrics}
         formatProfitPercent={formatProfitPercent}
-        boosters={boosters}
-        getActiveBoosterMultiplier={getActiveBoosterMultiplier}
       />
     </div>
   );
