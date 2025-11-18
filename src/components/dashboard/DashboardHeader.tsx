@@ -38,8 +38,8 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             </div>
           </Link>
           
-          <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6 flex-shrink-0">
-            {/* Balance Display - OilCoins */}
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            {/* OilCoins Balance */}
             <Button
               variant="outline"
               size="sm"
@@ -49,21 +49,33 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110" />
-              <span className="font-bold text-sm sm:text-lg relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
+              <span className="font-bold text-sm sm:text-base relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
               <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
-            {/* Barrels Balance - Hidden on mobile */}
-            <div className="hidden lg:flex items-center px-3 py-2 rounded-lg bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/30">
-              <span className="text-amber-500 mr-2">🛢️</span>
-              <span className="font-bold text-sm">{formatBarrels(profile.barrel_balance)}</span>
-            </div>
+            {/* Barrels Balance */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="group relative overflow-hidden bg-gradient-to-r from-amber-500/10 to-amber-600/10 border-amber-500/30 hover:border-amber-500/50 hover:shadow-amber-500/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="text-amber-500 mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110">🛢️</span>
+              <span className="font-bold text-sm sm:text-base relative z-10">{formatBarrels(profile.barrel_balance)}</span>
+              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-amber-500 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Button>
 
-            {/* Rubles Balance - Hidden on mobile */}
-            <div className="hidden lg:flex items-center px-3 py-2 rounded-lg bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/30">
-              <span className="text-green-500 mr-2">₽</span>
-              <span className="font-bold text-sm">{formatRubles(profile.ruble_balance)}</span>
-            </div>
+            {/* Rubles Balance */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="group relative overflow-hidden bg-gradient-to-r from-green-500/10 to-green-600/10 border-green-500/30 hover:border-green-500/50 hover:shadow-green-500/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="text-green-500 mr-1 sm:mr-2 text-lg transition-transform duration-300 group-hover:scale-110">₽</span>
+              <span className="font-bold text-sm sm:text-base relative z-10">{formatRubles(profile.ruble_balance)}</span>
+              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Button>
             
             {/* User Info - Hidden on small screens */}
             <div className="hidden sm:flex items-center space-x-3 px-4 py-2 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
