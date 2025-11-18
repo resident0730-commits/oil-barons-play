@@ -30,7 +30,9 @@ interface OverviewSectionProps {
 }
 
 export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: OverviewSectionProps) => {
-  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
+  const { formatOilCoins, formatOilCoinsWithName } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
+  const formatGameCurrencyWithName = formatOilCoinsWithName;
   const { boosters, getActiveBoosterMultiplier } = useGameData();
   const { statusMultiplier, userTitles, getStatusDisplayNames } = useStatusBonuses();
   

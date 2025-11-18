@@ -44,6 +44,9 @@ export interface UserProfile {
   user_id: string;
   nickname: string;
   balance: number;
+  barrel_balance: number;
+  oilcoin_balance: number;
+  ruble_balance: number;
   daily_income: number;
   last_login: string;
   created_at?: string;

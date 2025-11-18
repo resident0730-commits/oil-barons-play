@@ -41,7 +41,8 @@ export const WellsSection = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
   const [selectedWell, setSelectedWell] = useState<UserWell | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [sortType, setSortType] = useState<'default' | 'income-desc' | 'income-asc' | 'level-desc' | 'level-asc'>('default');

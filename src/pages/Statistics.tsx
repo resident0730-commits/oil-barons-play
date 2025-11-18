@@ -10,7 +10,8 @@ import { useCurrency } from "@/hooks/useCurrency";
 const Statistics = () => {
   const { user } = useAuth();
   const { profile, wells } = useGameData();
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
 
   const totalWellsValue = wells.reduce((sum, well) => {
     const wellType = wellTypes.find(wt => wt.name === well.well_type);

@@ -44,7 +44,8 @@ export const WellDetailsModal = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellDetailsModalProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
   
   if (!well) return null;
 

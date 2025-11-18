@@ -10,7 +10,8 @@ import {
   History,
   Trophy,
   Wallet,
-  Calculator
+  Calculator,
+  ArrowRightLeft
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -36,6 +37,7 @@ import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
+import { ExchangeWidget } from "@/components/ExchangeWidget";
 
 // Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
@@ -47,7 +49,8 @@ const Dashboard = () => {
   const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
-  const { formatGameCurrency, formatGameCurrencyWithName } = useCurrency();
+  const { formatOilCoins, formatOilCoinsWithName } = useCurrency();
+  const formatGameCurrency = formatOilCoins;
   
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -55,7 +58,7 @@ const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance' | 'calculator'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance' | 'calculator' | 'exchange'>('overview');
 
   // Обработка результата платежа
   useEffect(() => {
@@ -84,7 +87,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance', 'calculator'];
+      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance', 'calculator', 'exchange'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         // Очищаем параметр section из URL
@@ -455,6 +458,7 @@ const Dashboard = () => {
               {[
                 { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
                 { id: 'balance', label: 'Баланс', icon: Wallet, shortLabel: 'Баланс' },
+                { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft, shortLabel: 'Биржа' },
                 { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
                 { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
@@ -496,6 +500,18 @@ const Dashboard = () => {
             onTopUp={handleTopUp}
             topUpLoading={false}
           />
+        )}
+
+        {activeSection === 'exchange' && currentProfile && (
+          <div className="max-w-4xl mx-auto">
+            <ExchangeWidget
+              userId={currentProfile.user_id}
+              barrelBalance={currentProfile.barrel_balance}
+              oilcoinBalance={currentProfile.oilcoin_balance}
+              rubleBalance={currentProfile.ruble_balance}
+              onExchangeComplete={() => reload()}
+            />
+          </div>
         )}
 
         {activeSection === 'wells' && currentProfile && (

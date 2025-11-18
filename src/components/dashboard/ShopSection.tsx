@@ -33,7 +33,7 @@ export const ShopSection = ({
   calculateProfitMetrics, 
   formatProfitPercent 
 }: ShopSectionProps) => {
-  const { formatGameCurrency } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -46,7 +46,7 @@ export const ShopSection = ({
             <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
             <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Доступно:</span>
             <Badge className="gradient-gold text-primary-foreground text-xs sm:text-sm">
-              {formatGameCurrency(profile.balance)}
+              {formatOilCoins(profile.balance)}
             </Badge>
           </div>
         </div>
