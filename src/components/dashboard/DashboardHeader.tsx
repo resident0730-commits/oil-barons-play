@@ -57,24 +57,24 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-amber-500/10 to-amber-600/10 border-amber-500/30 hover:border-amber-500/50 hover:shadow-amber-500/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+              className="group relative overflow-hidden bg-gradient-to-r from-oil-amber/10 to-oil-amber/15 border-oil-amber/30 hover:border-oil-amber/50 hover:shadow-oil-amber/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-amber-500 mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110">🛢️</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-oil-amber/5 to-oil-amber/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="text-oil-amber mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110">🛢️</span>
               <span className="font-bold text-sm sm:text-base relative z-10">{formatBarrels(profile.barrel_balance)}</span>
-              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-amber-500 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-amber to-oil-bronze opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
             {/* Rubles Balance */}
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-green-500/10 to-green-600/10 border-green-500/30 hover:border-green-500/50 hover:shadow-green-500/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+              className="group relative overflow-hidden bg-gradient-to-r from-oil-gold-light/10 to-oil-gold/15 border-oil-gold-light/30 hover:border-oil-gold-light/50 hover:shadow-oil-gold-light/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-green-500 mr-1 sm:mr-2 text-lg transition-transform duration-300 group-hover:scale-110">₽</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-oil-gold-light/5 to-oil-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="text-oil-gold-light mr-1 sm:mr-2 text-lg transition-transform duration-300 group-hover:scale-110">₽</span>
               <span className="font-bold text-sm sm:text-base relative z-10">{formatRubles(profile.ruble_balance)}</span>
-              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-gold-light to-oil-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
             
             {/* User Info - Hidden on small screens */}

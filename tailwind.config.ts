@@ -60,6 +60,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "oil-amber": "hsl(var(--oil-amber))",
+        "oil-bronze": "hsl(var(--oil-bronze))",
+        "oil-gold": "hsl(var(--oil-gold))",
+        "oil-gold-light": "hsl(var(--oil-gold-light))",
       },
       borderRadius: {
         lg: "var(--radius)",
