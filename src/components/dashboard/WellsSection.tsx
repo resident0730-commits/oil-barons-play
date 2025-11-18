@@ -167,11 +167,11 @@ export const WellsSection = ({
     <div className="space-y-6 animate-fade-in">
       {/* Barrel Collection Banner */}
       {accumulatedBarrels > 0 && (
-        <Card className="bg-gradient-to-r from-oil-amber/10 to-oil-bronze/10 border-oil-amber/30 hover:border-oil-amber/50 transition-all">
+        <Card className="bg-gradient-to-r from-oil-amber/10 to-oil-bronze/10 border-oil-amber/30 hover:border-oil-amber/50 transition-all overflow-hidden">
           <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 sm:p-3 rounded-full bg-oil-amber/20">
+                <div className="p-2 sm:p-3 rounded-full bg-oil-amber/20 animate-pulse">
                   <Droplet className="h-5 w-5 sm:h-6 sm:w-6 text-oil-amber" />
                 </div>
                 <div>
@@ -181,10 +181,27 @@ export const WellsSection = ({
                   </p>
                 </div>
               </div>
+
+              {/* Animated Loading Bar */}
+              <div className="hidden sm:flex flex-1 items-center justify-center px-4">
+                <div className="relative w-full max-w-xs h-2 bg-oil-bronze/20 rounded-full overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oil-amber to-transparent animate-shine opacity-60"></div>
+                  <div className="absolute inset-0 flex gap-1">
+                    {[...Array(8)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 bg-oil-amber/40 rounded-full animate-pulse"
+                        style={{ animationDelay: `${i * 0.15}s` }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <Button 
                 onClick={handleClaimBarrels}
                 disabled={claimingBarrels}
-                className="w-full sm:w-auto bg-gradient-to-r from-oil-amber to-oil-bronze hover:from-oil-amber/90 hover:to-oil-bronze/90 text-primary-foreground"
+                className="w-full sm:w-auto bg-gradient-to-r from-oil-amber to-oil-bronze hover:from-oil-amber/90 hover:to-oil-bronze/90 text-primary-foreground shadow-lg hover:shadow-oil-amber/50 transition-all"
                 size="lg"
               >
                 {claimingBarrels ? "Собираем..." : "Собрать"}
