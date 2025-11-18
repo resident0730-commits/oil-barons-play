@@ -25,7 +25,7 @@ export const ExchangeWidget = ({
   onExchangeComplete
 }: ExchangeWidgetProps) => {
   const { loading, getExchangeRate, exchangeCurrency, getExchangeHistory } = useExchange();
-  const { formatBarrels, formatOilCoins, formatRubles } = useCurrency();
+  const { formatBarrels, formatOilCoins, formatRubles, currencyConfig } = useCurrency();
 
   const [barrelAmount, setBarrelAmount] = useState('');
   const [oilcoinToRubleAmount, setOilcoinToRubleAmount] = useState('');
@@ -151,19 +151,19 @@ export const ExchangeWidget = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <Card className="relative overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-500/5 backdrop-blur-sm border border-amber-500/30 hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1">
               <CardContent className="p-4">
-                <p className="text-sm text-amber-200/80 mb-1 font-medium">Баррели</p>
+                <p className="text-sm text-amber-200/80 mb-1 font-medium">{currencyConfig.barrel_symbol}</p>
                 <p className="text-2xl font-bold text-amber-100 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">{formatBarrels(barrelBalance)}</p>
               </CardContent>
             </Card>
             <Card className="relative overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/5 backdrop-blur-sm border border-green-500/30 hover:border-green-400/50 transition-all duration-300 hover:-translate-y-1">
               <CardContent className="p-4">
-                <p className="text-sm text-green-200/80 mb-1 font-medium">ОилКоины</p>
+                <p className="text-sm text-green-200/80 mb-1 font-medium">{currencyConfig.oilcoin_symbol}</p>
                 <p className="text-2xl font-bold text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">{formatOilCoins(oilcoinBalance)}</p>
               </CardContent>
             </Card>
             <Card className="relative overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/5 backdrop-blur-sm border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:-translate-y-1">
               <CardContent className="p-4">
-                <p className="text-sm text-blue-200/80 mb-1 font-medium">Рубли</p>
+                <p className="text-sm text-blue-200/80 mb-1 font-medium">{currencyConfig.ruble_symbol}</p>
                 <p className="text-2xl font-bold text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">{formatRubles(rubleBalance)}</p>
               </CardContent>
             </Card>
@@ -172,10 +172,10 @@ export const ExchangeWidget = ({
           <Tabs defaultValue="barrel" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-black/30 backdrop-blur-sm border border-amber-500/20">
               <TabsTrigger value="barrel" className="data-[state=active]:bg-amber-500/30 data-[state=active]:text-amber-100">
-                Баррели → ОилКоины
+                {currencyConfig.barrel_symbol} → {currencyConfig.oilcoin_symbol}
               </TabsTrigger>
               <TabsTrigger value="oilcoin" className="data-[state=active]:bg-amber-500/30 data-[state=active]:text-amber-100">
-                ОилКоины ⇄ Рубли
+                {currencyConfig.oilcoin_symbol} ⇄ {currencyConfig.ruble_symbol}
               </TabsTrigger>
             </TabsList>
 
@@ -184,10 +184,10 @@ export const ExchangeWidget = ({
               <Card className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 backdrop-blur-sm border border-amber-500/20">
                 <CardContent className="p-6 space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-amber-100 font-medium">Количество баррелей (мин. 1000)</Label>
+                    <Label className="text-amber-100 font-medium">Количество {currencyConfig.barrel_symbol} (мин. 1000)</Label>
                     <Input
                       type="number"
-                      placeholder="Введите количество баррелей"
+                      placeholder={`Введите количество ${currencyConfig.barrel_symbol}`}
                       value={barrelAmount}
                       onChange={(e) => setBarrelAmount(e.target.value)}
                       min="1000"
@@ -196,11 +196,11 @@ export const ExchangeWidget = ({
                     />
                     <div className="flex items-center justify-between p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
                       <span className="text-sm text-amber-200/80">Курс обмена:</span>
-                      <span className="text-sm font-bold text-amber-100">1000 🛢️ = 1 💰</span>
+                      <span className="text-sm font-bold text-amber-100">1000 {currencyConfig.barrel_symbol} = 1 {currencyConfig.oilcoin_symbol}</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                       <span className="text-sm text-green-200/80">Вы получите:</span>
-                      <span className="text-lg font-bold text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">{calculateBarrelOutput()} 💰</span>
+                      <span className="text-lg font-bold text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">{calculateBarrelOutput()} {currencyConfig.oilcoin_symbol}</span>
                     </div>
                   </div>
                   <Button 
@@ -209,7 +209,7 @@ export const ExchangeWidget = ({
                     className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold shadow-[0_0_20px_rgba(251,191,36,0.5)] hover:shadow-[0_0_30px_rgba(251,191,36,0.7)] transition-all duration-300"
                   >
                     <ArrowRightLeft className="w-4 h-4 mr-2" />
-                    Обменять баррели на ОилКоины
+                    Обменять {currencyConfig.barrel_symbol} на {currencyConfig.oilcoin_symbol}
                   </Button>
                 </CardContent>
               </Card>
@@ -224,13 +224,13 @@ export const ExchangeWidget = ({
                     <div className="p-2 bg-green-500/20 rounded-lg">
                       <ArrowRightLeft className="w-5 h-5 text-green-400" />
                     </div>
-                    <h3 className="text-lg font-bold text-green-100">ОилКоины → Рубли</h3>
+                    <h3 className="text-lg font-bold text-green-100">{currencyConfig.oilcoin_symbol} → {currencyConfig.ruble_symbol}</h3>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-green-100 font-medium">Количество ОилКоинов</Label>
+                    <Label className="text-green-100 font-medium">Количество {currencyConfig.oilcoin_symbol}</Label>
                     <Input
                       type="number"
-                      placeholder="Введите количество ОилКоинов"
+                      placeholder={`Введите количество ${currencyConfig.oilcoin_symbol}`}
                       value={oilcoinToRubleAmount}
                       onChange={(e) => setOilcoinToRubleAmount(e.target.value)}
                       min="1"
@@ -238,11 +238,11 @@ export const ExchangeWidget = ({
                     />
                     <div className="flex items-center justify-between p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                       <span className="text-sm text-green-200/80">Курс обмена:</span>
-                      <span className="text-sm font-bold text-green-100">1 💰 = 1 ₽</span>
+                      <span className="text-sm font-bold text-green-100">1 {currencyConfig.oilcoin_symbol} = 1 {currencyConfig.ruble_symbol}</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
                       <span className="text-sm text-blue-200/80">Вы получите:</span>
-                      <span className="text-lg font-bold text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">{calculateOilcoinToRubleOutput()} ₽</span>
+                      <span className="text-lg font-bold text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">{calculateOilcoinToRubleOutput()} {currencyConfig.ruble_symbol}</span>
                     </div>
                   </div>
                   <Button 
@@ -251,7 +251,7 @@ export const ExchangeWidget = ({
                     className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold shadow-[0_0_20px_rgba(34,197,94,0.5)] hover:shadow-[0_0_30px_rgba(34,197,94,0.7)] transition-all duration-300"
                   >
                     <ArrowRightLeft className="w-4 h-4 mr-2" />
-                    Обменять ОилКоины на Рубли
+                    Обменять {currencyConfig.oilcoin_symbol} на {currencyConfig.ruble_symbol}
                   </Button>
                 </CardContent>
               </Card>
@@ -263,13 +263,13 @@ export const ExchangeWidget = ({
                     <div className="p-2 bg-blue-500/20 rounded-lg">
                       <ArrowRightLeft className="w-5 h-5 text-blue-400" />
                     </div>
-                    <h3 className="text-lg font-bold text-blue-100">Рубли → ОилКоины</h3>
+                    <h3 className="text-lg font-bold text-blue-100">{currencyConfig.ruble_symbol} → {currencyConfig.oilcoin_symbol}</h3>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-blue-100 font-medium">Количество рублей</Label>
+                    <Label className="text-blue-100 font-medium">Количество {currencyConfig.ruble_symbol}</Label>
                     <Input
                       type="number"
-                      placeholder="Введите количество рублей"
+                      placeholder={`Введите количество ${currencyConfig.ruble_symbol}`}
                       value={rubleToOilcoinAmount}
                       onChange={(e) => setRubleToOilcoinAmount(e.target.value)}
                       min="1"
@@ -277,11 +277,11 @@ export const ExchangeWidget = ({
                     />
                     <div className="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
                       <span className="text-sm text-blue-200/80">Курс обмена:</span>
-                      <span className="text-sm font-bold text-blue-100">1 ₽ = 1 💰</span>
+                      <span className="text-sm font-bold text-blue-100">1 {currencyConfig.ruble_symbol} = 1 {currencyConfig.oilcoin_symbol}</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                       <span className="text-sm text-green-200/80">Вы получите:</span>
-                      <span className="text-lg font-bold text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">{calculateRubleToOilcoinOutput()} 💰</span>
+                      <span className="text-lg font-bold text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">{calculateRubleToOilcoinOutput()} {currencyConfig.oilcoin_symbol}</span>
                     </div>
                   </div>
                   <Button 
@@ -290,7 +290,7 @@ export const ExchangeWidget = ({
                     className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_30px_rgba(59,130,246,0.7)] transition-all duration-300"
                   >
                     <ArrowRightLeft className="w-4 h-4 mr-2" />
-                    Обменять Рубли на ОилКоины
+                    Обменять {currencyConfig.ruble_symbol} на {currencyConfig.oilcoin_symbol}
                   </Button>
                 </CardContent>
               </Card>
