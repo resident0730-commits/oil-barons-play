@@ -509,7 +509,7 @@ const Dashboard = () => {
               barrelBalance={currentProfile.barrel_balance}
               oilcoinBalance={currentProfile.oilcoin_balance}
               rubleBalance={currentProfile.ruble_balance}
-              onExchangeComplete={() => reload()}
+              onExchangeComplete={() => setTimeout(() => reload(true), 500)}
             />
           </div>
         )}

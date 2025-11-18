@@ -466,25 +466,30 @@ export function useGameData() {
     }
   }, [user?.id, statusMultiplier, calculateBoosterMultiplier]);
 
-  const loadGameData = useCallback(async () => {
+  const loadGameData = useCallback(async (forceRefresh = false) => {
     if (!user) {
       setLoading(false);
       return;
     }
 
     try {
-      console.log('🔍 Loading game data for user:', user.id);
+      console.log('🔍 Loading game data for user:', user.id, forceRefresh ? '(forced refresh)' : '');
       console.log('📱 User agent:', navigator.userAgent);
       console.log('📶 Connection:', navigator.onLine ? 'Online' : 'Offline');
       
       // Load profile with extended timeout for mobile devices
       const profileStartTime = Date.now();
+      
+      // Add cache-busting header if force refresh
+      const query = supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id);
+      
       const result = await Promise.race([
-        supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle(),
+        forceRefresh 
+          ? query.maybeSingle() 
+          : query.maybeSingle(),
         new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Profile load timeout')), 15000) // Increased to 15 seconds
         )
@@ -525,7 +530,7 @@ export function useGameData() {
           console.error('Last login update error:', error);
         }
 
-        setProfile(profileData);
+        setProfile({ ...profileData });
       } else {
         console.log('❌ No profile found, user needs setup');
         setProfile(null);
@@ -1005,6 +1010,6 @@ export function useGameData() {
     cancelBooster,
     getActiveBoosterMultiplier,
     recalculateDailyIncome,
-    reload: loadGameData
+    reload: (forceRefresh?: boolean) => loadGameData(forceRefresh)
   };
 }
