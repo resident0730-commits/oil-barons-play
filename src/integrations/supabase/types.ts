@@ -302,6 +302,7 @@ export type Database = {
           daily_income: number
           id: string
           is_banned: boolean
+          last_barrel_claim: string | null
           last_bonus_claim: string | null
           last_daily_chest_claim: string | null
           last_login: string | null
@@ -327,6 +328,7 @@ export type Database = {
           daily_income?: number
           id?: string
           is_banned?: boolean
+          last_barrel_claim?: string | null
           last_bonus_claim?: string | null
           last_daily_chest_claim?: string | null
           last_login?: string | null
@@ -352,6 +354,7 @@ export type Database = {
           daily_income?: number
           id?: string
           is_banned?: boolean
+          last_barrel_claim?: string | null
           last_bonus_claim?: string | null
           last_daily_chest_claim?: string | null
           last_login?: string | null
@@ -691,6 +694,7 @@ export type Database = {
         Args: { p_referrer_id: string }
         Returns: undefined
       }
+      claim_accumulated_barrels: { Args: { p_user_id: string }; Returns: Json }
       exchange_currency: {
         Args: {
           p_from_amount: number
