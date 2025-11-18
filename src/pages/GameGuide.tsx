@@ -36,81 +36,81 @@ const GameGuide = () => {
     {
       name: "Мини-скважина",
       price: `1,000 ${currencyConfig.game_currency_symbol}`,
-      income: "20 BBL/день",
+      income: "20,000 BBL/день",
       description: "Компактная установка для первых шагов в нефтяной индустрии.",
-      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы будете добывать 200 BBL в день.`,
+      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы будете добывать 200,000 BBL в день.`,
       gradient: "from-yellow-600 to-yellow-700",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
       name: "Стартовая скважина",
       price: `2,000 ${currencyConfig.game_currency_symbol}`,
-      income: "44 BBL/день",
+      income: "44,000 BBL/день",
       description: "Проверенная временем установка с оптимизированной системой добычи.",
-      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы будете добывать 220 BBL в день.`,
+      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы будете добывать 220,000 BBL в день.`,
       gradient: "from-amber-500 to-yellow-600",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
       name: "Средняя скважина", 
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
-      income: "72 BBL/день",
+      income: "72,000 BBL/день",
       description: "Сбалансированное решение с улучшенной системой извлечения.",
-      example: "3 средние скважины добывают 216 BBL в день и окупаются за 8.3 дня.",
+      example: "3 средние скважины добывают 216,000 BBL в день.",
       gradient: "from-yellow-500 to-amber-500",
       icon: <Target className="h-8 w-8 text-white" />
     },
     {
       name: "Промышленная скважина",
       price: `5,000 ${currencyConfig.game_currency_symbol}`, 
-      income: "130 BBL/день",
+      income: "130,000 BBL/день",
       description: "Мощная установка промышленного класса с глубоким бурением.",
-      example: "2 промышленные скважины добывают 260 BBL в день и окупаются за 7.7 дня.",
+      example: "2 промышленные скважины добывают 260,000 BBL в день.",
       gradient: "from-orange-500 to-amber-600",
       icon: <Settings className="h-8 w-8 text-white" />
     },
     {
       name: "Супер-скважина",
       price: `8,000 ${currencyConfig.game_currency_symbol}`,
-      income: "224 BBL/день",
+      income: "224,000 BBL/день",
       description: "Высокотехнологичная установка с турбонаддувом и многоступенчатой системой.",
-      example: "1 супер-скважина окупается за 7.1 дня и добывает 224 BBL ежедневно.",
+      example: "1 супер-скважина добывает 224,000 BBL ежедневно.",
       gradient: "from-amber-600 to-orange-600",
       icon: <Zap className="h-8 w-8 text-white" />
     },
     {
       name: "Премиум-скважина",
       price: `12,000 ${currencyConfig.game_currency_symbol}`,
-      income: "360 BBL/день",
+      income: "360,000 BBL/день",
       description: "Эксклюзивная установка с алмазным буровым оборудованием и ИИ.",
-      example: "1 премиум-скважина окупается за 6.7 дня и добывает стабильные 360 BBL ежедневно.",
+      example: "1 премиум-скважина добывает стабильные 360,000 BBL ежедневно.",
       gradient: "from-yellow-400 to-amber-500",
       icon: <Gem className="h-8 w-8 text-white" />
     },
     {
       name: "Элитная скважина",
       price: `18,000 ${currencyConfig.game_currency_symbol}`,
-      income: "576 BBL/день", 
+      income: "576,000 BBL/день", 
       description: "Королевская установка с позолоченными элементами и квантовыми сенсорами.",
-      example: "1 элитная скважина окупается за 6.3 дня и добывает стабильные 576 BBL ежедневно.",
+      example: "1 элитная скважина добывает стабильные 576,000 BBL ежедневно.",
       gradient: "from-yellow-500 to-orange-500",
       icon: <Crown className="h-8 w-8 text-white" />
     },
     {
       name: "Легендарная скважина",
       price: `27,000 ${currencyConfig.game_currency_symbol}`,
-      income: "918 BBL/день",
+      income: "918,000 BBL/день",
       description: "Мифическая установка с нанотехнологиями и квантовыми процессорами.",
-      example: "1 легендарная скважина окупается за 5.9 дня и добывает невероятные 918 BBL ежедневно.",
+      example: "1 легендарная скважина добывает невероятные 918,000 BBL ежедневно.",
       gradient: "from-amber-400 to-yellow-500",
       icon: <Star className="h-8 w-8 text-white" />
     },
     {
       name: "Космическая скважина",
       price: `40,000 ${currencyConfig.game_currency_symbol}`,
-      income: "1,440 BBL/день",
+      income: "1,440,000 BBL/день",
       description: "Футуристическая установка внеземных технологий с антигравитационным двигателем.",
-      example: "1 космическая скважина окупается за 5.6 дня и добывает фантастические 1,440 BBL ежедневно.",
+      example: "1 космическая скважина добывает фантастические 1,440,000 BBL ежедневно.",
       gradient: "from-orange-400 to-amber-500",
       icon: <Rocket className="h-8 w-8 text-white" />
     }
