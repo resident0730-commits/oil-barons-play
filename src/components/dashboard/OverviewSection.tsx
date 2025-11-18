@@ -263,21 +263,6 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
                 <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/20">{formatGameCurrency(Math.round(totalWellsValue * 0.8))}</Badge>
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="text-center p-3 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/10">
-                <div className="text-lg font-bold text-primary">
-                  {totalWellsValue > 0 ? `${Math.round((profile.daily_income * 30 / totalWellsValue) * 100)}%` : '0%'}
-                </div>
-                <div className="text-xs text-muted-foreground">ROI в месяц</div>
-              </div>
-              <div className="text-center p-3 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-lg border border-blue-500/10">
-                <div className="text-lg font-bold text-blue-600">
-                  {profile.daily_income > 0 ? `${Math.ceil(totalWellsValue / profile.daily_income)}` : '∞'}
-                </div>
-                <div className="text-xs text-muted-foreground">дней до окупаемости</div>
-              </div>
-            </div>
           </CardContent>
         </Card>
 

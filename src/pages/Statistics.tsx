@@ -119,12 +119,6 @@ const Statistics = () => {
                 <span className="text-muted-foreground">Годовая прибыль:</span>
                 <span className="font-semibold">{formatGameCurrency((profile?.daily_income || 0) * 365)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">ROI (годовой):</span>
-                <span className="font-semibold text-green-600">
-                  {totalWellsValue > 0 ? (((profile?.daily_income || 0) * 365 / totalWellsValue) * 100).toFixed(1) : '0'}%
-                </span>
-              </div>
             </CardContent>
           </Card>
 
