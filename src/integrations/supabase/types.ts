@@ -704,6 +704,7 @@ export type Database = {
         }
         Returns: Json
       }
+      fix_well_income: { Args: never; Returns: undefined }
       generate_referral_code: { Args: never; Returns: string }
       get_leaderboard: {
         Args: never
