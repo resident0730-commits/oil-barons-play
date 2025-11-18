@@ -235,6 +235,7 @@ const calculateOptimalPurchases = (targetIncome: number): {
 
 export const ProfitabilityCalculator = ({ compact = false, isOpen: externalIsOpen, onOpenChange: externalOnOpenChange }: CalculatorProps) => {
   const { formatOilCoins } = useCurrency();
+  const formatGameCurrency = formatOilCoins; // Алиас для использования внутри
   const [targetIncome, setTargetIncome] = useState(1000);
   const [internalIsOpen, setInternalIsOpen] = useState(false);
 
