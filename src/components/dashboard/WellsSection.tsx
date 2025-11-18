@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Sparkles, ArrowUpDown, TrendingDown, TrendingUp, Calendar, CalendarDays, Droplet } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserWell, UserProfile, UserBooster } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
 import { AnimatedWellCard } from "./AnimatedWellCard";
@@ -50,16 +50,29 @@ export const WellsSection = ({
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [sortType, setSortType] = useState<'default' | 'income-desc' | 'income-asc' | 'level-desc' | 'level-asc'>('default');
   const [claimingBarrels, setClaimingBarrels] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const { user } = useAuth();
 
-  // Calculate accumulated barrels based on daily income and time since last claim
+  // Update current time every second for real-time barrel calculation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Calculate accumulated barrels based on daily income and time since last claim in real-time
   const calculateAccumulatedBarrels = () => {
-    if (!profile.last_barrel_claim) return profile.daily_income / 24; // At least 1 hour worth
+    if (!profile.daily_income || profile.daily_income === 0) return 0;
     
-    const lastClaim = new Date(profile.last_barrel_claim);
-    const now = new Date();
-    const hoursPassed = Math.max(1, (now.getTime() - lastClaim.getTime()) / (1000 * 60 * 60));
-    const accumulated = (profile.daily_income / 24) * hoursPassed;
+    const lastClaim = profile.last_barrel_claim ? new Date(profile.last_barrel_claim) : new Date();
+    const hoursPassed = (currentTime.getTime() - lastClaim.getTime()) / (1000 * 60 * 60);
+    
+    if (hoursPassed < 0) return 0;
+    
+    const barrelsPerHour = profile.daily_income / 24;
+    const accumulated = barrelsPerHour * hoursPassed;
     
     return Math.floor(accumulated);
   };
