@@ -44,7 +44,7 @@ export const WellDetailsModal = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellDetailsModalProps) => {
-  const { formatOilCoins } = useCurrency();
+  const { formatBarrels, formatOilCoins } = useCurrency();
   const formatGameCurrency = formatOilCoins;
   
   if (!well) return null;
@@ -111,13 +111,13 @@ export const WellDetailsModal = ({
                   <Coins className="h-5 w-5 text-primary" />
                   <span className="text-sm text-muted-foreground">Текущий доход</span>
                 </div>
-                <div className="text-3xl font-bold text-primary">
-                  {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier))}
+                <div className="text-3xl font-bold text-amber-400">
+                  {formatBarrels(Math.round(well.daily_income * boosterMultiplier))}
                 </div>
                 <div className="text-sm text-muted-foreground">в день</div>
                 {hasActiveBoosters && (
                   <div className="text-xs text-purple-300">
-                    Базовая: {formatGameCurrency(well.daily_income)} (+{Math.round((boosterMultiplier - 1) * 100)}% бустер)
+                    Базовая: {formatBarrels(well.daily_income)} (+{Math.round((boosterMultiplier - 1) * 100)}% бустер)
                   </div>
                 )}
               </div>
@@ -133,7 +133,7 @@ export const WellDetailsModal = ({
                   <span className="text-sm text-muted-foreground">В месяц</span>
                 </div>
                 <div className="font-bold text-lg text-blue-500">
-                  {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier * 30))}
+                  {formatBarrels(Math.round(well.daily_income * boosterMultiplier * 30))}
                 </div>
               </CardContent>
             </Card>
@@ -145,7 +145,7 @@ export const WellDetailsModal = ({
                   <span className="text-sm text-muted-foreground">В год</span>
                 </div>
                 <div className="font-bold text-lg text-green-500">
-                  {formatGameCurrency(Math.round(well.daily_income * boosterMultiplier * 365))}
+                  {formatBarrels(Math.round(well.daily_income * boosterMultiplier * 365))}
                 </div>
               </CardContent>
             </Card>
@@ -195,9 +195,9 @@ export const WellDetailsModal = ({
                   <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 space-y-2">
                     <div className="text-sm font-medium text-green-400">После улучшения:</div>
                     <div className="text-xs space-y-1">
-                      <div>📈 Доход: {formatGameCurrency(well.daily_income)} → {formatGameCurrency(nextLevelIncome)} (+{formatGameCurrency(incomeIncrease)})</div>
+                      <div>📈 Доход: {formatBarrels(well.daily_income)} → {formatBarrels(nextLevelIncome)} (+{formatBarrels(incomeIncrease)})</div>
                       {hasActiveBoosters && (
-                        <div>⚡ С бустерами: {formatGameCurrency(currentIncomeWithBoosters)} → {formatGameCurrency(nextLevelIncomeWithBoosters)} (+{formatGameCurrency(boostIncomeIncrease)})</div>
+                        <div>⚡ С бустерами: {formatBarrels(currentIncomeWithBoosters)} → {formatBarrels(nextLevelIncomeWithBoosters)} (+{formatBarrels(boostIncomeIncrease)})</div>
                       )}
                     </div>
                   </div>
