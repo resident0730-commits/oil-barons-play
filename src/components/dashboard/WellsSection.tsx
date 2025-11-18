@@ -41,7 +41,7 @@ export const WellsSection = ({
   boosters,
   getActiveBoosterMultiplier
 }: WellsSectionProps) => {
-  const { formatOilCoins } = useCurrency();
+  const { formatBarrels, formatOilCoins } = useCurrency();
   const formatGameCurrency = formatOilCoins;
   const [selectedWell, setSelectedWell] = useState<UserWell | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -102,7 +102,7 @@ export const WellsSection = ({
               <div className="flex items-center space-x-1 sm:space-x-2">
                 <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Общий доход:</span>
                 <Badge className="gradient-gold text-primary-foreground animate-pulse text-xs sm:text-sm">
-                  {formatGameCurrency(profile.daily_income)}/день
+                  {formatBarrels(profile.daily_income)}/день
                 </Badge>
                 {hasActiveBoosters && (
                   <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 animate-fade-in text-xs">

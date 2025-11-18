@@ -69,7 +69,7 @@ export const AnimatedShopCard = ({
   calculateProfitMetrics, 
   formatProfitPercent 
 }: AnimatedShopCardProps) => {
-  const { formatOilCoins } = useCurrency();
+  const { formatBarrels, formatOilCoins } = useCurrency();
   const canAfford = profile.balance >= wellType.price;
   const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
   const wellImage = getWellImage(wellType.name);
@@ -123,8 +123,8 @@ export const AnimatedShopCard = ({
 
             {/* Daily income badge */}
             <div className="absolute top-4 right-4">
-              <div className="bg-gradient-to-br from-primary/90 to-primary/70 backdrop-blur-md rounded-xl p-3 border-2 border-primary/40 shadow-2xl">
-                <p className="font-bold text-xl text-white">{formatOilCoins(wellType.baseIncome)}</p>
+              <div className="bg-gradient-to-br from-amber-500/90 to-amber-600/70 backdrop-blur-md rounded-xl p-3 border-2 border-amber-400/40 shadow-2xl">
+                <p className="font-bold text-xl text-white">{formatBarrels(wellType.baseIncome)}</p>
                 <p className="text-xs text-white/90 font-medium">в день</p>
               </div>
             </div>
@@ -146,7 +146,7 @@ export const AnimatedShopCard = ({
             {/* Quick stats */}
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center p-3 bg-gradient-to-br from-muted/60 to-muted/40 rounded-xl border border-border/50">
-                <p className="font-bold text-base">{formatOilCoins(metrics.monthlyIncome)}</p>
+                <p className="font-bold text-base">{formatBarrels(metrics.monthlyIncome)}</p>
                 <p className="text-xs text-muted-foreground">в месяц</p>
               </div>
               <div className="text-center p-3 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl border border-primary/30">
@@ -198,15 +198,15 @@ export const AnimatedShopCard = ({
               <div className="space-y-3 bg-muted/30 rounded-xl p-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Доход в день:</span>
-                  <span className="font-bold text-primary">{formatOilCoins(wellType.baseIncome)}</span>
+                  <span className="font-bold text-amber-400">{formatBarrels(wellType.baseIncome)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Доход в месяц:</span>
-                  <span className="font-bold">{formatOilCoins(metrics.monthlyIncome)}</span>
+                  <span className="font-bold">{formatBarrels(metrics.monthlyIncome)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Доход в год:</span>
-                  <span className="font-bold">{formatOilCoins(metrics.yearlyIncome)}</span>
+                  <span className="font-bold">{formatBarrels(metrics.yearlyIncome)}</span>
                 </div>
                 <div className="flex justify-between text-sm border-t border-border pt-2">
                   <span className="text-muted-foreground">ROI в год:</span>
