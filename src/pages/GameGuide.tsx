@@ -36,81 +36,81 @@ const GameGuide = () => {
     {
       name: "Мини-скважина",
       price: `1,000 ${currencyConfig.game_currency_symbol}`,
-      income: "20 баррелей/день",
+      income: "20 BBL/день",
       description: "Компактная установка для первых шагов в нефтяной индустрии.",
-      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы будете добывать 200 баррелей в день.`,
+      example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы будете добывать 200 BBL в день.`,
       gradient: "from-yellow-600 to-yellow-700",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
       name: "Стартовая скважина",
       price: `2,000 ${currencyConfig.game_currency_symbol}`,
-      income: "44 баррели/день",
+      income: "44 BBL/день",
       description: "Проверенная временем установка с оптимизированной системой добычи.",
-      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы будете добывать 220 баррелей в день.`,
+      example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы будете добывать 220 BBL в день.`,
       gradient: "from-amber-500 to-yellow-600",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
       name: "Средняя скважина", 
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
-      income: "72 баррели/день",
+      income: "72 BBL/день",
       description: "Сбалансированное решение с улучшенной системой извлечения.",
-      example: "3 средние скважины добывают 216 баррелей в день и окупаются за 8.3 дня.",
+      example: "3 средние скважины добывают 216 BBL в день и окупаются за 8.3 дня.",
       gradient: "from-yellow-500 to-amber-500",
       icon: <Target className="h-8 w-8 text-white" />
     },
     {
       name: "Промышленная скважина",
       price: `5,000 ${currencyConfig.game_currency_symbol}`, 
-      income: "130 баррелей/день",
+      income: "130 BBL/день",
       description: "Мощная установка промышленного класса с глубоким бурением.",
-      example: "2 промышленные скважины добывают 260 баррелей в день и окупаются за 7.7 дня.",
+      example: "2 промышленные скважины добывают 260 BBL в день и окупаются за 7.7 дня.",
       gradient: "from-orange-500 to-amber-600",
       icon: <Settings className="h-8 w-8 text-white" />
     },
     {
       name: "Супер-скважина",
       price: `8,000 ${currencyConfig.game_currency_symbol}`,
-      income: "224 баррели/день",
+      income: "224 BBL/день",
       description: "Высокотехнологичная установка с турбонаддувом и многоступенчатой системой.",
-      example: "1 супер-скважина окупается за 7.1 дня и добывает 224 баррели ежедневно.",
+      example: "1 супер-скважина окупается за 7.1 дня и добывает 224 BBL ежедневно.",
       gradient: "from-amber-600 to-orange-600",
       icon: <Zap className="h-8 w-8 text-white" />
     },
     {
       name: "Премиум-скважина",
       price: `12,000 ${currencyConfig.game_currency_symbol}`,
-      income: "360 баррелей/день",
+      income: "360 BBL/день",
       description: "Эксклюзивная установка с алмазным буровым оборудованием и ИИ.",
-      example: "1 премиум-скважина окупается за 6.7 дня и добывает стабильные 360 баррелей ежедневно.",
+      example: "1 премиум-скважина окупается за 6.7 дня и добывает стабильные 360 BBL ежедневно.",
       gradient: "from-yellow-400 to-amber-500",
       icon: <Gem className="h-8 w-8 text-white" />
     },
     {
       name: "Элитная скважина",
       price: `18,000 ${currencyConfig.game_currency_symbol}`,
-      income: "576 баррелей/день", 
+      income: "576 BBL/день", 
       description: "Королевская установка с позолоченными элементами и квантовыми сенсорами.",
-      example: "1 элитная скважина окупается за 6.3 дня и добывает стабильные 576 баррелей ежедневно.",
+      example: "1 элитная скважина окупается за 6.3 дня и добывает стабильные 576 BBL ежедневно.",
       gradient: "from-yellow-500 to-orange-500",
       icon: <Crown className="h-8 w-8 text-white" />
     },
     {
       name: "Легендарная скважина",
       price: `27,000 ${currencyConfig.game_currency_symbol}`,
-      income: "918 баррелей/день",
+      income: "918 BBL/день",
       description: "Мифическая установка с нанотехнологиями и квантовыми процессорами.",
-      example: "1 легендарная скважина окупается за 5.9 дня и добывает невероятные 918 баррелей ежедневно.",
+      example: "1 легендарная скважина окупается за 5.9 дня и добывает невероятные 918 BBL ежедневно.",
       gradient: "from-amber-400 to-yellow-500",
       icon: <Star className="h-8 w-8 text-white" />
     },
     {
       name: "Космическая скважина",
       price: `40,000 ${currencyConfig.game_currency_symbol}`,
-      income: "1,440 баррелей/день",
+      income: "1,440 BBL/день",
       description: "Футуристическая установка внеземных технологий с антигравитационным двигателем.",
-      example: "1 космическая скважина окупается за 5.6 дня и добывает фантастические 1,440 баррелей ежедневно.",
+      example: "1 космическая скважина окупается за 5.6 дня и добывает фантастические 1,440 BBL ежедневно.",
       gradient: "from-orange-400 to-amber-500",
       icon: <Rocket className="h-8 w-8 text-white" />
     }
@@ -123,7 +123,7 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `1,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Увеличивает доходность всех скважин",
-      example: `При доходе ${formatGameCurrency(3000)}/день, бригада 2-го уровня (+20%) добавит ${formatGameCurrency(600)} в день`,
+      example: "При добыче 3,000 BBL/день, бригада 2-го уровня (+20%) добавит 600 BBL в день",
       gradient: "from-amber-500 to-orange-500",
       icon: <Users className="h-6 w-6 text-white" />
     },
@@ -133,7 +133,7 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `2,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Находит более продуктивные места для бурения",
-      example: `Разведка 1-го уровня (+15%) превратит ${formatGameCurrency(2000)}/день в ${formatGameCurrency(2300)}/день`,
+      example: "Разведка 1-го уровня (+15%) превратит 2,000 BBL/день в 2,300 BBL/день",
       gradient: "from-yellow-500 to-amber-600",
       icon: <Target className="h-6 w-6 text-white" />
     },
@@ -143,7 +143,7 @@ const GameGuide = () => {
       duration: "Постоянно", 
       price: `5,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Современное оборудование для максимальной добычи",
-      example: `Оборудование 1-го уровня увеличит доход с ${formatGameCurrency(5000)} до ${formatGameCurrency(6250)} в день`,
+      example: "Оборудование 1-го уровня увеличит добычу с 5,000 до 6,250 BBL в день",
       gradient: "from-orange-500 to-amber-700",
       icon: <Settings className="h-6 w-6 text-white" />
     },
@@ -153,7 +153,7 @@ const GameGuide = () => {
       duration: "24 часа",
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
       description: "Временное, но мощное ускорение всех процессов",
-      example: `За 24 часа доход ${formatGameCurrency(4000)}/день превратится в ${formatGameCurrency(6000)}/день`,
+      example: "За 24 часа добыча 4,000 BBL/день превратится в 6,000 BBL/день",
       gradient: "from-yellow-400 to-orange-600",
       icon: <Zap className="h-6 w-6 text-white" />
     },
@@ -163,7 +163,7 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `4,000 ${currencyConfig.game_currency_symbol} за уровень`, 
       description: "Автоматические системы управления скважинами",
-      example: `Автоматизация 2-го уровня (+40%) увеличит ${formatGameCurrency(3000)}/день до ${formatGameCurrency(4200)}/день`,
+      example: "Автоматизация 2-го уровня (+40%) увеличит 3,000 BBL/день до 4,200 BBL/день",
       gradient: "from-amber-600 to-yellow-500",
       icon: <Wrench className="h-6 w-6 text-white" />
     }
@@ -174,21 +174,21 @@ const GameGuide = () => {
       level: "1 → 2",
       cost: "50% от цены скважины",
       effect: "+20% к доходу",
-      example: `Стартовая скважина: ${formatGameCurrency(500)} → доход 44 → 53 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Стартовая скважина: ${formatGameCurrency(500)} → добыча 44 → 53 BBL/день`,
       gradient: "from-yellow-500 to-amber-600"
     },
     {
       level: "2 → 3", 
       cost: "60% от цены скважины",
       effect: "+20% к новому доходу",
-      example: `Средняя скважина: ${formatGameCurrency(1800)} → доход 72 → 86 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Средняя скважина: ${formatGameCurrency(1800)} → добыча 72 → 86 BBL/день`,
       gradient: "from-amber-500 to-orange-500"
     },
     {
       level: "3 → 4",
       cost: "72% от цены скважины", 
       effect: "+20% к новому доходу",
-      example: `Промышленная: ${formatGameCurrency(4680)} → доход 130 → 156 ${currencyConfig.game_currency_symbol}/день`,
+      example: `Промышленная: ${formatGameCurrency(4680)} → добыча 130 → 156 BBL/день`,
       gradient: "from-orange-500 to-amber-600"
     }
   ];
@@ -227,18 +227,18 @@ const GameGuide = () => {
       gradient: "from-yellow-500 to-amber-600"
     },
     {
-      activity: "Сбор баррелей", 
-      reward: "Накопленные баррели",
-      description: "Скважины добывают баррели 24/7 в реальном времени. Собирайте их вручную в разделе 'Скважины'.",
-      tip: "Баррели накапливаются постоянно, даже когда вы офлайн. Чем чаще собираете - тем больше баррелей! Обменивайте их на OilCoins через биржу.",
+      activity: "Сбор BBL", 
+      reward: "Накопленные BBL",
+      description: "Скважины добывают BBL 24/7 в реальном времени. Собирайте их вручную в разделе 'Скважины'.",
+      tip: "BBL накапливаются постоянно, даже когда вы офлайн. Чем чаще собираете - тем больше BBL! Обменивайте их на OilCoins через биржу.",
       icon: <Fuel className="h-6 w-6 text-white" />,
       gradient: "from-amber-500 to-orange-500"
     },
     {
       activity: "Обмен валют",
       reward: "OilCoins и рубли",
-      description: "Используйте биржу для обмена баррелей на OilCoins, а OilCoins на рубли (1 OC = 1 ₽).",
-      tip: "Обменивайте баррели на OilCoins для покупки новых скважин, а OilCoins на рубли для вывода средств или участия в розыгрышах.",
+      description: "Используйте биржу для обмена BBL на OilCoins, а OilCoins на рубли (1 OC = 1 ₽).",
+      tip: "Обменивайте BBL на OilCoins для покупки новых скважин, а OilCoins на рубли для вывода средств или участия в розыгрышах.",
       icon: <BarChart3 className="h-6 w-6 text-white" />,
       gradient: "from-purple-500 to-pink-500"
     },
@@ -246,7 +246,7 @@ const GameGuide = () => {
       activity: "Планирование покупок",
       reward: "Оптимизация роста",
       description: "Решайте, что покупать: новые скважины, улучшения или бустеры.",
-      tip: `При доходе менее ${formatGameCurrency(1000)}/день - покупайте скважины. Свыше ${formatGameCurrency(3000)}/день - улучшайте и используйте бустеры.`,
+      tip: `При добыче менее 1,000 BBL/день - покупайте скважины. Свыше 3,000 BBL/день - улучшайте и используйте бустеры.`,
       icon: <Coins className="h-6 w-6 text-white" />,
       gradient: "from-orange-500 to-amber-700"
     }
@@ -358,7 +358,7 @@ const GameGuide = () => {
                   <div className="p-6 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg border-2 border-amber-500/40">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <Fuel className="h-8 w-8 text-amber-500" />
-                      <h3 className="text-2xl font-bold text-white">Баррели</h3>
+                      <h3 className="text-2xl font-bold text-white">BBL</h3>
                     </div>
                     <Badge className="mb-3 w-full justify-center text-lg bg-amber-500/20 text-amber-300 border-amber-500/40">BBL</Badge>
                     <p className="text-white text-center mb-3">Производственная валюта</p>
@@ -396,8 +396,8 @@ const GameGuide = () => {
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="text-center p-4 bg-black/20 rounded-lg">
-                      <p className="text-white font-bold mb-2">Баррели → OilCoins</p>
-                      <p className="text-white/80 text-sm">Обменивайте добытые баррели на OilCoins для покупок</p>
+                      <p className="text-white font-bold mb-2">BBL → OilCoins</p>
+                      <p className="text-white/80 text-sm">Обменивайте добытые BBL на OilCoins для покупок</p>
                     </div>
                     <div className="text-center p-4 bg-black/20 rounded-lg">
                       <p className="text-white font-bold mb-2">OilCoins → Рубли</p>
@@ -425,8 +425,8 @@ const GameGuide = () => {
           <div className="grid md:grid-cols-4 gap-8">
             {[
               { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-primary to-amber-500" },
-              { step: "2", title: "Первая скважина", desc: `Купите скважину за OilCoins. Она начнёт добывать баррели 24/7`, badge: "44 BBL/день", gradient: "from-amber-500 to-yellow-600" },
-              { step: "3", title: "Собирайте баррели", desc: "Собирайте накопленные баррели в разделе 'Скважины' и обменивайте на OC через биржу", badge: "Каждый час", gradient: "from-yellow-600 to-orange-500" },
+              { step: "2", title: "Первая скважина", desc: `Купите скважину за OilCoins. Она начнёт добывать BBL 24/7`, badge: "44 BBL/день", gradient: "from-amber-500 to-yellow-600" },
+              { step: "3", title: "Собирайте BBL", desc: "Собирайте накопленные BBL в разделе 'Скважины' и обменивайте на OC через биржу", badge: "Каждый час", gradient: "from-yellow-600 to-orange-500" },
               { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины, обменивайте валюты и выводите средства", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
             ].map((item, index) => (
               <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group animate-border-glow">
@@ -472,8 +472,8 @@ const GameGuide = () => {
                   <div>
                     <h3 className="text-xl font-bold text-white mb-2">Важно: О доходах скважин</h3>
                     <p className="text-white/90 leading-relaxed">
-                      Все скважины добывают <span className="font-bold text-amber-400">баррели (BBL)</span> в реальном времени 24/7. 
-                      Указанный доход - это количество баррелей в день. Собирайте баррели вручную в разделе "Скважины" и 
+                      Все скважины добывают <span className="font-bold text-amber-400">BBL (баррели)</span> в реальном времени 24/7. 
+                      Указанный доход - это количество BBL в день. Собирайте BBL вручную в разделе "Скважины" и 
                       обменивайте их на <span className="font-bold text-primary">OilCoins</span> через биржу для покупки новых активов.
                     </p>
                   </div>
@@ -849,7 +849,7 @@ const GameGuide = () => {
                   Зачем нужны три вида валюты?
                 </h3>
                 <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Система из трёх валют создаёт многоуровневую экономику: <strong>Баррели</strong> вы добываете скважинами, 
+                  Система из трёх валют создаёт многоуровневую экономику: <strong>BBL</strong> вы добываете скважинами, 
                   <strong>OilCoins</strong> получаете за обмен и используете для покупок в игре, а <strong>Рубли</strong> - это реальная 
                   валюта, которую можно вывести. Такая система делает игру интереснее и даёт больше возможностей для стратегии.
                 </p>
@@ -862,7 +862,7 @@ const GameGuide = () => {
                   Как получить OilCoins?
                 </h3>
                 <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Есть несколько способов: обменять баррели на OilCoins в разделе "Обмен валют", получить в награду за достижения, 
+                  Есть несколько способов: обменять BBL на OilCoins в разделе "Обмен валют", получить в награду за достижения, 
                   открыть в ежедневных сундуках, получить бонусы от рефералов или просто пополнить баланс. OilCoins нужны для покупки 
                   скважин, бустеров и участия в розыгрышах.
                 </p>
@@ -891,7 +891,7 @@ const GameGuide = () => {
                   Курсы обмена фиксированные и прозрачные:
                 </p>
                 <ul className="space-y-2 text-white/90 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <li>• <strong>Баррели → OilCoins:</strong> курс зависит от текущих настроек игры</li>
+                  <li>• <strong>BBL → OilCoins:</strong> курс зависит от текущих настроек игры</li>
                   <li>• <strong>OilCoins ⇄ Рубли:</strong> 1 OC = 1 ₽ (обмен в обе стороны)</li>
                 </ul>
               </div>
@@ -900,12 +900,12 @@ const GameGuide = () => {
               <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
                 <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                   <Clock className="h-5 w-5 text-orange-500" />
-                  Как часто можно собирать баррели?
+                  Как часто можно собирать BBL?
                 </h3>
                 <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Баррели накапливаются автоматически от ваших скважин 24/7. Собирать их можно в любое время без ограничений - 
-                  просто заходите в игру и нажимайте кнопку "Собрать баррели". Рекомендуется заходить минимум раз в день, чтобы 
-                  не терять накопленные баррели и не пропускать ежедневные бонусы.
+                  BBL накапливаются автоматически от ваших скважин 24/7. Собирать их можно в любое время без ограничений - 
+                  просто заходите в игру и нажимайте кнопку "Собрать BBL". Рекомендуется заходить минимум раз в день, чтобы 
+                  не терять накопленные BBL и не пропускать ежедневные бонусы.
                 </p>
               </div>
 
@@ -913,12 +913,12 @@ const GameGuide = () => {
               <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
                 <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                   <Gem className="h-5 w-5 text-purple-500" />
-                  Что лучше: копить баррели или сразу обменивать?
+                  Что лучше: копить BBL или сразу обменивать?
                 </h3>
                 <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Зависит от вашей стратегии! Если вы хотите быстро купить новую скважину или бустер - обменивайте баррели на OilCoins 
-                  сразу. Если у вас уже есть хороший доход и вы играете долгосрочно - можете копить баррели и обменивать крупными 
-                  суммами. Помните: баррели не теряются и не обесцениваются, так что выбор за вами!
+                  Зависит от вашей стратегии! Если вы хотите быстро купить новую скважину или бустер - обменивайте BBL на OilCoins 
+                  сразу. Если у вас уже есть хороший доход и вы играете долгосрочно - можете копить BBL и обменивать крупными 
+                  суммами. Помните: BBL не теряются и не обесцениваются, так что выбор за вами!
                 </p>
               </div>
 
@@ -929,7 +929,7 @@ const GameGuide = () => {
                   Можно ли потерять валюту?
                 </h3>
                 <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Нет, вся ваша валюта в безопасности! Баррели, OilCoins и рубли хранятся на вашем аккаунте и никуда не пропадут. 
+                  Нет, вся ваша валюта в безопасности! BBL, OilCoins и рубли хранятся на вашем аккаунте и никуда не пропадут.
                   Единственный способ потратить валюту - это сделать покупку или обмен самостоятельно. Даже если вы долго не заходите 
                   в игру, ваши средства остаются нетронутыми.
                 </p>
