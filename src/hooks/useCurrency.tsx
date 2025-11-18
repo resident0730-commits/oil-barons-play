@@ -14,16 +14,16 @@ export interface CurrencyConfig {
 }
 
 const DEFAULT_CONFIG: CurrencyConfig = {
-  barrel_name: 'Баррель',
-  barrel_symbol: '🛢️',
-  oilcoin_name: 'ОилКоин',
-  oilcoin_symbol: '💰',
-  ruble_name: 'Рубль',
+  barrel_name: 'Barrel',
+  barrel_symbol: 'BBL',
+  oilcoin_name: 'OilCoin',
+  oilcoin_symbol: 'OC',
+  ruble_name: 'Ruble',
   ruble_symbol: '₽',
   // Алиасы для обратной совместимости
-  game_currency_symbol: '💰',
+  game_currency_symbol: 'OC',
   real_currency_symbol: '₽',
-  exchange_rate: '1 рубль = 1 ОилКоин'
+  exchange_rate: '1 ₽ = 1 OC'
 };
 
 export const useCurrency = () => {
@@ -47,7 +47,7 @@ export const useCurrency = () => {
           // Ensure backward compatibility aliases
           game_currency_symbol: config.oilcoin_symbol || config.game_currency_symbol || DEFAULT_CONFIG.oilcoin_symbol,
           real_currency_symbol: config.ruble_symbol || config.real_currency_symbol || DEFAULT_CONFIG.ruble_symbol,
-          exchange_rate: '1 рубль = 1 ОилКоин'
+          exchange_rate: '1 ₽ = 1 OC'
         });
       } else {
         setCurrencyConfig(DEFAULT_CONFIG);
@@ -95,8 +95,8 @@ export const useCurrency = () => {
   const formatGameCurrency = formatOilCoins;
   const formatRealCurrency = formatRubles;
   const formatGameCurrencyWithName = formatOilCoinsWithName;
-  const getGameCurrencyDescription = () => "Основная игровая валюта для покупки скважин и улучшений";
-  const getExchangeDescription = () => "1 рубль = 1 ОилКоин, фиксированный курс";
+  const getGameCurrencyDescription = () => "Main game currency for purchasing wells and upgrades";
+  const getExchangeDescription = () => "1 ₽ = 1 OC, fixed rate";
   const getRealCurrencyName = () => currencyConfig.ruble_name;
 
   return {
