@@ -188,10 +188,10 @@ const Index = () => {
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
-              Игровой рубль
+              Игровая валюта
             </h2>
             <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Виртуальная валюта для развития вашей нефтяной империи
+              OilCoins и рубли - полноценная экономическая система. 1 OC = 1 рубль
             </p>
           </div>
           
@@ -216,7 +216,7 @@ const Index = () => {
                   <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Курс обмена</h3>
                   <div className="flex items-center gap-4 mb-4 justify-center">
                     <span className="text-6xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)] whitespace-nowrap">
-                      1 ₽
+                      1 OC
                     </span>
                     <span className="text-5xl font-bold text-cyan-300 drop-shadow-[0_0_20px_rgba(34,211,238,0.6)]">
                       =
@@ -226,7 +226,7 @@ const Index = () => {
                     </span>
                   </div>
                   <p className="text-lg text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    {getExchangeDescription()}
+                    1 OilCoin всегда равен 1 игровому рублю. Простой и понятный обмен валют
                   </p>
                 </CardContent>
               </Card>
