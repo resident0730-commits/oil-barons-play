@@ -173,22 +173,22 @@ const GameGuide = () => {
     {
       level: "1 → 2",
       cost: "50% от цены скважины",
-      effect: "+20% к доходу",
-      example: `Стартовая скважина: ${formatGameCurrency(500)} → добыча 44 → 53 BBL/день`,
+      effect: "+50% к доходу",
+      example: `Стартовая скважина: ${formatGameCurrency(1000)} → добыча 44,000 → 66,000 BBL/день`,
       gradient: "from-yellow-500 to-amber-600"
     },
     {
       level: "2 → 3", 
       cost: "60% от цены скважины",
-      effect: "+20% к новому доходу",
-      example: `Средняя скважина: ${formatGameCurrency(1800)} → добыча 72 → 86 BBL/день`,
+      effect: "+50% к доходу",
+      example: `Средняя скважина: ${formatGameCurrency(1800)} → добыча 108,000 → 162,000 BBL/день`,
       gradient: "from-amber-500 to-orange-500"
     },
     {
       level: "3 → 4",
       cost: "72% от цены скважины", 
-      effect: "+20% к новому доходу",
-      example: `Промышленная: ${formatGameCurrency(4680)} → добыча 130 → 156 BBL/день`,
+      effect: "+50% к доходу",
+      example: `Промышленная: ${formatGameCurrency(3600)} → добыча 260,000 → 390,000 BBL/день`,
       gradient: "from-orange-500 to-amber-600"
     }
   ];
@@ -198,21 +198,21 @@ const GameGuide = () => {
       icon: <Target className="h-8 w-8 text-white" />,
       title: "Стратегия новичка",
       description: "Начните с 3-5 стартовых скважин, затем переходите к средним",
-      details: `Стартовые скважины дают быструю окупаемость за 4.5 дня. Накопив ${formatGameCurrency(15000)}, покупайте средние скважины.`,
+      details: `Стартовые скважины дают хорошую добычу 44,000 BBL/день. Накопив ${formatGameCurrency(15000)}, покупайте средние скважины для 72,000 BBL/день.`,
       gradient: "from-yellow-500 to-amber-500"
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-white" />,
       title: "Средний уровень",
       description: "Комбинируйте улучшения скважин с покупкой постоянных бустеров",
-      details: "Улучшайте скважины до 3-4 уровня, покупайте бригаду рабочих для +10-30% ко всему доходу.",
+      details: "Улучшайте скважины до 3-4 уровня, покупайте бригаду рабочих для увеличения добычи на +10-30% BBL.",
       gradient: "from-amber-500 to-orange-500"
     },
     {
       icon: <Crown className="h-8 w-8 text-white" />,
       title: "Продвинутая игра",
       description: "Инвестируйте в элитные скважины и дорогие бустеры",
-      details: "Элитные скважины + продвинутое оборудование могут дать +25% к огромному доходу.",
+      details: "Элитные скважины + продвинутое оборудование могут добавить +25% BBL к вашей добыче.",
       gradient: "from-orange-500 to-amber-600"
     }
   ];
@@ -498,11 +498,8 @@ const GameGuide = () => {
                       {well.income}
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between text-base md:text-lg">
-                    <span className="text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стоимость: {well.price}</span>
-                    <span className="text-white font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      Окупаемость: {Math.round(parseInt(well.price.replace(/[^\d]/g, '')) / parseInt(well.income.replace(/[^\d]/g, '')))} дней
-                    </span>
+                  <div className="text-center">
+                    <span className="text-white text-lg [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стоимость: {well.price}</span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -544,7 +541,7 @@ const GameGuide = () => {
               <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
                 <p className="text-base md:text-lg text-white mb-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
                   <Wrench className="h-5 w-5" />
-                  Каждое улучшение увеличивает доход скважины на 20%
+                  Каждое улучшение увеличивает добычу скважины на 50%
                 </p>
                 <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
                   <BarChart3 className="h-5 w-5" />
@@ -585,8 +582,8 @@ const GameGuide = () => {
                   Когда улучшать?
                 </p>
                 <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Улучшайте скважины когда у вас стабильный доход {formatGameCurrency(2000)}+ в день. 
-                  Улучшение окупается за 5-10 дней, но дает прибыль навсегда!
+                  Улучшайте скважины когда у вас стабильная добыча 50,000+ BBL в день. 
+                  Улучшение дает постоянный прирост добычи на +50%!
                 </p>
               </div>
             </CardContent>
@@ -654,19 +651,19 @@ const GameGuide = () => {
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-3 gap-4 text-center">
                 <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При доходе {formatGameCurrency(1000)}/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Бригада 1 ур. → +{formatGameCurrency(100)}/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Окупается за 10 дней</p>
+                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 25,000 BBL/день</p>
+                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Бригада 1 ур. → +2,500 BBL/день</p>
+                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+10% к добыче</p>
                 </div>
                 <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При доходе {formatGameCurrency(5000)}/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Оборудование 1 ур. → +{formatGameCurrency(1250)}/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Окупается за 4 дня</p>
+                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 120,000 BBL/день</p>
+                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Оборудование 1 ур. → +30,000 BBL/день</p>
+                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+25% к добыче</p>
                 </div>
                 <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При доходе {formatGameCurrency(10000)}/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Все бустеры → +{formatGameCurrency(7000)}/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Окупается за 2-3 дня</p>
+                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 240,000 BBL/день</p>
+                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Все бустеры → +168,000 BBL/день</p>
+                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+70% к добыче</p>
                 </div>
               </div>
               <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
@@ -675,7 +672,7 @@ const GameGuide = () => {
                   Совет эксперта:
                 </p>
                 <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Бустеры эффективнее при высоком доходе! Если у вас менее {formatGameCurrency(2000)}/день - сначала купите больше скважин.
+                  Бустеры эффективнее при высокой добыче! Если у вас менее 50,000 BBL/день - сначала купите больше скважин.
                 </p>
               </div>
             </CardContent>
@@ -790,9 +787,9 @@ const GameGuide = () => {
                     Математика прибыли
                   </h3>
                   <div className="space-y-2 text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <p><strong>ROI скважин:</strong> Стартовая 22%, Средняя 12%, Промышленная 10%</p>
-                    <p><strong>Лучший ROI:</strong> Улучшения скважин (20% за 5-10 дней окупаемости)</p>
-                    <p><strong>Бустеры:</strong> Эффективны при доходе {formatGameCurrency(3000)}+ в день</p>
+                    <p><strong>Добыча скважин:</strong> Стартовая 44K, Средняя 72K, Промышленная 130K BBL/день</p>
+                    <p><strong>Лучшая инвестиция:</strong> Улучшения скважин (+50% к добыче навсегда)</p>
+                    <p><strong>Бустеры:</strong> Эффективны при добыче 70,000+ BBL/день</p>
                     <p><strong>Турбо-буст:</strong> Используйте когда планируете быть онлайн 24 часа</p>
                   </div>
                 </div>
@@ -802,10 +799,10 @@ const GameGuide = () => {
                     Тайминг решений
                   </h3>
                   <div className="space-y-2 text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <p><strong>0-{formatGameCurrency(1000)}/день:</strong> Покупайте только стартовые скважины</p>
-                    <p><strong>{formatGameCurrency(1000)}-{formatGameCurrency(5000)}/день:</strong> Переходите на средние скважины</p>
-                    <p><strong>{formatGameCurrency(5000)}+ в день:</strong> Улучшайте существующие + бустеры</p>
-                    <p><strong>{formatGameCurrency(20000)}+ в день:</strong> Элитные скважины + все бустеры</p>
+                    <p><strong>0-25,000 BBL/день:</strong> Покупайте только стартовые скважины</p>
+                    <p><strong>25,000-120,000 BBL/день:</strong> Переходите на средние скважины</p>
+                    <p><strong>120,000+ BBL/день:</strong> Улучшайте существующие + бустеры</p>
+                    <p><strong>480,000+ BBL/день:</strong> Элитные скважины + все бустеры</p>
                   </div>
                 </div>
               </div>
