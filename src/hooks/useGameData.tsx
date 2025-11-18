@@ -637,14 +637,18 @@ export function useGameData() {
     }
 
     try {
+      // Calculate income for level 1 using the same formula as upgrades
+      const level = 1;
+      const dailyIncome = Math.floor(wellType.baseIncome * (1 + (level - 1) * 0.5));
+      
       // Create well record
       const { error: wellError } = await supabase
         .from('wells')
         .insert({
           user_id: user.id,
           well_type: wellType.name,
-          level: 1,
-          daily_income: wellType.baseIncome
+          level: level,
+          daily_income: dailyIncome
         });
 
       if (wellError) throw wellError;
@@ -685,12 +689,16 @@ export function useGameData() {
         const wellType = wellTypes.find(wt => wt.name === type);
         if (!wellType) throw new Error(`Well type ${type} not found`);
         
+        // Calculate income for level 1 using the same formula as upgrades
+        const level = 1;
+        const dailyIncome = Math.floor(wellType.baseIncome * (1 + (level - 1) * 0.5));
+        
         return Array.from({ length: count }, () =>
           supabase.from('wells').insert({
             user_id: user.id,
             well_type: wellType.name,
-            level: 1,
-            daily_income: wellType.baseIncome
+            level: level,
+            daily_income: dailyIncome
           })
         );
       }).flat();
