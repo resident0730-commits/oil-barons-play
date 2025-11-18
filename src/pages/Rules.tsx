@@ -2,14 +2,13 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Coins, Gift, Zap, Trophy, Shield, Heart, Sparkles, ArrowLeft, Home, Users, Award, Crown, Star } from 'lucide-react';
+import { Coins, Gift, Zap, Trophy, Shield, Heart, Sparkles, ArrowLeft, Home, Users, Award, Star, Fuel, TrendingUp, BarChart3, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Rules() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
-        {/* Navigation Header */}
         <div className="flex items-center justify-between">
           <Link to="/">
             <Button variant="ghost" className="flex items-center gap-2">
@@ -32,7 +31,6 @@ export default function Rules() {
           </p>
         </div>
 
-        {/* Основные принципы */}
         <Card className="gradient-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -64,620 +62,144 @@ export default function Rules() {
           </CardContent>
         </Card>
 
-        {/* Трехвалютная система */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Coins className="h-5 w-5 text-yellow-500" />
-              Трехвалютная экономическая система
+              Трехвалютная система
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              В игре работает продвинутая экономическая модель с тремя типами валют, каждая из которых имеет свою роль:
-            </p>
-            
             <div className="grid md:grid-cols-3 gap-4">
-              {/* Barrels */}
               <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-lg p-4 border border-amber-500/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">BBL</Badge>
-                  <h4 className="font-semibold">Barrels</h4>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Производственная валюта. Добывается скважинами автоматически каждый день.
-                </p>
+                <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 mb-2">BBL</Badge>
+                <h4 className="font-semibold mb-2">Barrels</h4>
+                <p className="text-sm text-muted-foreground mb-3">Производственная валюта, добывается скважинами 24/7</p>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>• Добыча: 20-1440 BBL/день</li>
-                  <li>• Источник: скважины + бустеры</li>
-                  <li>• Обмен: можно конвертировать</li>
+                  <li>• Добыча: 20,000-1,440,000 BBL/день</li>
+                  <li>• Обмен: минимум 1,000 BBL</li>
                 </ul>
               </div>
-
-              {/* OilCoins */}
               <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30">OC</Badge>
-                  <h4 className="font-semibold">OilCoins</h4>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Основная игровая валюта для покупки скважин, бустеров и улучшений.
-                </p>
+                <Badge className="bg-green-500/20 text-green-300 border-green-500/30 mb-2">OC</Badge>
+                <h4 className="font-semibold mb-2">OilCoins</h4>
+                <p className="text-sm text-muted-foreground mb-3">Основная игровая валюта</p>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>• Стартовый бонус: 1000 OC</li>
-                  <li>• Ежедневный бонус: 100 OC</li>
-                  <li>• Получение: обмен или пополнение</li>
+                  <li>• Стартовый: 1,000 OC</li>
+                  <li>• Обмен BBL или покупка</li>
                 </ul>
               </div>
-
-              {/* Rubles */}
               <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-lg p-4 border border-blue-500/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">₽</Badge>
-                  <h4 className="font-semibold">Rubles</h4>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Премиум валюта для пополнения баланса и обмена на игровую валюту.
-                </p>
+                <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 mb-2">₽</Badge>
+                <h4 className="font-semibold mb-2">Rubles</h4>
+                <p className="text-sm text-muted-foreground mb-3">Премиум валюта</p>
                 <ul className="space-y-1 text-xs text-muted-foreground">
-                  <li>• Пополнение: реальными деньгами</li>
-                  <li>• Курс обмена: 1₽ = 1 OC</li>
-                  <li>• Вывод: доступен при условиях</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-secondary/20 rounded-lg p-4 space-y-3">
-              <h4 className="font-semibold">Как работает экономика:</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p>
-                  <strong className="text-foreground">1. Добыча:</strong> Ваши скважины производят Barrels (BBL) каждый день автоматически
-                </p>
-                <p>
-                  <strong className="text-foreground">2. Обмен:</strong> Конвертируйте BBL в OilCoins через виджет обмена по текущему курсу
-                </p>
-                <p>
-                  <strong className="text-foreground">3. Развитие:</strong> Покупайте новые скважины и бустеры за OilCoins
-                </p>
-                <p>
-                  <strong className="text-foreground">4. Пополнение:</strong> Пополняйте Rubles и обменивайте на OC (1₽ = 1 OC)
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Реферальная система */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-500" />
-              Реферальная система
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Приглашайте друзей и зарабатывайте вместе! Взаимовыгодная система, где все остаются в плюсе.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-3">Для реферера (кто приглашает):</h4>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <Badge variant="secondary">10%</Badge>
-                    <span>От всех доходов рефералов навсегда</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">5 рефералов</Badge>
-                    <span>Бесплатная Starter Well</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">15 рефералов</Badge>
-                    <span>Turbo Boost на 30 дней</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">50 рефералов</Badge>
-                    <span>Premium Well бесплатно</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">100 рефералов</Badge>
-                    <span>VIP статус с особыми привилегиями</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-3">Для реферала (кого пригласили):</h4>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <Badge variant="secondary">+50%</Badge>
-                    <span>К доходу от всех скважин на 7 дней</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">Обычный старт</Badge>
-                    <span>1,000 игровых рублей стартовый капитал</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Badge variant="outline">Ускоренный рост</Badge>
-                    <span>Быстрое развитие благодаря бонусу</span>
-                  </li>
-                </ul>
-                
-                <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                  <h5 className="font-semibold text-blue-700 dark:text-blue-300 text-sm">
-                    📋 Как использовать код?
-                  </h5>
-                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                    Введите реферальный код друга в разделе "Рефералы" в игре
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Система достижений */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Award className="h-5 w-5 text-yellow-500" />
-              Система достижений
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Выполняйте задания и получайте награды! 13 уникальных достижений в 4 категориях.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-3 flex items-center gap-2">
-                  🏭 Категория "Магнат"
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Первая скважина</span>
-                    <Badge variant="outline">+500 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Миллионер</span>
-                    <Badge variant="outline">+10,000 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Промышленник (10 скважин)</span>
-                    <Badge variant="outline">Бустер</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Нефтяной король</span>
-                    <Badge variant="outline">Статус +5%</Badge>
-                  </div>
-                </div>
-                
-                <h4 className="font-semibold mb-3 mt-4 flex items-center gap-2">
-                  🎯 Категория "Коллекционер"
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Разнообразие (все типы скважин)</span>
-                    <Badge variant="outline">+5,000 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Мастер усилителей</span>
-                    <Badge variant="outline">+3,000 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Крупный покупатель</span>
-                    <Badge variant="outline">20% скидка</Badge>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-3 flex items-center gap-2">
-                  📅 Категория "Активность"
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Постоянство (30 дней подряд)</span>
-                    <Badge variant="outline">+15,000 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Везунчик (100 бонусов)</span>
-                    <Badge variant="outline">Бустер</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Лидер (топ-10)</span>
-                    <Badge variant="outline">Статус +3%</Badge>
-                  </div>
-                </div>
-                
-                <h4 className="font-semibold mb-3 mt-4 flex items-center gap-2">
-                  🤝 Категория "Социальная"
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Наставник (10 рефералов)</span>
-                    <Badge variant="outline">+25,000 ₽</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Амбассадор (100 рефералов)</span>
-                    <Badge variant="outline">Статус +10%</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">Помощник (10 тикетов)</span>
-                    <Badge variant="outline">+2,000 ₽</Badge>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Система статусов */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Crown className="h-5 w-5 text-purple-500" />
-              Система статусов и бонусов
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Эксклюзивные статусы дают постоянные бонусы к доходности. Получайте через достижения!
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-3">Статусы доходности:</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Crown className="h-4 w-4 text-yellow-500" />
-                      <span className="text-sm font-medium">Нефтяной король</span>
-                    </div>
-                    <Badge variant="secondary">+5% доход</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Trophy className="h-4 w-4 text-purple-500" />
-                      <span className="text-sm font-medium">Лидер</span>
-                    </div>
-                    <Badge variant="secondary">+3% доход</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-green-500" />
-                      <span className="text-sm font-medium">Промышленник</span>
-                    </div>
-                    <Badge variant="secondary">+2% доход</Badge>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-3">Социальные статусы:</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-blue-500" />
-                      <span className="text-sm font-medium">Амбассадор</span>
-                    </div>
-                    <Badge variant="secondary">+10% реф. бонус</Badge>
-                  </div>
-                </div>
-                
-                <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-                  <h5 className="font-semibold text-purple-700 dark:text-purple-300 text-sm mb-2">
-                    ✨ Как работают статусы?
-                  </h5>
-                  <ul className="text-xs text-purple-600 dark:text-purple-400 space-y-1">
-                    <li>• Статусы получаются автоматически за достижения</li>
-                    <li>• Бонусы к доходности применяются ко всем скважинам</li>
-                    <li>• Эффекты суммируются с бустерами</li>
-                    <li>• Статусы действуют постоянно</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Скважины */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-orange-500" />
-              Система скважин
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-3">Доступные скважины:</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">🌱 Мини-скважина</span>
-                    <div className="text-right">
-                      <Badge variant="outline">1,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+20 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">🔸 Стартовая скважина</span>
-                    <div className="text-right">
-                      <Badge variant="outline">2,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+44 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">⚡ Средняя скважина</span>
-                    <div className="text-right">
-                       <Badge variant="outline">3,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+72 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">🏭 Промышленная</span>
-                    <div className="text-right">
-                      <Badge variant="outline">5,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+130 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">💎 Супер скважина</span>
-                    <div className="text-right">
-                      <Badge variant="outline">8,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+224 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">👑 Премиум скважина</span>
-                    <div className="text-right">
-                      <Badge variant="outline">12,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+360 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">💠 Элитная скважина</span>
-                    <div className="text-right">
-                      <Badge variant="outline">18,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+576 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">🌟 Легендарная</span>
-                    <div className="text-right">
-                      <Badge variant="outline">27,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+918 ₽/день</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">🚀 Космическая</span>
-                    <div className="text-right">
-                      <Badge variant="outline">40,000 ₽</Badge>
-                      <div className="text-xs text-green-600">+1,440 ₽/день</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-3">Особенности:</h4>
-                <ul className="space-y-2 text-sm">
-                  <li>• Улучшение повышает доходность скважин в день</li>
-                  <li>• Каждая скважина приносит доход ежедневно</li>
-                  <li>• Более дорогие скважины = больше дохода</li>
-                  <li>• Доход накапливается автоматически</li>
-                  <li>• Максимальный уровень зависит от типа скважины</li>
+                  <li>• Курс: 1₽ = 1 OC</li>
+                  <li>• Вывод: от 500₽</li>
                 </ul>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Бустеры */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-500" />
-              Система бустеров
+              <Fuel className="h-5 w-5 text-orange-500" />
+              Типы скважин
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Улучшения, которые повышают эффективность ваших скважин и дают дополнительные преимущества.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold mb-3">Постоянные бустеры:</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">👥 Квалифицированная бригада</span>
-                    <div className="text-right">
-                      <Badge variant="outline">5,000+ ₽</Badge>
-                      <div className="text-xs text-green-600">+10% за уровень</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">📊 Геологические исследования</span>
-                    <div className="text-right">
-                      <Badge variant="outline">8,000+ ₽</Badge>
-                      <div className="text-xs text-green-600">+15% за уровень</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">⚙️ Современное оборудование</span>
-                    <div className="text-right">
-                      <Badge variant="outline">15,000+ ₽</Badge>
-                      <div className="text-xs text-green-600">+25% за уровень</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">✨ Автоматизация</span>
-                    <div className="text-right">
-                      <Badge variant="outline">20,000+ ₽</Badge>
-                      <div className="text-xs text-green-600">+20% за уровень</div>
-                    </div>
-                  </div>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-3">
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Мини</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">1,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">20K BBL/день</p>
                 </div>
               </div>
-              
-              <div>
-                <h4 className="font-semibold mb-3">Временные бустеры:</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-secondary/20 rounded">
-                    <span className="text-sm">⚡ Турбо режим</span>
-                    <div className="text-right">
-                      <Badge variant="outline">3,000 ₽</Badge>
-                      <div className="text-xs text-muted-foreground">+50% на 24 часа</div>
-                    </div>
-                  </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Стартовая</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">2,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">44K BBL/день</p>
                 </div>
-                
-                <h4 className="font-semibold mb-3 mt-4">Особенности:</h4>
-                <ul className="space-y-1 text-sm">
-                  <li>• Постоянные бустеры можно улучшать до максимального уровня</li>
-                  <li>• Временные бустеры действуют ограниченное время</li>
-                  <li>• Эффекты бустеров суммируются</li>
-                  <li>• Доступ к бустерам через иконку ✨ в меню</li>
-                </ul>
               </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Средняя</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">3,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">72K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Промышленная</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">5,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">130K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Супер</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">8,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">224K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Премиум</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">12,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">360K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Элитная</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">18,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">576K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-secondary/20 rounded">
+                <span className="text-sm font-medium">Легендарная</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1">27,000 OC</Badge>
+                  <p className="text-xs text-muted-foreground">918K BBL/день</p>
+                </div>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded border border-purple-500/20 md:col-span-2">
+                <span className="text-sm font-medium">Космическая</span>
+                <div className="text-right">
+                  <Badge variant="outline" className="mb-1 border-purple-500/30">40,000 OC</Badge>
+                  <p className="text-xs text-purple-400">1,440K BBL/день</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mt-4">
+              <h5 className="font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-2 mb-2">
+                <TrendingUp className="h-4 w-4" />
+                Улучшения: +50% к добыче за уровень
+              </h5>
             </div>
           </CardContent>
         </Card>
 
-        {/* Пакеты */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-purple-500" />
-              Пакеты скважин
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
-              Экономьте на покупке сразу нескольких скважин! Пакеты дают скидку до 24%.
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  🎯 Стартовый пакет
-                </h4>
-                <p className="text-sm text-muted-foreground mb-2">
-                  3 мини-скважины + 1 стартовая скважина
-                </p>
-                <div className="text-sm space-y-1">
-                  <div className="flex justify-between">
-                    <span>Обычная цена:</span>
-                    <span className="line-through">5,000 ₽</span>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Со скидкой:</span>
-                    <Badge variant="secondary">3,800 ₽ (-24%)</Badge>
-                  </div>
-                  <div className="text-green-600 text-xs">
-                    Доход: +104 ₽/день
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  📈 Пакет роста
-                </h4>
-                <p className="text-sm text-muted-foreground mb-2">
-                  2 стартовые + 2 средние + 1 промышленная скважина
-                </p>
-                <div className="text-sm space-y-1">
-                  <div className="flex justify-between">
-                    <span>Обычная цена:</span>
-                    <span className="line-through">16,000 ₽</span>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Со скидкой:</span>
-                    <Badge variant="secondary">12,500 ₽ (-22%)</Badge>
-                  </div>
-                  <div className="text-green-600 text-xs">
-                    Доход: +290 ₽/день
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  💼 Бизнес пакет
-                </h4>
-                <p className="text-sm text-muted-foreground mb-2">
-                  3 промышленные + 2 супер + 1 премиум скважина
-                </p>
-                <div className="text-sm space-y-1">
-                  <div className="flex justify-between">
-                    <span>Обычная цена:</span>
-                    <span className="line-through">55,000 ₽</span>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Со скидкой:</span>
-                    <Badge variant="secondary">42,000 ₽ (-24%)</Badge>
-                  </div>
-                  <div className="text-green-600 text-xs">
-                    Доход: +1,208 ₽/день
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-secondary/20 rounded-lg p-4">
-                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  👑 Империя пакет
-                </h4>
-                <p className="text-sm text-muted-foreground mb-2">
-                  2 премиум + 2 элитные + 1 легендарная скважина
-                </p>
-                <div className="text-sm space-y-1">
-                  <div className="flex justify-between">
-                    <span>Обычная цена:</span>
-                    <span className="line-through">96,000 ₽</span>
-                  </div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Со скидкой:</span>
-                    <Badge variant="secondary">72,000 ₽ (-25%)</Badge>
-                  </div>
-                  <div className="text-green-600 text-xs">
-                    Доход: +2,790 ₽/день
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Справедливость */}
-        <Card className="border-green-200 dark:border-green-800">
-          <CardHeader>
-            <CardTitle className="text-green-700 dark:text-green-300">
-              🎯 Честная игровая система
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="bg-green-500/10 rounded-lg p-4 space-y-2">
-              <h4 className="font-semibold">Наши гарантии:</h4>
-              <ul className="text-sm space-y-1">
-                <li>✅ Никаких обязательных платежей - все доступно бесплатно</li>
-                <li>✅ Ежедневные бонусы для всех игроков</li>
-                <li>✅ Прозрачная система доходов</li>
-                <li>✅ Возможность получить любые скважины через игру</li>
-                <li>✅ Никаких скрытых комиссий или ограничений</li>
-              </ul>
-            </div>
-            
-            <p className="text-sm text-muted-foreground text-center">
-              Игра создана для развлечения и стратегического планирования. 
-              Наслаждайтесь честной игрой! 🎮
-            </p>
-          </CardContent>
-        </Card>
+        <div className="text-center space-y-4 py-8">
+          <h2 className="text-2xl font-bold">Готовы начать?</h2>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link to="/dashboard">
+              <Button size="lg" className="gradient-gold">
+                <Star className="h-5 w-5 mr-2" />
+                Начать играть
+              </Button>
+            </Link>
+            <Link to="/guide">
+              <Button size="lg" variant="outline">
+                Читать полный гайд
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
