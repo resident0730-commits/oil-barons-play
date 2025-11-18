@@ -183,18 +183,27 @@ export const WellsSection = ({
               </div>
 
               {/* Animated Loading Bar */}
-              <div className="hidden sm:flex flex-1 items-center justify-center px-4">
-                <div className="relative w-full max-w-xs h-2 bg-oil-bronze/20 rounded-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oil-amber to-transparent animate-shine opacity-60"></div>
-                  <div className="absolute inset-0 flex gap-1">
-                    {[...Array(8)].map((_, i) => (
+              <div className="hidden sm:flex flex-1 items-center justify-center px-6">
+                <div className="relative w-full max-w-md h-4 bg-gradient-to-r from-oil-bronze/10 via-oil-bronze/20 to-oil-bronze/10 rounded-full overflow-hidden shadow-inner">
+                  {/* Shining overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-oil-gold-light to-transparent animate-shine opacity-80"></div>
+                  
+                  {/* Pulsing bars */}
+                  <div className="absolute inset-0 flex gap-1 px-1">
+                    {[...Array(12)].map((_, i) => (
                       <div
                         key={i}
-                        className="flex-1 bg-oil-amber/40 rounded-full animate-pulse"
-                        style={{ animationDelay: `${i * 0.15}s` }}
+                        className="flex-1 bg-gradient-to-t from-oil-amber via-oil-gold-light to-oil-amber rounded-full animate-pulse shadow-lg"
+                        style={{ 
+                          animationDelay: `${i * 0.1}s`,
+                          animationDuration: '1.5s'
+                        }}
                       />
                     ))}
                   </div>
+                  
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-oil-amber/0 via-oil-amber/40 to-oil-amber/0 animate-pulse opacity-60"></div>
                 </div>
               </div>
 
