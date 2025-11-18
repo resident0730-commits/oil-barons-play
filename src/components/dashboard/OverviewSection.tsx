@@ -129,9 +129,21 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
             <CardTitle className="text-sm font-medium">Баланс</CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{profile.balance.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">{formatGameCurrencyWithName(0).split(' ')[1]}</p>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs text-muted-foreground">Рубли:</span>
+                <span className="text-lg font-bold">{profile.ruble_balance.toLocaleString()} ₽</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs text-muted-foreground">OilCoins:</span>
+                <span className="text-lg font-bold text-amber-500">{profile.oilcoin_balance.toLocaleString()} OC</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-xs text-muted-foreground">Баррели:</span>
+                <span className="text-lg font-bold text-blue-400">{profile.barrel_balance.toLocaleString()} BBL</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
