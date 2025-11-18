@@ -4,14 +4,10 @@ import {
   Fuel, 
   BarChart3,
   ShoppingCart, 
-  Zap,
-  Sparkles,
   Calendar,
-  History,
-  Trophy,
   Wallet,
-  Calculator,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Building2
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -27,29 +23,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
 import DailyChest from "@/components/DailyChest";
 import { DailyBonus } from "@/components/DailyBonus";
-import { GameSection } from "@/components/GameSection";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
 import { WellsSection } from "@/components/dashboard/WellsSection";
-import { ShopSection } from "@/components/dashboard/ShopSection";
 import { TopUpModal } from "@/components/dashboard/TopUpModal";
-import { PaymentHistory } from "@/components/dashboard/PaymentHistory";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import { LoadingScreen } from "@/components/LoadingScreen";
-import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
 import { ExchangeWidget } from "@/components/ExchangeWidget";
 
-// Import hero images
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
-  const { profile, wells, loading, buyWell, buyPackage, buyWellPackage, upgradeWell, addIncome, boosters, getActiveBoosterMultiplier, cancelBooster, reload } = useGameData();
-  const { getPlayerRank, loading: leaderboardLoading } = useLeaderboard();
+  const { profile, wells, loading, buyWell, buyWellPackage, upgradeWell, addIncome, boosters, reload } = useGameData();
+  const { getPlayerRank } = useLeaderboard();
   const { checkAchievements } = useAchievements();
   const { referralMultiplier, updateReferralEarnings } = useReferrals();
-  const { formatOilCoins, formatOilCoinsWithName } = useCurrency();
+  const { formatOilCoins } = useCurrency();
   const formatGameCurrency = formatOilCoins;
   
   const { toast } = useToast();
@@ -57,10 +48,9 @@ const Dashboard = () => {
   const sounds = useSound();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
-  const [isBoosterShopOpen, setIsBoosterShopOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'overview' | 'wells' | 'shop' | 'boosters' | 'daily' | 'balance' | 'calculator' | 'exchange'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'exchange' | 'shop' | 'daily'>('overview');
+  const [overviewTab, setOverviewTab] = useState<'balance' | 'empire' | 'wells'>('balance');
 
-  // Обработка результата платежа
   useEffect(() => {
     const paymentStatus = searchParams.get('payment');
     const outSum = searchParams.get('OutSum');
@@ -73,7 +63,6 @@ const Dashboard = () => {
         handlePaymentFailure();
       }
       
-      // Очищаем URL параметры
       const newParams = new URLSearchParams(searchParams);
       newParams.delete('payment');
       newParams.delete('OutSum');
@@ -83,14 +72,12 @@ const Dashboard = () => {
     }
   }, [searchParams, user]);
 
-  // Обработка параметра section для навигации
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'wells', 'shop', 'boosters', 'daily', 'balance', 'calculator', 'exchange'];
+      const validSections = ['overview', 'exchange', 'shop', 'daily'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
-        // Очищаем параметр section из URL
         const newParams = new URLSearchParams(searchParams);
         newParams.delete('section');
         setSearchParams(newParams, { replace: true });
@@ -105,7 +92,6 @@ const Dashboard = () => {
       const amount = parseFloat(outSum);
       if (amount <= 0) return;
 
-      // Перезагружаем профиль для обновления баланса
       await reload();
       
       toast({
@@ -134,27 +120,7 @@ const Dashboard = () => {
     sounds.error();
   };
 
-  // Ждем реальный профиль - не используем дефолтные значения
   const currentProfile = profile;
-
-  // Memoized utility functions for performance
-  const getWellIcon = useCallback((wellTypeName: string) => {
-    const wellType = wellTypes.find(wt => wt.name === wellTypeName);
-    if (!wellType) return <Fuel className="h-5 w-5" />;
-    
-    return (
-      <div className="relative">
-        <img 
-          src={wellType.image} 
-          alt={wellType.name}
-          className="w-24 h-24 rounded-lg object-cover border-2 border-primary/20"
-        />
-        <div className={`absolute -top-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${getRarityColor(wellType.rarity)}`}>
-          {wellType.icon}
-        </div>
-      </div>
-    );
-  }, []);
 
   const getRarityColor = useCallback((rarity: string) => {
     switch (rarity) {
@@ -168,32 +134,6 @@ const Dashboard = () => {
     }
   }, []);
 
-  const getRarityBadgeColor = useCallback((rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'bg-slate-100 text-slate-800 border-slate-300';
-      case 'uncommon': return 'bg-green-100 text-green-800 border-green-300';
-      case 'rare': return 'bg-blue-100 text-blue-800 border-blue-300';
-      case 'epic': return 'bg-purple-100 text-purple-800 border-purple-300';
-      case 'legendary': return 'bg-orange-100 text-orange-800 border-orange-300';
-      case 'mythic': return 'bg-red-100 text-red-800 border-red-300';
-      default: return 'bg-gray-100 text-gray-800 border-gray-300';
-    }
-  }, []);
-
-  const calculateProfitMetrics = useCallback((dailyIncome: number, price: number) => {
-    const monthlyIncome = dailyIncome * 30;
-    const yearlyIncome = dailyIncome * 365;
-    const yearlyPercent = (yearlyIncome / price) * 100;
-    
-    return { monthlyIncome, yearlyIncome, yearlyPercent };
-  }, []);
-
-  const formatProfitPercent = useCallback((percent: number) => {
-    if (percent > 1000) return `${Math.round(percent / 100) * 100}%+`;
-    return `${Math.round(percent)}%`;
-  }, []);
-
-  // Check for offline income and show notification
   useEffect(() => {
     if (!currentProfile || !currentProfile.last_login) return;
     
@@ -201,56 +141,60 @@ const Dashboard = () => {
     const lastLogin = new Date(currentProfile.last_login);
     const offlineTimeMs = now.getTime() - lastLogin.getTime();
     
-    // If user was offline for more than 1 minute and has daily income
-    if (offlineTimeMs > 60000 && currentProfile.daily_income > 0) {
-      const offlineHours = Math.min(offlineTimeMs / (1000 * 60 * 60), 24);
-      const hourlyIncome = Math.floor(currentProfile.daily_income / 24);
-      const offlineIncome = hourlyIncome * Math.floor(offlineHours);
+    if (offlineTimeMs > 60000) {
+      const offlineHours = Math.floor(offlineTimeMs / (1000 * 60 * 60));
+      const maxOfflineHours = 24;
+      const actualOfflineHours = Math.min(offlineHours, maxOfflineHours);
       
-      if (offlineIncome > 0) {
-        toast({
-          title: "Добро пожаловать!",
-          description: `Вы получили ${formatGameCurrency(offlineIncome)} за ${offlineHours.toFixed(1)} часов оффлайн дохода!`,
-          duration: 5000,
-        });
+      if (actualOfflineHours > 0 && currentProfile.daily_income > 0) {
+        const offlineIncome = Math.floor((currentProfile.daily_income / 24) * actualOfflineHours);
+        
+        if (offlineIncome > 0) {
+          toast({
+            title: "Доход в ваше отсутствие!",
+            description: `За ${actualOfflineHours}ч. вы получили ${formatGameCurrency(offlineIncome)}`,
+            duration: 7000,
+          });
+          sounds.success();
+        }
       }
     }
-  }, [currentProfile?.last_login, toast]);
+  }, [currentProfile?.last_login]);
 
-  // Проверка достижений при изменении профиля, скважин или бустеров
-  useEffect(() => {
-    if (currentProfile && wells.length >= 0 && boosters) {
-      const timeoutId = setTimeout(() => {
-        checkAchievements();
-      }, 1000);
-      return () => clearTimeout(timeoutId);
+  const totalMultiplier = useMemo(() => {
+    let multiplier = 1;
+    
+    if (boosters && boosters.length > 0) {
+      boosters.forEach(booster => {
+        const now = new Date();
+        const expiresAt = booster.expires_at ? new Date(booster.expires_at) : null;
+        
+        if (!expiresAt || now < expiresAt) {
+          if (booster.booster_type === 'advanced_equipment') {
+            multiplier += 0.20;
+          } else if (booster.booster_type === 'geological_survey') {
+            multiplier += 0.15;
+          } else if (booster.booster_type === 'worker_crew') {
+            multiplier += 0.10;
+          } else if (booster.booster_type === 'automation') {
+            multiplier += 0.25;
+          } else if (booster.booster_type === 'turbo_mode') {
+            multiplier += 0.50;
+          }
+        }
+      });
     }
-  }, [currentProfile?.balance, wells.length, boosters?.length, checkAchievements]);
+    
+    return multiplier;
+  }, [boosters]);
 
-  // Инициализация стартового баланса для новых игроков
   useEffect(() => {
-    if (currentProfile && currentProfile.balance === 0 && wells.length === 0) {
-      addIncome(1000);
-    }
-  }, [currentProfile?.balance, wells.length, addIncome]);
-
-  // Redirect to auth if not logged in
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
-
-  // Simulate income generation every 10 seconds
-  useEffect(() => {
-    if (!currentProfile?.daily_income) return;
+    if (!currentProfile?.daily_income || currentProfile.daily_income <= 0) return;
 
     const interval = setInterval(() => {
-      // Исправленная формула: дневной доход / (24 часа * 60 минут * 6 интервалов по 10 сек в минуте)
-      // Но используем более точную формулу: дневной доход за 10 секунд = daily_income / (24 * 60 * 6)
-      const incomePerInterval = currentProfile.daily_income / 8640; // 24*60*6 = 8640
+      const incomePerInterval = currentProfile.daily_income / 8640;
       
-      if (incomePerInterval >= 0.01) { // Начисляем если доход хотя бы 0.01
+      if (incomePerInterval >= 0.01) {
         const totalIncome = incomePerInterval * referralMultiplier;
         const earnedAmount = totalIncome - incomePerInterval;
         
@@ -283,34 +227,6 @@ const Dashboard = () => {
       toast({
         title: "Скважина куплена!",
         description: `${wellType.name} добавлена к вашему бизнесу`,
-      });
-    } else {
-      toast({
-        title: "Ошибка покупки",
-        description: result.error,
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleBuyPackage = async (wellPackage: typeof wellPackages[0]) => {
-    if (!currentProfile) return;
-    
-    if (currentProfile.balance < wellPackage.discountedPrice) {
-      setIsTopUpOpen(true);
-      toast({
-        title: "Недостаточно средств",
-        description: `Для покупки пакета "${wellPackage.name}" нужно ${formatGameCurrency(wellPackage.discountedPrice)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const result = await buyWellPackage(wellPackage);
-    if (result.success) {
-      toast({
-        title: "Пакет куплен!",
-        description: `${wellPackage.name} добавлен к вашему бизнесу`,
       });
     } else {
       toast({
@@ -356,49 +272,52 @@ const Dashboard = () => {
   const handleTopUp = async (customAmount?: number, packageData?: any, paymentMethod = 'yookassa') => {
     let rubAmount = 0;
     let ocAmount = 0;
-    
+
     if (packageData) {
-      rubAmount = packageData.rubAmount;
-      ocAmount = packageData.totalOC;
-    } else if (customAmount) {
-      if (customAmount < 10) {
-        toast({ variant: "destructive", title: "Минимальная сумма", description: "Минимальная сумма пополнения 10 ₽" });
-        return;
-      }
+      rubAmount = packageData.price;
+      ocAmount = packageData.oilcoins;
+    } else if (customAmount && customAmount > 0) {
       rubAmount = customAmount;
       ocAmount = customAmount;
     } else {
-      toast({ variant: "destructive", title: "Укажите сумму", description: "Выберите пакет или введите сумму" });
+      toast({
+        title: "Ошибка",
+        description: "Укажите сумму пополнения",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (rubAmount < 1) {
+      toast({
+        title: "Ошибка",
+        description: "Минимальная сумма пополнения: 1₽",
+        variant: "destructive"
+      });
       return;
     }
 
     try {
-      console.log('Payment method:', paymentMethod);
+      console.log("Creating payment:", { rubAmount, ocAmount, paymentMethod });
       
-      // For Robokassa, the widget handles the payment directly
-      if (paymentMethod === 'robokassa') {
-        console.log('Robokassa payment initiated via widget');
-        // Виджет Robokassa обрабатывает платеж самостоятельно
-        // После успешной оплаты пользователь будет перенаправлен обратно
-        setIsTopUpOpen(false);
-        return;
+      let data, error;
+      
+      if (paymentMethod === 'tbank') {
+        const { data: tbankData, error: tbankError } = await supabase.functions.invoke('create-tbank-payment', {
+          body: { amount: rubAmount }
+        });
+        data = tbankData;
+        error = tbankError;
+      } else {
+        const { data: yookassaData, error: yookassaError } = await supabase.functions.invoke('create-payment', {
+          body: { amount: rubAmount }
+        });
+        data = yookassaData;
+        error = yookassaError;
       }
-      
-      // Choose function based on payment method for other methods
-      const functionName = paymentMethod === 'tbank' ? 'create-tbank-payment' : 'create-payment';
-      console.log('Using function:', functionName);
-      
-      const { data, error } = await supabase.functions.invoke(functionName, {
-        body: {
-          amount: rubAmount,
-          currency: 'RUB',
-          oil_coins: ocAmount
-        }
-      });
 
       if (error) throw error;
       
-      // Handle test mode response
       if (data?.test_mode) {
         toast({
           title: "Тестовый режим",
@@ -445,61 +364,125 @@ const Dashboard = () => {
       <DashboardHeader 
         profile={currentProfile} 
         isAdmin={isAdmin} 
-        onTopUpClick={() => setActiveSection('balance')}
+        onTopUpClick={() => setIsTopUpOpen(true)}
         onSignOut={handleSignOut}
       />
 
-      {/* Main Content */}
       <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
-        {/* Section Navigation */}
         <div className="flex items-center justify-center">
           <div className="section-toolbar w-full max-w-full overflow-x-auto">
-            <div className="flex space-x-1 bg-card/50 p-1 rounded-lg min-w-max">
+            <div className="flex space-x-2 bg-card/50 p-2 rounded-lg min-w-max">
               {[
-                { id: 'overview', label: 'Обзор', icon: BarChart3, shortLabel: 'Обзор' },
-                { id: 'balance', label: 'Баланс', icon: Wallet, shortLabel: 'Баланс' },
-                { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft, shortLabel: 'Биржа' },
-                { id: 'wells', label: 'Скважины', icon: Fuel, shortLabel: 'Скважины' },
-                { id: 'shop', label: 'Магазин', icon: ShoppingCart, shortLabel: 'Магазин' },
-                { id: 'boosters', label: 'Бустеры', icon: Zap, shortLabel: 'Бустеры' },
-                { id: 'calculator', label: 'Калькулятор', icon: Calculator, shortLabel: 'Калькулятор доходности' },
-                { id: 'daily', label: 'Ежедневно', icon: Calendar, shortLabel: 'Награды' }
+                { id: 'overview', label: 'Обзор', icon: BarChart3 },
+                { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft },
+                { id: 'shop', label: 'Магазин', icon: ShoppingCart },
+                { id: 'daily', label: 'Ежедневно', icon: Calendar }
               ].map((section) => (
                 <Button
                   key={section.id}
                   variant={activeSection === section.id ? "default" : "ghost"}
-                  size="sm"
+                  size="lg"
                   onClick={() => setActiveSection(section.id as any)}
                   className={`${
                     activeSection === section.id 
                       ? 'gradient-primary text-primary-foreground shadow-primary' 
                       : ''
-                  } whitespace-nowrap flex-shrink-0`}
+                  } whitespace-nowrap flex-shrink-0 text-base`}
                 >
-                  <section.icon className="h-4 w-4 sm:mr-2" />
+                  <section.icon className="h-5 w-5 sm:mr-2" />
                   <span className="hidden sm:inline">{section.label}</span>
-                  <span className="inline sm:hidden ml-1 text-xs">{section.shortLabel}</span>
                 </Button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Dynamic Content */}
         {activeSection === 'overview' && currentProfile && (
-          <OverviewSection 
-            profile={currentProfile} 
-            wells={wells} 
-            playerRank={getPlayerRank(currentProfile.nickname)}
-            onTopUpClick={() => setActiveSection('balance')}
-          />
+          <div className="space-y-6">
+            <div className="flex items-center justify-center">
+              <div className="section-toolbar w-full max-w-3xl">
+                <div className="flex space-x-2 bg-card/50 p-2 rounded-lg">
+                  {[
+                    { id: 'balance', label: 'Баланс', icon: Wallet },
+                    { id: 'empire', label: 'Обзор империи', icon: Building2 },
+                    { id: 'wells', label: 'Мои скважины', icon: Fuel }
+                  ].map((tab) => (
+                    <Button
+                      key={tab.id}
+                      variant={overviewTab === tab.id ? "default" : "ghost"}
+                      size="default"
+                      onClick={() => setOverviewTab(tab.id as any)}
+                      className={`${
+                        overviewTab === tab.id 
+                          ? 'gradient-primary text-primary-foreground shadow-primary' 
+                          : ''
+                      } flex-1 whitespace-nowrap`}
+                    >
+                      <tab.icon className="h-4 w-4 sm:mr-2" />
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {overviewTab === 'balance' && (
+              <BalanceSection 
+                profile={currentProfile}
+                onTopUpClick={() => setIsTopUpOpen(true)}
+              />
+            )}
+
+            {overviewTab === 'empire' && (
+              <OverviewSection
+                profile={currentProfile} 
+                wells={wells} 
+                playerRank={getPlayerRank(currentProfile.nickname)}
+                onTopUpClick={() => setIsTopUpOpen(true)}
+                onBuyWell={handleBuyWell}
+                onUpgradeWell={handleUpgradeWell}
+                boosters={boosters || []}
+                boosterMultiplier={totalMultiplier}
+              />
+            )}
+
+            {overviewTab === 'wells' && (
+              <WellsSection 
+                wells={wells}
+                profile={currentProfile}
+                onUpgradeWell={handleUpgradeWell}
+              />
+            )}
+          </div>
         )}
 
-        {activeSection === 'balance' && currentProfile && (
-          <BalanceSection 
-            onTopUp={handleTopUp}
-            topUpLoading={false}
-          />
+        {activeSection === 'shop' && (
+          <div className="relative min-h-[600px] rounded-2xl overflow-hidden">
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${boostersHero})` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-background"></div>
+            </div>
+
+            <div className="relative z-10 pt-16 pb-8 px-4">
+              <div className="text-center mb-12">
+                <div className="relative inline-block">
+                  <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
+                    Магазин бустеров
+                  </h2>
+                  <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
+                </div>
+                <p className="text-lg text-muted-foreground mt-2 [text-shadow:_1px_1px_3px_rgb(0_0_0_/_100%)]">
+                  Усильте свою империю с помощью мощных бустеров
+                </p>
+              </div>
+
+              <div className="max-w-7xl mx-auto">
+                <BoosterShop profile={currentProfile} boosters={boosters || []} onPurchaseComplete={reload} />
+              </div>
+            </div>
+          </div>
         )}
 
         {activeSection === 'exchange' && currentProfile && (
@@ -514,124 +497,23 @@ const Dashboard = () => {
           </div>
         )}
 
-        {activeSection === 'wells' && currentProfile && (
-          <WellsSection
-            wells={wells}
-            profile={currentProfile}
-            onUpgradeWell={handleUpgradeWell}
-            getWellIcon={getWellIcon}
-            getRarityColor={getRarityColor}
-            calculateProfitMetrics={calculateProfitMetrics}
-            formatProfitPercent={formatProfitPercent}
-            boosters={boosters}
-            getActiveBoosterMultiplier={getActiveBoosterMultiplier}
-            onBarrelsClaimed={() => reload(true)}
-          />
-        )}
-
-        {activeSection === 'shop' && currentProfile && (
-          <ShopSection
-            profile={currentProfile}
-            onBuyWell={handleBuyWell}
-            onBuyPackage={handleBuyPackage}
-            getWellIcon={getWellIcon}
-            getRarityColor={getRarityColor}
-            getRarityBadgeColor={getRarityBadgeColor}
-            calculateProfitMetrics={calculateProfitMetrics}
-            formatProfitPercent={formatProfitPercent}
-          />
-        )}
-
-
-        {activeSection === 'boosters' && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold heading-contrast">Бустеры и улучшения</h2>
-                <p className="text-muted-foreground subtitle-contrast">Временные и постоянные бонусы для увеличения дохода</p>
-              </div>
-            </div>
-            <BoosterShop />
-          </div>
-        )}
-
         {activeSection === 'daily' && currentProfile && (
-          <div className="space-y-6">
-            {/* Hero Section */}
-            <div className="text-center space-y-4 mb-8">
-              <div className="relative">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
-                  ✨ Ежедневные награды ✨
-                </h2>
-                <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-sm rounded-lg opacity-50 animate-pulse"></div>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Заходите каждый день и получайте щедрые награды! Чем дольше ваша серия, тем больше бонусов
-              </p>
-            </div>
-
-            {/* Main Content - Centered Layout */}
-            <div className="max-w-6xl mx-auto space-y-8">
-              {/* Daily Chest - Main Feature */}
-              <div className="w-full">
-              <DailyChest 
-                userId={user?.id} 
-                userIncome={currentProfile.daily_income}
-                devMode={isAdmin} // Админы имеют неограниченные попытки для тестирования
-              />
-              </div>
-
-              {/* Secondary Features Row */}
-              <div className="grid grid-cols-1 gap-6">
-                {/* Daily Bonus */}
-                <div className="w-full">
-                  <DailyBonus />
-                </div>
-                
-                {/* Statistics Cards */}
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200">
-                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">{currentProfile.total_daily_chests_opened || 0}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Сундуков открыто</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.1s' }}>
-                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">{currentProfile.daily_chest_streak || 0}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Текущая серия</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.2s' }}>
-                    <div className="text-xl sm:text-2xl font-bold text-primary mb-1">
-                      {Math.max(currentProfile.daily_chest_streak || 0, currentProfile.total_daily_chests_opened || 0)}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Лучшая серия</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-3 sm:p-4 text-center animate-fade-in hover:scale-105 transition-transform duration-200" style={{ animationDelay: '0.3s' }}>
-                    <div className="text-xl sm:text-2xl font-bold text-accent mb-1">
-                      {((currentProfile.total_daily_chests_opened || 0) * 650).toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Всего получено OC</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeSection === 'calculator' && (
           <div className="space-y-6">
             <div className="text-center space-y-4 mb-8">
               <div className="relative">
                 <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
-                  Калькулятор доходности
+                  Ежедневные награды
                 </h2>
-                <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 blur-sm rounded-lg opacity-50"></div>
               </div>
               <p className="text-lg text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                Планируйте свою нефтяную империю! Рассчитайте потенциальный доход с учетом скважин, бустеров и бонусов
+                Забирайте ежедневные награды и увеличивайте свой доход!
               </p>
             </div>
 
-            <div className="max-w-7xl mx-auto">
-              <ProfitabilityCalculator />
+            <div className="max-w-6xl mx-auto space-y-6">
+              <DailyBonus profile={currentProfile} onClaim={() => reload(true)} />
+              <DailyChest profile={currentProfile} onClaim={() => reload(true)} />
             </div>
           </div>
         )}

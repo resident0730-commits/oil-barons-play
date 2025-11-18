@@ -13,7 +13,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
 import { ParallaxHero } from "@/components/ParallaxHero";
-import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
 import { 
   Fuel, 
   TrendingUp, 
@@ -312,10 +311,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Profitability Calculator Section */}
-        <div id="calculator-section" className="container mx-auto px-4 mb-32 animate-fade-in">
-          <ProfitabilityCalculator compact />
-        </div>
 
         {/* Features Grid */}
         <div className="mb-32">
