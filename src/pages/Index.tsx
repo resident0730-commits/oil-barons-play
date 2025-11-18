@@ -364,13 +364,13 @@ const Index = () => {
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-orange-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
-                      <TrendingUp className="h-16 w-16 text-orange-400 drop-shadow-[0_0_20px_rgba(249,115,22,0.8)]" />
+                      <Coins className="h-16 w-16 text-orange-400 drop-shadow-[0_0_20px_rgba(249,115,22,0.8)]" />
                     </div>
                     <div className="text-5xl font-black text-orange-400/30 group-hover:text-orange-400/50 transition-colors duration-300">02</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-orange-100 mb-4 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стабильная прибыль</h3>
+                  <h3 className="text-3xl font-bold text-orange-100 mb-4 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Три валюты</h3>
                   <p className="text-lg text-orange-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    Изучайте основы экономики через игровые механики и получайте стабильный прогресс
+                    OilCoins для покупок, Баррели для добычи, Рубли для вывода - полноценная экономическая система
                   </p>
                 </CardContent>
               </Card>
@@ -385,30 +385,72 @@ const Index = () => {
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-blue-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                      <Users className="h-16 w-16 text-blue-400 drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
+                      <Fuel className="h-16 w-16 text-blue-400 drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
                     </div>
                     <div className="text-5xl font-black text-blue-400/30 group-hover:text-blue-400/50 transition-colors duration-300">03</div>
                   </div>
-                  <h3 className="text-3xl font-bold text-blue-100 mb-4 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Реферальная программа</h3>
+                  <h3 className="text-3xl font-bold text-blue-100 mb-4 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Система баррелей</h3>
                   <p className="text-lg text-blue-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    Скважины добывают баррели 24/7 в реальном времени. Собирайте их и обменивайте на другие валюты
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Exchange Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl border-2 border-purple-500/50 hover:border-purple-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-purple-400/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-300"></div>
+                </div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-purple-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
+                      <BarChart3 className="h-16 w-16 text-purple-400 drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]" />
+                    </div>
+                    <div className="text-5xl font-black text-purple-400/30 group-hover:text-purple-400/50 transition-colors duration-300">04</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-purple-100 mb-4 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Биржа валют</h3>
+                  <p className="text-lg text-purple-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    Обменивайте валюты по актуальным курсам. Баррели → OilCoins → Рубли. Полный контроль над финансами
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Referral Feature */}
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-transparent backdrop-blur-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-400">
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-teal-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-cyan-400/30 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-400"></div>
+                </div>
+                <CardContent className="relative p-10">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="p-5 bg-cyan-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      <Users className="h-16 w-16 text-cyan-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.8)]" />
+                    </div>
+                    <div className="text-5xl font-black text-cyan-400/30 group-hover:text-cyan-400/50 transition-colors duration-300">05</div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Реферальная программа</h3>
+                  <p className="text-lg text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     Приглашайте друзей и получайте бонусы за совместную игру в образовательной игре
                   </p>
                 </CardContent>
               </Card>
 
               {/* Achievements Feature */}
-              <Card className="group relative overflow-hidden bg-gradient-to-br from-violet-500/20 via-violet-500/10 to-transparent backdrop-blur-xl border-2 border-violet-500/50 hover:border-violet-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-300">
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-violet-500/20 via-violet-500/10 to-transparent backdrop-blur-xl border-2 border-violet-500/50 hover:border-violet-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-500">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-500/30 to-fuchsia-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-violet-400/30 transition-all duration-500"></div>
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-500"></div>
                 </div>
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-violet-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
                       <Award className="h-16 w-16 text-violet-400 drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]" />
                     </div>
-                    <div className="text-5xl font-black text-violet-400/30 group-hover:text-violet-400/50 transition-colors duration-300">04</div>
+                    <div className="text-5xl font-black text-violet-400/30 group-hover:text-violet-400/50 transition-colors duration-300">06</div>
                   </div>
                   <h3 className="text-3xl font-bold text-violet-100 mb-4 drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Система достижений</h3>
                   <p className="text-lg text-violet-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
@@ -418,18 +460,18 @@ const Index = () => {
               </Card>
 
               {/* Boosters Feature */}
-              <Card className="group relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-400">
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-600">
                 <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-yellow-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-yellow-400/30 transition-all duration-500"></div>
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-400"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-600"></div>
                 </div>
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-yellow-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                       <Rocket className="h-16 w-16 text-yellow-400 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]" />
                     </div>
-                    <div className="text-5xl font-black text-yellow-400/30 group-hover:text-yellow-400/50 transition-colors duration-300">05</div>
+                    <div className="text-5xl font-black text-yellow-400/30 group-hover:text-yellow-400/50 transition-colors duration-300">07</div>
                   </div>
                   <h3 className="text-3xl font-bold text-yellow-100 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Бустеры</h3>
                   <p className="text-lg text-yellow-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
@@ -439,18 +481,18 @@ const Index = () => {
               </Card>
 
               {/* Well Packages Feature */}
-              <Card className="group relative overflow-hidden bg-gradient-to-br from-rose-500/20 via-rose-500/10 to-transparent backdrop-blur-xl border-2 border-rose-500/50 hover:border-rose-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-500">
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-rose-500/20 via-rose-500/10 to-transparent backdrop-blur-xl border-2 border-rose-500/50 hover:border-rose-400 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 animate-fade-in animation-delay-700">
                 <div className="absolute inset-0 bg-gradient-to-br from-rose-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-rose-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-rose-400/30 transition-all duration-500"></div>
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-700"></div>
                 </div>
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-rose-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
                       <Package className="h-16 w-16 text-rose-400 drop-shadow-[0_0_20px_rgba(244,63,94,0.8)]" />
                     </div>
-                    <div className="text-5xl font-black text-rose-400/30 group-hover:text-rose-400/50 transition-colors duration-300">06</div>
+                    <div className="text-5xl font-black text-rose-400/30 group-hover:text-rose-400/50 transition-colors duration-300">08</div>
                   </div>
                   <h3 className="text-3xl font-bold text-rose-100 mb-4 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Пакеты скважин</h3>
                   <p className="text-lg text-rose-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
@@ -460,18 +502,18 @@ const Index = () => {
               </Card>
 
               {/* Treasure Chest Feature */}
-              <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-600">
+              <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-800">
                 <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-teal-400/30 transition-all duration-500"></div>
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-600"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-800"></div>
                 </div>
                 <CardContent className="relative p-10">
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-5 bg-teal-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                       <Gift className="h-16 w-16 text-teal-400 drop-shadow-[0_0_20px_rgba(20,184,166,0.8)]" />
                     </div>
-                    <div className="text-5xl font-black text-teal-400/30 group-hover:text-teal-400/50 transition-colors duration-300">07</div>
+                    <div className="text-5xl font-black text-teal-400/30 group-hover:text-teal-400/50 transition-colors duration-300">09</div>
                   </div>
                   <h3 className="text-3xl font-bold text-teal-100 mb-4 drop-shadow-[0_0_10px_rgba(20,184,166,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Сундук с призами</h3>
                   <p className="text-lg text-teal-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
