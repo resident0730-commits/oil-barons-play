@@ -480,6 +480,10 @@ export function useGameData() {
       
       // Load profile with extended timeout for mobile devices
       const profileStartTime = Date.now();
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const timeoutDuration = isMobile ? 30000 : 15000; // 30s for mobile, 15s for desktop
+      
+      console.log(`📱 Device type: ${isMobile ? 'Mobile' : 'Desktop'}, timeout: ${timeoutDuration}ms`);
       
       // Add cache-busting header if force refresh
       const query = supabase
@@ -488,15 +492,14 @@ export function useGameData() {
         .eq('user_id', user.id);
       
       const result = await Promise.race([
-        forceRefresh 
-          ? query.maybeSingle() 
-          : query.maybeSingle(),
+        query.maybeSingle(),
         new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Profile load timeout')), 15000) // Increased to 15 seconds
+          setTimeout(() => reject(new Error('Profile load timeout')), timeoutDuration)
         )
       ]).catch(err => {
         console.error('❌ Profile loading error:', err);
         console.error('⏱️ Profile load time:', Date.now() - profileStartTime, 'ms');
+        // Return null data instead of throwing to allow graceful degradation
         return { data: null, error: err };
       }) as { data: any; error: any };
       
@@ -507,6 +510,10 @@ export function useGameData() {
 
       if (profileError) {
         console.error('❌ Profile loading failed:', profileError);
+        // Set loading to false even on error to prevent infinite loading
+        if (profileError.message === 'Profile load timeout') {
+          console.log('⚠️ Profile load timeout - setting empty profile to continue');
+        }
         setProfile(null);
       } else if (profileData) {
         console.log('✅ Profile loaded:', profileData);

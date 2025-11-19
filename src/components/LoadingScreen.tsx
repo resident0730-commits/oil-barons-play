@@ -32,12 +32,26 @@ export const LoadingScreen = ({ user, profile }: LoadingScreenProps) => {
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 95) return 95;
-        return prev + Math.random() * 15;
+        const increment = Math.random() * 15;
+        const newProgress = Math.min(prev + increment, 95);
+        return newProgress;
       });
     }, 200);
 
     return () => clearInterval(timer);
   }, []);
+
+  // Force complete loading after 30 seconds to prevent infinite loading
+  useEffect(() => {
+    const forceCompleteTimer = setTimeout(() => {
+      if (progress < 100) {
+        console.warn('⚠️ Loading took too long, forcing completion');
+        setProgress(100);
+      }
+    }, 30000);
+
+    return () => clearTimeout(forceCompleteTimer);
+  }, [progress]);
 
   useEffect(() => {
     const tipTimer = setInterval(() => {
