@@ -1,17 +1,13 @@
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreditCard, Star, Zap, ArrowLeft, Camera, Send, ArrowRight, Gift } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CreditCard, Zap, Gift, Package } from "lucide-react";
 import { useCurrency } from "@/hooks/useCurrency";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-import CryptoJS from "crypto-js";
-import { RobokassaWidget } from '../RobokassaWidget';
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -29,20 +25,18 @@ interface TopUpPackage {
   totalOC: number;
   badge: string | null;
   popular: boolean;
-  firstTimeOnly?: boolean;
 }
 
 const topUpPackages: TopUpPackage[] = [
   {
     id: 'mega_bonus',
-    name: '🚀 Мега бонус!',
+    name: '🚀 Мега',
     rubAmount: 10000,
     baseOC: 10000,
     bonusOC: 10000,
     totalOC: 20000,
-    badge: '100% БОНУС',
-    popular: true,
-    firstTimeOnly: true
+    badge: '100%',
+    popular: true
   },
   {
     id: 'premium_plus',
@@ -52,36 +46,6 @@ const topUpPackages: TopUpPackage[] = [
     bonusOC: 1000,
     totalOC: 6000,
     badge: '+20%',
-    popular: false
-  },
-  {
-    id: 'elite_6k',
-    name: 'Элитный 6К',
-    rubAmount: 6000,
-    baseOC: 6000,
-    bonusOC: 1260,
-    totalOC: 7260,
-    badge: '+21%',
-    popular: false
-  },
-  {
-    id: 'elite_7k',
-    name: 'Элитный 7К',
-    rubAmount: 7000,
-    baseOC: 7000,
-    bonusOC: 1540,
-    totalOC: 8540,
-    badge: '+22%',
-    popular: false
-  },
-  {
-    id: 'elite_8k',
-    name: 'Элитный 8К',
-    rubAmount: 8000,
-    baseOC: 8000,
-    bonusOC: 1840,
-    totalOC: 9840,
-    badge: '+23%',
     popular: false
   },
   {
@@ -95,17 +59,7 @@ const topUpPackages: TopUpPackage[] = [
     popular: false
   },
   {
-    id: 'standard_3k',
-    name: 'Стандарт+',
-    rubAmount: 3000,
-    baseOC: 3000,
-    bonusOC: 300,
-    totalOC: 3300,
-    badge: '+10%',
-    popular: false
-  },
-  {
-    id: 'standard_2k',
+    id: 'standard',
     name: 'Стандарт',
     rubAmount: 2000,
     baseOC: 2000,
@@ -128,478 +82,182 @@ const topUpPackages: TopUpPackage[] = [
 
 export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModalProps) => {
   const [customAmount, setCustomAmount] = useState("");
-  const [selectedPackage, setSelectedPackage] = useState<TopUpPackage | null>(null);
-  const [showPayment, setShowPayment] = useState(false);
-  const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const [paymentMethod, setPaymentMethod] = useState<'robokassa' | null>(null);
-  const [promoCode, setPromoCode] = useState("");
-  const [promoApplied, setPromoApplied] = useState(false);
-  const { currencyConfig, formatRubles, formatOilCoins } = useCurrency();
-  const formatRealCurrency = formatRubles;
-  const formatGameCurrency = formatOilCoins;
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const { formatRubles, formatOilCoins } = useCurrency();
 
-  // Очистка состояния при закрытии модала
-  useEffect(() => {
-    if (!isOpen) {
-      console.log('Modal closed, resetting state');
-      setCustomAmount("");
-      setSelectedPackage(null);
-      setShowPayment(false);
-      setPaymentAmount(0);
-      setPaymentMethod(null);
-      setPromoCode("");
-      setPromoApplied(false);
-    } else {
-      console.log('TopUpModal opened. showPayment:', showPayment, 'promoApplied:', promoApplied);
-    }
-  }, [isOpen, showPayment, promoApplied]);
-
-  const handleApplyPromoCode = async () => {
-    if (!promoCode.trim() || !user) return;
-
-    try {
-      const { data, error } = await supabase.rpc('apply_promo_code', {
-        p_code: promoCode.trim(),
-        p_user_id: user.id,
-        p_invoice_id: null
-      });
-
-      if (error) throw error;
-
-      const result = data as { success: boolean; error?: string; message?: string };
-
-      if (result.success) {
-        setPromoApplied(true);
-        toast({
-          title: "Промокод применен!",
-          description: result.message,
-        });
-      } else {
-        toast({
-          title: "Ошибка",
-          description: result.error,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('Error applying promo code:', error);
-      toast({
-        title: "Ошибка",
-        description: "Не удалось применить промокод",
-        variant: "destructive"
-      });
+  const handlePackageSelect = (pkg: TopUpPackage) => {
+    if (onTopUp) {
+      onTopUp(undefined, {
+        price: pkg.rubAmount,
+        oilcoins: pkg.totalOC
+      }, 'yookassa');
     }
   };
 
   const handleCustomTopUp = () => {
-    const amount = parseFloat(customAmount);
-    if (amount && amount >= 1000) {
-      setPaymentAmount(amount);
-      setShowPayment(true);
+    const amount = parseInt(customAmount);
+    if (amount >= 100 && onTopUp) {
+      onTopUp(amount, undefined, 'yookassa');
     }
   };
-
-  const handlePackageSelect = (pkg: TopUpPackage) => {
-    setPaymentAmount(pkg.rubAmount);
-    setSelectedPackage(pkg);
-    setShowPayment(true);
-  };
-
-  const handleBackToPayment = () => {
-    setShowPayment(false);
-    setPaymentAmount(0);
-    setSelectedPackage(null);
-    setPaymentMethod(null);
-  };
-
-  const handleCloseModal = () => {
-    setShowPayment(false);
-    setPaymentAmount(0);
-    setSelectedPackage(null);
-    setCustomAmount("");
-    setPaymentMethod(null);
-    onClose();
-  };
-
-  if (showPayment) {
-    // Если метод оплаты не выбран - показываем выбор
-    if (!paymentMethod) {
-      return (
-        <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleBackToPayment}
-                  className="p-1 h-8 w-8"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <DialogTitle className="text-lg">🔄 Выберите способ оплаты</DialogTitle>
-              </div>
-              <DialogDescription>
-                Сумма к оплате: {formatRealCurrency(paymentAmount)}
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-4">
-              <div className="grid gap-3">
-                <Button 
-                  onClick={() => setPaymentMethod('robokassa')}
-                  variant="default"
-                  className="p-6 h-auto w-full"
-                >
-                  <div className="flex items-center gap-3 w-full">
-                    <CreditCard className="h-6 w-6" />
-                    <div className="text-left">
-                      <div className="font-semibold">Robokassa</div>
-                      <div className="text-sm opacity-90">Банковские карты, электронные кошельки</div>
-                    </div>
-                  </div>
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    }
-
-    // Обработка оплаты через Robokassa
-    const handlePayment = async () => {
-      toast({
-        title: "Переход к оплате",
-        description: `Форма оплаты Robokassa загружена. После успешной оплаты ${paymentAmount}₽ вы получите ${formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}!`,
-      });
-    };
-
-    // Показываем платежную форму для Robokassa
-    if (paymentMethod === 'robokassa') {
-      return (
-        <Dialog open={isOpen} onOpenChange={handleCloseModal} key="payment">
-          <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setPaymentMethod(null)}
-                  className="p-1 h-8 w-8"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <DialogTitle className="text-lg">Оплата через Robokassa</DialogTitle>
-              </div>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              <div className="text-sm text-muted-foreground text-center">
-                Пополнение на {paymentAmount}₽ → {formatGameCurrency(selectedPackage ? selectedPackage.totalOC : paymentAmount)}
-              </div>
-
-              {/* Промокод */}
-              {!promoApplied && (
-                <Card>
-                  <CardContent className="p-3">
-                    <Label htmlFor="promo" className="text-sm">Есть промокод?</Label>
-                    <div className="flex gap-2 mt-2">
-                      <Input
-                        id="promo"
-                        placeholder="Введите промокод"
-                        value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                        className="text-sm"
-                      />
-                      <Button 
-                        onClick={handleApplyPromoCode}
-                        disabled={!promoCode.trim()}
-                        size="sm"
-                        variant="secondary"
-                      >
-                        Применить
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {promoApplied && (
-                <div className="flex items-center gap-2 p-2 bg-green-500/10 border border-green-500/20 rounded-md">
-                  <Gift className="h-4 w-4 text-green-500" />
-                  <span className="text-sm text-green-500">Промокод успешно применен!</span>
-                </div>
-              )}
-              
-              <RobokassaWidget
-                amount={paymentAmount}
-                onSuccess={() => {
-                  toast({
-                    title: "Оплата создана",
-                    description: "Переходим к оплате...",
-                  });
-                  handleCloseModal();
-                }}
-                onError={(error) => {
-                  toast({
-                    title: "Ошибка оплаты",
-                    description: error,
-                    variant: "destructive"
-                  });
-                }}
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    }
-  }
-
-  console.log('🔍 TopUpModal render. showPayment:', showPayment, 'promoApplied:', promoApplied);
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCloseModal}>
-      <DialogContent className="w-[96vw] max-w-sm mx-2 max-h-[90vh] overflow-y-auto p-3">
-        <DialogHeader className="space-y-4">
-          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
             Пополнение баланса
           </DialogTitle>
-          
-          {/* ПОЛЕ ПРОМОКОДА - ПРЯМО В ЗАГОЛОВКЕ */}
-          <div style={{ 
-            backgroundColor: '#FFD700', 
-            border: '4px solid #FF0000', 
-            padding: '15px', 
-            borderRadius: '8px',
-            marginTop: '10px',
-            marginBottom: '10px'
-          }}>
-            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#000', marginBottom: '10px', textAlign: 'center' }}>
-              🎁 ПРОМОКОД 🎁
-            </div>
-            <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
-              <Input
-                placeholder="Введите ваш промокод"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                style={{ backgroundColor: '#FFFFFF', color: '#000', border: '2px solid #000' }}
-              />
-              <Button 
-                onClick={handleApplyPromoCode}
-                disabled={!promoCode.trim()}
-                style={{ backgroundColor: '#00FF00', color: '#000', fontWeight: 'bold' }}
-              >
-                ПРИМЕНИТЬ
-              </Button>
-            </div>
-          </div>
-
-          <DialogDescription className="text-xs sm:text-sm">
-            Выберите сумму для пополнения или готовые пакеты с бонусами
-          </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-3">
+        <Tabs defaultValue="packages" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="packages" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              Пакеты
+            </TabsTrigger>
+            <TabsTrigger value="custom" className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              Своя сумма
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Custom Amount Section */}
-          <Card>
-            <CardContent className="p-3">
-              <div className="space-y-3">
-                <div>
-                  <Label htmlFor="amount" className="text-sm">Произвольная сумма (мин. 1000 {currencyConfig.real_currency_symbol})</Label>
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      id="amount"
-                      type="number"
-                      placeholder="1000"
-                      min="1000"
-                      value={customAmount}
-                      onChange={(e) => setCustomAmount(e.target.value)}
-                      className="text-sm"
-                    />
-                    <Button 
-                      onClick={handleCustomTopUp}
-                      disabled={!customAmount || parseFloat(customAmount) < 1000}
-                      size="sm"
-                    >
-                      Пополнить
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {currencyConfig.exchange_rate}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Special Offer Section */}
-          <div>
-            <h3 className="text-sm font-bold mb-3 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-1">
-              🔥 Особое предложение
-            </h3>
-            
-            {topUpPackages.filter(pkg => pkg.firstTimeOnly).map((pkg) => (
-              <Card 
-                key={pkg.id} 
-                className="relative cursor-pointer transition-all duration-300 hover:shadow-2xl hover:shadow-primary/25 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/30 hover:border-primary/50 overflow-hidden group animate-scale-in"
-                onClick={() => handlePackageSelect(pkg)}
-              >
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/20 to-transparent rounded-full translate-y-12 -translate-x-12 group-hover:scale-110 transition-transform"></div>
-                
-                {/* Special badge */}
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                  <Badge className="bg-gradient-to-r from-accent to-primary text-white border-0 shadow-lg px-4 py-2 text-sm font-bold animate-pulse">
-                    <Zap className="h-4 w-4 mr-1" />
-                    {pkg.badge}
-                  </Badge>
-                </div>
-                
-                <CardContent className="p-4 sm:p-6 relative z-10">
-                  <div className="text-center space-y-4 sm:space-y-6">
-                    {/* Title */}
-                    <div className="space-y-2">
-                      <h4 className="font-bold text-lg sm:text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent px-2">
-                        🔥 <span className="hidden xs:inline">Специальное предложение!</span><span className="xs:hidden">x2 БОНУС!</span>
-                      </h4>
-                      <p className="text-muted-foreground text-xs sm:text-sm px-2">
-                        <span className="hidden sm:inline">Удвойте свои инвестиции прямо сейчас!</span>
-                        <span className="sm:hidden">Двойной бонус сегодня!</span>
-                      </p>
-                    </div>
-                    
-                    {/* Main offer display */}
-                    <div className="bg-card/70 rounded-xl p-3 sm:p-6 border border-primary/20">
-                      <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-3 sm:mb-4">
-                        <div className="text-center space-y-1">
-                          <div className="text-sm text-muted-foreground">Вы платите</div>
-                          <div className="text-2xl font-bold text-primary">
-                            {formatRealCurrency(pkg.rubAmount)}
-                          </div>
-                        </div>
-                        
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
-                          <ArrowRight className="h-4 w-4 text-white" />
-                        </div>
-                        
-                        <div className="text-center space-y-1">
-                          <div className="text-sm text-muted-foreground">Вы получаете</div>
-                          <div className="text-3xl font-bold text-accent">
-                            {formatGameCurrency(pkg.totalOC)}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="text-center space-y-2">
-                        <div className="text-sm text-muted-foreground">
-                          <span className="line-through">{formatGameCurrency(pkg.baseOC)}</span>
-                          <span className="ml-2 text-accent font-bold">+ {formatGameCurrency(pkg.bonusOC)} БОНУС</span>
-                        </div>
-                        <div className="flex items-center justify-center space-x-2 text-xs font-medium text-primary">
-                          <Star className="h-3 w-3" />
-                          <span>Выгода 100% • Мгновенное зачисление</span>
-                          <Star className="h-3 w-3" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button 
-                      size="lg"
-                      className="w-full h-14 text-lg font-bold bg-gradient-to-r from-primary via-accent to-primary hover:from-primary/90 hover:via-accent/90 hover:to-primary/90 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePackageSelect(pkg);
-                      }}
-                    >
-                      <Gift className="h-5 w-5 mr-2" />
-                      Получить удвоенный бонус
-                      <Zap className="h-5 w-5 ml-2" />
-                    </Button>
-                    
-                    <div className="text-xs text-muted-foreground flex items-center justify-center space-x-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span>Предложение действует ограниченное время</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Regular Packages Section */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Другие пакеты пополнения</h3>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {topUpPackages.filter(pkg => !pkg.firstTimeOnly).map((pkg) => (
-                <Card 
-                  key={pkg.id} 
-                  className={`relative cursor-pointer transition-all duration-300 hover:shadow-luxury ${pkg.popular ? 'ring-2 ring-primary' : ''}`}
+          {/* Packages Tab */}
+          <TabsContent value="packages" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {topUpPackages.map((pkg) => (
+                <Card
+                  key={pkg.id}
+                  className={`relative overflow-hidden transition-all duration-300 hover:scale-105 cursor-pointer ${
+                    pkg.popular 
+                      ? 'border-2 border-primary shadow-lg shadow-primary/20' 
+                      : 'border border-border hover:border-primary/50'
+                  }`}
                   onClick={() => handlePackageSelect(pkg)}
                 >
                   {pkg.popular && (
-                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                      <Badge className="gradient-gold text-primary-foreground">
-                        <Star className="h-3 w-3 mr-1" />
-                        Популярный
-                      </Badge>
+                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-3 py-1 text-xs font-bold rounded-bl-lg">
+                      <Zap className="h-3 w-3 inline mr-1" />
+                      ХИТ
                     </div>
                   )}
                   
-                  <CardContent className="p-4">
-                    <div className="text-center space-y-3">
-                      <h4 className="font-bold text-lg">{pkg.name}</h4>
+                  <CardContent className="p-4 space-y-3">
+                    <div className="text-center">
+                      <h3 className="text-lg font-bold mb-1">{pkg.name}</h3>
+                      {pkg.badge && (
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          <Gift className="h-3 w-3 mr-1" />
+                          {pkg.badge}
+                        </Badge>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Цена:</span>
+                        <span className="font-bold text-lg">{formatRubles(pkg.rubAmount)}</span>
+                      </div>
                       
-                      <div className="space-y-2">
-                        <div className="text-2xl font-bold text-primary">
-                          {formatGameCurrency(pkg.totalOC)}
+                      <div className="bg-primary/10 rounded-lg p-3 space-y-1">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-muted-foreground">Базовых:</span>
+                          <span className="font-semibold">{formatOilCoins(pkg.baseOC)}</span>
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {formatRealCurrency(pkg.rubAmount)}
+                        {pkg.bonusOC > 0 && (
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-green-400">+ Бонус:</span>
+                            <span className="font-semibold text-green-400">{formatOilCoins(pkg.bonusOC)}</span>
+                          </div>
+                        )}
+                        <div className="h-px bg-border my-2" />
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold">Всего:</span>
+                          <span className="font-bold text-primary text-lg">{formatOilCoins(pkg.totalOC)}</span>
                         </div>
                       </div>
-
-                      {pkg.bonusOC > 0 && (
-                        <div className="space-y-1">
-                          <div className="text-sm text-muted-foreground">
-                            {formatGameCurrency(pkg.baseOC)} + {formatGameCurrency(pkg.bonusOC)} бонус
-                          </div>
-                          {pkg.badge && (
-                            <Badge variant="secondary" className="bg-green-100 text-green-800">
-                              {pkg.badge}
-                            </Badge>
-                          )}
-                        </div>
-                      )}
-
-                      <Button 
-                        className="w-full gradient-gold text-primary-foreground"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePackageSelect(pkg);
-                        }}
-                      >
-                        Выбрать
-                      </Button>
                     </div>
+
+                    <Button 
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg"
+                      disabled={topUpLoading}
+                    >
+                      {topUpLoading ? 'Обработка...' : 'Выбрать'}
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
+          </TabsContent>
 
-          <div className="text-center text-sm text-muted-foreground">
-            <p>После нажатия кнопки вы сможете выбрать способ оплаты:</p>
-            <p>Robokassa (карты, кошельки) или QR-код через банковское приложение</p>
-          </div>
+          {/* Custom Amount Tab */}
+          <TabsContent value="custom" className="space-y-6">
+            <Card className="border-2 border-primary/20">
+              <CardContent className="p-6 space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="amount" className="text-base font-semibold">
+                      Введите сумму пополнения
+                    </Label>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Минимум: 100₽ • Курс: 1₽ = 1 OilCoin
+                    </p>
+                    <Input
+                      id="amount"
+                      type="number"
+                      placeholder="1000"
+                      value={customAmount}
+                      onChange={(e) => setCustomAmount(e.target.value)}
+                      className="text-lg h-12"
+                      min="100"
+                    />
+                  </div>
+
+                  {customAmount && parseInt(customAmount) >= 100 && (
+                    <div className="bg-primary/10 rounded-lg p-4 space-y-2 animate-fade-in">
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">К оплате:</span>
+                        <span className="text-2xl font-bold">{formatRubles(parseInt(customAmount))}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Вы получите:</span>
+                        <span className="text-2xl font-bold text-primary">{formatOilCoins(parseInt(customAmount))}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <Button 
+                  onClick={handleCustomTopUp}
+                  disabled={!customAmount || parseInt(customAmount) < 100 || topUpLoading}
+                  className="w-full h-12 text-lg bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg"
+                  size="lg"
+                >
+                  {topUpLoading ? 'Обработка...' : 'Пополнить'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Quick amount buttons */}
+            <div className="grid grid-cols-3 gap-3">
+              {[500, 1000, 2000].map((amount) => (
+                <Button
+                  key={amount}
+                  variant="outline"
+                  onClick={() => setCustomAmount(amount.toString())}
+                  className="h-16 flex flex-col items-center justify-center gap-1 hover:border-primary hover:bg-primary/10"
+                >
+                  <span className="text-xs text-muted-foreground">Быстро</span>
+                  <span className="font-bold">{amount}₽</span>
+                </Button>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="text-center text-sm text-muted-foreground border-t pt-4">
+          Безопасная оплата через проверенные платежные системы
         </div>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default TopUpModal;

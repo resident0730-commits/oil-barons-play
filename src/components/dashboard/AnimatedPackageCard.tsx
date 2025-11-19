@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Package, Star, Sparkles } from "lucide-react";
+import { Package, Star, Sparkles, Wallet } from "lucide-react";
 import { WellPackage, UserProfile } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
 
@@ -9,24 +9,21 @@ interface AnimatedPackageCardProps {
   wellPackage: WellPackage;
   profile: UserProfile;
   onBuyPackage: (wellPackage: WellPackage) => void;
+  onTopUpClick?: () => void;
 }
 
 export const AnimatedPackageCard = ({ 
   wellPackage, 
   profile, 
-  onBuyPackage
+  onBuyPackage,
+  onTopUpClick
 }: AnimatedPackageCardProps) => {
   const { formatBarrels, formatOilCoins } = useCurrency();
   const canAfford = profile.oilcoin_balance >= wellPackage.discountedPrice;
   const savings = wellPackage.originalPrice - wellPackage.discountedPrice;
 
   return (
-    <div 
-      className={`
-        game-card-flip
-        ${!canAfford ? "opacity-60" : ""}
-      `}
-    >
+    <div className="game-card-flip">
       <div className="game-card-inner">
         {/* FRONT SIDE */}
         <Card 
@@ -188,24 +185,30 @@ export const AnimatedPackageCard = ({
                   </div>
                 </div>
                 
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onBuyPackage(wellPackage);
-                  }}
-                  disabled={!canAfford}
-                  className={`
-                    w-full py-6 text-lg font-bold 
-                    transition-all duration-300
-                    ${canAfford 
-                      ? 'bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95' 
-                      : 'bg-muted text-muted-foreground cursor-not-allowed'
-                    }
-                  `}
-                >
-                  <Package className="h-5 w-5 mr-2" />
-                  {canAfford ? 'Купить пакет' : 'Недостаточно средств'}
-                </Button>
+                {canAfford ? (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onBuyPackage(wellPackage);
+                    }}
+                    className="w-full py-6 text-lg font-bold transition-all duration-300 bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95"
+                  >
+                    <Package className="h-5 w-5 mr-2" />
+                    Купить пакет
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onTopUpClick) onTopUpClick();
+                    }}
+                    variant="outline"
+                    className="w-full py-6 text-lg font-bold transition-all duration-300 border-2 border-primary/50 hover:border-primary hover:bg-primary/10 hover:scale-105"
+                  >
+                    <Wallet className="h-5 w-5 mr-2" />
+                    Пополнить баланс
+                  </Button>
+                )}
               </div>
             </CardContent>
           </div>
