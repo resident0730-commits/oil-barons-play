@@ -511,14 +511,9 @@ export function useGameData() {
       } else if (profileData) {
         console.log('✅ Profile loaded:', profileData);
         
-        // Calculate and add offline income (non-blocking)
-        if (profileData.last_login && profileData.daily_income > 0) {
-          try {
-            await calculateOfflineIncome(profileData);
-          } catch (error) {
-            console.error('Offline income error:', error);
-          }
-        }
+        // УБРАНО автоматическое начисление оффлайн дохода
+        // Баррели накапливаются виртуально и собираются только через кнопку "Собрать"
+        // в разделе "Мои скважины"
 
         // Update last_login to current time (non-blocking)
         try {
@@ -602,7 +597,7 @@ export function useGameData() {
       setLoading(false);
       console.log('✅ Game data loading completed');
     }
-  }, [user?.id, recalculateDailyIncome, calculateOfflineIncome]);
+  }, [user?.id, recalculateDailyIncome]);
 
   // Load user data when user changes
   useEffect(() => {
