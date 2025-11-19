@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Sparkles } from "lucide-react";
+import { ShoppingCart, Sparkles, Wallet } from "lucide-react";
 import { WellType, UserProfile } from "@/hooks/useGameData";
 import { useCurrency } from "@/hooks/useCurrency";
 
@@ -20,6 +20,7 @@ interface AnimatedShopCardProps {
   wellType: WellType;
   profile: UserProfile;
   onBuyWell: (wellType: WellType) => void;
+  onTopUpClick?: () => void;
   getWellIcon: (wellType: string) => JSX.Element;
   getRarityColor: (rarity: string) => string;
   getRarityBadgeColor: (rarity: string) => string;
@@ -62,7 +63,8 @@ const getRarityGlowClass = (rarity: string) => {
 export const AnimatedShopCard = ({ 
   wellType, 
   profile, 
-  onBuyWell, 
+  onBuyWell,
+  onTopUpClick,
   getWellIcon, 
   getRarityColor, 
   getRarityBadgeColor, 
@@ -78,12 +80,7 @@ export const AnimatedShopCard = ({
   const isLegendaryOrHigher = wellType.rarity === 'legendary' || wellType.rarity === 'mythic';
 
   return (
-    <div 
-      className={`
-        game-card-flip
-        ${!canAfford ? "opacity-60" : ""}
-      `}
-    >
+    <div className="game-card-flip">
       <div className="game-card-inner">
         {/* FRONT SIDE */}
         <Card 
@@ -221,24 +218,30 @@ export const AnimatedShopCard = ({
                 <span className="text-2xl font-bold text-foreground">{formatOilCoins(wellType.price)}</span>
               </div>
               
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onBuyWell(wellType);
-                }}
-                disabled={!canAfford}
-                className={`
-                  w-full py-6 text-lg font-bold 
-                  transition-all duration-300
-                  ${canAfford 
-                    ? 'bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95' 
-                    : 'bg-muted text-muted-foreground cursor-not-allowed'
-                  }
-                `}
-              >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                {canAfford ? 'Купить скважину' : 'Недостаточно средств'}
-              </Button>
+              {canAfford ? (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onBuyWell(wellType);
+                  }}
+                  className="w-full py-6 text-lg font-bold transition-all duration-300 bg-gradient-to-r from-primary via-primary/90 to-primary hover:shadow-2xl hover:scale-105 active:scale-95"
+                >
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  Купить скважину
+                </Button>
+              ) : (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onTopUpClick) onTopUpClick();
+                  }}
+                  variant="outline"
+                  className="w-full py-6 text-lg font-bold transition-all duration-300 border-2 border-primary/50 hover:border-primary hover:bg-primary/10 hover:scale-105"
+                >
+                  <Wallet className="h-5 w-5 mr-2" />
+                  Пополнить баланс
+                </Button>
+              )}
             </div>
           </CardContent>
           </div>

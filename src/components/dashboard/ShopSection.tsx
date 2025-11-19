@@ -12,6 +12,7 @@ interface ShopSectionProps {
   profile: UserProfile;
   onBuyWell: (wellType: WellType) => void;
   onBuyPackage: (wellPackage: WellPackage) => void;
+  onTopUpClick?: () => void;
   getWellIcon: (wellType: string) => JSX.Element;
   getRarityColor: (rarity: string) => string;
   getRarityBadgeColor: (rarity: string) => string;
@@ -26,7 +27,8 @@ interface ShopSectionProps {
 export const ShopSection = ({ 
   profile, 
   onBuyWell, 
-  onBuyPackage, 
+  onBuyPackage,
+  onTopUpClick,
   getWellIcon, 
   getRarityColor, 
   getRarityBadgeColor, 
@@ -76,6 +78,7 @@ export const ShopSection = ({
                   wellType={wellType}
                   profile={profile}
                   onBuyWell={onBuyWell}
+                  onTopUpClick={onTopUpClick}
                   getWellIcon={getWellIcon}
                   getRarityColor={getRarityColor}
                   getRarityBadgeColor={getRarityBadgeColor}
@@ -99,6 +102,7 @@ export const ShopSection = ({
                   wellPackage={wellPackage}
                   profile={profile}
                   onBuyPackage={onBuyPackage}
+                  onTopUpClick={onTopUpClick}
                 />
               </div>
             ))}
