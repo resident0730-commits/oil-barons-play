@@ -387,7 +387,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
         <div className="flex items-center justify-center px-4">
           <div className="w-full max-w-6xl">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 bg-card/50 p-3 sm:p-4 rounded-xl">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 bg-card/50 p-2 sm:p-4 rounded-xl">
               {[
                 { id: 'overview', label: 'Обзор', icon: BarChart3 },
                 { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft },
@@ -403,10 +403,10 @@ const Dashboard = () => {
                     activeSection === section.id 
                       ? 'gradient-primary text-primary-foreground shadow-primary' 
                       : ''
-                  } h-14 sm:h-16 text-base sm:text-lg font-semibold transition-all hover:scale-105`}
+                  } h-16 sm:h-18 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-lg font-semibold transition-all hover:scale-105 px-2 sm:px-4`}
                 >
-                  <section.icon className="h-5 w-5 sm:h-6 sm:w-6 sm:mr-2" />
-                  <span className="hidden sm:inline">{section.label}</span>
+                  <section.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-[10px] sm:text-base leading-tight">{section.label}</span>
                 </Button>
               ))}
             </div>
@@ -417,7 +417,7 @@ const Dashboard = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-center">
               <div className="section-toolbar w-full max-w-3xl">
-                <div className="flex space-x-2 bg-card/50 p-2 rounded-lg">
+                <div className="flex space-x-1 sm:space-x-2 bg-card/50 p-2 rounded-lg">
                   {[
                     { id: 'balance', label: 'Баланс', icon: Wallet },
                     { id: 'empire', label: 'Обзор империи', icon: Building2 },
@@ -432,10 +432,10 @@ const Dashboard = () => {
                         overviewTab === tab.id 
                           ? 'gradient-primary text-primary-foreground shadow-primary' 
                           : ''
-                      } flex-1 whitespace-nowrap`}
+                      } flex-1 flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-2 py-2 sm:py-2 px-1 sm:px-4 min-h-[48px] sm:min-h-[40px]`}
                     >
-                      <tab.icon className="h-4 w-4 sm:mr-2" />
-                      <span className="hidden sm:inline">{tab.label}</span>
+                      <tab.icon className="h-4 w-4 flex-shrink-0" />
+                      <span className="text-[9px] sm:text-sm leading-tight text-center">{tab.label}</span>
                     </Button>
                   ))}
                 </div>
@@ -493,10 +493,10 @@ const Dashboard = () => {
                         shopTab === tab.id 
                           ? 'gradient-primary text-primary-foreground shadow-primary' 
                           : ''
-                      } flex-1 whitespace-nowrap`}
+                      } flex-1 flex items-center justify-center gap-2 py-3 px-3 min-h-[48px]`}
                     >
-                      <tab.icon className="h-4 w-4 sm:mr-2" />
-                      <span className="hidden sm:inline">{tab.label}</span>
+                      <tab.icon className="h-5 w-5 flex-shrink-0" />
+                      <span className="text-sm sm:text-base font-medium">{tab.label}</span>
                     </Button>
                   ))}
                 </div>
