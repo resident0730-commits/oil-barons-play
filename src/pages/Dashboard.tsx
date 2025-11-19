@@ -7,13 +7,14 @@ import {
   Calendar,
   Wallet,
   ArrowRightLeft,
-  Building2
+  Building2,
+  Zap
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
-import { useGameData, wellTypes, wellPackages } from "@/hooks/useGameData";
+import { useGameData, wellTypes, wellPackages, WellType, WellPackage } from "@/hooks/useGameData";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
@@ -25,17 +26,29 @@ import DailyChest from "@/components/DailyChest";
 import { DailyBonus } from "@/components/DailyBonus";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
+import { ShopSection } from "@/components/dashboard/ShopSection";
 import { WellsSection } from "@/components/dashboard/WellsSection";
-import { TopUpModal } from "@/components/dashboard/TopUpModal";
+
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ExchangeWidget } from "@/components/ExchangeWidget";
 
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
+import myWellsHero from '@/assets/sections/my-wells-hero.jpg';
+import shopHero from '@/assets/sections/shop-hero.jpg';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
+  const navigate = useNavigate();
+  
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [user, navigate]);
+
   const { profile, wells, loading, buyWell, buyWellPackage, upgradeWell, addIncome, boosters, reload } = useGameData();
   const { getPlayerRank } = useLeaderboard();
   const { checkAchievements } = useAchievements();
@@ -44,12 +57,20 @@ const Dashboard = () => {
   const formatGameCurrency = formatOilCoins;
   
   const { toast } = useToast();
-  const navigate = useNavigate();
   const sounds = useSound();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<'overview' | 'exchange' | 'shop' | 'daily'>('overview');
   const [overviewTab, setOverviewTab] = useState<'balance' | 'empire' | 'wells'>('balance');
+  const [shopTab, setShopTab] = useState<'wells' | 'boosters'>('wells');
+
+  // Show loading while checking auth
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
 
   useEffect(() => {
     const paymentStatus = searchParams.get('payment');
@@ -134,6 +155,61 @@ const Dashboard = () => {
     }
   }, []);
 
+  const getRarityBadgeColor = useCallback((rarity: string) => {
+    switch (rarity) {
+      case 'common': return 'bg-slate-500/10 text-slate-300 border-slate-500/30';
+      case 'uncommon': return 'bg-green-500/10 text-green-300 border-green-500/30';
+      case 'rare': return 'bg-blue-500/10 text-blue-300 border-blue-500/30';
+      case 'epic': return 'bg-purple-500/10 text-purple-300 border-purple-500/30';
+      case 'legendary': return 'gradient-gold text-oil-gold-light border-oil-amber/30';
+      case 'mythic': return 'bg-red-500/10 text-red-300 border-red-500/30';
+      default: return 'bg-gray-500/10 text-gray-300 border-gray-500/30';
+    }
+  }, []);
+
+  const getWellIcon = useCallback((wellType: string) => {
+    return <Fuel className="h-5 w-5" />;
+  }, []);
+
+  const calculateProfitMetrics = useCallback((dailyIncome: number, price: number) => {
+    const monthlyIncome = dailyIncome * 30;
+    const yearlyIncome = dailyIncome * 365;
+    const yearlyPercent = price > 0 ? (yearlyIncome / price) * 100 : 0;
+    return { monthlyIncome, yearlyIncome, yearlyPercent };
+  }, []);
+
+  const formatProfitPercent = useCallback((percent: number) => {
+    return `+${percent.toFixed(0)}%`;
+  }, []);
+
+  const getActiveBoosterMultiplier = useCallback(() => {
+    if (!boosters) return 1;
+    let totalBonus = 0;
+    boosters.forEach(booster => {
+      const isActive = !booster.expires_at || new Date(booster.expires_at) > new Date();
+      if (isActive) {
+        switch (booster.booster_type) {
+          case 'worker_crew':
+            totalBonus += booster.level * 10;
+            break;
+          case 'geological_survey':
+            totalBonus += booster.level * 15;
+            break;
+          case 'advanced_equipment':
+            totalBonus += booster.level * 20;
+            break;
+          case 'turbo_boost':
+            totalBonus += booster.level * 25;
+            break;
+          case 'automation':
+            totalBonus += booster.level * 30;
+            break;
+        }
+      }
+    });
+    return 1 + (totalBonus / 100);
+  }, [boosters]);
+
   useEffect(() => {
     if (!currentProfile || !currentProfile.last_login) return;
     
@@ -188,32 +264,15 @@ const Dashboard = () => {
     return multiplier;
   }, [boosters]);
 
-  useEffect(() => {
-    if (!currentProfile?.daily_income || currentProfile.daily_income <= 0) return;
+  // Автоматическое начисление баррелей УБРАНО
+  // Баррели теперь накапливаются только виртуально (рассчитываются по времени)
+  // и добавляются к балансу только при нажатии кнопки "Собрать" во вкладке "Мои скважины"
 
-    const interval = setInterval(() => {
-      const incomePerInterval = currentProfile.daily_income / 8640;
-      
-      if (incomePerInterval >= 0.01) {
-        const totalIncome = incomePerInterval * referralMultiplier;
-        const earnedAmount = totalIncome - incomePerInterval;
-        
-        addIncome(totalIncome);
-        
-        if (earnedAmount > 0) {
-          updateReferralEarnings(earnedAmount);
-        }
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [currentProfile?.daily_income, referralMultiplier, addIncome, updateReferralEarnings]);
-
-  const handleBuyWell = async (wellType: typeof wellTypes[0]) => {
+  const handleBuyWell = async (wellType: WellType) => {
     if (!currentProfile) return;
     
     if (currentProfile.balance < wellType.price) {
-      setIsTopUpOpen(true);
+      handleTopUp();
       toast({
         title: "Недостаточно средств",
         description: `Для покупки "${wellType.name}" нужно ${formatGameCurrency(wellType.price)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
@@ -237,6 +296,34 @@ const Dashboard = () => {
     }
   };
 
+  const handleBuyPackage = async (wellPackage: WellPackage) => {
+    if (!currentProfile) return;
+    
+    if (currentProfile.oilcoin_balance < wellPackage.discountedPrice) {
+      handleTopUp();
+      toast({
+        title: "Недостаточно средств",
+        description: `Для покупки "${wellPackage.name}" нужно ${formatGameCurrency(wellPackage.discountedPrice)}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const result = await buyWellPackage(wellPackage);
+    if (result.success) {
+      toast({
+        title: "Пакет куплен!",
+        description: `${wellPackage.name} добавлен к вашему бизнесу`,
+      });
+    } else {
+      toast({
+        title: "Ошибка покупки",
+        description: result.error,
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleUpgradeWell = async (wellId: string) => {
     if (!currentProfile) return;
     
@@ -245,7 +332,7 @@ const Dashboard = () => {
     const upgradeCost = Math.round((wellType?.price || 1000) * 0.5 * Math.pow(1.2, (well?.level || 1) - 1));
     
     if (currentProfile.balance < upgradeCost) {
-      setIsTopUpOpen(true);
+      handleTopUp();
       toast({
         title: "Недостаточно средств",
         description: `Для улучшения нужно ${formatGameCurrency(upgradeCost)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
@@ -269,81 +356,10 @@ const Dashboard = () => {
     }
   };
 
-  const handleTopUp = async (customAmount?: number, packageData?: any, paymentMethod = 'yookassa') => {
-    let rubAmount = 0;
-    let ocAmount = 0;
-
-    if (packageData) {
-      rubAmount = packageData.price;
-      ocAmount = packageData.oilcoins;
-    } else if (customAmount && customAmount > 0) {
-      rubAmount = customAmount;
-      ocAmount = customAmount;
-    } else {
-      toast({
-        title: "Ошибка",
-        description: "Укажите сумму пополнения",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (rubAmount < 1) {
-      toast({
-        title: "Ошибка",
-        description: "Минимальная сумма пополнения: 1₽",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    try {
-      console.log("Creating payment:", { rubAmount, ocAmount, paymentMethod });
-      
-      let data, error;
-      
-      if (paymentMethod === 'tbank') {
-        const { data: tbankData, error: tbankError } = await supabase.functions.invoke('create-tbank-payment', {
-          body: { amount: rubAmount }
-        });
-        data = tbankData;
-        error = tbankError;
-      } else {
-        const { data: yookassaData, error: yookassaError } = await supabase.functions.invoke('create-payment', {
-          body: { amount: rubAmount }
-        });
-        data = yookassaData;
-        error = yookassaError;
-      }
-
-      if (error) throw error;
-      
-      if (data?.test_mode) {
-        toast({
-          title: "Тестовый режим",
-          description: `Платеж на ${rubAmount}₽ создан в тестовом режиме. В реальном режиме вы получите ${ocAmount.toLocaleString()} OC через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
-        });
-        setIsTopUpOpen(false);
-        return;
-      }
-      
-      const paymentUrl = data?.url || data?.confirmation_url;
-      if (paymentUrl) {
-        window.open(paymentUrl, '_blank');
-        toast({
-          title: "Переход к оплате",
-          description: `После успешной оплаты ${rubAmount}₽ вы получите ${formatGameCurrency(ocAmount)} через ${paymentMethod === 'tbank' ? 'Т-Банк' : 'YooKassa'}!`,
-        });
-        setIsTopUpOpen(false);
-      }
-    } catch (error: any) {
-      console.error("Payment error details:", error);
-      toast({ 
-        variant: "destructive", 
-        title: "Ошибка создания платежа",
-        description: error.message || error.error?.message || "Неизвестная ошибка"
-      });
-    }
+  const handleTopUp = () => {
+    // Просто переключаемся на секцию баланса
+    setActiveSection('overview');
+    setOverviewTab('balance');
   };
 
   const handleSignOut = async () => {
@@ -364,14 +380,14 @@ const Dashboard = () => {
       <DashboardHeader 
         profile={currentProfile} 
         isAdmin={isAdmin} 
-        onTopUpClick={() => setIsTopUpOpen(true)}
+        onTopUpClick={handleTopUp}
         onSignOut={handleSignOut}
       />
 
       <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
-        <div className="flex items-center justify-center">
-          <div className="section-toolbar w-full max-w-full overflow-x-auto">
-            <div className="flex space-x-2 bg-card/50 p-2 rounded-lg min-w-max">
+        <div className="flex items-center justify-center px-4">
+          <div className="w-full max-w-6xl">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 bg-card/50 p-3 sm:p-4 rounded-xl">
               {[
                 { id: 'overview', label: 'Обзор', icon: BarChart3 },
                 { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft },
@@ -387,9 +403,9 @@ const Dashboard = () => {
                     activeSection === section.id 
                       ? 'gradient-primary text-primary-foreground shadow-primary' 
                       : ''
-                  } whitespace-nowrap flex-shrink-0 text-base`}
+                  } h-14 sm:h-16 text-base sm:text-lg font-semibold transition-all hover:scale-105`}
                 >
-                  <section.icon className="h-5 w-5 sm:mr-2" />
+                  <section.icon className="h-5 w-5 sm:h-6 sm:w-6 sm:mr-2" />
                   <span className="hidden sm:inline">{section.label}</span>
                 </Button>
               ))}
@@ -428,8 +444,8 @@ const Dashboard = () => {
 
             {overviewTab === 'balance' && (
               <BalanceSection 
-                profile={currentProfile}
-                onTopUpClick={() => setIsTopUpOpen(true)}
+                onTopUp={handleTopUp}
+                topUpLoading={false}
               />
             )}
 
@@ -438,11 +454,6 @@ const Dashboard = () => {
                 profile={currentProfile} 
                 wells={wells} 
                 playerRank={getPlayerRank(currentProfile.nickname)}
-                onTopUpClick={() => setIsTopUpOpen(true)}
-                onBuyWell={handleBuyWell}
-                onUpgradeWell={handleUpgradeWell}
-                boosters={boosters || []}
-                boosterMultiplier={totalMultiplier}
               />
             )}
 
@@ -451,37 +462,116 @@ const Dashboard = () => {
                 wells={wells}
                 profile={currentProfile}
                 onUpgradeWell={handleUpgradeWell}
+                getWellIcon={getWellIcon}
+                getRarityColor={getRarityColor}
+                calculateProfitMetrics={calculateProfitMetrics}
+                formatProfitPercent={formatProfitPercent}
+                boosters={boosters || []}
+                getActiveBoosterMultiplier={getActiveBoosterMultiplier}
+                onBarrelsClaimed={() => reload(true)}
               />
             )}
           </div>
         )}
 
-        {activeSection === 'shop' && (
-          <div className="relative min-h-[600px] rounded-2xl overflow-hidden">
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${boostersHero})` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-background"></div>
-            </div>
-
-            <div className="relative z-10 pt-16 pb-8 px-4">
-              <div className="text-center mb-12">
-                <div className="relative inline-block">
-                  <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
-                    Магазин бустеров
-                  </h2>
-                  <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
+        {activeSection === 'shop' && currentProfile && (
+          <div className="space-y-6">
+            {/* Shop tabs */}
+            <div className="flex items-center justify-center">
+              <div className="section-toolbar w-full max-w-2xl">
+                <div className="flex space-x-2 bg-card/50 p-2 rounded-lg">
+                  {[
+                    { id: 'wells', label: 'Скважины', icon: Fuel },
+                    { id: 'boosters', label: 'Бустеры', icon: Zap }
+                  ].map((tab) => (
+                    <Button
+                      key={tab.id}
+                      variant={shopTab === tab.id ? "default" : "ghost"}
+                      size="default"
+                      onClick={() => setShopTab(tab.id as any)}
+                      className={`${
+                        shopTab === tab.id 
+                          ? 'gradient-primary text-primary-foreground shadow-primary' 
+                          : ''
+                      } flex-1 whitespace-nowrap`}
+                    >
+                      <tab.icon className="h-4 w-4 sm:mr-2" />
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </Button>
+                  ))}
                 </div>
-                <p className="text-lg text-muted-foreground mt-2 [text-shadow:_1px_1px_3px_rgb(0_0_0_/_100%)]">
-                  Усильте свою империю с помощью мощных бустеров
-                </p>
-              </div>
-
-              <div className="max-w-7xl mx-auto">
-                <BoosterShop profile={currentProfile} boosters={boosters || []} onPurchaseComplete={reload} />
               </div>
             </div>
+
+            {/* Wells Shop */}
+            {shopTab === 'wells' && (
+              <div className="relative min-h-[600px] rounded-2xl overflow-hidden">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url(${shopHero})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-background"></div>
+                </div>
+
+                <div className="relative z-10 pt-16 pb-8 px-4">
+                  <div className="text-center mb-12">
+                    <div className="relative inline-block">
+                      <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
+                        Магазин скважин
+                      </h2>
+                      <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 blur-sm rounded-lg opacity-50"></div>
+                    </div>
+                    <p className="text-lg text-white mt-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Расширяйте свою нефтяную империю мощными скважинами
+                    </p>
+                  </div>
+
+                  <div className="max-w-7xl mx-auto">
+                    <ShopSection
+                      profile={currentProfile}
+                      onBuyWell={handleBuyWell}
+                      onBuyPackage={handleBuyPackage}
+                      onTopUpClick={handleTopUp}
+                      getWellIcon={getWellIcon}
+                      getRarityColor={getRarityColor}
+                      getRarityBadgeColor={getRarityBadgeColor}
+                      calculateProfitMetrics={calculateProfitMetrics}
+                      formatProfitPercent={formatProfitPercent}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Boosters Shop */}
+            {shopTab === 'boosters' && (
+              <div className="relative min-h-[600px] rounded-2xl overflow-hidden">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url(${boostersHero})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-background"></div>
+                </div>
+
+                <div className="relative z-10 pt-16 pb-8 px-4">
+                  <div className="text-center mb-12">
+                    <div className="relative inline-block">
+                      <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
+                        Магазин бустеров
+                      </h2>
+                      <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-purple-500/20 to-fuchsia-500/20 blur-sm rounded-lg opacity-50"></div>
+                    </div>
+                    <p className="text-lg text-muted-foreground mt-2 [text-shadow:_1px_1px_3px_rgb(0_0_0_/_100%)]">
+                      Усильте свою империю с помощью мощных бустеров
+                    </p>
+                  </div>
+
+                  <div className="max-w-7xl mx-auto">
+                    <BoosterShop />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -512,18 +602,13 @@ const Dashboard = () => {
             </div>
 
             <div className="max-w-6xl mx-auto space-y-6">
-              <DailyBonus profile={currentProfile} onClaim={() => reload(true)} />
-              <DailyChest profile={currentProfile} onClaim={() => reload(true)} />
+              <DailyBonus />
+              <DailyChest userId={currentProfile.user_id} userIncome={currentProfile.daily_income} />
             </div>
           </div>
         )}
       </main>
 
-      <TopUpModal
-        isOpen={isTopUpOpen}
-        onClose={() => setIsTopUpOpen(false)}
-        onTopUp={handleTopUp}
-      />
     </div>
   );
 };

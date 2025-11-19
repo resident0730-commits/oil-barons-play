@@ -29,8 +29,7 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Gift,
-  Calculator
+  Gift
 } from "lucide-react";
 
 const Index = () => {
@@ -124,25 +123,6 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-              <Button 
-                size="sm" 
-                onClick={() => {
-                  const calculatorSection = document.getElementById('calculator-section');
-                  calculatorSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }}
-                className="flex items-center gap-2 relative overflow-hidden group
-                  bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 
-                  hover:from-violet-500 hover:via-purple-500 hover:to-fuchsia-500
-                  text-white font-bold shadow-lg hover:shadow-purple-500/50
-                  border-2 border-purple-400/50 hover:border-purple-300
-                  transition-all duration-300 hover:scale-105
-                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent
-                  before:-translate-x-full before:hover:translate-x-full before:transition-transform before:duration-700
-                  after:absolute after:inset-0 after:rounded-md after:shadow-[inset_0_0_20px_rgba(255,255,255,0.2)]"
-              >
-                <Calculator className="h-4 w-4 relative z-10 drop-shadow-md" />
-                <span className="hidden lg:inline relative z-10 drop-shadow-md">Калькулятор доходности</span>
-              </Button>
               {user ? (
                 <div className="flex items-center gap-2 sm:gap-4">
                   <div className="hidden md:flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 shadow-md">

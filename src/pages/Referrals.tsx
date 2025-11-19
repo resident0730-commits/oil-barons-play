@@ -48,31 +48,53 @@ export default function Referrals() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5"></div>
         <div className="container mx-auto px-6 py-6 relative z-10">
           <div className="flex items-center justify-between">
-            <Link to="/dashboard" className="group flex items-center space-x-3 hover-scale">
-              <ArrowLeft className="h-6 w-6 text-primary mr-2" />
-              <div className="relative">
-                <Fuel className="h-10 w-10 text-primary drop-shadow-lg transition-transform duration-300 group-hover:rotate-12" />
-                <div className="absolute -inset-2 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div className="space-y-1">
-                <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-primary via-oil-gold to-accent bg-clip-text text-transparent">
-                  Oil Tycoon
-                </h1>
-                <p className="text-xs text-muted-foreground font-medium tracking-wide">Нефтяная Империя</p>
+            <Link to="/dashboard" className="group hover-scale min-w-0">
+              <div className="flex items-center space-x-3">
+                <ArrowLeft className="h-6 w-6 text-primary" />
+                <div className="space-y-1 min-w-0">
+                  <h1 className="text-xl sm:text-3xl font-playfair font-bold text-primary truncate">
+                    Oil Tycoon
+                  </h1>
+                  <p className="text-xs text-muted-foreground font-medium tracking-wide hidden sm:block">Нефтяная Империя</p>
+                </div>
               </div>
             </Link>
             
             <div className="flex items-center space-x-6">
-              {/* Balance Display */}
-              <Button
-                variant="outline"
-                size="lg"
-                aria-label="Баланс"
-                className="group relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30"
-              >
-                <Wallet className="h-5 w-5 text-primary mr-2" />
-                <span className="font-bold text-lg">{profile.balance.toLocaleString()} OC</span>
-              </Button>
+              {/* Balance Display - показываем все три валюты */}
+              <div className="flex items-center space-x-2">
+                {/* Barrels */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label="Баррели"
+                  className="group relative overflow-hidden bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-amber-500/30 cursor-default"
+                >
+                  <span className="text-amber-400 mr-1">🛢️</span>
+                  <span className="font-bold text-sm">{profile.barrel_balance.toLocaleString()} BBL</span>
+                </Button>
+
+                {/* OilCoins */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label="OilCoins"
+                  className="group relative overflow-hidden bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 cursor-default"
+                >
+                  <Wallet className="h-4 w-4 text-green-400 mr-1" />
+                  <span className="font-bold text-sm">{profile.oilcoin_balance.toLocaleString()} OC</span>
+                </Button>
+
+                {/* Rubles */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label="Рубли"
+                  className="group relative overflow-hidden bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border-yellow-500/30 cursor-default"
+                >
+                  <span className="font-bold text-sm">{profile.ruble_balance.toLocaleString()} ₽</span>
+                </Button>
+              </div>
               
               {/* User Info */}
               <div className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
@@ -88,45 +110,6 @@ export default function Referrals() {
                 <div className="flex items-center space-x-2">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Link to="/dashboard">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <Fuel className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Главная</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/profile">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <User className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Профиль</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/statistics">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <BarChart3 className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Статистика</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
                       <Link to="/referrals">
                         <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale bg-primary/20">
                           <Users className="h-4 w-4" />
@@ -135,32 +118,6 @@ export default function Referrals() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Рефералы</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/achievements">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <Award className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Достижения</p>
-                    </TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/leaderboard">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors duration-200 hover-scale">
-                          <MessageSquare className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Отзывы игроков</p>
                     </TooltipContent>
                   </Tooltip>
 
