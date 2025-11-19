@@ -63,6 +63,20 @@ const Dashboard = () => {
   const [overviewTab, setOverviewTab] = useState<'balance' | 'empire' | 'wells'>('balance');
   const [shopTab, setShopTab] = useState<'wells' | 'boosters'>('wells');
 
+  // Add timeout protection for loading screen
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+
+  useEffect(() => {
+    if (loading || !profile) {
+      const timeoutId = setTimeout(() => {
+        console.error('⚠️ Loading timeout - forcing navigation or retry');
+        setLoadingTimeout(true);
+      }, 20000); // 20 seconds timeout
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loading, profile]);
+
   // Show loading while checking auth
   if (!user) {
     return (
@@ -70,6 +84,35 @@ const Dashboard = () => {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     );
+  }
+
+  // Handle loading timeout
+  if (loadingTimeout && !profile) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-4 text-center">
+          <h2 className="text-2xl font-bold text-foreground">Ошибка загрузки</h2>
+          <p className="text-muted-foreground">
+            Не удалось загрузить профиль. Проверьте интернет-соединение.
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={() => {
+              setLoadingTimeout(false);
+              reload(true);
+            }}>
+              Повторить попытку
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/')}>
+              На главную
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading || !profile) {
+    return <LoadingScreen user={user} profile={profile} />;
   }
 
   useEffect(() => {
