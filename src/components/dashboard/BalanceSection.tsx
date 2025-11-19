@@ -39,7 +39,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface BalanceSectionProps {
-  onTopUp: (customAmount?: number, packageData?: any, paymentMethod?: string) => Promise<void>;
+  onTopUp?: () => void;
   topUpLoading?: boolean;
 }
 
