@@ -5,7 +5,6 @@ import {
   User,
   BarChart3,
   Users,
-  Award,
   MessageSquare,
   Shield,
   Settings,
@@ -105,17 +104,6 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
-                        <Link to="/achievements">
-                          <Award className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Достижения</TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
                         <Link to="/support">
                           <MessageSquare className="h-4 w-4" />
                         </Link>
@@ -169,17 +157,6 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Рефералы</TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10">
-                        <Link to="/achievements">
-                          <Award className="h-5 w-5" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Достижения</TooltipContent>
                   </Tooltip>
 
                   <Tooltip>

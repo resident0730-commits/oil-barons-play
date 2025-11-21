@@ -689,7 +689,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
                         <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
                       </div>
                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы получаете</p>
-                       <p className="text-lg sm:text-2xl font-bold text-primary">20 000 ₽</p>
+                       <p className="text-lg sm:text-2xl font-bold text-primary">20 000 OC</p>
                     </div>
                   </div>
                   

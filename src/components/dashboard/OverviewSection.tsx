@@ -123,60 +123,60 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
       <StatusDisplay />
 
       {/* Main Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="hover-scale">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Баланс</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-sm sm:text-base font-medium">Баланс</CardTitle>
+            <Wallet className="h-5 w-5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
+          <CardContent className="space-y-2 px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="space-y-2">
               <div className="flex justify-between items-baseline">
-                <span className="text-xs text-muted-foreground">Рубли:</span>
-                <span className="text-lg font-bold">{profile.ruble_balance.toLocaleString()} ₽</span>
+                <span className="text-xs sm:text-xs text-muted-foreground">Рубли:</span>
+                <span className="text-lg sm:text-lg font-bold">{profile.ruble_balance.toLocaleString()} ₽</span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-xs text-muted-foreground">OilCoins:</span>
-                <span className="text-lg font-bold text-amber-500">{profile.oilcoin_balance.toLocaleString()} OC</span>
+                <span className="text-xs sm:text-xs text-muted-foreground">OilCoins:</span>
+                <span className="text-lg sm:text-lg font-bold text-amber-500">{profile.oilcoin_balance.toLocaleString()} OC</span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-xs text-muted-foreground">Баррели:</span>
-                <span className="text-lg font-bold text-blue-400">{profile.barrel_balance.toLocaleString()} BBL</span>
+                <span className="text-xs sm:text-xs text-muted-foreground">Баррели:</span>
+                <span className="text-lg sm:text-lg font-bold text-blue-400">{profile.barrel_balance.toLocaleString()} BBL</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-scale">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ежедневный доход</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-sm sm:text-base font-medium">Ежедневный доход</CardTitle>
+            <TrendingUp className="h-5 w-5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-400">{formatBarrels(profile.daily_income)}</div>
-            <p className="text-xs text-muted-foreground">в день</p>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="text-2xl sm:text-2xl font-bold text-amber-400">{formatBarrels(profile.daily_income)}</div>
+            <p className="text-xs sm:text-xs text-muted-foreground mt-1">в день</p>
           </CardContent>
         </Card>
 
         <Card className="hover-scale">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Нефтяные скважины</CardTitle>
-            <Fuel className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-sm sm:text-base font-medium">Нефтяные скважины</CardTitle>
+            <Fuel className="h-5 w-5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{wells.length}</div>
-            <p className="text-xs text-muted-foreground">Активных скважин</p>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="text-2xl sm:text-2xl font-bold">{wells.length}</div>
+            <p className="text-xs sm:text-xs text-muted-foreground mt-1">Активных скважин</p>
           </CardContent>
         </Card>
 
         <Card className="hover-scale">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Рейтинг</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-sm sm:text-base font-medium">Рейтинг</CardTitle>
+            <Trophy className="h-5 w-5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-accent">#{playerRank}</div>
-            <p className="text-xs text-muted-foreground">В топ-списке</p>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="text-2xl sm:text-2xl font-bold text-accent">#{playerRank}</div>
+            <p className="text-xs sm:text-xs text-muted-foreground mt-1">В топ-списке</p>
           </CardContent>
         </Card>
       </div>
@@ -242,134 +242,118 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
       </Card>
 
       {/* Performance Metrics */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {/* Performance Section */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border-primary/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
           <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-10 translate-x-10"></div>
-          <CardHeader className="relative z-10 pb-3">
+          <CardHeader className="relative z-10 pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center space-x-2">
               <div className="p-2 bg-gradient-to-br from-primary to-primary/80 rounded-lg shadow-lg">
                 <Target className="h-4 w-4 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent font-bold text-sm">Эффективность</span>
+              <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent font-bold text-sm sm:text-base">Эффективность</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="relative z-10 space-y-4">
-            <div className="p-3 bg-primary/5 rounded-lg border border-primary/10">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-muted-foreground">Средний доход на скважину:</span>
-                <Badge variant="secondary" className="text-xs">{formatGameCurrency(averageDailyPerWell)}</Badge>
+          <CardContent className="relative z-10 space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="p-3 sm:p-3 bg-primary/5 rounded-lg border border-primary/10">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-xs sm:text-xs text-muted-foreground">Средний доход на скважину:</span>
+                <Badge variant="secondary" className="text-xs shrink-0">{formatGameCurrency(averageDailyPerWell)}</Badge>
               </div>
             </div>
             
-            <div className="p-3 bg-accent/5 rounded-lg border border-accent/10">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-muted-foreground">Общая стоимость активов:</span>
-                <Badge variant="secondary" className="text-xs">{formatGameCurrency(totalWellsValue)}</Badge>
+            <div className="p-3 sm:p-3 bg-accent/5 rounded-lg border border-accent/10">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-xs sm:text-xs text-muted-foreground">Общая стоимость активов:</span>
+                <Badge variant="secondary" className="text-xs shrink-0">{formatGameCurrency(totalWellsValue)}</Badge>
               </div>
             </div>
 
-            <div className="p-3 bg-green-500/5 rounded-lg border border-green-500/10">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-muted-foreground">Рыночная стоимость:</span>
-                <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/20">{formatGameCurrency(Math.round(totalWellsValue * 0.8))}</Badge>
+            <div className="p-3 sm:p-3 bg-green-500/5 rounded-lg border border-green-500/10">
+              <div className="flex justify-between items-center gap-2">
+                <span className="text-xs sm:text-xs text-muted-foreground">Рыночная стоимость:</span>
+                <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/20 shrink-0">{formatGameCurrency(Math.round(totalWellsValue * 0.8))}</Badge>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Activity Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-accent/5 border-accent/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-accent/10">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-accent/30 to-transparent rounded-full -translate-y-8 translate-x-8"></div>
-          <CardHeader className="relative z-10 pb-3">
-            <CardTitle className="flex items-center space-x-3">
-              <div className="p-2 bg-gradient-to-br from-accent to-accent/80 rounded-lg shadow-lg">
-                <Zap className="h-5 w-5 text-white" />
-              </div>
-              <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent font-bold">Активность</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="p-4 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border border-accent/20">
-              <DailyBonus />
             </div>
           </CardContent>
         </Card>
 
         {/* Income Bonuses Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-green-500/5 border-green-500/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-green-500/5 border-green-500/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10 md:col-span-2 lg:col-span-2">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/20 to-transparent rounded-full -translate-y-12 translate-x-12"></div>
-          <CardHeader className="relative z-10 pb-3">
-            <CardTitle className="flex items-center space-x-3">
+          <CardHeader className="relative z-10 pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="flex items-center space-x-2 sm:space-x-3">
               <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg">
-                <Star className="h-5 w-5 text-white" />
+                <Star className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent font-bold">Бонусы доходности</span>
+              <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent font-bold text-sm sm:text-base">Бонусы доходности</span>
             </CardTitle>
-            <CardDescription className="flex items-center space-x-2">
+            <CardDescription className="flex items-center space-x-2 text-xs sm:text-sm">
               <span>Общий мультипликатор:</span>
-              <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0">+{totalIncomeBonus}%</Badge>
+              <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white border-0 text-xs">+{totalIncomeBonus}%</Badge>
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative z-10 space-y-4">
-            {/* Status Bonuses */}
-            <div className="p-3 bg-gradient-to-r from-accent/10 to-accent/5 rounded-lg border border-accent/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium flex items-center gap-2">
-                  <Crown className="h-4 w-4 text-accent" />
-                  Статусные бонусы
-                </span>
-                <Badge className="bg-accent/20 text-accent border-accent/20">+{statusBonus}%</Badge>
+          <CardContent className="relative z-10 space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
+              {/* Status Bonuses */}
+              <div className="p-3 sm:p-3 bg-gradient-to-r from-accent/10 to-accent/5 rounded-lg border border-accent/20">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs sm:text-sm font-medium flex items-center gap-2">
+                    <Crown className="h-4 w-4 text-accent" />
+                    Статусные бонусы
+                  </span>
+                  <Badge className="bg-accent/20 text-accent border-accent/20 text-xs">+{statusBonus}%</Badge>
+                </div>
+                {statusBonus > 0 ? (
+                  <div className="text-xs text-muted-foreground space-y-2">
+                    {getStatusDisplayNames().map((title, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-accent/5 rounded border border-accent/10">
+                        <span className="flex items-center gap-1 text-xs">
+                          <Crown className="h-3 w-3 text-accent" />
+                          {title}
+                        </span>
+                        <Badge variant="outline" className="text-xs">
+                          {userTitles[index] === 'oil_king' && '+5%'}
+                          {userTitles[index] === 'leader' && '+3%'}
+                          {userTitles[index] === 'industrialist' && '+2%'}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground text-center py-2">
+                    Нет активных статусных титулов
+                  </div>
+                )}
               </div>
-              {statusBonus > 0 ? (
-                <div className="text-xs text-muted-foreground space-y-2">
-                  {getStatusDisplayNames().map((title, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-accent/5 rounded border border-accent/10">
-                      <span className="flex items-center gap-1">
-                        <Crown className="h-3 w-3 text-accent" />
-                        {title}
-                      </span>
-                      <Badge variant="outline" className="text-xs">
-                        {userTitles[index] === 'oil_king' && '+5%'}
-                        {userTitles[index] === 'leader' && '+3%'}
-                        {userTitles[index] === 'industrialist' && '+2%'}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-xs text-muted-foreground text-center py-2">
-                  Нет активных статусных титулов
-                </div>
-              )}
-            </div>
 
-            {/* Booster Bonuses */}
-            <div className="p-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium flex items-center gap-2">
-                  <Wrench className="h-4 w-4 text-primary" />
-                  Бонусы от бустеров
-                </span>
-                <Badge className="bg-primary/20 text-primary border-primary/20">+{totalBoosterBonus}%</Badge>
+              {/* Booster Bonuses */}
+              <div className="p-3 sm:p-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs sm:text-sm font-medium flex items-center gap-2">
+                    <Wrench className="h-4 w-4 text-primary" />
+                    Бонусы от бустеров
+                  </span>
+                  <Badge className="bg-primary/20 text-primary border-primary/20 text-xs">+{totalBoosterBonus}%</Badge>
+                </div>
+                {activeBoosters.length > 0 ? (
+                  <div className="text-xs text-muted-foreground space-y-2">
+                    {activeBoosters.map((booster, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-primary/5 rounded border border-primary/10">
+                        <span className="flex items-center gap-1 text-xs">
+                          <Wrench className="h-3 w-3 text-primary" />
+                          {booster.name} (ур. {booster.level})
+                        </span>
+                        <Badge variant="outline" className="text-xs">+{booster.bonus}%</Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground text-center py-2">
+                    Нет активных бустеров
+                  </div>
+                )}
               </div>
-              {activeBoosters.length > 0 ? (
-                <div className="text-xs text-muted-foreground space-y-2">
-                  {activeBoosters.map((booster, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-primary/5 rounded border border-primary/10">
-                      <span className="flex items-center gap-1">
-                        <Wrench className="h-3 w-3 text-primary" />
-                        {booster.name} (ур. {booster.level})
-                      </span>
-                      <Badge variant="outline" className="text-xs">+{booster.bonus}%</Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-xs text-muted-foreground text-center py-2">
-                  Нет активных бустеров
-                </div>
-              )}
             </div>
 
             {totalIncomeBonus > 0 && (
