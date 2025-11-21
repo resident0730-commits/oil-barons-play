@@ -23,33 +23,39 @@ export const ParallaxHero = () => {
           {/* Main Title - Clean & Elegant */}
           <div className="space-y-8">
             <div className="relative inline-block animate-fade-in">
-              <h1 className="text-7xl md:text-9xl lg:text-[11rem] font-black font-playfair leading-none tracking-tight
-                bg-gradient-to-b from-amber-200 via-yellow-400 to-amber-600 bg-clip-text text-transparent
-                drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]
-                [text-shadow:_2px_2px_4px_rgba(0,0,0,0.7),_-1px_-1px_2px_rgba(0,0,0,0.3)]
-                [-webkit-text-stroke:1.5px_rgba(120,53,15,0.4)]
-                transition-all duration-700 hover:scale-105"
+              {/* Золотое свечение */}
+              <div className="absolute -inset-6 bg-gradient-to-r from-yellow-500/20 via-amber-400/30 to-yellow-500/20 blur-3xl animate-pulse" />
+              
+              <h1 className="relative text-7xl md:text-9xl lg:text-[11rem] font-black font-playfair leading-none tracking-tight
+                text-transparent bg-clip-text
+                bg-gradient-to-b from-[#D4AF37] via-[#F4C542] to-[#C9A961]
+                drop-shadow-[0_0_50px_rgba(212,175,55,0.7)]
+                [text-shadow:_3px_3px_0_#B8960C,_6px_6px_0_#9A7D0A,_9px_9px_0_#7D6608,_12px_12px_0_#5F4E06,_15px_15px_0_#4A3A05,_18px_18px_30px_rgba(0,0,0,0.6),_0_0_60px_rgba(212,175,55,0.5)]
+                transition-all duration-300 hover:scale-105
+                filter brightness-125 contrast-110 saturate-130"
+                style={{
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
               >
                 OIL TYCOON
               </h1>
             </div>
             
             <div className="max-w-4xl mx-auto space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight
-                text-white
-                drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]
-                [text-shadow:_1px_1px_3px_rgba(0,0,0,0.8),_-1px_-1px_2px_rgba(0,0,0,0.4)]
-                [-webkit-text-stroke:0.5px_rgba(0,0,0,0.2)]
-                tracking-wide"
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
+                style={{
+                  textShadow: '1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px rgba(0,0,0,0.4)'
+                }}
               >
                 От первой капли нефти<br />до нефтяной империи
               </h2>
               
-              <p className="text-lg md:text-xl lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed
-                text-slate-100
-                drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]
-                [text-shadow:_1px_1px_2px_rgba(0,0,0,0.7)]
-                [-webkit-text-stroke:0.3px_rgba(0,0,0,0.15)]"
+              <p className="text-lg md:text-xl lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed text-white"
+                style={{
+                  textShadow: '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0 0 10px rgba(0,0,0,0.3)'
+                }}
               >
                 Реальный заработок через игровую механику!<br />
                 Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
