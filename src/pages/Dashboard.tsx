@@ -8,7 +8,11 @@ import {
   Wallet,
   ArrowRightLeft,
   Building2,
-  Zap
+  Zap,
+  Box,
+  Brain,
+  Sparkles,
+  Coins
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +26,6 @@ import { useSound } from "@/hooks/useSound";
 import { useCurrency } from "@/hooks/useCurrency";
 import { supabase } from "@/integrations/supabase/client";
 import { BoosterShop } from "@/components/BoosterShop";
-import DailyChest from "@/components/DailyChest";
 import { DailyBonus } from "@/components/DailyBonus";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { OverviewSection } from "@/components/dashboard/OverviewSection";
@@ -32,6 +35,7 @@ import { WellsSection } from "@/components/dashboard/WellsSection";
 import { BalanceSection } from "@/components/dashboard/BalanceSection";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { ExchangeWidget } from "@/components/ExchangeWidget";
+import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
 
 import boostersHero from '@/assets/sections/boosters-hero.jpg';
 import myWellsHero from '@/assets/sections/my-wells-hero.jpg';
@@ -59,7 +63,7 @@ const Dashboard = () => {
   const { toast } = useToast();
   const sounds = useSound();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeSection, setActiveSection] = useState<'overview' | 'exchange' | 'shop' | 'daily'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'exchange' | 'shop' | 'daily' | 'calculator'>('overview');
   const [overviewTab, setOverviewTab] = useState<'balance' | 'empire' | 'wells'>('balance');
   const [shopTab, setShopTab] = useState<'wells' | 'boosters'>('wells');
 
@@ -96,7 +100,7 @@ const Dashboard = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const validSections = ['overview', 'exchange', 'shop', 'daily'];
+      const validSections = ['overview', 'exchange', 'shop', 'daily', 'calculator'];
       if (validSections.includes(section)) {
         setActiveSection(section as any);
         const newParams = new URLSearchParams(searchParams);
@@ -386,13 +390,14 @@ const Dashboard = () => {
 
       <main className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
         <div className="flex items-center justify-center px-4">
-          <div className="w-full max-w-6xl">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 bg-card/50 p-3 sm:p-4 rounded-xl">
+          <div className="w-full max-w-7xl">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 bg-card/50 p-3 sm:p-4 rounded-xl">
               {[
-                { id: 'overview', label: 'Обзор', icon: BarChart3 },
+                { id: 'overview', label: 'Личный кабинет', icon: BarChart3 },
                 { id: 'exchange', label: 'Биржа', icon: ArrowRightLeft },
                 { id: 'shop', label: 'Магазин', icon: ShoppingCart },
-                { id: 'daily', label: 'Ежедневно', icon: Calendar }
+                { id: 'daily', label: 'Ежедневно', icon: Calendar },
+                { id: 'calculator', label: 'Калькулятор', icon: BarChart3 }
               ].map((section) => (
                 <Button
                   key={section.id}
@@ -412,6 +417,19 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Кнопка мини-игры Кликер */}
+        {/* <div className="flex justify-center px-4">
+          <Button
+            onClick={() => navigate('/clicker')}
+            size="lg"
+            className="gradient-primary text-primary-foreground shadow-lg hover:shadow-xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 gap-2 text-base px-6 py-6"
+          >
+            <Coins className="h-5 w-5 animate-pulse" />
+            <span>💰 Мини-игра: Кликер Монет</span>
+            <Sparkles className="h-4 w-4 animate-pulse" />
+          </Button>
+        </div> */}
 
         {activeSection === 'overview' && currentProfile && (
           <div className="space-y-6">
@@ -597,13 +615,32 @@ const Dashboard = () => {
                 <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 blur-sm rounded-lg opacity-50"></div>
               </div>
               <p className="text-lg text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                Забирайте ежедневные награды и увеличивайте свой доход!
+                Заходи каждый день подряд и получай награды от 100 до 1400 OC!
               </p>
             </div>
 
-            <div className="max-w-6xl mx-auto space-y-6">
+            <div className="max-w-6xl mx-auto">
               <DailyBonus />
-              <DailyChest userId={currentProfile.user_id} userIncome={currentProfile.daily_income} />
+            </div>
+          </div>
+        )}
+
+        {activeSection === 'calculator' && (
+          <div className="space-y-6">
+            <div className="text-center space-y-4 mb-8">
+              <div className="relative">
+                <h2 className="text-4xl font-bold text-white animate-fade-in [text-shadow:_3px_3px_6px_rgb(0_0_0_/_100%),_-1px_-1px_2px_rgb(0_0_0_/_100%),_1px_-1px_2px_rgb(0_0_0_/_100%),_-1px_1px_2px_rgb(0_0_0_/_100%),_1px_1px_2px_rgb(0_0_0_/_100%)]">
+                  Калькулятор доходности
+                </h2>
+                <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-cyan-500/20 blur-sm rounded-lg opacity-50"></div>
+              </div>
+              <p className="text-lg text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                Рассчитайте оптимальную стратегию инвестирования для достижения желаемого дохода
+              </p>
+            </div>
+
+            <div className="max-w-7xl mx-auto">
+              <ProfitabilityCalculator />
             </div>
           </div>
         )}

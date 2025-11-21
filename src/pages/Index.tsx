@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
 import { ParallaxHero } from "@/components/ParallaxHero";
+import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
 import { 
   Fuel, 
   TrendingUp, 
@@ -29,7 +30,8 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Gift
+  Gift,
+  Gamepad2
 } from "lucide-react";
 
 const Index = () => {
@@ -131,6 +133,12 @@ const Index = () => {
                     </div>
                     <span className="font-semibold text-foreground max-w-[100px] truncate">{profile?.nickname || 'Игрок'}</span>
                   </div>
+                  <Link to="/calculator" className="hidden sm:block">
+                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
+                      <BarChart3 className="h-3.5 w-3.5" />
+                      Калькулятор
+                    </Button>
+                  </Link>
                   <Link to="/dashboard">
                     <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
                       <span className="relative z-10">В игру</span>
@@ -140,6 +148,12 @@ const Index = () => {
                 </div>
               ) : (
                 <>
+                  <Link to="/calculator" className="hidden md:block">
+                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
+                      <BarChart3 className="h-3.5 w-3.5" />
+                      Калькулятор
+                    </Button>
+                  </Link>
                   <Link to="/auth" className="hidden sm:block">
                     <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-primary/20 hover:bg-primary/10 text-xs sm:text-sm">
                       Войти
@@ -288,6 +302,22 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
+          </div>
+        </div>
+
+        {/* Калькулятор доходности */}
+        <div className="container mx-auto px-4 mb-32 animate-fade-in">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold font-playfair mb-6 leading-tight bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              Планируй свою империю
+            </h2>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Узнайте, что нужно купить для достижения желаемого дохода
+            </p>
+          </div>
+          
+          <div className="max-w-6xl mx-auto">
+            <ProfitabilityCalculator compact />
           </div>
         </div>
 
@@ -474,25 +504,45 @@ const Index = () => {
               </Card>
 
               {/* Treasure Chest Feature */}
-              <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-800">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-teal-400/30 transition-all duration-500"></div>
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-800"></div>
-                </div>
-                <CardContent className="relative p-10">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="p-5 bg-teal-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                      <Gift className="h-16 w-16 text-teal-400 drop-shadow-[0_0_20px_rgba(20,184,166,0.8)]" />
-                    </div>
-                    <div className="text-5xl font-black text-teal-400/30 group-hover:text-teal-400/50 transition-colors duration-300">09</div>
-                  </div>
-                  <h3 className="text-3xl font-bold text-teal-100 mb-4 drop-shadow-[0_0_10px_rgba(20,184,166,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Сундук с призами</h3>
-                  <p className="text-lg text-teal-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    Открывайте ежедневные сундуки и участвуйте в розыгрышах реальных призов и гаджетов
-                  </p>
+              {/* <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-800">
+...
                 </CardContent>
-              </Card>
+              </Card> */}
+
+              {/* Mini Games - Pipeline */}
+              {/* <Link to="/pipeline" className="block">
+...
+                </Card>
+              </Link> */}
+
+              {/* Mini Games - Lucky Chests */}
+              {/* <Link to="/lucky-chests" className="block">
+...
+                </Card>
+              </Link> */}
+
+              {/* Mini Games - Tower Jumper */}
+              {/* <Link to="/tower-jumper" className="block">
+                <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-500/20 via-cyan-500/10 to-transparent backdrop-blur-xl border-2 border-blue-500/50 hover:border-blue-400 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 animate-fade-in animation-delay-1200">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-blue-400/30 transition-all duration-500"></div>
+                  <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-1200"></div>
+                  </div>
+                  <CardContent className="relative p-10">
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="p-5 bg-blue-500/30 rounded-2xl backdrop-blur-sm group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300">
+                        <Rocket className="h-16 w-16 text-blue-400 drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
+                      </div>
+                      <div className="text-5xl font-black text-blue-400/30 group-hover:text-blue-400/50 transition-colors duration-300">13</div>
+                    </div>
+                    <h3 className="text-3xl font-bold text-blue-100 mb-4 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Прыжки по вышкам 🚀</h3>
+                    <p className="text-lg text-blue-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Аркадный платформер. Прыгай по нефтяным вышкам и собирай очки. Игра ускоряется каждые 5 прыжков!
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link> */}
             </div>
           </div>
         </div>
