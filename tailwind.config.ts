@@ -15,6 +15,8 @@ export default {
     extend: {
       fontFamily: {
         'playfair': ['Playfair Display', 'serif'],
+        'bebas': ['Bebas Neue', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -174,6 +176,32 @@ export default {
             opacity: "0"
           }
         },
+        "flame-flicker": {
+          "0%, 100%": {
+            filter: "brightness(1) contrast(1)",
+            textShadow: "0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 146, 60, 0.6), 0 0 60px rgba(251, 146, 60, 0.4)"
+          },
+          "25%": {
+            filter: "brightness(1.2) contrast(1.1)",
+            textShadow: "0 0 25px rgba(251, 191, 36, 1), 0 0 50px rgba(251, 146, 60, 0.8), 0 0 70px rgba(251, 146, 60, 0.5)"
+          },
+          "50%": {
+            filter: "brightness(0.9) contrast(0.95)",
+            textShadow: "0 0 15px rgba(251, 191, 36, 0.7), 0 0 35px rgba(251, 146, 60, 0.5), 0 0 50px rgba(251, 146, 60, 0.3)"
+          },
+          "75%": {
+            filter: "brightness(1.15) contrast(1.08)",
+            textShadow: "0 0 30px rgba(251, 191, 36, 0.95), 0 0 55px rgba(251, 146, 60, 0.75), 0 0 80px rgba(251, 146, 60, 0.45)"
+          }
+        },
+        "gold-shine": {
+          "0%": {
+            backgroundPosition: "-200% center"
+          },
+          "100%": {
+            backgroundPosition: "200% center"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -186,6 +214,8 @@ export default {
         "spin-slow": "spin-slow 3s linear infinite",
         "shine": "shine 2s ease-in-out infinite",
         "bubble": "bubble 4s ease-in infinite",
+        "flame-flicker": "flame-flicker 3s ease-in-out infinite",
+        "gold-shine": "gold-shine 3s linear infinite",
       },
       animationDelay: {
         '75': '75ms',
