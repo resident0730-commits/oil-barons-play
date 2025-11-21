@@ -58,6 +58,7 @@ export interface UserProfile {
   ban_reason?: string;
   banned_at?: string;
   banned_by?: string;
+  avatar_url?: string;
   referral_code?: string;
   referred_by?: string;
   referral_bonus_expires_at?: string;
