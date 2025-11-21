@@ -30,6 +30,12 @@ import Season from "./pages/Season";
 import { NewYearJackpot } from "./pages/NewYearJackpot";
 import GameView from "./pages/GameView";
 import Encyclopedia from "./pages/Encyclopedia";
+import Calculator from "./pages/Calculator";
+// import Clicker from "./pages/Clicker";
+import Pipeline from "./pages/Pipeline";
+import SpeedDrill from "./pages/SpeedDrill";
+import LuckyChests from "./pages/LuckyChests";
+// import TowerJumper from "./pages/TowerJumper";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +55,7 @@ const App = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/requisites" element={<Requisites />} />
+          <Route path="/calculator" element={<Calculator />} />
           <Route path="/terms" element={
             <ProtectedRoute pageKey="terms">
               <Terms />
@@ -74,6 +81,11 @@ const App = () => (
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />
           <Route path="/game-view" element={<GameView />} />
           <Route path="/encyclopedia" element={<Encyclopedia />} />
+          {/* <Route path="/clicker" element={<Clicker />} /> */}
+          <Route path="/pipeline" element={<Pipeline />} />
+          <Route path="/speed-drill" element={<SpeedDrill />} />
+          <Route path="/lucky-chests" element={<LuckyChests />} />
+          {/* <Route path="/tower-jumper" element={<TowerJumper />} /> */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
