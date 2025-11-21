@@ -45,11 +45,11 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
               size="sm"
               onClick={onTopUpClick}
               aria-label="Пополнить баланс"
-              className="group relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30 hover:border-primary/50 hover:shadow-primary/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4"
+              className="group relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30 hover:border-primary/50 hover:shadow-primary/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 h-9 sm:h-10"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110" />
-              <span className="font-bold text-sm sm:text-base relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
+              <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 flex-shrink-0" />
+              <span className="font-bold text-xs sm:text-base relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
               <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
@@ -57,11 +57,11 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-oil-amber/10 to-oil-amber/15 border-oil-amber/30 hover:border-oil-amber/50 hover:shadow-oil-amber/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+              className="group relative overflow-hidden bg-gradient-to-r from-oil-amber/10 to-oil-amber/15 border-oil-amber/30 hover:border-oil-amber/50 hover:shadow-oil-amber/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-oil-amber/5 to-oil-amber/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-oil-amber mr-1 sm:mr-2 transition-transform duration-300 group-hover:scale-110">🛢️</span>
-              <span className="font-bold text-sm sm:text-base relative z-10">{formatBarrels(profile.barrel_balance)}</span>
+              <span className="text-oil-amber mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 text-base sm:text-lg flex-shrink-0">🛢️</span>
+              <span className="font-bold text-xs sm:text-base relative z-10">{formatBarrels(profile.barrel_balance)}</span>
               <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-amber to-oil-bronze opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
@@ -69,11 +69,11 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-oil-gold-light/10 to-oil-gold/15 border-oil-gold-light/30 hover:border-oil-gold-light/50 hover:shadow-oil-gold-light/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default"
+              className="group relative overflow-hidden bg-gradient-to-r from-oil-gold-light/10 to-oil-gold/15 border-oil-gold-light/30 hover:border-oil-gold-light/50 hover:shadow-oil-gold-light/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-oil-gold-light/5 to-oil-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-oil-gold-light mr-1 sm:mr-2 text-lg transition-transform duration-300 group-hover:scale-110">₽</span>
-              <span className="font-bold text-sm sm:text-base relative z-10">{formatRubles(profile.ruble_balance)}</span>
+              <span className="text-oil-gold-light mr-1.5 sm:mr-2 text-base sm:text-lg transition-transform duration-300 group-hover:scale-110 flex-shrink-0">₽</span>
+              <span className="font-bold text-xs sm:text-base relative z-10">{formatRubles(profile.ruble_balance)}</span>
               <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-gold-light to-oil-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
             

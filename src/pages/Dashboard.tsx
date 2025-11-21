@@ -403,10 +403,10 @@ const Dashboard = () => {
                     activeSection === section.id 
                       ? 'gradient-primary text-primary-foreground shadow-primary' 
                       : ''
-                  } h-14 sm:h-16 text-base sm:text-lg font-semibold transition-all hover:scale-105`}
+                  } h-12 sm:h-16 text-xs sm:text-lg font-semibold transition-all hover:scale-105 flex-col sm:flex-row gap-1 sm:gap-2 px-2 sm:px-4`}
                 >
-                  <section.icon className="h-5 w-5 sm:h-6 sm:w-6 sm:mr-2" />
-                  <span className="hidden sm:inline">{section.label}</span>
+                  <section.icon className="h-4 w-4 sm:h-6 sm:w-6" />
+                  <span className="text-[10px] sm:text-base leading-tight">{section.label}</span>
                 </Button>
               ))}
             </div>
@@ -420,8 +420,8 @@ const Dashboard = () => {
                 <div className="flex space-x-2 bg-card/50 p-2 rounded-lg">
                   {[
                     { id: 'balance', label: 'Баланс', icon: Wallet },
-                    { id: 'empire', label: 'Обзор империи', icon: Building2 },
-                    { id: 'wells', label: 'Мои скважины', icon: Fuel }
+                    { id: 'empire', label: 'Империя', icon: Building2 },
+                    { id: 'wells', label: 'Скважины', icon: Fuel }
                   ].map((tab) => (
                     <Button
                       key={tab.id}
@@ -432,10 +432,10 @@ const Dashboard = () => {
                         overviewTab === tab.id 
                           ? 'gradient-primary text-primary-foreground shadow-primary' 
                           : ''
-                      } flex-1 whitespace-nowrap`}
+                      } flex-1 text-xs sm:text-base px-2 sm:px-4`}
                     >
-                      <tab.icon className="h-4 w-4 sm:mr-2" />
-                      <span className="hidden sm:inline">{tab.label}</span>
+                      <tab.icon className="h-4 w-4 mr-1 sm:mr-2" />
+                      <span className="truncate">{tab.label}</span>
                     </Button>
                   ))}
                 </div>
@@ -493,10 +493,10 @@ const Dashboard = () => {
                         shopTab === tab.id 
                           ? 'gradient-primary text-primary-foreground shadow-primary' 
                           : ''
-                      } flex-1 whitespace-nowrap`}
+                      } flex-1 text-xs sm:text-base px-2 sm:px-4`}
                     >
-                      <tab.icon className="h-4 w-4 sm:mr-2" />
-                      <span className="hidden sm:inline">{tab.label}</span>
+                      <tab.icon className="h-4 w-4 mr-1 sm:mr-2" />
+                      <span className="truncate">{tab.label}</span>
                     </Button>
                   ))}
                 </div>
