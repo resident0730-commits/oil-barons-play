@@ -102,32 +102,32 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+          <DialogTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
             Пополнение баланса
           </DialogTitle>
         </DialogHeader>
 
         <Tabs defaultValue="packages" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="packages" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Пакеты
+          <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6 h-11 sm:h-12">
+            <TabsTrigger value="packages" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base">
+              <Package className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span>Пакеты</span>
             </TabsTrigger>
-            <TabsTrigger value="custom" className="flex items-center gap-2">
-              <CreditCard className="h-4 w-4" />
-              Своя сумма
+            <TabsTrigger value="custom" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base">
+              <CreditCard className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span>Своя сумма</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Packages Tab */}
-          <TabsContent value="packages" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <TabsContent value="packages" className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {topUpPackages.map((pkg) => (
                 <Card
                   key={pkg.id}
-                  className={`relative overflow-hidden transition-all duration-300 hover:scale-105 cursor-pointer ${
+                  className={`relative overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer ${
                     pkg.popular 
                       ? 'border-2 border-primary shadow-lg shadow-primary/20' 
                       : 'border border-border hover:border-primary/50'
@@ -135,50 +135,50 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                   onClick={() => handlePackageSelect(pkg)}
                 >
                   {pkg.popular && (
-                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-3 py-1 text-xs font-bold rounded-bl-lg">
-                      <Zap className="h-3 w-3 inline mr-1" />
+                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-2 sm:px-3 py-0.5 sm:py-1 text-xs font-bold rounded-bl-lg">
+                      <Zap className="h-2.5 w-2.5 sm:h-3 sm:w-3 inline mr-1" />
                       ХИТ
                     </div>
                   )}
                   
-                  <CardContent className="p-4 space-y-3">
+                  <CardContent className="p-3 sm:p-4 space-y-2 sm:space-y-3">
                     <div className="text-center">
-                      <h3 className="text-lg font-bold mb-1">{pkg.name}</h3>
+                      <h3 className="text-base sm:text-lg font-bold mb-1">{pkg.name}</h3>
                       {pkg.badge && (
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                          <Gift className="h-3 w-3 mr-1" />
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                          <Gift className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                           {pkg.badge}
                         </Badge>
                       )}
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center text-sm">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <div className="flex justify-between items-center text-xs sm:text-sm">
                         <span className="text-muted-foreground">Цена:</span>
-                        <span className="font-bold text-lg">{formatRubles(pkg.rubAmount)}</span>
+                        <span className="font-bold text-base sm:text-lg">{formatRubles(pkg.rubAmount)}</span>
                       </div>
                       
-                      <div className="bg-primary/10 rounded-lg p-3 space-y-1">
-                        <div className="flex justify-between items-center text-sm">
+                      <div className="bg-primary/10 rounded-lg p-2 sm:p-3 space-y-1">
+                        <div className="flex justify-between items-center text-xs sm:text-sm">
                           <span className="text-muted-foreground">Базовых:</span>
                           <span className="font-semibold">{formatOilCoins(pkg.baseOC)}</span>
                         </div>
                         {pkg.bonusOC > 0 && (
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs sm:text-sm">
                             <span className="text-green-400">+ Бонус:</span>
                             <span className="font-semibold text-green-400">{formatOilCoins(pkg.bonusOC)}</span>
                           </div>
                         )}
-                        <div className="h-px bg-border my-2" />
+                        <div className="h-px bg-border my-1 sm:my-2" />
                         <div className="flex justify-between items-center">
-                          <span className="font-bold">Всего:</span>
-                          <span className="font-bold text-primary text-lg">{formatOilCoins(pkg.totalOC)}</span>
+                          <span className="font-bold text-xs sm:text-sm">Всего:</span>
+                          <span className="font-bold text-primary text-base sm:text-lg">{formatOilCoins(pkg.totalOC)}</span>
                         </div>
                       </div>
                     </div>
 
                     <Button 
-                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg"
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg h-10 sm:h-11 text-sm sm:text-base"
                       disabled={topUpLoading}
                     >
                       {topUpLoading ? 'Обработка...' : 'Выбрать'}
@@ -238,23 +238,23 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
             </Card>
 
             {/* Quick amount buttons */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {[500, 1000, 2000].map((amount) => (
                 <Button
                   key={amount}
                   variant="outline"
                   onClick={() => setCustomAmount(amount.toString())}
-                  className="h-16 flex flex-col items-center justify-center gap-1 hover:border-primary hover:bg-primary/10"
+                  className="h-14 sm:h-16 flex flex-col items-center justify-center gap-0.5 sm:gap-1 hover:border-primary hover:bg-primary/10 active:scale-95"
                 >
-                  <span className="text-xs text-muted-foreground">Быстро</span>
-                  <span className="font-bold">{amount}₽</span>
+                  <span className="text-[10px] sm:text-xs text-muted-foreground">Быстро</span>
+                  <span className="font-bold text-sm sm:text-base">{amount}₽</span>
                 </Button>
               ))}
             </div>
           </TabsContent>
         </Tabs>
 
-        <div className="text-center text-sm text-muted-foreground border-t pt-4">
+        <div className="text-center text-xs sm:text-sm text-muted-foreground border-t pt-3 sm:pt-4">
           Безопасная оплата через проверенные платежные системы
         </div>
       </DialogContent>

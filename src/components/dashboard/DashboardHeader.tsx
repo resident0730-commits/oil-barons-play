@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Logo } from "@/components/Logo";
 import { 
   Wallet, 
   User,
@@ -8,7 +9,9 @@ import {
   MessageSquare,
   Shield,
   Settings,
-  LogOut
+  LogOut,
+  Droplet,
+  Coins
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { UserProfile } from "@/hooks/useGameData";
@@ -26,16 +29,119 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
   return (
     <header className="relative border-b border-primary/20 backdrop-blur-md bg-gradient-to-r from-card/95 via-card/90 to-card/95 shadow-luxury">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5"></div>
-      <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 relative z-10">
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <Link to="/" className="group hover-scale min-w-0">
-            <div className="space-y-1 min-w-0">
-              <h1 className="text-xl sm:text-3xl font-playfair font-bold text-primary truncate">
-                Oil Tycoon
-              </h1>
-              <p className="text-xs text-muted-foreground font-medium tracking-wide hidden sm:block">Нефтяная Империя</p>
+      <div className="container mx-auto px-3 sm:px-6 py-3 sm:py-6 relative z-10">
+        {/* Mobile Layout */}
+        <div className="sm:hidden space-y-3">
+          {/* First Row: Logo and User */}
+          <div className="flex items-center justify-between">
+            <div className="flex-1 min-w-0">
+              <Logo variant="compact" linkTo="/" />
             </div>
-          </Link>
+            
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
+              <User className="h-4 w-4 text-primary flex-shrink-0" />
+              <span className="font-playfair text-sm font-medium text-foreground max-w-[80px] truncate">{profile.nickname}</span>
+            </div>
+          </div>
+
+          {/* Second Row: Balances */}
+          <div className="grid grid-cols-3 gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onTopUpClick}
+              className="group relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent backdrop-blur-xl border border-primary/40 hover:border-primary transition-all px-2 h-9 justify-start"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Wallet className="h-4 w-4 text-primary flex-shrink-0 relative z-10" />
+              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border border-emerald-500/40 hover:border-emerald-400 transition-all px-2 h-9 cursor-default justify-start"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Droplet className="h-4 w-4 text-emerald-400 flex-shrink-0 relative z-10" />
+              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatBarrels(profile.barrel_balance)}</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border border-amber-500/40 hover:border-amber-400 transition-all px-2 h-9 cursor-default justify-start"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Coins className="h-4 w-4 text-amber-400 flex-shrink-0 relative z-10" />
+              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatRubles(profile.ruble_balance)}</span>
+            </Button>
+          </div>
+
+          {/* Third Row: Navigation Icons */}
+          <div className="flex items-center justify-center space-x-1">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-9 w-9">
+                    <Link to="/referrals">
+                      <Users className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Рефералы</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-9 w-9">
+                    <Link to="/support">
+                      <MessageSquare className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Поддержка</TooltipContent>
+              </Tooltip>
+
+              {isAdmin && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-9 w-9">
+                      <Link to="/admin">
+                        <Shield className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Админ панель</TooltipContent>
+                </Tooltip>
+              )}
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-9 w-9">
+                    <Link to="/settings">
+                      <Settings className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Настройки</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={onSignOut} className="hover:bg-destructive/10 h-9 w-9">
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Выйти</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden sm:flex items-center justify-between flex-wrap gap-3">
+          <Logo variant="default" linkTo="/" />
           
           <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
             {/* OilCoins Balance */}
@@ -44,40 +150,40 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
               size="sm"
               onClick={onTopUpClick}
               aria-label="Пополнить баланс"
-              className="group relative overflow-hidden bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30 hover:border-primary/50 hover:shadow-primary/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 h-9 sm:h-10"
+              className="group relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent backdrop-blur-xl border-2 border-primary/40 hover:border-primary hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 px-2 sm:px-4 h-9 sm:h-10"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 flex-shrink-0" />
+              <div className="absolute top-0 right-0 w-20 h-20 bg-primary/20 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 flex-shrink-0 relative z-10" />
               <span className="font-bold text-xs sm:text-base relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
-              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
             {/* Barrels Balance */}
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-oil-amber/10 to-oil-amber/15 border-oil-amber/30 hover:border-oil-amber/50 hover:shadow-oil-amber/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border-2 border-emerald-500/40 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-oil-amber/5 to-oil-amber/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-oil-amber mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 text-base sm:text-lg flex-shrink-0">🛢️</span>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/20 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Droplet className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 flex-shrink-0 relative z-10" />
               <span className="font-bold text-xs sm:text-base relative z-10">{formatBarrels(profile.barrel_balance)}</span>
-              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-amber to-oil-bronze opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
             {/* Rubles Balance */}
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-r from-oil-gold-light/10 to-oil-gold/15 border-oil-gold-light/30 hover:border-oil-gold-light/50 hover:shadow-oil-gold-light/25 hover:shadow-lg transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
+              className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/40 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-300 px-2 sm:px-4 cursor-default h-9 sm:h-10"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-oil-gold-light/5 to-oil-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="text-oil-gold-light mr-1.5 sm:mr-2 text-base sm:text-lg transition-transform duration-300 group-hover:scale-110 flex-shrink-0">₽</span>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-amber-500/20 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400 mr-1.5 sm:mr-2 transition-transform duration-300 group-hover:scale-110 flex-shrink-0 relative z-10" />
               <span className="font-bold text-xs sm:text-base relative z-10">{formatRubles(profile.ruble_balance)}</span>
-              <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-oil-gold-light to-oil-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
-            
-            {/* User Info - Hidden on small screens */}
-            <div className="hidden sm:flex items-center space-x-3 px-4 py-2 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
+          
+            {/* User Info */}
+            <div className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-gradient-to-r from-secondary/30 to-accent/20 border border-primary/20">
               <div className="relative">
                 <User className="h-5 w-5 text-primary" />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-card animate-pulse"></div>
@@ -85,69 +191,9 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
               <span className="font-playfair font-medium text-foreground max-w-[100px] truncate">{profile.nickname}</span>
             </div>
 
-            {/* Navigation Icons - Responsive */}
+            {/* Navigation Icons */}
             <TooltipProvider>
-              <div className="flex items-center space-x-1 sm:space-x-2">
-                {/* Mobile: Show all icons but compact */}
-                <div className="flex sm:hidden space-x-1">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
-                        <Link to="/referrals">
-                          <Users className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Рефералы</TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
-                        <Link to="/support">
-                          <MessageSquare className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Поддержка</TooltipContent>
-                  </Tooltip>
-
-                  {isAdmin && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
-                          <Link to="/admin">
-                            <Shield className="h-4 w-4" />
-                          </Link>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Админ панель</TooltipContent>
-                    </Tooltip>
-                  )}
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-8 w-8">
-                        <Link to="/settings">
-                          <Settings className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Настройки</TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" onClick={onSignOut} className="hover:bg-destructive/10 h-8 w-8">
-                        <LogOut className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Выйти</TooltipContent>
-                  </Tooltip>
-                </div>
-
-                {/* Desktop: Show all icons */}
-                <div className="hidden sm:flex items-center space-x-2">
+              <div className="flex items-center space-x-2">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10">
@@ -203,11 +249,10 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                     <TooltipContent>Выйти</TooltipContent>
                   </Tooltip>
                 </div>
-              </div>
-            </TooltipProvider>
+              </TooltipProvider>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-  );
+      </header>
+    );
 };

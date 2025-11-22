@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { History, CreditCard, Coins, Calendar, FileText } from "lucide-react";
+import { Calendar, FileText, CreditCard, Coins } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 
@@ -111,109 +111,56 @@ export const PaymentHistory = () => {
 
   if (loading) {
     return (
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5 text-primary" />
-            История пополнений
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center h-32">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-500"></div>
+      </div>
     );
   }
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <History className="h-5 w-5 text-primary" />
-          История пополнений
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {payments.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p className="text-foreground">У вас пока нет пополнений</p>
-            <p className="text-sm mt-2">Первое пополнение появится здесь после оплаты</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {/* Desktop */}
-            <div className="hidden md:block">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {payments.map((payment) => (
-                  <Card key={payment.id} className="bg-card border-border">
-                    <CardHeader>
-                      <CardTitle className="text-sm font-medium">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3" />
-                          {formatDistanceToNow(new Date(payment.created_at), { addSuffix: true, locale: ru })}
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 space-y-2">
-                      <div className="text-xs text-muted-foreground">#{getInvoiceId(payment)}</div>
-                      <Separator />
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-muted-foreground">Заплачено:</span>
-                          <div className="flex items-center gap-1">
-                            <CreditCard className="h-4 w-4 text-green-600" />
-                            <span className="font-semibold text-green-600 text-sm">{formatRub(payment.amount)}</span>
-                          </div>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-muted-foreground">Получено:</span>
-                          <div className="flex items-center gap-1">
-                            <Coins className="h-4 w-4 text-primary" />
-                            <span className="font-semibold text-primary text-sm">{formatGameRub(getGameRubAmount(payment))}</span>
-                          </div>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-muted-foreground">Статус:</span>
-                          {getStatusBadge(payment.status)}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile */}
-            <div className="md:hidden space-y-3">
+    <div>
+      {payments.length === 0 ? (
+        <div className="text-center py-8 text-green-50/70">
+          <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <p className="text-green-100">У вас пока нет пополнений</p>
+          <p className="text-sm mt-2">Первое пополнение появится здесь после оплаты</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Desktop */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {payments.map((payment) => (
-                <Card key={payment.id} className="bg-card border-border">
-                  <CardContent className="p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Card key={payment.id} className="bg-background/50 backdrop-blur-sm border-green-500/20 hover:border-green-500/40 transition-all duration-200">
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">
+                      <div className="flex items-center gap-2 text-xs text-green-100/80">
                         <Calendar className="h-3 w-3" />
                         {formatDistanceToNow(new Date(payment.created_at), { addSuffix: true, locale: ru })}
                       </div>
-                      {getStatusBadge(payment.status)}
-                    </div>
-                    <div className="text-xs text-muted-foreground">#{getInvoiceId(payment)}</div>
-                    <Separator />
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-2">
+                    <div className="text-xs text-green-100/60">#{getInvoiceId(payment)}</div>
+                    <Separator className="bg-green-500/20" />
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Заплачено:</span>
+                        <span className="text-sm text-green-100/70">Заплачено:</span>
                         <div className="flex items-center gap-1">
-                          <CreditCard className="h-4 w-4 text-green-600" />
-                          <span className="font-semibold text-green-600 text-sm">{formatRub(payment.amount)}</span>
+                          <CreditCard className="h-4 w-4 text-green-400" />
+                          <span className="font-semibold text-green-300 text-sm">{formatRub(payment.amount)}</span>
                         </div>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Получено:</span>
+                        <span className="text-sm text-green-100/70">Получено:</span>
                         <div className="flex items-center gap-1">
-                          <Coins className="h-4 w-4 text-primary" />
-                          <span className="font-semibold text-primary text-sm">{formatGameRub(getGameRubAmount(payment))}</span>
+                          <Coins className="h-4 w-4 text-emerald-400" />
+                          <span className="font-semibold text-emerald-300 text-sm">{formatGameRub(getGameRubAmount(payment))}</span>
                         </div>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-green-100/70">Статус:</span>
+                        {getStatusBadge(payment.status)}
                       </div>
                     </div>
                   </CardContent>
@@ -221,8 +168,43 @@ export const PaymentHistory = () => {
               ))}
             </div>
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {/* Mobile */}
+          <div className="md:hidden space-y-3">
+            {payments.map((payment) => (
+              <Card key={payment.id} className="bg-background/50 backdrop-blur-sm border-green-500/20">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-green-100/80">
+                      <Calendar className="h-3 w-3" />
+                      {formatDistanceToNow(new Date(payment.created_at), { addSuffix: true, locale: ru })}
+                    </div>
+                    {getStatusBadge(payment.status)}
+                  </div>
+                  <div className="text-xs text-green-100/60">#{getInvoiceId(payment)}</div>
+                  <Separator className="bg-green-500/20" />
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-green-100/70">Заплачено:</span>
+                      <div className="flex items-center gap-1">
+                        <CreditCard className="h-4 w-4 text-green-400" />
+                        <span className="font-semibold text-green-300 text-sm">{formatRub(payment.amount)}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-green-100/70">Получено:</span>
+                      <div className="flex items-center gap-1">
+                        <Coins className="h-4 w-4 text-emerald-400" />
+                        <span className="font-semibold text-emerald-300 text-sm">{formatGameRub(getGameRubAmount(payment))}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

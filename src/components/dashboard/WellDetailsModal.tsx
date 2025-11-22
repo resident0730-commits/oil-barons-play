@@ -60,22 +60,22 @@ export const WellDetailsModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
-        <DialogHeader className="text-center space-y-4">
+      <DialogContent className="max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto animate-scale-in p-4 sm:p-6">
+        <DialogHeader className="text-center space-y-3 sm:space-y-4">
           <div className="flex justify-center">
             <div className="relative">
               <div className="animate-pulse opacity-20 absolute inset-0 bg-primary/30 rounded-full blur-xl scale-150"></div>
-              <div className="relative z-10 transform scale-110">
+              <div className="relative z-10 transform scale-90 sm:scale-110">
                 {getWellIcon(well.well_type)}
               </div>
             </div>
           </div>
           
           <div>
-            <DialogTitle className="text-2xl bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            <DialogTitle className="text-xl sm:text-2xl bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
               {wellType.name}
             </DialogTitle>
-            <DialogDescription className="flex justify-center space-x-2 mt-2">
+            <DialogDescription className="flex flex-wrap justify-center gap-2 mt-2">
               <Badge className={getRarityColor(wellType.rarity)} variant="secondary">
                 Уровень {well.level}
               </Badge>
@@ -84,44 +84,44 @@ export const WellDetailsModal = ({
           </div>
         </DialogHeader>
 
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-4 sm:space-y-6 animate-fade-in">
           {/* Income Overview */}
           <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="text-center space-y-2">
                 <div className="flex items-center justify-center space-x-2">
-                  <Coins className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">Доход скважины</span>
+                  <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  <span className="text-xs sm:text-sm text-muted-foreground">Доход скважины</span>
                 </div>
-                <div className="text-3xl font-bold text-amber-400">
+                <div className="text-2xl sm:text-3xl font-bold text-amber-400">
                   {formatBarrels(well.daily_income)}
                 </div>
-                <div className="text-sm text-muted-foreground">в день</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">в день</div>
               </div>
             </CardContent>
           </Card>
 
           {/* Profit Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <Card className="text-center">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <Calendar className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm text-muted-foreground">В месяц</span>
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-center justify-center space-x-1 sm:space-x-2 mb-2">
+                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
+                  <span className="text-xs sm:text-sm text-muted-foreground">В месяц</span>
                 </div>
-                <div className="font-bold text-lg text-blue-500">
+                <div className="font-bold text-base sm:text-lg text-blue-500">
                   {formatBarrels(well.daily_income * 30)}
                 </div>
               </CardContent>
             </Card>
 
             <Card className="text-center">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  <span className="text-sm text-muted-foreground">В год</span>
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-center justify-center space-x-1 sm:space-x-2 mb-2">
+                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
+                  <span className="text-xs sm:text-sm text-muted-foreground">В год</span>
                 </div>
-                <div className="font-bold text-lg text-green-500">
+                <div className="font-bold text-base sm:text-lg text-green-500">
                   {formatBarrels(well.daily_income * 365)}
                 </div>
               </CardContent>
@@ -130,35 +130,35 @@ export const WellDetailsModal = ({
 
           {/* Upgrade Section */}
           <Card>
-            <CardContent className="p-6 space-y-4">
+            <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
               <div className="flex justify-between items-center">
-                <span className="font-medium">Прогресс улучшения</span>
-                <span className="text-sm text-muted-foreground">{well.level}/{wellType.maxLevel}</span>
+                <span className="text-sm sm:text-base font-medium">Прогресс улучшения</span>
+                <span className="text-xs sm:text-sm text-muted-foreground">{well.level}/{wellType.maxLevel}</span>
               </div>
-              <Progress value={upgradeProgress} className="h-3" />
+              <Progress value={upgradeProgress} className="h-2 sm:h-3" />
 
               {isMaxLevel ? (
-                <div className="text-center py-4">
-                  <Badge className="gradient-gold text-primary-foreground text-lg px-4 py-2">
-                    <Zap className="h-4 w-4 mr-2" />
-                    Максимальный уровень достигнут!
+                <div className="text-center py-3 sm:py-4">
+                  <Badge className="gradient-gold text-primary-foreground text-sm sm:text-lg px-3 sm:px-4 py-1.5 sm:py-2">
+                    <Zap className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    Максимальный уровень!
                   </Badge>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                     <div>
-                      <span className="text-muted-foreground">Стоимость улучшения:</span>
-                      <div className="font-bold text-lg">{formatGameCurrency(upgradeCost)}</div>
+                      <span className="text-muted-foreground">Стоимость:</span>
+                      <div className="font-bold text-base sm:text-lg">{formatGameCurrency(upgradeCost)}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Увеличение дохода:</span>
-                      <div className="font-bold text-lg text-green-400">+15%</div>
+                      <span className="text-muted-foreground">Доход:</span>
+                      <div className="font-bold text-base sm:text-lg text-green-400">+15%</div>
                     </div>
                   </div>
 
-                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 space-y-2">
-                    <div className="text-sm font-medium text-green-400">После улучшения:</div>
+                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 sm:p-4 space-y-2">
+                    <div className="text-xs sm:text-sm font-medium text-green-400">После улучшения:</div>
                     <div className="text-xs space-y-1">
                       <div>📈 Доход: {formatBarrels(well.daily_income)} → {formatBarrels(nextLevelIncome)} (+{formatBarrels(incomeIncrease)})</div>
                     </div>
@@ -170,10 +170,10 @@ export const WellDetailsModal = ({
                       onClose();
                     }}
                     disabled={!canUpgrade}
-                    className="w-full gradient-gold text-primary-foreground"
+                    className="w-full gradient-gold text-primary-foreground h-11 sm:h-12 text-sm sm:text-base"
                     size="lg"
                   >
-                    <Zap className="h-5 w-5 mr-2" />
+                    <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                     {canUpgrade ? 'Улучшить скважину' : 'Недостаточно средств'}
                   </Button>
                 </div>

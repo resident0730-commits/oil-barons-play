@@ -109,18 +109,20 @@ export const AnimatedWellCard = ({
       </div>
       
       {/* УЛУЧШЕННЫЕ ПОДПИСИ */}
-      <div className="text-center mt-3 sm:mt-4 space-y-1">
-        <h3 className="text-xs sm:text-sm md:text-base font-bold group-hover:scale-105 transition-transform duration-300 leading-tight px-1 drop-shadow-md" style={{ color: 'hsl(45, 100%, 65%)' }}>
-          {wellType.name}
+      <div className="text-center mt-3 sm:mt-4 space-y-2">
+        <h3 className="text-sm sm:text-base md:text-lg font-bold group-hover:scale-105 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-amber-300 group-hover:via-yellow-400 group-hover:to-amber-300 group-hover:bg-clip-text transition-all duration-300 leading-tight px-1 text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] relative h-[44px] sm:h-[48px] flex items-center justify-center">
+          <span className="line-clamp-2">{wellType.name}</span>
+          <span className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/50 to-amber-400/0 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
         </h3>
-        <div className="flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-          <Badge variant="outline" className="text-xs bg-background/80 backdrop-blur-sm px-1.5 py-0.5 border-amber-500/30">
-            {wellType.rarity}
-          </Badge>
-          <span className="text-muted-foreground">•</span>
-          <span className="font-bold text-xs sm:text-sm" style={{ color: 'hsl(45, 100%, 65%)' }}>
+        <div className="space-y-1">
+          <div className="flex items-center justify-center">
+            <Badge variant="outline" className="text-xs sm:text-sm bg-background/90 backdrop-blur-sm px-2 py-0.5 border-amber-500/40 font-semibold group-hover:border-amber-400 group-hover:shadow-lg group-hover:shadow-amber-500/50 transition-all duration-300">
+              {wellType.rarity}
+            </Badge>
+          </div>
+          <div className="font-bold text-sm sm:text-base text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] group-hover:text-amber-300 group-hover:scale-110 transition-all duration-300">
             {formatBarrels(well.daily_income)}/день
-          </span>
+          </div>
         </div>
       </div>
       

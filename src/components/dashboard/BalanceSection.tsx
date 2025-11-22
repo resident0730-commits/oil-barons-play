@@ -134,7 +134,7 @@ const topUpPackages: TopUpPackage[] = [
   },
   {
     id: 'mega_bonus',
-    name: '🚀 МЕГА БОНУС!',
+    name: 'МЕГА БОНУС',
     rubAmount: 10000,
     ocAmount: 10000,
     bonusOC: 10000,
@@ -249,10 +249,10 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
     if (!user || !profile) return;
     
     const amount = parseFloat(withdrawalAmount);
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(amount) || amount < 10000) {
       toast({
         title: "Ошибка",
-        description: "Введите корректную сумму для вывода",
+        description: "Минимальная сумма вывода 10000 ₽",
         variant: "destructive",
       });
       return;
@@ -464,496 +464,597 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
     );
   }
 
-  // Main balance section
+  // Main balance section with tabs
   return (
     <div className="space-y-6">
       <div className="flex items-center space-x-4">
         <Wallet className="h-8 w-8 text-primary" />
         <div>
-          <h2 className="text-3xl font-bold">Баланс и пополнение</h2>
-          <p className="text-muted-foreground">Управляйте средствами и историей операций</p>
+          <h2 className="text-3xl font-bold">Управление балансом</h2>
+          <p className="text-muted-foreground">Баланс, пополнение и вывод средств</p>
         </div>
       </div>
 
-      {/* Three Currency Balances */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Barrels Balance */}
-        <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-2">
-              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">BBL</Badge>
-              <TrendingUp className="h-5 w-5 text-amber-500" />
-            </div>
-            <p className="text-sm font-medium text-muted-foreground mb-1">Barrels</p>
-            <p className="text-3xl font-bold text-amber-400">
-              {formatBarrels(profile?.barrel_balance || 0)}
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Производственная валюта
-            </p>
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="balance" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="balance">Баланс</TabsTrigger>
+          <TabsTrigger value="deposit">Пополнение</TabsTrigger>
+          <TabsTrigger value="withdrawal">Вывод</TabsTrigger>
+        </TabsList>
 
-        {/* OilCoins Balance */}
-        <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-2">
-              <Badge className="bg-green-500/20 text-green-300 border-green-500/30">OC</Badge>
-              <Wallet className="h-5 w-5 text-green-500" />
-            </div>
-            <p className="text-sm font-medium text-muted-foreground mb-1">OilCoins</p>
-            <p className="text-3xl font-bold text-green-400">
-              {formatOilCoins(profile?.oilcoin_balance || 0)}
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Основная игровая валюта
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Rubles Balance */}
-        <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-2">
-              <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">₽</Badge>
-              <DollarSign className="h-5 w-5 text-blue-500" />
-            </div>
-            <p className="text-sm font-medium text-muted-foreground mb-1">Rubles</p>
-            <p className="text-3xl font-bold text-blue-400">
-              {formatRubles(profile?.ruble_balance || 0)}
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Премиум валюта
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* PROMO CODE SECTION */}
-      <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-accent/5">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-primary">
-            <Gift className="h-5 w-5" />
-            <span>У вас есть промокод?</span>
-          </CardTitle>
-          <CardDescription>
-            Введите промокод для получения бонуса на баланс
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {!promoApplied ? (
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <Input
-                  placeholder="Введите промокод"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  className="text-base"
-                />
-              </div>
-              <Button 
-                onClick={handleApplyPromoCode}
-                disabled={!promoCode.trim()}
-                className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
-              >
-                Применить
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
-              <Gift className="h-5 w-5 text-green-500" />
-              <span className="text-green-500 font-medium">Промокод успешно применен!</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Custom Amount Input */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <CreditCard className="h-5 w-5" />
-            <span>Произвольная сумма</span>
-          </CardTitle>
-          <CardDescription>
-            Введите желаемую сумму для пополнения (минимум 1000 ₽)
-            <br />
-            <span className="text-primary font-medium">💡 Совет: для получения бонусов воспользуйтесь готовыми пакетами ниже</span>
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <Label htmlFor="custom-amount">Сумма в рублях (минимум 1000 ₽)</Label>
-              <Input
-                id="custom-amount"
-                type="number"
-                placeholder="Введите сумму от 1000 ₽..."
-                value={customAmount}
-                onChange={(e) => setCustomAmount(e.target.value)}
-                min="1000"
-                className="mt-1"
-              />
-              {customAmount && parseFloat(customAmount) >= 1000 && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  1 ₽ = 1 ₽
+        {/* BALANCE TAB */}
+        <TabsContent value="balance" className="space-y-6 mt-6">
+          {/* Three Currency Balances */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Barrels Balance */}
+            <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">BBL</Badge>
+                  <TrendingUp className="h-5 w-5 text-amber-500" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground mb-1">Barrels</p>
+                <p className="text-3xl font-bold text-amber-400">
+                  {formatBarrels(profile?.barrel_balance || 0)}
                 </p>
-              )}
-            </div>
-            <div className="flex items-end">
-              <Button 
-                onClick={handleCustomTopUp}
-                disabled={!customAmount || parseFloat(customAmount) < 1000 || topUpLoading}
-                className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
-              >
-                Пополнить
-              </Button>
-            </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Производственная валюта
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* OilCoins Balance */}
+            <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30">OC</Badge>
+                  <Wallet className="h-5 w-5 text-green-500" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground mb-1">OilCoins</p>
+                <p className="text-3xl font-bold text-green-400">
+                  {formatOilCoins(profile?.oilcoin_balance || 0)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Основная игровая валюта
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Rubles Balance */}
+            <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-500/20">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">₽</Badge>
+                  <DollarSign className="h-5 w-5 text-blue-500" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground mb-1">Rubles</p>
+                <p className="text-3xl font-bold text-blue-400">
+                  {formatRubles(profile?.ruble_balance || 0)}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Премиум валюта
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Special Offer */}
-      <div className="relative">
-        {/* Subtle glow effect */}
-        <div className="absolute -inset-1 sm:-inset-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl blur-lg opacity-50"></div>
-        
-        <Card className="relative overflow-hidden border-2 border-primary/40 bg-gradient-to-br from-card via-primary/5 to-accent/10 hover-scale">
-          {/* Elegant corner badge - адаптивный */}
-          <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-gradient-to-r from-primary to-accent text-primary-foreground px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg shadow-lg transform rotate-12 animate-fade-in">
-            <Star className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
-            <span className="hidden sm:inline">ПРЕМИУМ ПРЕДЛОЖЕНИЕ</span>
-            <span className="sm:hidden">ПРЕМИУМ</span>
-          </div>
-
-          {/* Subtle decorative elements - адаптивные */}
-          <div className="absolute top-3 left-3 sm:top-6 sm:left-6 w-12 h-12 sm:w-20 sm:h-20 bg-primary/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-10 h-10 sm:w-16 sm:h-16 bg-accent/10 rounded-full blur-xl"></div>
-
-          <CardHeader className="relative z-10 p-3 sm:p-6">
-            <CardTitle className="flex items-center space-x-2 sm:space-x-3 text-xl sm:text-3xl font-bold">
-              <div className="p-1.5 sm:p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
-                <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+          {/* Balance Overview Card */}
+          <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <span>Информация о валютах</span>
+              </CardTitle>
+              <CardDescription>
+                Назначение каждого типа валюты
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-4 rounded-lg border border-primary/20">
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>• <strong>Barrels (BBL)</strong> - производственная валюта для покупки скважин</li>
+                  <li>• <strong>OilCoins (OC)</strong> - основная игровая валюта для улучшений</li>
+                  <li>• <strong>Rubles (₽)</strong> - премиум валюта для вывода средств</li>
+                </ul>
               </div>
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Особое предложение
-              </span>
-            </CardTitle>
-            <CardDescription className="text-sm sm:text-lg text-muted-foreground">
-              🚀 Удвойте свой бонус с максимальной выгодой
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="relative z-10 p-3 sm:p-6">
-            <div 
-              className="cursor-pointer group"
-              onClick={() => handlePackageSelect(topUpPackages[8])}
-            >
-              <div className="bg-gradient-to-br from-card to-primary/10 p-4 sm:p-8 rounded-2xl border border-primary/30 group-hover:border-primary/50 group-hover:shadow-xl transition-all duration-500 relative overflow-hidden">
-                
-                {/* Subtle hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                <div className="text-center space-y-4 sm:space-y-6 relative z-10">
-                  {/* Stylish offer badge - адаптивный */}
-                  <div className="inline-flex items-center bg-gradient-to-r from-primary to-accent text-white py-2 px-4 sm:py-3 sm:px-8 rounded-full font-bold text-sm sm:text-xl shadow-lg group-hover:shadow-primary/25 transition-shadow duration-300">
-                    <Gift className="h-3 w-3 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
-                    <span className="hidden sm:inline">x2 УДВОЕНИЕ БОНУСА</span>
-                    <span className="sm:hidden">x2 БОНУС</span>
-                    <TrendingUp className="h-3 w-3 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* DEPOSIT TAB */}
+        <TabsContent value="deposit" className="space-y-6 mt-6">
+          {/* PROMO CODE SECTION */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent backdrop-blur-xl border-2 border-green-500/50 hover:border-green-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/30 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-green-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-green-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </div>
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-green-100 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">
+                <div className="p-2 bg-green-500/30 rounded-xl backdrop-blur-sm">
+                  <Gift className="h-5 w-5 text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                </div>
+                <span>У вас есть промокод?</span>
+              </CardTitle>
+              <CardDescription className="text-green-50/80">
+                Введите промокод для получения бонуса на баланс
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              {!promoApplied ? (
+                <div className="flex space-x-4">
+                  <div className="flex-1">
+                    <Input
+                      placeholder="Введите промокод"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                      className="text-base bg-background/50 backdrop-blur-sm border-green-500/30 focus:border-green-400"
+                    />
                   </div>
-                  
-                   <p className="text-sm sm:text-xl font-semibold text-foreground px-2">
-                     Пополните счет — получите в два раза больше
-                   </p>
-                  
-                  {/* Elegant comparison - адаптивная сетка */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
-                    <div className="text-center bg-gradient-to-br from-card to-muted/20 p-3 sm:p-6 rounded-xl border border-border shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                      <div className="text-primary mb-2">
-                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
-                      </div>
-                      <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы пополняете</p>
-                      <p className="text-lg sm:text-2xl font-bold text-foreground">10 000 ₽</p>
-                    </div>
-                    
-                    <div className="flex flex-col items-center justify-center">
-                       <div className="bg-gradient-to-r from-primary to-accent text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
-                         ×2
-                       </div>
-                      <p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">Бонус</p>
-                    </div>
-                    
-                    <div className="text-center bg-gradient-to-br from-primary/10 to-accent/10 p-3 sm:p-6 rounded-xl border border-primary/30 shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                      <div className="text-primary mb-2">
-                        <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
-                      </div>
-                       <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы получаете</p>
-                       <p className="text-lg sm:text-2xl font-bold text-primary">20 000 OC</p>
-                    </div>
-                  </div>
-                  
-                  {/* Elegant benefits - адаптивная сетка */}
-                  <div className="bg-gradient-to-r from-muted/50 to-primary/5 p-3 sm:p-6 rounded-xl border border-primary/20">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
-                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-green-700">
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded-full flex items-center justify-center">
-                          <Check className="h-2 w-2 sm:h-3 sm:w-3 text-green-600" />
-                        </div>
-                        <span className="font-medium">Выгода 100%</span>
-                      </div>
-                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-blue-700">
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Zap className="h-2 w-2 sm:h-3 sm:w-3 text-blue-600" />
-                        </div>
-                        <span className="font-medium">Мгновенно</span>
-                      </div>
-                      <div className="flex items-center justify-center sm:justify-start space-x-2 text-purple-700">
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                          <Star className="h-2 w-2 sm:h-3 sm:w-3 text-purple-600" />
-                        </div>
-                        <span className="font-medium">Без комиссий</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Modern CTA button - адаптивная */}
                   <Button 
-                    className="group relative overflow-hidden text-sm sm:text-lg font-bold py-3 px-6 sm:py-6 sm:px-10 bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:via-accent hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl w-full max-w-md mx-auto"
-                    size="lg"
+                    onClick={handleApplyPromoCode}
+                    disabled={!promoCode.trim()}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-green-500/50 transition-all duration-300"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                    
-                    <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
-                      <Gift className="h-4 w-4 sm:h-5 sm:w-5" />
-                      <span className="whitespace-nowrap">
-                        <span className="hidden sm:inline">Получить удвоенный бонус</span>
-                        <span className="sm:hidden">Получить x2 бонус</span>
-                      </span>
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                    </div>
+                    Применить
                   </Button>
-                  
-                  {/* Stylish notice - адаптивный */}
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 p-3 sm:p-4 rounded-xl">
-                    <div className="flex items-center justify-center space-x-2 text-amber-700">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="font-semibold text-xs sm:text-sm text-center">
-                        <span className="hidden sm:inline">Эксклюзивное предложение • Ограниченное время</span>
-                        <span className="sm:hidden">Ограниченное время</span>
-                      </span>
-                      <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 p-3 bg-green-500/20 border border-green-400/40 rounded-lg backdrop-blur-sm">
+                  <Gift className="h-5 w-5 text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                  <span className="text-green-100 font-medium">Промокод успешно применен!</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Custom Amount Input */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent backdrop-blur-xl border-2 border-blue-500/50 hover:border-blue-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in animation-delay-100">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-blue-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-blue-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-100"></div>
+            </div>
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                <div className="p-2 bg-blue-500/30 rounded-xl backdrop-blur-sm">
+                  <CreditCard className="h-5 w-5 text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+                </div>
+                <span>Произвольная сумма</span>
+              </CardTitle>
+              <CardDescription className="text-blue-50/80">
+                Введите желаемую сумму для пополнения (минимум 1000 ₽). Для получения бонусов воспользуйтесь готовыми пакетами ниже
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 relative">
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <Label htmlFor="custom-amount" className="text-blue-100">Сумма в рублях (минимум 1000 ₽)</Label>
+                  <Input
+                    id="custom-amount"
+                    type="number"
+                    placeholder="Введите сумму от 1000 ₽..."
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
+                    min="1000"
+                    className="mt-1 bg-background/50 backdrop-blur-sm border-blue-500/30 focus:border-blue-400"
+                  />
+                  {customAmount && parseFloat(customAmount) >= 1000 && (
+                    <p className="text-sm text-blue-200/80 mt-1">
+                      1 ₽ = 1 ₽
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-end">
+                  <Button 
+                    onClick={handleCustomTopUp}
+                    disabled={!customAmount || parseFloat(customAmount) < 1000 || topUpLoading}
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+                  >
+                    Пополнить
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Special Offer */}
+          <div className="relative animate-fade-in animation-delay-200">
+            {/* Glowing background effect */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30 rounded-2xl blur-2xl opacity-60 group-hover:opacity-75 transition-opacity"></div>
+            
+            <Card className="relative group overflow-hidden border-2 border-primary/50 hover:border-primary transition-all duration-500 hover:-translate-y-2 bg-gradient-to-br from-primary/20 via-accent/10 to-primary/20 backdrop-blur-xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-primary/40 transition-all duration-500"></div>
+              <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-accent/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-accent/40 transition-all duration-500"></div>
+              
+              {/* Premium badge with enhanced glow */}
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-primary to-accent text-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg shadow-xl shadow-primary/60 animate-fade-in z-10">
+                <Star className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+                <span className="drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]">ПРЕМИУМ ПРЕДЛОЖЕНИЕ</span>
+              </div>
+
+              {/* Animated shine overlay */}
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+
+              <CardHeader className="relative z-10 p-3 sm:p-6">
+                <CardTitle className="flex items-center space-x-2 sm:space-x-3 text-xl sm:text-3xl font-bold">
+                  <div className="p-1.5 sm:p-2 bg-gradient-to-r from-primary to-accent rounded-lg shadow-lg">
+                    <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                  </div>
+                  <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg">
+                    Особое предложение
+                  </span>
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-lg text-foreground/80 drop-shadow-sm">
+                  Удвойте свой бонус с максимальной выгодой
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="relative z-10 p-3 sm:p-6">
+                <div 
+                  className="cursor-pointer group"
+                  onClick={() => handlePackageSelect(topUpPackages[8])}
+                >
+                  <div className="bg-gradient-to-br from-card/90 to-primary/20 p-4 sm:p-8 rounded-2xl border-2 border-primary/40 group-hover:border-primary/70 group-hover:shadow-2xl group-hover:shadow-primary/30 transition-all duration-500 relative overflow-hidden backdrop-blur-sm">
+                    
+                    {/* Enhanced hover glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/15 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="text-center space-y-4 sm:space-y-6 relative z-10">
+                      {/* Enhanced offer badge */}
+                      <div className="inline-flex items-center bg-gradient-to-r from-primary via-accent to-primary text-white py-2 px-4 sm:py-3 sm:px-8 rounded-full font-bold text-sm sm:text-xl shadow-xl shadow-primary/60 group-hover:shadow-2xl group-hover:shadow-primary/80 transition-all duration-300">
+                        <Gift className="h-3 w-3 sm:h-5 sm:w-5 mr-1 sm:mr-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
+                        <span className="hidden sm:inline drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">x2 УДВОЕНИЕ БОНУСА</span>
+                        <span className="sm:hidden drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">x2 БОНУС</span>
+                        <TrendingUp className="h-3 w-3 sm:h-5 sm:w-5 ml-1 sm:ml-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
+                      </div>
+                      
+                       <p className="text-sm sm:text-xl font-semibold text-foreground px-2">
+                         Пополните счет — получите в два раза больше
+                       </p>
+                      
+                      {/* Comparison */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
+                        <div className="text-center bg-gradient-to-br from-card to-muted/20 p-3 sm:p-6 rounded-xl border border-border shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                          <div className="text-primary mb-2">
+                            <Wallet className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
+                          </div>
+                          <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы пополняете</p>
+                          <p className="text-lg sm:text-2xl font-bold text-foreground">10 000 ₽</p>
+                        </div>
+                        
+                        <div className="flex flex-col items-center justify-center">
+                           <div className="bg-gradient-to-r from-primary to-accent text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg shadow-md">
+                             ×2
+                           </div>
+                          <p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">Бонус</p>
+                        </div>
+                        
+                        <div className="text-center bg-gradient-to-br from-primary/10 to-accent/10 p-3 sm:p-6 rounded-xl border border-primary/30 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                          <div className="text-primary mb-2">
+                            <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mx-auto" />
+                          </div>
+                           <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Вы получаете</p>
+                           <p className="text-lg sm:text-2xl font-bold text-primary">20 000 OC</p>
+                        </div>
+                      </div>
+                      
+                      {/* Benefits with improved readability and symmetry */}
+                      <div className="bg-gradient-to-r from-muted/50 to-primary/10 p-3 sm:p-6 rounded-xl border border-primary/20 backdrop-blur-sm">
+                        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-xs sm:text-sm">
+                          <div className="flex flex-col items-center justify-center space-y-2">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-green-500/40">
+                              <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 drop-shadow-[0_0_6px_rgba(34,197,94,0.8)]" />
+                            </div>
+                            <span className="font-semibold text-green-100 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] text-center">Выгода 100%</span>
+                          </div>
+                          <div className="flex flex-col items-center justify-center space-y-2">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-blue-500/40">
+                              <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
+                            </div>
+                            <span className="font-semibold text-blue-100 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] text-center">Мгновенно</span>
+                          </div>
+                          <div className="flex flex-col items-center justify-center space-y-2">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-500/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-purple-500/40">
+                              <Star className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)]" />
+                            </div>
+                            <span className="font-semibold text-purple-100 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] text-center">Без комиссий</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* CTA button */}
+                      <Button 
+                        className="group relative overflow-hidden text-sm sm:text-lg font-bold py-3 px-6 sm:py-6 sm:px-10 bg-gradient-to-r from-primary via-primary to-accent hover:from-primary/90 hover:via-accent hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl w-full max-w-md mx-auto"
+                        size="lg"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        
+                        <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
+                          <Gift className="h-4 w-4 sm:h-5 sm:w-5" />
+                          <span className="whitespace-nowrap">
+                            <span className="hidden sm:inline">Получить удвоенный бонус</span>
+                            <span className="sm:hidden">Получить x2 бонус</span>
+                          </span>
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      </Button>
+                      
+                      {/* Notice with updated styling */}
+                      <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 backdrop-blur-sm border border-primary/30 p-3 sm:p-4 rounded-xl shadow-lg">
+                        <div className="flex items-center justify-center space-x-2">
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-primary drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.6)]" />
+                          <span className="font-semibold text-xs sm:text-sm text-center bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-sm">
+                            <span className="hidden sm:inline">Эксклюзивное предложение • Ограниченное время</span>
+                            <span className="sm:hidden">Ограниченное время</span>
+                          </span>
+                          <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Regular Packages */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl border-2 border-purple-500/50 hover:border-purple-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in animation-delay-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-purple-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-purple-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-200"></div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Regular Packages */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Gift className="h-5 w-5" />
-            <span>Готовые пакеты</span>
-          </CardTitle>
-          <CardDescription>
-            Выберите один из готовых пакетов для быстрого пополнения
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {topUpPackages.slice(0, -1).map((pkg) => (
-              <div
-                key={pkg.id}
-                className={`
-                  relative cursor-pointer group transition-all duration-300 hover:shadow-lg
-                  p-4 rounded-lg border-2 hover:border-primary/50
-                  ${pkg.popular ? 'border-primary/30 bg-primary/5' : 'border-border bg-card'}
-                `}
-                onClick={() => handlePackageSelect(pkg)}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <Badge variant="default" className="bg-primary text-primary-foreground">
-                      Популярный
-                    </Badge>
-                  </div>
-                )}
-
-                <div className="text-center space-y-3">
-                  <h3 className="font-semibold text-lg">{pkg.name}</h3>
-                  
-                  <div className="space-y-2">
-                    <p className="text-2xl font-bold text-primary">
-                      {formatRealCurrency(pkg.rubAmount)}
-                    </p>
-                    
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Базовая сумма:</span>
-                        <span>{formatGameCurrency(pkg.ocAmount)}</span>
-                      </div>
-                      
-                      {pkg.bonusOC > 0 && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Бонус:</span>
-                          <span className="text-green-600 font-medium">
-                            +{formatGameCurrency(pkg.bonusOC)}
-                          </span>
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+                <div className="p-2 bg-purple-500/30 rounded-xl backdrop-blur-sm">
+                  <Gift className="h-5 w-5 text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
+                </div>
+                <span>Готовые пакеты</span>
+              </CardTitle>
+              <CardDescription className="text-purple-50/80">
+                Выберите один из готовых пакетов для быстрого пополнения
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                {topUpPackages.slice(0, -1).map((pkg, index) => (
+                    <div
+                      key={pkg.id}
+                      className={`
+                        relative cursor-pointer group transition-all duration-500 hover:shadow-xl
+                        p-3 sm:p-4 rounded-lg border-2 overflow-hidden backdrop-blur-sm
+                        ${pkg.popular 
+                          ? 'border-primary/50 bg-gradient-to-br from-primary/20 to-accent/10 hover:border-primary' 
+                          : 'border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent hover:border-purple-400'
+                        }
+                        hover:-translate-y-1 animate-fade-in
+                      `}
+                      style={{ animationDelay: `${index * 50}ms` }}
+                      onClick={() => handlePackageSelect(pkg)}
+                    >
+                      {pkg.popular && (
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
+                          <Badge variant="default" className="bg-gradient-to-r from-primary to-accent text-white border-0 shadow-lg shadow-primary/50 text-xs">
+                            Популярный
+                          </Badge>
                         </div>
                       )}
                       
-                      <Separator />
-                      
-                      <div className="flex justify-between font-medium">
-                        <span>Итого:</span>
-                        <span className="text-primary">{formatGameCurrency(pkg.totalOC)}</span>
+                      {/* Decorative blur effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                       </div>
-                    </div>
+
+                      <div className="text-center space-y-2 sm:space-y-3 relative z-10">
+                        <h3 className="font-semibold text-base sm:text-lg drop-shadow-sm truncate">{pkg.name}</h3>
+                        
+                        <div className="space-y-1 sm:space-y-2">
+                          <p className="text-xl sm:text-2xl font-bold text-primary drop-shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]">
+                            {formatRealCurrency(pkg.rubAmount)}
+                          </p>
+                          
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs sm:text-sm">
+                              <span className="text-muted-foreground truncate">Базовая сумма:</span>
+                              <span className="ml-1 flex-shrink-0">{formatGameCurrency(pkg.ocAmount)}</span>
+                            </div>
+                            
+                            {pkg.bonusOC > 0 && (
+                              <div className="flex justify-between text-xs sm:text-sm">
+                                <span className="text-muted-foreground truncate">Бонус:</span>
+                                <span className="text-green-600 font-medium ml-1 flex-shrink-0">
+                                  +{formatGameCurrency(pkg.bonusOC)}
+                                </span>
+                              </div>
+                            )}
+                            
+                            <Separator />
+                            
+                            <div className="flex justify-between font-medium text-xs sm:text-sm">
+                              <span className="truncate">Итого:</span>
+                              <span className="text-primary ml-1 flex-shrink-0">{formatGameCurrency(pkg.totalOC)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {pkg.savings && (
+                          <Badge variant="secondary" className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border-green-500/30 shadow-sm text-xs">
+                            Экономия {pkg.savings}
+                          </Badge>
+                        )}
+
+                        <Button 
+                          className="w-full group-hover:shadow-lg transition-all duration-300 shadow-md text-xs sm:text-sm"
+                          variant={pkg.popular ? "default" : "outline"}
+                          disabled={topUpLoading}
+                          size="sm"
+                        >
+                          <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          Выбрать пакет
+                        </Button>
+                      </div>
                   </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-                  {pkg.savings && (
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">
-                      Экономия {pkg.savings}
-                    </Badge>
-                  )}
+          {/* Payment History */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent backdrop-blur-xl border-2 border-orange-500/50 hover:border-orange-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in animation-delay-400">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-orange-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-300"></div>
+            </div>
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-orange-100 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">
+                <div className="p-2 bg-orange-500/30 rounded-xl backdrop-blur-sm">
+                  <Calendar className="h-5 w-5 text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.8)]" />
+                </div>
+                <span>История пополнений</span>
+              </CardTitle>
+              <CardDescription className="text-orange-50/80">
+                Последние пополнения вашего счета
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 relative">
+              <PaymentHistory />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-                  <Button 
-                    className="w-full group-hover:shadow-md transition-shadow"
-                    variant={pkg.popular ? "default" : "outline"}
-                    disabled={topUpLoading}
-                  >
-                    <Check className="h-4 w-4 mr-2" />
-                    Выбрать пакет
-                  </Button>
+        {/* WITHDRAWAL TAB */}
+        <TabsContent value="withdrawal" className="space-y-6 mt-6">
+          {/* Withdrawal Form */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent backdrop-blur-xl border-2 border-red-500/50 hover:border-red-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/30 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-red-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-red-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </div>
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-red-100 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                <div className="p-2 bg-red-500/30 rounded-xl backdrop-blur-sm">
+                  <Send className="h-5 w-5 text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                </div>
+                <span>Вывод средств</span>
+              </CardTitle>
+              <CardDescription className="text-red-50/80">
+                Создайте заявку на вывод средств (минимум 10000 ₽). Доступно для вывода: {formatRubles(profile?.ruble_balance || 0)}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 relative">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <Label htmlFor="withdrawal-amount" className="text-red-100">Сумма для вывода * (минимум 10000 ₽)</Label>
+                  <Input
+                    id="withdrawal-amount"
+                    type="number"
+                    placeholder="Введите сумму от 10000 ₽"
+                    value={withdrawalAmount}
+                    onChange={(e) => setWithdrawalAmount(e.target.value)}
+                    min="10000"
+                    max={profile?.ruble_balance || 0}
+                    className="mt-1 bg-background/50 backdrop-blur-sm border-red-500/30 focus:border-red-400"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="withdrawal-method" className="text-red-100">Способ вывода *</Label>
+                  <Select value={withdrawalMethod} onValueChange={setWithdrawalMethod}>
+                    <SelectTrigger className="mt-1 bg-background/50 backdrop-blur-sm border-red-500/30 focus:border-red-400">
+                      <SelectValue placeholder="Выберите способ вывода" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="card">Банковская карта</SelectItem>
+                      <SelectItem value="qiwi">QIWI кошелек</SelectItem>
+                      <SelectItem value="yoomoney">ЮMoney</SelectItem>
+                      <SelectItem value="paypal">PayPal</SelectItem>
+                      <SelectItem value="crypto">Криптовалюта</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Withdrawal Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Send className="h-5 w-5" />
-            <span>Вывод средств</span>
-          </CardTitle>
-          <CardDescription>
-            Создайте заявку на вывод средств. Доступно для вывода: {formatGameCurrency(profile?.balance || 0)}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <Label htmlFor="withdrawal-amount">Сумма для вывода *</Label>
-              <Input
-                id="withdrawal-amount"
-                type="number"
-                placeholder="Введите сумму в рублях"
-                value={withdrawalAmount}
-                onChange={(e) => setWithdrawalAmount(e.target.value)}
-                min="1"
-                max={profile?.balance || 0}
-                className="mt-1"
-              />
+              <div>
+                <Label htmlFor="withdrawal-details" className="text-red-100">Реквизиты *</Label>
+                <Input
+                  id="withdrawal-details"
+                  placeholder="Номер карты, кошелька или адрес"
+                  value={withdrawalDetails}
+                  onChange={(e) => setWithdrawalDetails(e.target.value)}
+                  className="mt-1 bg-background/50 backdrop-blur-sm border-red-500/30 focus:border-red-400"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="withdrawal-description" className="text-red-100">Комментарий</Label>
+                <Textarea
+                  id="withdrawal-description"
+                  placeholder="Дополнительная информация (необязательно)"
+                  value={withdrawalDescription}
+                  onChange={(e) => setWithdrawalDescription(e.target.value)}
+                  rows={3}
+                  className="mt-1 bg-background/50 backdrop-blur-sm border-red-500/30 focus:border-red-400"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button 
+                  onClick={() => {
+                    setWithdrawalAmount('');
+                    setWithdrawalMethod('');
+                    setWithdrawalDetails('');
+                    setWithdrawalDescription('');
+                  }}
+                  variant="outline"
+                  disabled={withdrawalLoading}
+                  className="border-red-500/30 hover:bg-red-500/10"
+                >
+                  Очистить
+                </Button>
+                <Button 
+                  onClick={handleWithdrawal}
+                  disabled={withdrawalLoading || !withdrawalAmount || !withdrawalMethod || !withdrawalDetails}
+                  className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 shadow-lg hover:shadow-red-500/50 transition-all duration-300"
+                >
+                  <DollarSign className="h-4 w-4 mr-2" />
+                  {withdrawalLoading ? "Создание заявки..." : "Создать заявку"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Withdrawal History */}
+          <Card className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in animation-delay-100">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-amber-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-amber-400/40 transition-all duration-500"></div>
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 delay-100"></div>
             </div>
-
-            <div>
-              <Label htmlFor="withdrawal-method">Способ вывода *</Label>
-              <Select value={withdrawalMethod} onValueChange={setWithdrawalMethod}>
-                <SelectTrigger className="mt-1">
-                  <SelectValue placeholder="Выберите способ вывода" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="card">Банковская карта</SelectItem>
-                  <SelectItem value="qiwi">QIWI кошелек</SelectItem>
-                  <SelectItem value="yoomoney">ЮMoney</SelectItem>
-                  <SelectItem value="paypal">PayPal</SelectItem>
-                  <SelectItem value="crypto">Криптовалюта</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="withdrawal-details">Реквизиты *</Label>
-            <Input
-              id="withdrawal-details"
-              placeholder="Номер карты, кошелька или адрес"
-              value={withdrawalDetails}
-              onChange={(e) => setWithdrawalDetails(e.target.value)}
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="withdrawal-description">Комментарий</Label>
-            <Textarea
-              id="withdrawal-description"
-              placeholder="Дополнительная информация (необязательно)"
-              value={withdrawalDescription}
-              onChange={(e) => setWithdrawalDescription(e.target.value)}
-              rows={3}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-2">
-            <Button 
-              onClick={() => {
-                setWithdrawalAmount('');
-                setWithdrawalMethod('');
-                setWithdrawalDetails('');
-                setWithdrawalDescription('');
-              }}
-              variant="outline"
-              disabled={withdrawalLoading}
-            >
-              Очистить
-            </Button>
-            <Button 
-              onClick={handleWithdrawal}
-              disabled={withdrawalLoading || !withdrawalAmount || !withdrawalMethod || !withdrawalDetails}
-              className="bg-gradient-to-r from-primary to-accent hover:shadow-lg"
-            >
-              <DollarSign className="h-4 w-4 mr-2" />
-              {withdrawalLoading ? "Создание заявки..." : "Создать заявку"}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Payment History */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5" />
-            <span>История операций</span>
-          </CardTitle>
-          <CardDescription>
-            Последние операции по вашему счету
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-          <Tabs defaultValue="payments" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="payments">Пополнения</TabsTrigger>
-              <TabsTrigger value="withdrawals">Выводы</TabsTrigger>
-            </TabsList>
-            <TabsContent value="payments" className="mt-4">
-              <PaymentHistory />
-            </TabsContent>
-            <TabsContent value="withdrawals" className="mt-4">
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center space-x-2 text-amber-100 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">
+                <div className="p-2 bg-amber-500/30 rounded-xl backdrop-blur-sm">
+                  <Calendar className="h-5 w-5 text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
+                </div>
+                <span>История выводов</span>
+              </CardTitle>
+              <CardDescription className="text-amber-50/80">
+                Последние заявки на вывод средств
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 relative">
               <WithdrawalHistory />
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

@@ -6,7 +6,6 @@ import {
   Wallet, 
   Trophy,
   Zap,
-  Target,
   Users,
   Crown,
   Star,
@@ -182,104 +181,62 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
       </div>
 
       {/* Special Top-Up Offer */}
-      <Card className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-primary/20 hover-scale cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-primary/25" onClick={onTopUpClick}>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5"></div>
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/20 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+      <Card className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent backdrop-blur-xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group" onClick={onTopUpClick}>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/20 rounded-full blur-3xl translate-y-16 -translate-x-16"></div>
+        <div className="absolute inset-0 border-2 border-white/5 rounded-lg"></div>
         
-        <CardHeader className="relative z-10 pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-3 bg-gradient-to-br from-primary to-accent rounded-full shadow-lg">
-                <Gift className="h-6 w-6 text-white" />
+        <CardContent className="relative z-10 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="p-2 bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg flex-shrink-0">
+                <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
-              <div>
-                <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  🔥 Специальное предложение!
+              <div className="min-w-0">
+                <CardTitle className="text-base sm:text-lg font-bold text-primary-100 drop-shadow truncate">
+                  Специальное предложение
                 </CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  Удвойте свои вложения прямо сейчас
+                <CardDescription className="text-primary-50/70 text-xs sm:text-sm truncate">
+                  Удвойте свои вложения
                 </CardDescription>
               </div>
             </div>
-            <Badge className="bg-gradient-to-r from-accent to-primary text-white border-0 shadow-lg animate-pulse">
+            <Badge className="bg-gradient-to-r from-accent to-primary text-white border-0 shadow-lg px-2 sm:px-3 py-1 animate-pulse self-start sm:self-auto whitespace-nowrap">
               x2 БОНУС
             </Badge>
           </div>
-        </CardHeader>
 
-        <CardContent className="relative z-10 space-y-4">
-          <div className="flex items-center justify-between p-4 bg-card/50 rounded-lg border border-primary/20">
-            <div className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <CreditCard className="h-4 w-4 text-primary" />
-                <span className="text-sm text-muted-foreground">Пополните на</span>
-              </div>
-              <div className="text-2xl font-bold text-primary">10,000 ₽</div>
+          <div className="grid grid-cols-1 xs:grid-cols-3 gap-2 sm:gap-4 items-center">
+            <div className="text-center p-2 sm:p-3 bg-background/50 backdrop-blur-sm rounded-lg border border-primary/20">
+              <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1 sm:mb-2" />
+              <div className="text-xs text-muted-foreground mb-1">Пополните</div>
+              <div className="text-sm sm:text-lg font-bold text-primary">10,000 ₽</div>
             </div>
             
-            <ArrowRight className="h-6 w-6 text-accent animate-bounce" />
+            <div className="flex justify-center">
+              <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 text-accent group-hover:translate-x-1 transition-transform" />
+            </div>
             
-            <div className="space-y-1 text-right">
-              <div className="flex items-center space-x-2 justify-end">
-                <Wallet className="h-4 w-4 text-accent" />
-                <span className="text-sm text-muted-foreground">Получите</span>
-              </div>
-              <div className="text-2xl font-bold text-accent">20,000 OC</div>
+            <div className="text-center p-2 sm:p-3 bg-background/50 backdrop-blur-sm rounded-lg border border-accent/20">
+              <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-accent mx-auto mb-1 sm:mb-2" />
+              <div className="text-xs text-muted-foreground mb-1">Получите</div>
+              <div className="text-sm sm:text-lg font-bold text-accent">20,000 OC</div>
             </div>
           </div>
 
-          <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">
-              ⚡ Мгновенное зачисление • 🎯 Удвоение баланса • 🚀 Ускорьте развитие
-            </p>
-            <div className="flex items-center justify-center space-x-2 text-xs text-primary font-medium">
-              <Zap className="h-3 w-3" />
-              <span>Нажмите, чтобы воспользоваться предложением</span>
+          <div className="mt-3 sm:mt-4 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-xs text-primary/80 font-medium">
+              <Zap className="h-3 w-3 flex-shrink-0" />
+              <span className="text-center">Мгновенное зачисление • Удвоение баланса</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Performance Metrics */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {/* Performance Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border-primary/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-10 translate-x-10"></div>
-          <CardHeader className="relative z-10 pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
-            <CardTitle className="flex items-center space-x-2">
-              <div className="p-2 bg-gradient-to-br from-primary to-primary/80 rounded-lg shadow-lg">
-                <Target className="h-4 w-4 text-white" />
-              </div>
-              <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent font-bold text-sm sm:text-base">Эффективность</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="relative z-10 space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
-            <div className="p-3 sm:p-3 bg-primary/5 rounded-lg border border-primary/10">
-              <div className="flex justify-between items-center gap-2">
-                <span className="text-xs sm:text-xs text-muted-foreground">Средний доход на скважину:</span>
-                <Badge variant="secondary" className="text-xs shrink-0">{formatGameCurrency(averageDailyPerWell)}</Badge>
-              </div>
-            </div>
-            
-            <div className="p-3 sm:p-3 bg-accent/5 rounded-lg border border-accent/10">
-              <div className="flex justify-between items-center gap-2">
-                <span className="text-xs sm:text-xs text-muted-foreground">Общая стоимость активов:</span>
-                <Badge variant="secondary" className="text-xs shrink-0">{formatGameCurrency(totalWellsValue)}</Badge>
-              </div>
-            </div>
-
-            <div className="p-3 sm:p-3 bg-green-500/5 rounded-lg border border-green-500/10">
-              <div className="flex justify-between items-center gap-2">
-                <span className="text-xs sm:text-xs text-muted-foreground">Рыночная стоимость:</span>
-                <Badge className="text-xs bg-green-500/20 text-green-600 border-green-500/20 shrink-0">{formatGameCurrency(Math.round(totalWellsValue * 0.8))}</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-1">
         {/* Income Bonuses Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-green-500/5 border-green-500/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10 md:col-span-2 lg:col-span-2">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-green-500/5 border-green-500/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/20 to-transparent rounded-full -translate-y-12 translate-x-12"></div>
           <CardHeader className="relative z-10 pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="flex items-center space-x-2 sm:space-x-3">
@@ -369,56 +326,28 @@ export const OverviewSection = ({ profile, wells, playerRank, onTopUpClick }: Ov
           </CardContent>
         </Card>
 
-        {/* Social Achievements Section */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-purple-500/5 border-purple-500/20 hover-scale transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full -translate-y-10 translate-x-10"></div>
-          <CardHeader className="relative z-10 pb-3">
-            <CardTitle className="flex items-center space-x-3">
-              <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg">
-                <Users className="h-5 w-5 text-white" />
-              </div>
-              <span className="bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent font-bold">Социальные достижения</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="relative z-10 space-y-4">
-            <div className="text-center p-6 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-xl border border-purple-500/20">
-              <div className="mb-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="h-8 w-8 text-purple-500" />
-                </div>
-                <div className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">Скоро</div>
-                <p className="text-xs text-muted-foreground mt-1">Реферальная статистика</p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                  <Trophy className="h-3 w-3" />
-                  <span>Лидерборды</span>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                  <Star className="h-3 w-3" />
-                  <span>Достижения</span>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                  <Gift className="h-3 w-3" />
-                  <span>Награды</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Payment History Section */}
-      <div className="mt-8">
-        <div className="mb-4">
-          <h3 className="text-xl font-bold heading-contrast flex items-center gap-2">
+      <Card className="relative overflow-hidden bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent backdrop-blur-xl border-2 border-green-500/30 hover:border-green-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/20">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/20 rounded-full blur-3xl -translate-y-20 translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl translate-y-20 -translate-x-20"></div>
+        <div className="absolute inset-0 border-2 border-white/5 rounded-lg"></div>
+        
+        <CardHeader className="relative z-10">
+          <CardTitle className="flex items-center gap-2 text-green-100 drop-shadow">
             <CreditCard className="h-5 w-5" />
             История платежей
-          </h3>
-          <p className="text-muted-foreground subtitle-contrast">Все ваши пополнения баланса</p>
-        </div>
-        <PaymentHistory />
-      </div>
+          </CardTitle>
+          <CardDescription className="text-green-50/70">
+            Все ваши пополнения баланса
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent className="relative z-10">
+          <PaymentHistory />
+        </CardContent>
+      </Card>
     </div>
   );
 };
