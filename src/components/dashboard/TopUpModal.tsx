@@ -135,20 +135,23 @@ export const TopUpModal = ({ isOpen, onClose, onTopUp, topUpLoading }: TopUpModa
                   onClick={() => handlePackageSelect(pkg)}
                 >
                   {pkg.popular && (
-                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-2 sm:px-3 py-0.5 sm:py-1 text-xs font-bold rounded-bl-lg">
-                      <Zap className="h-2.5 w-2.5 sm:h-3 sm:w-3 inline mr-1" />
-                      ХИТ
+                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-1.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold rounded-bl-lg z-10">
+                      <Zap className="h-2 w-2 sm:h-3 sm:w-3 inline mr-0.5 sm:mr-1" />
+                      <span className="hidden xs:inline">ХИТ</span>
+                      <span className="xs:hidden">ХИТ</span>
                     </div>
                   )}
                   
-                  <CardContent className="p-3 sm:p-4 space-y-2 sm:space-y-3">
-                    <div className="text-center">
-                      <h3 className="text-base sm:text-lg font-bold mb-1">{pkg.name}</h3>
+                  <CardContent className="p-3 sm:p-4 space-y-2 sm:space-y-3 pt-6 sm:pt-4">
+                    <div className="text-center space-y-1.5 sm:space-y-1">
+                      <h3 className="text-sm sm:text-lg font-bold pr-8 sm:pr-0">{pkg.name}</h3>
                       {pkg.badge && (
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                          <Gift className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
-                          {pkg.badge}
-                        </Badge>
+                        <div className="flex justify-center">
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">
+                            <Gift className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                            {pkg.badge}
+                          </Badge>
+                        </div>
                       )}
                     </div>
 
