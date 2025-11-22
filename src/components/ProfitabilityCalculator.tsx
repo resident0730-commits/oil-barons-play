@@ -1086,39 +1086,39 @@ export const ProfitabilityCalculator = ({ compact = false, isOpen: externalIsOpe
             <div className="space-y-3">
               {solution.packages.map((purchase, index) => (
                 <Card key={`pkg-${index}`} className="bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-500/30">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-blue-500/30 rounded-xl">
-                          <Package className="h-8 w-8 text-blue-400" />
+                  <CardContent className="p-3 sm:p-6">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-2 sm:gap-4 min-w-0 flex-1">
+                        <div className="p-2 sm:p-3 bg-blue-500/30 rounded-xl flex-shrink-0">
+                          <Package className="h-5 w-5 sm:h-8 sm:w-8 text-blue-400" />
                         </div>
-                        <div>
-                           <div className="flex items-center gap-3 mb-2">
-                             <h4 className="text-xl font-bold text-blue-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{purchase.package.name}</h4>
-                             <Badge className="bg-blue-500/30 text-blue-100 border-blue-400">
+                        <div className="min-w-0 flex-1">
+                           <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 mb-2">
+                             <h4 className="text-sm sm:text-xl font-bold text-blue-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] break-words">{purchase.package.name}</h4>
+                             <Badge className="bg-blue-500/30 text-blue-100 border-blue-400 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 whitespace-nowrap">
                                x{purchase.count} шт
                              </Badge>
-                             <Badge variant="outline" className="bg-green-500/20 text-green-100 border-green-400">
+                             <Badge variant="outline" className="bg-green-500/20 text-green-100 border-green-400 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 whitespace-nowrap">
                                {purchase.package.discount} скидка
                              </Badge>
                            </div>
-                           <p className="text-blue-50/80 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                           <p className="text-xs sm:text-base text-blue-50/80 mb-2 sm:mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] break-words">
                              Доход: {formatCurrency(purchase.package.totalIncome / 1000, 'OILCOIN')}/день за пакет (в баррелях: {purchase.package.totalIncome.toLocaleString()} BBL)
                            </p>
-                           <div className="text-sm text-blue-50/80 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                           <div className="text-[10px] sm:text-sm text-blue-50/80 mb-2 sm:mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] break-words">
                              Включает: {purchase.package.wells.map(w => `${w.type} x${w.count}`).join(', ')}
                            </div>
-                           <div className="flex items-center gap-3">
-                             <Badge variant="outline" className="text-blue-100 border-blue-400">
+                           <div className="flex flex-wrap items-center gap-1.5 sm:gap-3">
+                             <Badge variant="outline" className="text-blue-100 border-blue-400 text-[10px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 whitespace-nowrap">
                                Цена за 1: {formatCurrency(purchase.package.cost, 'OILCOIN')}
                              </Badge>
-                             <Badge className="bg-blue-500/30 text-blue-100 border-blue-400">
+                             <Badge className="bg-blue-500/30 text-blue-100 border-blue-400 text-[10px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 whitespace-nowrap">
                                Итого: {formatCurrency(purchase.package.cost * purchase.count, 'OILCOIN')}
                              </Badge>
                            </div>
                         </div>
                       </div>
-                      <Check className="h-6 w-6 text-blue-400" />
+                      <Check className="h-4 w-4 sm:h-6 sm:w-6 text-blue-400 flex-shrink-0" />
                     </div>
                   </CardContent>
                 </Card>
@@ -1130,33 +1130,33 @@ export const ProfitabilityCalculator = ({ compact = false, isOpen: externalIsOpe
           <div className="space-y-3">
             {solution.wells.map((purchase, index) => (
               <Card key={index} className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-primary/20 rounded-xl">
-                        <Fuel className="h-8 w-8 text-primary" />
+                <CardContent className="p-3 sm:p-6">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-2 sm:gap-4 min-w-0 flex-1">
+                      <div className="p-2 sm:p-3 bg-primary/20 rounded-xl flex-shrink-0">
+                        <Fuel className="h-5 w-5 sm:h-8 sm:w-8 text-primary" />
                       </div>
-                       <div>
-                         <div className="flex items-center gap-3 mb-2">
-                           <h4 className="text-xl font-bold text-amber-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{purchase.well.name}</h4>
-                           <Badge className="bg-primary/30 text-amber-100 border-primary/60">
+                       <div className="min-w-0 flex-1">
+                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 mb-2">
+                           <h4 className="text-sm sm:text-xl font-bold text-amber-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] break-words">{purchase.well.name}</h4>
+                           <Badge className="bg-primary/30 text-amber-100 border-primary/60 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 whitespace-nowrap">
                              x{purchase.count} шт
                            </Badge>
                          </div>
-                         <p className="text-amber-50/80 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                         <p className="text-xs sm:text-base text-amber-50/80 mb-2 sm:mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] break-words">
                            Доход: {formatCurrency(purchase.well.dailyIncome / 1000, 'OILCOIN')}/день за 1 шт (в баррелях: {purchase.well.dailyIncome.toLocaleString()} BBL)
                          </p>
-                         <div className="flex items-center gap-3">
-                           <Badge variant="outline" className="text-amber-100 border-primary/60">
+                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-3">
+                           <Badge variant="outline" className="text-amber-100 border-primary/60 text-[10px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 whitespace-nowrap">
                              Цена за 1: {formatCurrency(purchase.well.cost, 'OILCOIN')}
                            </Badge>
-                           <Badge className="bg-primary/30 text-amber-100 border-primary/60">
+                           <Badge className="bg-primary/30 text-amber-100 border-primary/60 text-[10px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 whitespace-nowrap">
                              Итого: {formatCurrency(purchase.well.cost * purchase.count, 'OILCOIN')}
                            </Badge>
                          </div>
                        </div>
                     </div>
-                    <Check className="h-6 w-6 text-primary" />
+                    <Check className="h-4 w-4 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
                   </div>
                 </CardContent>
               </Card>
