@@ -397,13 +397,13 @@ export function useGameData() {
       if (isActive) {
         switch (booster.booster_type) {
           case 'worker_crew':
-            totalBonus += booster.level * 15; // 15% per level
+            totalBonus += booster.level * 10; // 10% per level
             break;
           case 'geological_survey':
-            totalBonus += booster.level * 25; // 25% per level
+            totalBonus += booster.level * 15; // 15% per level
             break;
           case 'advanced_equipment':
-            totalBonus += booster.level * 35; // 35% per level
+            totalBonus += booster.level * 25; // 25% per level
             break;
           case 'turbo_boost':
             totalBonus += booster.level * 50; // 50% per level
@@ -668,7 +668,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload game data to get updated wells
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error: any) {
@@ -720,7 +721,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload game data
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error: any) {
@@ -773,7 +775,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload game data
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error: any) {
@@ -833,7 +836,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload to recalculate daily income
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error: any) {
@@ -903,7 +907,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload game data to get fresh boosters and recalculate daily income
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true };
     } catch (error: any) {
@@ -932,9 +937,9 @@ export function useGameData() {
       const boosterTypes = [
         { id: 'worker_crew', baseCost: 5000, costMultiplier: 1.8 },
         { id: 'geological_survey', baseCost: 8000, costMultiplier: 2.0 },
-        { id: 'advanced_equipment', baseCost: 15000, costMultiplier: 2.2 },
+        { id: 'advanced_equipment', baseCost: 20000, costMultiplier: 2.2 },
         { id: 'turbo_boost', baseCost: 3000, costMultiplier: 1.0 },
-        { id: 'automation', baseCost: 20000, costMultiplier: 2.5 }
+        { id: 'automation', baseCost: 15000, costMultiplier: 2.5 }
       ];
 
       const boosterType = boosterTypes.find(bt => bt.id === boosterId);
@@ -980,7 +985,8 @@ export function useGameData() {
       setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
 
       // Reload game data to refresh boosters and recalculate daily income
-      setTimeout(() => loadGameData(), 100);
+      await loadGameData();
+      await recalculateDailyIncome();
 
       return { success: true, refundAmount };
     } catch (error: any) {
