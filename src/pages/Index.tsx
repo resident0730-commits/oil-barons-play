@@ -14,6 +14,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
 import { ParallaxHero } from "@/components/ParallaxHero";
 import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
+import { Logo } from "@/components/Logo";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { 
   Fuel, 
   TrendingUp, 
@@ -107,66 +114,87 @@ const Index = () => {
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-gradient-to-b from-background/95 to-background/80 border-b border-primary/10 shadow-lg">
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <nav className="flex items-center justify-between gap-2">
-            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-shrink">
-              <div className="relative group flex-shrink-0">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                <div className="relative p-1.5 sm:p-2.5 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full border border-primary/30">
-                  <Crown className="h-5 w-5 sm:h-7 sm:w-7 text-primary drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
-                </div>
-              </div>
-              <div className="min-w-0">
-                <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-lg truncate">
-                  Oil Tycoon
-                </h1>
-                <div className="hidden sm:flex items-center gap-1 mt-0.5">
-                  <Sparkles className="h-3 w-3 text-accent/70" />
-                  <span className="text-xs text-muted-foreground font-medium">Нефтяная империя</span>
-                </div>
-              </div>
-            </div>
+            <Logo variant="default" linkTo="/" />
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-              {user ? (
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="hidden md:flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 shadow-md">
-                    <div className="p-1 bg-primary/20 rounded-full">
-                      <User className="h-3.5 w-3.5 text-primary" />
+              <TooltipProvider>
+                {user ? (
+                  <div className="flex items-center gap-2 sm:gap-4">
+                    <div className="hidden md:flex items-center space-x-2 text-sm bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 shadow-md">
+                      <div className="p-1 bg-primary/20 rounded-full">
+                        <User className="h-3.5 w-3.5 text-primary" />
+                      </div>
+                      <span className="font-semibold text-foreground max-w-[100px] truncate">{profile?.nickname || 'Игрок'}</span>
                     </div>
-                    <span className="font-semibold text-foreground max-w-[100px] truncate">{profile?.nickname || 'Игрок'}</span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/calculator" className="hidden sm:block">
+                          <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
+                            <BarChart3 className="h-3.5 w-3.5" />
+                            Калькулятор
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Рассчитайте потенциальную прибыль</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/dashboard">
+                          <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
+                            <span className="relative z-10">В игру</span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Перейти в игровой дашборд</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
-                  <Link to="/calculator" className="hidden sm:block">
-                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
-                      <BarChart3 className="h-3.5 w-3.5" />
-                      Калькулятор
-                    </Button>
-                  </Link>
-                  <Link to="/dashboard">
-                    <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
-                      <span className="relative z-10">В игру</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <Link to="/calculator" className="hidden md:block">
-                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
-                      <BarChart3 className="h-3.5 w-3.5" />
-                      Калькулятор
-                    </Button>
-                  </Link>
-                  <Link to="/auth" className="hidden sm:block">
-                    <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-primary/20 hover:bg-primary/10 text-xs sm:text-sm">
-                      Войти
-                    </Button>
-                  </Link>
-                  <Link to="/dashboard">
-                    <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
-                      <span className="relative z-10 whitespace-nowrap">Начать игру</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    </Button>
-                  </Link>
-                </>
-              )}
+                ) : (
+                  <>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/calculator" className="hidden md:block">
+                          <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-accent/20 hover:bg-accent/10 text-xs sm:text-sm gap-1.5">
+                            <BarChart3 className="h-3.5 w-3.5" />
+                            Калькулятор
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Рассчитайте потенциальную прибыль</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/auth" className="hidden sm:block">
+                          <Button size="sm" variant="ghost" className="backdrop-blur-sm border border-primary/20 hover:bg-primary/10 text-xs sm:text-sm">
+                            Войти
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Войти в существующий аккаунт</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/dashboard">
+                          <Button size="sm" className="gradient-primary shadow-primary hover-scale relative overflow-hidden group text-xs sm:text-sm px-3 sm:px-4">
+                            <span className="relative z-10 whitespace-nowrap">Начать игру</span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Начать строить нефтяную империю</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
+              </TooltipProvider>
             </div>
           </nav>
         </div>
@@ -260,7 +288,7 @@ const Index = () => {
                   </div>
                   <h3 className="text-3xl font-bold text-pink-100 mb-4 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Мгновенно</h3>
                   <p className="text-lg text-pink-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    Игровые рубли поступают на счет сразу после оплаты
+                    Игровая валюта OilCoin поступает на счет сразу после оплаты
                   </p>
                 </CardContent>
               </Card>
@@ -278,7 +306,7 @@ const Index = () => {
                     <div>
                       <h4 className="text-2xl font-bold text-cyan-100 mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Что можно купить</h4>
                       <p className="text-lg text-cyan-50/80 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                        За игровые рубли покупайте скважины, бустеры и улучшения для развития империи
+                        За OilCoin покупайте скважины, бустеры и улучшения для развития империи
                       </p>
                     </div>
                   </div>
@@ -435,7 +463,7 @@ const Index = () => {
                   </div>
                   <h3 className="text-3xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Реферальная программа</h3>
                   <p className="text-lg text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    Приглашайте друзей и получайте бонусы за совместную игру в образовательной игре
+                    Приглашайте друзей и получайте бонусы за совместное развитие нефтяной империи
                   </p>
                 </CardContent>
               </Card>

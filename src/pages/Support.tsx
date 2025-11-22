@@ -225,37 +225,37 @@ const Support = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 p-4">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 p-3 sm:p-4">
+      <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="flex items-center gap-4">
-          <Button variant="outline" asChild>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+          <Button variant="outline" asChild className="touch-target h-10 sm:h-11">
             <Link to="/dashboard">
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Назад
+              <ChevronLeft className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="text-xs sm:text-base">Назад</span>
             </Link>
           </Button>
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold">Служба поддержки</h1>
+            <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <h1 className="text-xl sm:text-2xl font-bold">Служба поддержки</h1>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
           {/* Create New Ticket */}
           <Card className="h-fit">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Send className="h-5 w-5 text-primary" />
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Send className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 Создать заявку
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 <div>
-                  <Label htmlFor="category">Категория</Label>
+                  <Label htmlFor="category" className="text-xs sm:text-sm">Категория</Label>
                   <Select value={category} onValueChange={setCategory}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 sm:h-11 touch-target text-xs sm:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -270,18 +270,19 @@ const Support = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="subject">Тема обращения *</Label>
+                  <Label htmlFor="subject" className="text-xs sm:text-sm">Тема обращения *</Label>
                   <Input
                     id="subject"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="Кратко опишите проблему или вопрос"
+                    className="h-10 sm:h-11 touch-target text-xs sm:text-base"
                     required
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Подробное описание *</Label>
+                  <Label htmlFor="message" className="text-xs sm:text-sm">Подробное описание *</Label>
                   <Textarea
                     id="message"
                     value={message}
@@ -290,21 +291,22 @@ const Support = () => {
                       ? "Опишите проблему с пополнением: какую сумму пытались пополнить, какой способ оплаты использовали, на каком этапе возникла ошибка. При наличии - приложите скриншот ошибки."
                       : "Опишите проблему подробно. Укажите шаги для воспроизведения, если это техническая проблема."
                     }
-                    rows={6}
+                    rows={5}
+                    className="text-xs sm:text-base resize-none"
                     required
                   />
                 </div>
 
                 {/* File Upload */}
                 <div>
-                  <Label>Прикрепить скриншоты (до 5 изображений)</Label>
+                  <Label className="text-xs sm:text-sm">Прикрепить скриншоты (до 5 изображений)</Label>
                   <div className="space-y-2">
                     <Input
                       type="file"
                       accept="image/*"
                       multiple
                       onChange={handleFileChange}
-                      className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                      className="h-10 sm:h-11 text-xs sm:text-sm file:mr-2 sm:file:mr-4 file:py-1 sm:file:py-2 file:px-2 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                     />
                     
                     {attachments.length > 0 && (
@@ -312,7 +314,7 @@ const Support = () => {
                         {attachments.map((file, index) => (
                           <div key={index} className="relative group">
                             <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
-                              <Image className="h-4 w-4 text-primary" />
+                              <Image className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
                               <span className="text-xs truncate flex-1">
                                 {file.name}
                               </span>
@@ -321,7 +323,7 @@ const Support = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => removeAttachment(index)}
-                                className="h-6 w-6 p-0 hover:bg-destructive/20"
+                                className="h-7 w-7 sm:h-8 sm:w-8 p-0 hover:bg-destructive/20 flex-shrink-0"
                               >
                                 <X className="h-3 w-3" />
                               </Button>
@@ -336,7 +338,7 @@ const Support = () => {
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 h-11 sm:h-12 touch-target text-sm sm:text-base"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
@@ -356,61 +358,61 @@ const Support = () => {
 
           {/* My Tickets */}
           <Card>
-            <CardHeader>
-              <CardTitle>Мои заявки</CardTitle>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg">Мои заявки</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4 max-h-96 overflow-y-auto">
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <div className="space-y-3 sm:space-y-4 max-h-96 overflow-y-auto">
                 {loading ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-muted-foreground text-xs sm:text-base">
                     Загрузка заявок...
                   </div>
                 ) : tickets.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>У вас пока нет заявок</p>
-                    <p className="text-sm">Создайте первую заявку слева</p>
+                    <MessageSquare className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 opacity-50" />
+                    <p className="text-sm sm:text-base">У вас пока нет заявок</p>
+                    <p className="text-xs sm:text-sm">Создайте первую заявку слева</p>
                   </div>
                 ) : (
                   tickets.map((ticket) => (
                     <div
                       key={ticket.id}
-                      className="border rounded-lg p-4 space-y-2 hover:bg-muted/50 transition-colors"
+                      className="border rounded-lg p-3 sm:p-4 space-y-2 hover:bg-muted/50 transition-colors"
                     >
-                      <div className="flex items-start justify-between">
-                        <h4 className="font-medium text-sm">{ticket.subject}</h4>
-                        <div className="flex items-center gap-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="font-medium text-xs sm:text-sm">{ticket.subject}</h4>
+                        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                           {getStatusIcon(ticket.status)}
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
                             {getStatusText(ticket.status)}
                           </span>
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                        <Badge variant="outline" className="text-[10px] sm:text-xs">
                           {getCategoryText(ticket.category)}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-[10px] sm:text-xs text-muted-foreground">
                           {new Date(ticket.created_at).toLocaleDateString('ru-RU')}
                         </span>
                       </div>
                       
-                      <p className="text-xs text-muted-foreground line-clamp-2">
+                      <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2">
                         {ticket.message}
                       </p>
                       
                       
                       {ticket.attachments && ticket.attachments.length > 0 && (
                         <div className="mt-2">
-                          <p className="text-xs font-medium mb-1">Прикрепленные файлы:</p>
+                          <p className="text-[10px] sm:text-xs font-medium mb-1">Прикрепленные файлы:</p>
                           <div className="flex flex-wrap gap-1">
                             {ticket.attachments.map((attachment, index) => (
                               <div key={index} className="relative group">
                                 <img
                                   src={attachment}
                                   alt={`Attachment ${index + 1}`}
-                                  className="w-16 h-16 object-cover rounded border cursor-pointer hover:opacity-80"
+                                  className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded border cursor-pointer hover:opacity-80 touch-target"
                                   onClick={() => window.open(attachment, '_blank')}
                                 />
                               </div>
@@ -420,11 +422,11 @@ const Support = () => {
                       )}
                       
                       {ticket.admin_response && (
-                        <div className="mt-3 p-2 bg-green-50 border-l-4 border-green-400 rounded">
-                          <p className="text-xs font-medium text-green-800 mb-1">
+                        <div className="mt-3 p-2 bg-green-50 dark:bg-green-950/20 border-l-4 border-green-400 rounded">
+                          <p className="text-[10px] sm:text-xs font-medium text-green-800 dark:text-green-400 mb-1">
                             Ответ поддержки:
                           </p>
-                          <p className="text-xs text-green-700">
+                          <p className="text-[10px] sm:text-xs text-green-700 dark:text-green-300">
                             {ticket.admin_response}
                           </p>
                         </div>

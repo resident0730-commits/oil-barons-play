@@ -1,8 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { 
   Fuel, 
   ArrowLeft,
@@ -10,7 +9,6 @@ import {
   TrendingUp,
   Zap,
   Users,
-  Trophy,
   Coins,
   Clock,
   Settings,
@@ -22,15 +20,15 @@ import {
   Wrench,
   Sparkles,
   Gem,
-  Shield,
   Rocket,
-  Calendar
+  Calendar,
+  HelpCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCurrency } from "@/hooks/useCurrency";
 
 const GameGuide = () => {
-  const { formatGameCurrency, formatGameCurrencyWithName, currencyConfig } = useCurrency();
+  const { formatGameCurrency, currencyConfig } = useCurrency();
 
   const wellTypes = [
     {
@@ -40,6 +38,7 @@ const GameGuide = () => {
       description: "Компактная установка для первых шагов в нефтяной индустрии.",
       example: `Купив 10 мини-скважин за ${formatGameCurrency(10000)}, вы будете добывать 200,000 BBL в день.`,
       gradient: "from-yellow-600 to-yellow-700",
+      color: "yellow",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
@@ -49,6 +48,7 @@ const GameGuide = () => {
       description: "Проверенная временем установка с оптимизированной системой добычи.",
       example: `Купив 5 стартовых скважин за ${formatGameCurrency(10000)}, вы будете добывать 220,000 BBL в день.`,
       gradient: "from-amber-500 to-yellow-600",
+      color: "amber",
       icon: <Fuel className="h-8 w-8 text-white" />
     },
     {
@@ -58,6 +58,7 @@ const GameGuide = () => {
       description: "Сбалансированное решение с улучшенной системой извлечения.",
       example: "3 средние скважины добывают 216,000 BBL в день.",
       gradient: "from-yellow-500 to-amber-500",
+      color: "yellow",
       icon: <Target className="h-8 w-8 text-white" />
     },
     {
@@ -67,6 +68,7 @@ const GameGuide = () => {
       description: "Мощная установка промышленного класса с глубоким бурением.",
       example: "2 промышленные скважины добывают 260,000 BBL в день.",
       gradient: "from-orange-500 to-amber-600",
+      color: "orange",
       icon: <Settings className="h-8 w-8 text-white" />
     },
     {
@@ -76,6 +78,7 @@ const GameGuide = () => {
       description: "Высокотехнологичная установка с турбонаддувом и многоступенчатой системой.",
       example: "1 супер-скважина добывает 224,000 BBL ежедневно.",
       gradient: "from-amber-600 to-orange-600",
+      color: "amber",
       icon: <Zap className="h-8 w-8 text-white" />
     },
     {
@@ -85,6 +88,7 @@ const GameGuide = () => {
       description: "Эксклюзивная установка с алмазным буровым оборудованием и ИИ.",
       example: "1 премиум-скважина добывает стабильные 360,000 BBL ежедневно.",
       gradient: "from-yellow-400 to-amber-500",
+      color: "yellow",
       icon: <Gem className="h-8 w-8 text-white" />
     },
     {
@@ -94,6 +98,7 @@ const GameGuide = () => {
       description: "Королевская установка с позолоченными элементами и квантовыми сенсорами.",
       example: "1 элитная скважина добывает стабильные 576,000 BBL ежедневно.",
       gradient: "from-yellow-500 to-orange-500",
+      color: "yellow",
       icon: <Crown className="h-8 w-8 text-white" />
     },
     {
@@ -103,6 +108,7 @@ const GameGuide = () => {
       description: "Мифическая установка с нанотехнологиями и квантовыми процессорами.",
       example: "1 легендарная скважина добывает невероятные 918,000 BBL ежедневно.",
       gradient: "from-amber-400 to-yellow-500",
+      color: "amber",
       icon: <Star className="h-8 w-8 text-white" />
     },
     {
@@ -112,6 +118,7 @@ const GameGuide = () => {
       description: "Футуристическая установка внеземных технологий с антигравитационным двигателем.",
       example: "1 космическая скважина добывает фантастические 1,440,000 BBL ежедневно.",
       gradient: "from-orange-400 to-amber-500",
+      color: "orange",
       icon: <Rocket className="h-8 w-8 text-white" />
     }
   ];
@@ -123,8 +130,9 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `1,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Увеличивает доходность всех скважин",
-      example: "При добыче 3,000 BBL/день, бригада 2-го уровня (+20%) добавит 600 BBL в день",
+      example: "При добыче 10,000 BBL/день, бригада 2-го уровня (+20%) добавит 2,000 BBL в день",
       gradient: "from-amber-500 to-orange-500",
+      color: "amber",
       icon: <Users className="h-6 w-6 text-white" />
     },
     {
@@ -133,8 +141,9 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `2,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Находит более продуктивные места для бурения",
-      example: "Разведка 1-го уровня (+15%) превратит 2,000 BBL/день в 2,300 BBL/день",
+      example: "Разведка 1-го уровня (+15%) превратит 10,000 BBL/день в 11,500 BBL/день (+1,500 BBL)",
       gradient: "from-yellow-500 to-amber-600",
+      color: "yellow",
       icon: <Target className="h-6 w-6 text-white" />
     },
     {
@@ -143,8 +152,9 @@ const GameGuide = () => {
       duration: "Постоянно", 
       price: `5,000 ${currencyConfig.game_currency_symbol} за уровень`,
       description: "Современное оборудование для максимальной добычи",
-      example: "Оборудование 1-го уровня увеличит добычу с 5,000 до 6,250 BBL в день",
+      example: "Оборудование 1-го уровня (+25%) увеличит добычу с 10,000 до 12,500 BBL в день (+2,500 BBL)",
       gradient: "from-orange-500 to-amber-700",
+      color: "orange",
       icon: <Settings className="h-6 w-6 text-white" />
     },
     {
@@ -153,8 +163,9 @@ const GameGuide = () => {
       duration: "24 часа",
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
       description: "Временное, но мощное ускорение всех процессов",
-      example: "За 24 часа добыча 4,000 BBL/день превратится в 6,000 BBL/день",
+      example: "За 24 часа добыча 10,000 BBL/день превратится в 15,000 BBL/день (+5,000 BBL дополнительно)",
       gradient: "from-yellow-400 to-orange-600",
+      color: "yellow",
       icon: <Zap className="h-6 w-6 text-white" />
     },
     {
@@ -163,8 +174,9 @@ const GameGuide = () => {
       duration: "Постоянно",
       price: `4,000 ${currencyConfig.game_currency_symbol} за уровень`, 
       description: "Автоматические системы управления скважинами",
-      example: "Автоматизация 2-го уровня (+40%) увеличит 3,000 BBL/день до 4,200 BBL/день",
+      example: "Автоматизация 2-го уровня (+40%) увеличит 10,000 BBL/день до 14,000 BBL/день (+4,000 BBL)",
       gradient: "from-amber-600 to-yellow-500",
+      color: "amber",
       icon: <Wrench className="h-6 w-6 text-white" />
     }
   ];
@@ -287,7 +299,7 @@ const GameGuide = () => {
         {/* Hero Section */}
         <div className="text-center space-y-8 animate-fade-in">
           <div className="relative">
-            <Badge variant="secondary" className="text-sm px-6 py-3 gradient-primary text-black border-0 shadow-luxury animate-scale-in">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-yellow-600 text-white border-0 font-bold shadow-lg">
               <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
               Подробное руководство
             </Badge>
@@ -318,200 +330,60 @@ const GameGuide = () => {
               </a>
             </Button>
           </div>
-
-          {/* Currency Info */}
-          <div className="max-w-4xl mx-auto mt-12">
-            <Card className="bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
-              <CardHeader className="text-center">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <div className="p-3 gradient-primary rounded-full">
-                    <Coins className="h-6 w-6 text-black" />
-                  </div>
-                </div>
-                <CardTitle className="text-3xl md:text-4xl font-bold text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Система валют
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <p className="text-base md:text-lg text-white text-center [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Oil Tycoon использует трехвалютную систему для полноценной игровой экономики
-                </p>
-                
-                <div className="grid md:grid-cols-3 gap-4">
-                  {/* OilCoins */}
-                  <div className="p-6 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg border-2 border-primary/40">
-                    <div className="flex items-center justify-center gap-2 mb-3">
-                      <Coins className="h-8 w-8 text-primary" />
-                      <h3 className="text-2xl font-bold text-white">OilCoins</h3>
-                    </div>
-                    <Badge className="mb-3 w-full justify-center text-lg">OC</Badge>
-                    <p className="text-white text-center mb-3">Основная валюта для покупок</p>
-                    <ul className="text-sm text-white/90 space-y-2">
-                      <li>✓ Покупка скважин</li>
-                      <li>✓ Покупка бустеров</li>
-                      <li>✓ Улучшение скважин</li>
-                      <li>✓ Покупка пакетов</li>
-                    </ul>
-                  </div>
-
-                  {/* Barrels */}
-                  <div className="p-6 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg border-2 border-amber-500/40">
-                    <div className="flex items-center justify-center gap-2 mb-3">
-                      <Fuel className="h-8 w-8 text-amber-500" />
-                      <h3 className="text-2xl font-bold text-white">BBL</h3>
-                    </div>
-                    <Badge className="mb-3 w-full justify-center text-lg bg-amber-500/20 text-amber-300 border-amber-500/40">BBL</Badge>
-                    <p className="text-white text-center mb-3">Производственная валюта</p>
-                    <ul className="text-sm text-white/90 space-y-2">
-                      <li>✓ Добываются скважинами 24/7</li>
-                      <li>✓ Накапливаются в реальном времени</li>
-                      <li>✓ Собирайте вручную</li>
-                      <li>✓ Обменивайте на OilCoins</li>
-                    </ul>
-                  </div>
-
-                  {/* Rubles */}
-                  <div className="p-6 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border-2 border-green-500/40">
-                    <div className="flex items-center justify-center gap-2 mb-3">
-                      <BarChart3 className="h-8 w-8 text-green-500" />
-                      <h3 className="text-2xl font-bold text-white">Рубли</h3>
-                    </div>
-                    <Badge className="mb-3 w-full justify-center text-lg bg-green-500/20 text-green-300 border-green-500/40">₽</Badge>
-                    <p className="text-white text-center mb-3">Игровая валюта для вывода</p>
-                    <ul className="text-sm text-white/90 space-y-2">
-                      <li>✓ Получайте через обмен OC</li>
-                      <li>✓ 1 OC = 1 рубль</li>
-                      <li>✓ Выводите на реальные средства</li>
-                      <li>✓ Участвуйте в розыгрышах</li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Exchange System */}
-                <div className="p-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border-2 border-purple-500/40 mt-6">
-                  <h3 className="text-2xl font-bold text-white text-center mb-4 flex items-center justify-center gap-2">
-                    <ArrowRight className="h-6 w-6" />
-                    Биржа обмена
-                    <ArrowRight className="h-6 w-6" />
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-black/20 rounded-lg">
-                      <p className="text-white font-bold mb-2">BBL → OilCoins</p>
-                      <p className="text-white/80 text-sm">Обменивайте добытые BBL на OilCoins для покупок</p>
-                    </div>
-                    <div className="text-center p-4 bg-black/20 rounded-lg">
-                      <p className="text-white font-bold mb-2">OilCoins → Рубли</p>
-                      <p className="text-white/80 text-sm">Фиксированный курс: 1 OC = 1 рубль</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
 
-        {/* Quick Start */}
-        <div id="quick-start" className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Rocket className="h-12 w-12 md:h-16 md:w-16" />
-              Быстрый старт
+        {/* Wells Section */}
+        <div id="wells" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-emerald-600 text-white border-0 font-bold shadow-lg">
+              <Fuel className="h-4 w-4 mr-2" />
+              Основа игры
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              Нефтяные скважины
             </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Первые шаги для успешного старта в Oil Tycoon
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Каждая скважина добывает баррели (BBL) в реальном времени 24/7
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: "1", title: "Регистрация", desc: `Создайте аккаунт и получите стартовый капитал ${formatGameCurrency(1000)}`, badge: "Бесплатно", gradient: "from-primary to-amber-500" },
-              { step: "2", title: "Первая скважина", desc: `Купите скважину за OilCoins. Она начнёт добывать BBL 24/7`, badge: "44 BBL/день", gradient: "from-amber-500 to-yellow-600" },
-              { step: "3", title: "Собирайте BBL", desc: "Собирайте накопленные BBL в разделе 'Скважины' и обменивайте на OC через биржу", badge: "Каждый час", gradient: "from-yellow-600 to-orange-500" },
-              { step: "4", title: "Расширяйтесь", desc: "Покупайте новые скважины, обменивайте валюты и выводите средства", badge: "Масштабируйте", gradient: "from-orange-500 to-primary" }
-            ].map((item, index) => (
-              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group animate-border-glow">
-                <CardHeader>
-                  <div className={`w-16 h-16 bg-gradient-to-r ${item.gradient} text-white rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg group-hover:animate-bounce`}>
-                    {item.step}
-                  </div>
-                  <CardTitle className="text-2xl md:text-3xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-white text-base md:text-lg leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    {item.desc}
-                  </p>
-                  <Badge className={`bg-gradient-to-r ${item.gradient} text-white border-0 shadow-md`}>
-                    {item.badge}
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Wells Guide */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Fuel className="h-12 w-12 md:h-16 md:w-16" />
-              Типы скважин и их экономика
-            </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Подробный разбор каждого типа скважин с примерами доходности
-            </p>
-          </div>
-
-          {/* Important Note */}
-          <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-2 border-amber-500/40 backdrop-blur-xl">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-amber-500/30 rounded-full flex-shrink-0">
-                    <Fuel className="h-6 w-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Важно: О доходах скважин</h3>
-                    <p className="text-white/90 leading-relaxed">
-                      Все скважины добывают <span className="font-bold text-amber-400">BBL (баррели)</span> в реальном времени 24/7. 
-                      Указанный доход - это количество BBL в день. Собирайте BBL вручную в разделе "Скважины" и 
-                      обменивайте их на <span className="font-bold text-primary">OilCoins</span> через биржу для покупки новых активов.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {wellTypes.map((well, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${well.gradient}`}></div>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-3 bg-gradient-to-r ${well.gradient} rounded-full shadow-lg group-hover:animate-pulse`}>
-                        {well.icon}
-                      </div>
-                      <CardTitle className="text-2xl md:text-3xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{well.name}</CardTitle>
+              <Card 
+                key={well.name}
+                className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border-2 border-emerald-500/50 hover:border-emerald-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/30 to-teal-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-emerald-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-emerald-400/40 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                <CardContent className="relative p-8 space-y-4">
+                  <div className={`p-4 bg-gradient-to-br ${well.gradient} rounded-2xl w-fit mx-auto group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(16,185,129,0.5)]`}>
+                    {well.icon}
+                  </div>
+                  
+                  <div className="text-center space-y-2">
+                    <h3 className="text-2xl font-bold text-emerald-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {well.name}
+                    </h3>
+                    <div className="flex items-center justify-center gap-2">
+                      <Badge className="bg-emerald-500/30 text-emerald-300 border-emerald-400/60 border font-bold text-base px-4 py-1 shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                        {well.price}
+                      </Badge>
                     </div>
-                    <Badge className={`bg-gradient-to-r ${well.gradient} text-white border-0 font-bold shadow-md`}>
+                    <div className="text-2xl font-bold text-emerald-400 drop-shadow-[0_0_20px_rgba(16,185,129,0.8)]">
                       {well.income}
-                    </Badge>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <span className="text-white text-lg [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стоимость: {well.price}</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-base md:text-lg text-white leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+
+                  <p className="text-emerald-50/90 text-center leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     {well.description}
                   </p>
-                  <div className={`p-4 bg-gradient-to-r ${well.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                    <p className="text-base md:text-lg font-medium text-white mb-1 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      <Sparkles className="h-4 w-4" />
-                      Пример использования:
-                    </p>
-                    <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+
+                  <div className="pt-4 border-t border-emerald-500/20">
+                    <p className="text-sm text-emerald-100/80 text-center italic [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                       {well.example}
                     </p>
                   </div>
@@ -521,119 +393,132 @@ const GameGuide = () => {
           </div>
         </div>
 
-        {/* Upgrades Guide */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <TrendingUp className="h-12 w-12 md:h-16 md:w-16" />
-              Система улучшений
+        {/* Boosters Section */}
+        <div id="boosters" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-yellow-600 text-white border-0 font-bold shadow-lg">
+              <Zap className="h-4 w-4 mr-2" />
+              Ускорители
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              Бустеры
             </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Как работают улучшения скважин и когда их стоит покупать
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Улучшайте добычу с помощью различных ускорителей
             </p>
           </div>
 
-          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
-            <CardHeader>
-              <CardTitle className="text-4xl md:text-5xl text-center text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Механика улучшений</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg text-white mb-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
-                  <Wrench className="h-5 w-5" />
-                  Каждое улучшение увеличивает добычу скважины на 50%
-                </p>
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Стоимость улучшения растет с каждым уровнем: 50% → 60% → 72% от базовой цены
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                {upgradeExamples.map((upgrade, index) => (
-                  <Card key={index} className="bg-transparent border border-primary/20 backdrop-blur-sm hover-scale group">
-                    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${upgrade.gradient}`}></div>
-                    <CardHeader className="text-center pb-3">
-                      <Badge className={`bg-gradient-to-r ${upgrade.gradient} text-white border-0 font-bold mb-2`}>
-                        Уровень {upgrade.level}
-                      </Badge>
-                      <CardTitle className="text-xl md:text-2xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{upgrade.effect}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="text-center">
-                        <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стоимость:</p>
-                        <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{upgrade.cost}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {boosterTypes.map((booster, index) => (
+              <Card 
+                key={booster.name}
+                className="group relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-yellow-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-yellow-400/40 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                <CardContent className="relative p-8 space-y-4">
+                  <div className={`p-4 bg-gradient-to-br ${booster.gradient} rounded-2xl w-fit mx-auto group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(234,179,8,0.5)]`}>
+                    {booster.icon}
+                  </div>
+                  
+                  <div className="text-center space-y-3">
+                    <h3 className="text-2xl font-bold text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {booster.name}
+                    </h3>
+                    
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-yellow-400" />
+                        <span className="text-2xl font-bold text-yellow-400 drop-shadow-[0_0_20px_rgba(234,179,8,0.8)]">
+                          {booster.effect}
+                        </span>
                       </div>
-                      <Separator className="bg-white/10" />
-                      <div className={`p-3 bg-gradient-to-r ${upgrade.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                        <p className="text-sm md:text-base font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Пример:</p>
-                        <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                          {upgrade.example}
-                        </p>
+                      
+                      <div className="flex items-center justify-center gap-2 text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                        <Clock className="h-4 w-4" />
+                        <span className="text-sm font-medium">{booster.duration}</span>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    </div>
 
-              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
-                  <Coins className="h-5 w-5" />
-                  Когда улучшать?
-                </p>
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Улучшайте скважины когда у вас стабильная добыча 50,000+ BBL в день. 
-                  Улучшение дает постоянный прирост добычи на +50%!
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+                    <Badge className="bg-yellow-500/30 text-yellow-300 border-yellow-400/60 border font-bold text-base px-4 py-1 shadow-[0_0_20px_rgba(234,179,8,0.5)]">
+                      {booster.price}
+                    </Badge>
+                  </div>
+
+                  <p className="text-yellow-50/90 text-center leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    {booster.description}
+                  </p>
+
+                  <div className="pt-4 border-t border-yellow-500/20">
+                    <p className="text-sm text-yellow-100/80 text-center italic [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      💡 {booster.example}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Boosters Guide */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Zap className="h-12 w-12 md:h-16 md:w-16" />
-              Система бустеров
+        {/* Upgrades Section */}
+        <div id="upgrades" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-orange-600 text-white border-0 font-bold shadow-lg">
+              <TrendingUp className="h-4 w-4 mr-2" />
+              Прокачка
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              Улучшения скважин
             </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Подробное руководство по всем бустерам и их эффективному использованию
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Каждое улучшение увеличивает доход на +50%
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {boosterTypes.map((booster, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${booster.gradient}`}></div>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 bg-gradient-to-r ${booster.gradient} rounded-full shadow-lg group-hover:animate-pulse`}>
-                        {booster.icon}
-                      </div>
-                      <CardTitle className="text-xl md:text-2xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{booster.name}</CardTitle>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {upgradeExamples.map((upgrade, index) => (
+              <Card 
+                key={upgrade.level}
+                className="group relative overflow-hidden bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent backdrop-blur-xl border-2 border-orange-500/50 hover:border-orange-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-orange-400/40 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                <CardContent className="relative p-8 space-y-4">
+                  <div className={`p-6 bg-gradient-to-br ${upgrade.gradient} rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(249,115,22,0.5)]`}>
+                    <div className="text-center text-3xl font-black text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {upgrade.level}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <Badge className={`bg-gradient-to-r ${booster.gradient} text-white border-0 font-bold`}>
-                      {booster.effect}
-                    </Badge>
-                    <span className="text-sm text-white/60">{booster.duration}</span>
+                  
+                  <div className="text-center space-y-3">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <Coins className="h-5 w-5 text-orange-400" />
+                        <span className="text-lg font-bold text-orange-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                          {upgrade.cost}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center justify-center gap-2">
+                        <ArrowRight className="h-5 w-5 text-orange-400" />
+                        <span className="text-2xl font-bold text-orange-400 drop-shadow-[0_0_20px_rgba(249,115,22,0.8)]">
+                          {upgrade.effect}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-base md:text-lg font-medium mb-1 text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Стоимость: {booster.price}</p>
-                    <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{booster.description}</p>
-                  </div>
-                  <div className={`p-3 bg-gradient-to-r ${booster.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                    <p className="text-sm md:text-base font-medium text-white mb-1 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      <Sparkles className="h-3 w-3" />
-                      Пример расчета:
-                    </p>
-                    <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      {booster.example}
+
+                  <div className="pt-4 border-t border-orange-500/20">
+                    <p className="text-sm text-orange-100/80 text-center [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {upgrade.example}
                     </p>
                   </div>
                 </CardContent>
@@ -641,315 +526,426 @@ const GameGuide = () => {
             ))}
           </div>
 
-          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
-            <CardHeader>
-              <CardTitle className="text-4xl md:text-5xl text-center text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-3">
-                <BarChart3 className="h-10 w-10" />
-                Калькулятор эффективности бустеров
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 25,000 BBL/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Бригада 1 ур. → +2,500 BBL/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+10% к добыче</p>
+          <Card className="max-w-4xl mx-auto relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl border-2 border-purple-500/50">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-600/20 opacity-50"></div>
+            <CardContent className="relative p-8">
+              <div className="flex items-start gap-4">
+                <div className="p-4 bg-purple-500/30 rounded-2xl flex-shrink-0 shadow-[0_0_20px_rgba(168,85,247,0.5)]">
+                  <Sparkles className="h-8 w-8 text-purple-400" />
                 </div>
-                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 120,000 BBL/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Оборудование 1 ур. → +30,000 BBL/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+25% к добыче</p>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold text-purple-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    Важно знать об улучшениях
+                  </h3>
+                  <ul className="space-y-2 text-purple-50/90 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400 font-bold flex-shrink-0">•</span>
+                      <span>Максимальный уровень скважины - 5 (до +250% к доходу)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400 font-bold flex-shrink-0">•</span>
+                      <span>Стоимость увеличивается с каждым уровнем (50% → 60% → 72%)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400 font-bold flex-shrink-0">•</span>
+                      <span>Улучшайте самые продуктивные скважины в первую очередь</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400 font-bold flex-shrink-0">•</span>
+                      <span>Все улучшения постоянны - выгода навсегда</span>
+                    </li>
+                  </ul>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                  <p className="text-base md:text-lg text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">При добыче 240,000 BBL/день</p>
-                  <p className="font-bold text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Все бустеры → +168,000 BBL/день</p>
-                  <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">+70% к добыче</p>
-                </div>
-              </div>
-              <div className="text-center p-4 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="text-base md:text-lg font-medium text-white mb-1 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)] flex items-center justify-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  Совет эксперта:
-                </p>
-                <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Бустеры эффективнее при высокой добыче! Если у вас менее 50,000 BBL/день - сначала купите больше скважин.
-                </p>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Strategies */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Target className="h-12 w-12 md:h-16 md:w-16" />
+        {/* Strategy Section */}
+        <div id="strategies" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-cyan-600 text-white border-0 font-bold shadow-lg">
+              <Target className="h-4 w-4 mr-2" />
+              Тактика
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
               Стратегии развития
             </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Проверенные стратегии для разных этапов игры
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Проверенные подходы к построению империи
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {strategyTips.map((strategy, index) => (
-              <Card key={index} className="text-center hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group h-full overflow-hidden animate-border-glow">
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${strategy.gradient}`}></div>
-                <CardHeader>
-                  <div className={`mx-auto mb-4 p-4 bg-gradient-to-r ${strategy.gradient} rounded-full w-fit shadow-lg group-hover:animate-pulse`}>
-                    {strategy.icon}
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {strategyTips.map((tip, index) => (
+              <Card 
+                key={tip.title}
+                className="group relative overflow-hidden bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-transparent backdrop-blur-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-cyan-400/40 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                <CardContent className="relative p-8 space-y-4">
+                  <div className={`p-5 bg-gradient-to-br ${tip.gradient} rounded-2xl w-fit mx-auto group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(34,211,238,0.5)]`}>
+                    {tip.icon}
                   </div>
-                  <CardTitle className="text-3xl md:text-4xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{strategy.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-base md:text-lg text-white leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    {strategy.description}
-                  </p>
-                  <div className={`p-4 bg-gradient-to-r ${strategy.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                    <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      {strategy.details}
+                  
+                  <div className="text-center space-y-3">
+                    <h3 className="text-2xl font-bold text-cyan-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {tip.title}
+                    </h3>
+                    <p className="text-lg text-cyan-50/90 font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      {tip.description}
                     </p>
                   </div>
+
+                  <p className="text-cyan-50/80 text-center leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                    {tip.details}
+                  </p>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Daily Activities */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Calendar className="h-12 w-12 md:h-16 md:w-16" />
-              Ежедневные активности
+        {/* Daily Activities Section */}
+        <div id="quick-start" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-pink-600 text-white border-0 font-bold shadow-lg">
+              <Calendar className="h-4 w-4 mr-2" />
+              Ежедневная рутина
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              Что делать каждый день
             </h2>
-            <p className="text-xl md:text-2xl text-white max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-              Что делать каждый день для максимальной эффективности
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Простой план действий для максимального роста
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {dailyActivities.map((activity, index) => (
-              <Card key={index} className="hover:shadow-2xl transition-all duration-300 bg-transparent border-2 border-primary/30 backdrop-blur-xl hover-scale group overflow-hidden animate-border-glow">
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${activity.gradient}`}></div>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl md:text-2xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">{activity.activity}</CardTitle>
-                    <div className={`p-2 bg-gradient-to-r ${activity.gradient} rounded-full shadow-lg group-hover:animate-pulse`}>
+              <Card 
+                key={activity.activity}
+                className="group relative overflow-hidden bg-gradient-to-br from-pink-500/20 via-pink-500/10 to-transparent backdrop-blur-xl border-2 border-pink-500/50 hover:border-pink-400 transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/30 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -right-16 -top-16 w-48 h-48 bg-pink-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-pink-400/40 transition-all duration-500"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                <CardContent className="relative p-8 space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className={`p-4 bg-gradient-to-br ${activity.gradient} rounded-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(236,72,153,0.5)]`}>
                       {activity.icon}
                     </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-pink-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                        {activity.activity}
+                      </h3>
+                      <Badge className="bg-pink-500/30 text-pink-300 border-pink-400/60 border font-bold text-sm px-3 py-1 mt-2 shadow-[0_0_20px_rgba(236,72,153,0.5)]">
+                        {activity.reward}
+                      </Badge>
+                    </div>
                   </div>
-                  <Badge className={`bg-gradient-to-r ${activity.gradient} text-white border-0 font-bold w-fit`}>
-                    {activity.reward}
-                  </Badge>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+
+                  <p className="text-pink-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                     {activity.description}
                   </p>
-                  <div className={`p-3 bg-gradient-to-r ${activity.gradient} bg-opacity-10 rounded-lg border border-white/10`}>
-                    <p className="text-sm md:text-base font-medium text-white mb-1 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      <Sparkles className="h-3 w-3" />
-                      Совет:
-                    </p>
-                    <p className="text-sm md:text-base text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                      {activity.tip}
+
+                  <div className="pt-4 border-t border-pink-500/20 bg-pink-500/5 -mx-8 px-8 py-4 rounded-b-lg">
+                    <p className="text-sm text-pink-100/90 font-medium [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      💡 <span className="font-bold">Совет:</span> {activity.tip}
                     </p>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        </div>
-
-        {/* Advanced Tips */}
-        <div className="space-y-10">
-          <div className="text-center">
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-              <Trophy className="h-12 w-12 md:h-16 md:w-16" />
-              Секреты профессионалов
-            </h2>
-          </div>
-
-          <Card className="max-w-4xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury overflow-hidden animate-border-glow">
-            <div className="absolute top-0 left-0 w-full h-1 gradient-primary"></div>
-            <CardHeader>
-              <CardTitle className="text-4xl md:text-5xl text-center flex items-center justify-center gap-3 text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                <Crown className="h-8 w-8 text-white animate-pulse" />
-                Формула успеха в Oil Tycoon
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <BarChart3 className="h-5 w-5" />
-                    Математика прибыли
-                  </h3>
-                  <div className="space-y-2 text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <p><strong>Добыча скважин:</strong> Стартовая 44K, Средняя 72K, Промышленная 130K BBL/день</p>
-                    <p><strong>Лучшая инвестиция:</strong> Улучшения скважин (+50% к добыче навсегда)</p>
-                    <p><strong>Бустеры:</strong> Эффективны при добыче 70,000+ BBL/день</p>
-                    <p><strong>Турбо-буст:</strong> Используйте когда планируете быть онлайн 24 часа</p>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <Clock className="h-5 w-5" />
-                    Тайминг решений
-                  </h3>
-                  <div className="space-y-2 text-base md:text-lg text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                    <p><strong>0-25,000 BBL/день:</strong> Покупайте только стартовые скважины</p>
-                    <p><strong>25,000-120,000 BBL/день:</strong> Переходите на средние скважины</p>
-                    <p><strong>120,000+ BBL/день:</strong> Улучшайте существующие + бустеры</p>
-                    <p><strong>480,000+ BBL/день:</strong> Элитные скважины + все бустеры</p>
-                  </div>
-                </div>
-              </div>
-              
-              <Separator className="bg-white/10" />
-              
-              <div className="text-center p-6 bg-gradient-to-r from-primary/20 to-amber-500/20 rounded-lg border border-primary/30">
-                <p className="font-bold text-xl md:text-2xl text-white mb-2 flex items-center justify-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Target className="h-5 w-5" />
-                  Главное правило
-                </p>
-                <p className="text-base md:text-lg text-white leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Не торопитесь! Oil Tycoon - игра на терпение. Лучше медленно, но стабильно наращивать активы, 
-                  чем тратить все сразу на дорогие скважины без поддержки бустерами.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* FAQ Section */}
-        <div id="faq">
-          <Card className="bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
-            <CardHeader className="text-center pb-8">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <Sparkles className="h-8 w-8 text-white animate-pulse" />
-                <CardTitle className="text-4xl md:text-5xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Часто задаваемые вопросы
-                </CardTitle>
-                <Sparkles className="h-8 w-8 text-white animate-pulse" />
-              </div>
-              <p className="text-lg text-white/80 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                Ответы на популярные вопросы о валютной системе
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Question 1 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Coins className="h-5 w-5 text-primary" />
-                  Зачем нужны три вида валюты?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Система из трёх валют создаёт многоуровневую экономику: <strong>BBL</strong> вы добываете скважинами, 
-                  <strong>OilCoins</strong> получаете за обмен и используете для покупок в игре, а <strong>Рубли</strong> - это реальная 
-                  валюта, которую можно вывести. Такая система делает игру интереснее и даёт больше возможностей для стратегии.
-                </p>
-              </div>
+        <div id="faq" className="space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-sm px-6 py-3 bg-blue-600 text-white border-0 font-bold shadow-lg">
+              <HelpCircle className="h-4 w-4 mr-2" />
+              Часто задаваемые вопросы
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold font-playfair bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%),_-2px_-2px_4px_rgb(0_0_0_/_70%)]">
+              FAQ
+            </h2>
+            <p className="text-xl text-white max-w-3xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              Ответы на популярные вопросы игроков
+            </p>
+          </div>
 
-              {/* Question 2 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <ArrowRight className="h-5 w-5 text-amber-500" />
-                  Как получить OilCoins?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Есть несколько способов: обменять BBL на OilCoins в разделе "Обмен валют", получить в награду за достижения, 
-                  открыть в ежедневных сундуках, получить бонусы от рефералов или просто пополнить баланс. OilCoins нужны для покупки 
-                  скважин, бустеров и участия в розыгрышах.
-                </p>
-              </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent backdrop-blur-xl border-2 border-blue-500/50 hover:border-blue-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-blue-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-blue-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-blue-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                    <HelpCircle className="h-6 w-6 text-blue-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-blue-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Как начать играть?
+                    </h3>
+                    <p className="text-blue-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Зарегистрируйтесь, получите стартовый бонус и купите свою первую скважину. Скважины добывают BBL автоматически 24/7.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Question 3 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Shield className="h-5 w-5 text-green-500" />
-                  Могу ли я вывести OilCoins?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Нет, OilCoins — это внутриигровая валюта, которую нельзя напрямую вывести. Но вы можете обменять OilCoins на рубли 
-                  по курсу 1:1, а затем вывести рубли. Важно помнить, что обратный обмен (рубли на OilCoins) тоже доступен, если вам 
-                  нужна игровая валюта.
-                </p>
-              </div>
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl border-2 border-purple-500/50 hover:border-purple-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-purple-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-purple-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-purple-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(168,85,247,0.5)]">
+                    <Coins className="h-6 w-6 text-purple-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-purple-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Как работает система валют?
+                    </h3>
+                    <p className="text-purple-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      BBL добывают скважины → обменивайте BBL на OilCoins → OilCoins можно конвертировать в рубли (1 OC = 1 ₽) для вывода.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Question 4 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <BarChart3 className="h-5 w-5 text-blue-500" />
-                  Какой курс обмена валют?
-                </h3>
-                <p className="text-white/90 leading-relaxed mb-3 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Курсы обмена фиксированные и прозрачные:
-                </p>
-                <ul className="space-y-2 text-white/90 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <li>• <strong>BBL → OilCoins:</strong> курс зависит от текущих настроек игры</li>
-                  <li>• <strong>OilCoins ⇄ Рубли:</strong> 1 OC = 1 ₽ (обмен в обе стороны)</li>
-                </ul>
-              </div>
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border-2 border-emerald-500/50 hover:border-emerald-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/30 to-teal-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-emerald-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-emerald-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-emerald-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                    <Clock className="h-6 w-6 text-emerald-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-emerald-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Нужно ли быть онлайн?
+                    </h3>
+                    <p className="text-emerald-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Нет! Скважины добывают BBL даже когда вы офлайн. Заходите в игру, собирайте накопленные баррели и развивайте империю.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Question 5 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Clock className="h-5 w-5 text-orange-500" />
-                  Как часто можно собирать BBL?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  BBL накапливаются автоматически от ваших скважин 24/7. Собирать их можно в любое время без ограничений - 
-                  просто заходите в игру и нажимайте кнопку "Собрать BBL". Рекомендуется заходить минимум раз в день, чтобы 
-                  не терять накопленные BBL и не пропускать ежедневные бонусы.
-                </p>
-              </div>
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent backdrop-blur-xl border-2 border-orange-500/50 hover:border-orange-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-orange-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-orange-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(249,115,22,0.5)]">
+                    <TrendingUp className="h-6 w-6 text-orange-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-orange-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Что лучше: новые скважины или улучшения?
+                    </h3>
+                    <p className="text-orange-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Сначала набирайте 5-10 скважин, затем улучшайте самые продуктивные до 3-4 уровня, потом покупайте бустеры.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Question 6 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Gem className="h-5 w-5 text-purple-500" />
-                  Что лучше: копить BBL или сразу обменивать?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Зависит от вашей стратегии! Если вы хотите быстро купить новую скважину или бустер - обменивайте BBL на OilCoins 
-                  сразу. Если у вас уже есть хороший доход и вы играете долгосрочно - можете копить BBL и обменивать крупными 
-                  суммами. Помните: BBL не теряются и не обесцениваются, так что выбор за вами!
-                </p>
-              </div>
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-transparent backdrop-blur-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-cyan-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-cyan-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+                    <Gift className="h-6 w-6 text-cyan-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-cyan-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Как получить бесплатные OilCoins?
+                    </h3>
+                    <p className="text-cyan-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Открывайте ежедневный сундук (до 1,400 OC за серию), приглашайте друзей по реферальной программе, участвуйте в событиях.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Question 7 */}
-              <div className="p-6 bg-black/40 border border-primary/20 rounded-lg hover:border-primary/40 transition-all">
-                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  <Trophy className="h-5 w-5 text-yellow-500" />
-                  Можно ли потерять валюту?
-                </h3>
-                <p className="text-white/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                  Нет, вся ваша валюта в безопасности! BBL, OilCoins и рубли хранятся на вашем аккаунте и никуда не пропадут.
-                  Единственный способ потратить валюту - это сделать покупку или обмен самостоятельно. Даже если вы долго не заходите 
-                  в игру, ваши средства остаются нетронутыми.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-pink-500/20 via-pink-500/10 to-transparent backdrop-blur-xl border-2 border-pink-500/50 hover:border-pink-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/30 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-pink-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-pink-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-pink-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(236,72,153,0.5)]">
+                    <BarChart3 className="h-6 w-6 text-pink-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-pink-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Можно ли вывести заработанное?
+                    </h3>
+                    <p className="text-pink-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Да! Обменяйте BBL на OilCoins, затем OilCoins на рубли и выводите на банковскую карту через раздел "Вывод средств".
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-yellow-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-yellow-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-yellow-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(234,179,8,0.5)]">
+                    <Zap className="h-6 w-6 text-yellow-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Какие бустеры покупать первыми?
+                    </h3>
+                    <p className="text-yellow-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Начните с "Бригады рабочих" (дешево, постоянный эффект). Затем "Геологическая разведка" и "Продвинутое оборудование" для мощного усиления.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-indigo-500/20 via-indigo-500/10 to-transparent backdrop-blur-xl border-2 border-indigo-500/50 hover:border-indigo-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-indigo-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-indigo-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-indigo-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(99,102,241,0.5)]">
+                    <Wrench className="h-6 w-6 text-indigo-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-indigo-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Складываются ли эффекты бустеров?
+                    </h3>
+                    <p className="text-indigo-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Да! Все постоянные бустеры суммируются. Например, Бригада 2 ур. (+20%) + Оборудование 1 ур. (+25%) = +45% к добыче всех скважин.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-teal-500/20 via-teal-500/10 to-transparent backdrop-blur-xl border-2 border-teal-500/50 hover:border-teal-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-teal-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-teal-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-teal-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(20,184,166,0.5)]">
+                    <ArrowRight className="h-6 w-6 text-teal-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-teal-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      До какого уровня улучшать скважины?
+                    </h3>
+                    <p className="text-teal-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Максимум 5 уровень (до +250% к доходу). Выгоднее улучшать дорогие скважины (Элитные, Легендарные) до 3-4 уровня, чем дешевые до 5.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-rose-500/20 via-rose-500/10 to-transparent backdrop-blur-xl border-2 border-rose-500/50 hover:border-rose-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-rose-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-rose-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-rose-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(244,63,94,0.5)]">
+                    <Users className="h-6 w-6 text-rose-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-rose-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Как работает реферальная программа?
+                    </h3>
+                    <p className="text-rose-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Приглашайте друзей по своей реферальной ссылке. Вы получаете бонус от их активности и покупок. Чем больше рефералов - тем больше пассивный доход!
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-lime-500/20 via-lime-500/10 to-transparent backdrop-blur-xl border-2 border-lime-500/50 hover:border-lime-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-lime-500/30 to-green-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-lime-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-lime-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-lime-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(132,204,22,0.5)]">
+                    <Star className="h-6 w-6 text-lime-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-lime-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Сколько можно заработать на рефералах?
+                    </h3>
+                    <p className="text-lime-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Зависит от активности рефералов. Получайте процент от их пополнений и добычи. Активные рефералы могут приносить сотни OilCoins ежемесячно!
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group relative overflow-hidden bg-gradient-to-br from-violet-500/20 via-violet-500/10 to-transparent backdrop-blur-xl border-2 border-violet-500/50 hover:border-violet-400 transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-500/30 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-violet-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-violet-400/40 transition-all duration-500"></div>
+              <CardContent className="relative p-8 space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-violet-500/30 rounded-xl flex-shrink-0 shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+                    <Crown className="h-6 w-6 text-violet-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-violet-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Стоит ли покупать Турбо-буст?
+                    </h3>
+                    <p className="text-violet-50/90 leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Турбо-буст выгоден при добыче 10,000+ BBL/день. За 24 часа окупится и принесет дополнительную прибыль. Идеален перед долгим офлайном!
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
-        {/* CTA */}
-        <div className="text-center">
-          <Card className="max-w-2xl mx-auto bg-transparent border-2 border-primary/30 backdrop-blur-xl shadow-luxury animate-border-glow">
-            <CardHeader>
-              <CardTitle className="text-4xl md:text-5xl text-white [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Готовы применить знания?</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-base md:text-lg text-white leading-relaxed [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                Теперь у вас есть все знания для успешной игры в Oil Tycoon. 
-                Начните свою нефтяную империю прямо сейчас!
+        {/* CTA Section */}
+        <div className="text-center space-y-8 animate-fade-in">
+          <Card className="max-w-4xl mx-auto relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-70"></div>
+            <CardContent className="relative p-12 text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="p-6 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.8)]">
+                  <Rocket className="h-16 w-16 text-white" />
+                </div>
+              </div>
+              <h3 className="text-4xl md:text-5xl font-bold text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                Готовы начать?
+              </h3>
+              <p className="text-xl text-yellow-50/90 max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                Присоединяйтесь к тысячам игроков и постройте свою нефтяную империю уже сегодня!
               </p>
               <Link to="/auth">
-                <Button size="lg" className="gradient-luxury shadow-luxury w-full text-lg hover-scale">
-                  <Rocket className="h-5 w-5 mr-2" />
-                  Начать игру с {formatGameCurrency(1000)}
+                <Button size="lg" className="gradient-luxury shadow-luxury text-xl px-12 py-7 hover-scale animate-glow-pulse">
+                  <Sparkles className="h-6 w-6 mr-2" />
+                  Начать играть бесплатно
                 </Button>
               </Link>
             </CardContent>

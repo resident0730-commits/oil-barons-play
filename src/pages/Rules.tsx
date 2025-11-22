@@ -95,7 +95,8 @@ export default function Rules() {
                 <p className="text-sm text-muted-foreground mb-3">Премиум валюта</p>
                 <ul className="space-y-1 text-xs text-muted-foreground">
                   <li>• Курс: 1₽ = 1 OC</li>
-                  <li>• Вывод: от 500₽</li>
+                  <li>• Вывод: от 10000₽</li>
+                  <li>• <strong>Требуется пополнение счета</strong></li>
                 </ul>
               </div>
             </div>
