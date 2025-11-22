@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         'playfair': ['Playfair Display', 'serif'],
         'bebas': ['Bebas Neue', 'sans-serif'],
+        'blackops': ['Black Ops One', 'cursive'],
         'inter': ['Inter', 'sans-serif'],
       },
       colors: {
@@ -244,6 +245,24 @@ export default {
         },
         '.animation-delay-300': {
           'animation-delay': '300ms',
+        },
+        // Touch-friendly minimum sizes for mobile
+        '.touch-target': {
+          '@apply min-h-[44px] min-w-[44px]': {}, // iOS minimum
+        },
+        '.touch-target-lg': {
+          '@apply min-h-[48px] min-w-[48px]': {}, // Android minimum
+        },
+        // Active state for touch feedback
+        '.touch-feedback': {
+          '@apply active:scale-95 transition-transform duration-100': {},
+        },
+        // Text that adapts for readability on mobile
+        '.text-mobile': {
+          '@apply text-sm sm:text-base': {},
+        },
+        '.text-mobile-lg': {
+          '@apply text-base sm:text-lg': {},
         },
       }
       addUtilities(newUtilities)
