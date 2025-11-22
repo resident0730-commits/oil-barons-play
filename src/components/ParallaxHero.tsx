@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { Zap, BarChart3 } from 'lucide-react';
 import { OilParticles } from './OilParticles';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const ParallaxHero = () => {
   const { user } = useAuth();
@@ -21,115 +27,119 @@ export const ParallaxHero = () => {
       <div className="relative z-20 container mx-auto px-4 py-32">
         <div className="text-center space-y-12">
           {/* Main Title - Clean & Elegant */}
-          <div className="space-y-8">
-            <div className="relative inline-block animate-fade-in">
-              {/* Золотое свечение */}
-              <div className="absolute -inset-6 bg-gradient-to-r from-yellow-500/20 via-amber-400/30 to-yellow-500/20 blur-3xl animate-pulse" />
-              
-              <h1 className="relative text-7xl md:text-9xl lg:text-[11rem] font-black font-playfair leading-none tracking-tight
-                text-transparent bg-clip-text
-                bg-gradient-to-b from-[#D4AF37] via-[#F4C542] to-[#C9A961]
-                drop-shadow-[0_0_50px_rgba(212,175,55,0.7)]
-                [text-shadow:_3px_3px_0_#B8960C,_6px_6px_0_#9A7D0A,_9px_9px_0_#7D6608,_12px_12px_0_#5F4E06,_15px_15px_0_#4A3A05,_18px_18px_30px_rgba(0,0,0,0.6),_0_0_60px_rgba(212,175,55,0.5)]
-                transition-all duration-300 hover:scale-105
-                filter brightness-125 contrast-110 saturate-130"
-                style={{
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
-                OIL TYCOON
-              </h1>
-            </div>
+          {/* Роскошная золотая надпись с градиентом */}
+          <div style={{ 
+            filter: 'drop-shadow(3px 3px 0 #B8860B) drop-shadow(5px 5px 0 #8B6914) drop-shadow(8px 8px 15px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.7))'
+          }}>
+            <h1 
+              className="font-black leading-none tracking-tight animate-fade-in mb-8"
+              style={{
+                fontSize: 'clamp(4rem, 15vw, 11rem)',
+                background: 'linear-gradient(180deg, #FFEB3B 0%, #FFD700 15%, #FFC107 30%, #FFB300 45%, #FFA000 60%, #D4AF37 75%, #C19A3F 90%, #8B6914 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              OIL TYCOON
+            </h1>
+          </div>
             
-            <div className="max-w-4xl mx-auto space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
-                style={{
-                  textShadow: '1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px rgba(0,0,0,0.4)'
-                }}
-              >
-                От первой капли нефти<br />до нефтяной империи
-              </h2>
-              
-              <p className="text-lg md:text-xl lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed text-white"
-                style={{
-                  textShadow: '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0 0 10px rgba(0,0,0,0.3)'
-                }}
-              >
-                Реальный заработок через игровую механику!<br />
-                Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
+              style={{
+                textShadow: '1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px rgba(0,0,0,0.4)'
+              }}
+            >
+              От первой капли нефти<br />до нефтяной империи
+            </h2>
+            
+            <p className="text-lg md:text-xl lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed text-white"
+              style={{
+                textShadow: '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0 0 10px rgba(0,0,0,0.3)'
+              }}
+            >
+              Реальный заработок через игровую механику!<br />
+              Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
+            </p>
           </div>
 
-          {/* CTA Buttons - Clean & Modern */}
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center pt-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            {user ? (
-              <Link to="/dashboard">
-                <Button 
-                  size="lg" 
-                  className="group text-xl px-12 py-7 font-bold
-                    bg-gradient-to-r from-amber-500 to-yellow-600
-                    hover:from-amber-400 hover:to-yellow-500
-                    text-white
-                    shadow-[0_8px_30px_rgba(251,191,36,0.4)]
-                    hover:shadow-[0_12px_40px_rgba(251,191,36,0.6)]
-                    border-0
-                    transition-all duration-300 hover:scale-105 hover:-translate-y-1
-                    rounded-xl
-                    relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
-                    -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                  <Zap className="mr-2 h-6 w-6 relative z-10" />
-                  <span className="relative z-10">Продолжить империю</span>
-                </Button>
-              </Link>
-            ) : (
-              <Link to="/auth">
-                <Button 
-                  size="lg" 
-                  className="group text-xl px-12 py-7 font-bold
-                    bg-gradient-to-r from-amber-500 to-yellow-600
-                    hover:from-amber-400 hover:to-yellow-500
-                    text-white
-                    shadow-[0_8px_30px_rgba(251,191,36,0.4)]
-                    hover:shadow-[0_12px_40px_rgba(251,191,36,0.6)]
-                    border-0
-                    transition-all duration-300 hover:scale-105 hover:-translate-y-1
-                    rounded-xl
-                    relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
-                    -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                  <Zap className="mr-2 h-6 w-6 relative z-10" />
-                  <span className="relative z-10">Начать зарабатывать</span>
-                </Button>
-              </Link>
-            )}
-            
-            <Link to="/guide">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="group text-xl px-10 py-7 font-semibold
-                  backdrop-blur-md bg-white/10 
-                  hover:bg-white/20
-                  border-2 border-white/30 hover:border-white/50
-                  text-white
-                  shadow-[0_4px_20px_rgba(255,255,255,0.1)]
-                  hover:shadow-[0_6px_30px_rgba(255,255,255,0.2)]
-                  transition-all duration-300 hover:scale-105 hover:-translate-y-1
-                  rounded-xl
-                  relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
-                  -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <BarChart3 className="mr-2 h-6 w-6 relative z-10" />
-                <span className="relative z-10">Узнать больше</span>
-              </Button>
-            </Link>
+          {/* CTA Buttons - Window Card Style */}
+          <div className="max-w-4xl mx-auto px-4 pt-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <TooltipProvider>
+              {user ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link to="/dashboard" className="block">
+                      <div className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500 hover:-translate-y-2 rounded-xl p-8 cursor-pointer">
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute -right-16 -top-16 w-48 h-48 bg-amber-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-amber-400/40 transition-all duration-500"></div>
+                        <div className="absolute inset-0 overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </div>
+                        <div className="relative flex items-center justify-center gap-3">
+                          <Zap className="h-7 w-7 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]" />
+                          <span className="text-xl font-bold text-amber-100 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                            Продолжить империю
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Вернуться к управлению своими скважинами</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link to="/auth" className="block">
+                      <div className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500 hover:-translate-y-2 rounded-xl p-8 cursor-pointer">
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute -right-16 -top-16 w-48 h-48 bg-amber-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-amber-400/40 transition-all duration-500"></div>
+                        <div className="absolute inset-0 overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </div>
+                        <div className="relative flex items-center justify-center gap-3">
+                          <Zap className="h-7 w-7 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]" />
+                          <span className="text-xl font-bold text-amber-100 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                            Начать зарабатывать
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Зарегистрируйтесь и начните строить свою нефтяную империю</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link to="/guide" className="block">
+                    <div className="group relative overflow-hidden bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-transparent backdrop-blur-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all duration-500 hover:-translate-y-2 rounded-xl p-8 cursor-pointer">
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-cyan-400/40 transition-all duration-500"></div>
+                      <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                      </div>
+                      <div className="relative flex items-center justify-center gap-3">
+                        <BarChart3 className="h-7 w-7 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
+                        <span className="text-xl font-bold text-cyan-100 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                          Как играть
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Подробный гайд по игровым механикам и стратегиям</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            </div>
           </div>
         </div>
       </div>

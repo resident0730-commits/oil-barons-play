@@ -258,40 +258,40 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold heading-contrast mb-2">Магазин улучшений</h2>
-        <p className="subtitle-contrast">
+        <h2 className="text-xl sm:text-2xl font-bold heading-contrast mb-2">Магазин улучшений</h2>
+        <p className="subtitle-contrast text-sm sm:text-base">
           Покупайте бустеры для увеличения доходности ваших скважин
         </p>
         
         {/* Current Booster Effects */}
         {(boosters.length > 0 || statusMultiplier > 1) && (
-          <div className="mt-6 p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 rounded-xl border border-primary/30 shadow-lg">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-3 text-foreground">
-              <div className="relative">
-                <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+          <div className="mt-4 sm:mt-6 p-4 sm:p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 rounded-xl border border-primary/30 shadow-lg">
+            <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3 text-foreground">
+              <div className="relative flex-shrink-0">
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary animate-pulse" />
                 <div className="absolute -inset-1 bg-primary/20 blur-sm rounded-full"></div>
               </div>
-              Активные улучшения
+              <span className="truncate">Активные улучшения</span>
             </h3>
             
-            <div className="space-y-3 mb-4">
+            <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
               {/* Status bonuses */}
               {statusMultiplier > 1 && (
-                <div className="flex items-center justify-between p-4 bg-accent/10 rounded-lg border border-accent/20 hover:border-accent/40 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-accent/20 rounded-full">
-                      <Crown className="h-4 w-4 text-accent" />
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-accent/10 rounded-lg border border-accent/20 hover:border-accent/40 transition-colors">
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                    <div className="p-1.5 sm:p-2 bg-accent/20 rounded-full flex-shrink-0">
+                      <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-accent" />
                     </div>
-                    <div>
-                      <div className="font-medium text-foreground">Статусные бонусы</div>
-                      <div className="text-sm text-muted-foreground">
+                    <div className="min-w-0">
+                      <div className="font-medium text-foreground text-sm sm:text-base truncate">Статусные бонусы</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground truncate">
                         {userTitles.length > 0 ? getStatusDisplayNames().join(', ') : 'Активные достижения'}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="text-right">
-                    <div className="font-bold text-accent text-lg">+{Math.round((statusMultiplier - 1) * 100)}%</div>
+                  <div className="text-right sm:text-left flex-shrink-0">
+                    <div className="font-bold text-accent text-base sm:text-lg">+{Math.round((statusMultiplier - 1) * 100)}%</div>
                   </div>
                 </div>
               )}
@@ -346,25 +346,25 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
                 }
                 
                 return (
-                  <div key={booster.id} className="flex items-center justify-between p-4 bg-card/80 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-primary/20 rounded-full">
-                        {iconName === 'Users' && <Users className="h-4 w-4 text-primary" />}
-                        {iconName === 'Search' && <Search className="h-4 w-4 text-primary" />}
-                        {iconName === 'Cog' && <Cog className="h-4 w-4 text-primary" />}
-                        {iconName === 'Zap' && <Zap className="h-4 w-4 text-primary" />}
-                        {iconName === 'Bot' && <Bot className="h-4 w-4 text-primary" />}
+                  <div key={booster.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-card/80 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                      <div className="p-1.5 sm:p-2 bg-primary/20 rounded-full flex-shrink-0">
+                        {iconName === 'Users' && <Users className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />}
+                        {iconName === 'Search' && <Search className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />}
+                        {iconName === 'Cog' && <Cog className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />}
+                        {iconName === 'Zap' && <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />}
+                        {iconName === 'Bot' && <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />}
                       </div>
-                      <div>
-                        <div className="font-medium text-foreground">{effectText}</div>
+                      <div className="min-w-0">
+                        <div className="font-medium text-foreground text-sm sm:text-base truncate">{effectText}</div>
                         {booster.level > 1 && (
-                          <div className="text-sm text-muted-foreground">Уровень {booster.level}</div>
+                          <div className="text-xs sm:text-sm text-muted-foreground">Уровень {booster.level}</div>
                         )}
                       </div>
                     </div>
                     
-                    <div className="text-right">
-                      <div className="font-bold text-primary text-lg">+{bonusPercent}%</div>
+                    <div className="text-right sm:text-left flex-shrink-0">
+                      <div className="font-bold text-primary text-base sm:text-lg">+{bonusPercent}%</div>
                       {booster.expires_at && (
                         <div className="text-xs text-orange-500 font-medium">
                           До {new Date(booster.expires_at).toLocaleString('ru-RU', { 
@@ -384,7 +384,7 @@ export function BoosterShop({ onClose }: BoosterShopProps) {
         )}
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {availableBoosters.map((booster, index) => {
           const currentLevel = getBoosterLevel(booster.id);
           const cost = getBoosterCost(booster);

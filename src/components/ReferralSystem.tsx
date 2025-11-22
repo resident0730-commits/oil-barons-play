@@ -346,45 +346,71 @@ export const ReferralSystem = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Users className="h-4 w-4 sm:h-5 sm:w-5" />
             Реферальная система
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             Приглашайте друзей и получайте 10% с их доходов навсегда
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
           <div>
-            <label className="text-sm font-medium">Ваш реферальный код:</label>
-            <div className="flex gap-2 mt-1">
-              <Input value={referralCode} readOnly placeholder="Генерируется автоматически..." />
-              <Button onClick={copyReferralCode} size="sm" disabled={!referralCode}>
-                <Copy className="h-4 w-4" />
+            <label className="text-xs sm:text-sm font-medium">Ваш реферальный код:</label>
+            <div className="flex flex-wrap gap-2 mt-1">
+              <Input 
+                value={referralCode} 
+                readOnly 
+                placeholder="Генерируется автоматически..." 
+                className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
+              />
+              <Button 
+                onClick={copyReferralCode} 
+                size="sm" 
+                disabled={!referralCode}
+                className="h-10 sm:h-11 px-3 sm:px-4"
+              >
+                <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="ml-2 hidden sm:inline">Копировать</span>
               </Button>
               {!referralCode && (
-                <Button onClick={generateReferralCodeForUser} size="sm" variant="outline">
+                <Button 
+                  onClick={generateReferralCodeForUser} 
+                  size="sm" 
+                  variant="outline"
+                  className="h-10 sm:h-11"
+                >
                   Создать
                 </Button>
               )}
-              <Button onClick={fixMissingReferralRecord} size="sm" variant="secondary">
+              <Button 
+                onClick={fixMissingReferralRecord} 
+                size="sm" 
+                variant="secondary"
+                className="h-10 sm:h-11 hidden sm:inline-flex"
+              >
                 Исправить связи
               </Button>
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium">Применить реферальный код:</label>
+            <label className="text-xs sm:text-sm font-medium">Применить реферальный код:</label>
             <div className="flex gap-2 mt-1">
               <Input 
                 placeholder="Введите код друга"
                 value={referralInput}
                 onChange={(e) => setReferralInput(e.target.value)}
+                className="h-10 sm:h-11 text-sm sm:text-base"
               />
-              <Button onClick={applyReferralCode} size="sm">
+              <Button 
+                onClick={applyReferralCode} 
+                size="sm"
+                className="h-10 sm:h-11 px-3 sm:px-4 whitespace-nowrap"
+              >
                 Применить
               </Button>
             </div>
@@ -392,34 +418,34 @@ export const ReferralSystem = () => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Приглашенных</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium">Приглашенных</CardTitle>
+            <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{referrals.length}</div>
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="text-xl sm:text-2xl font-bold">{referrals.length}</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Заработано бонусов</CardTitle>
-            <Gift className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium">Заработано бонусов</CardTitle>
+            <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalBonus.toLocaleString()} ₽</div>
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="text-xl sm:text-2xl font-bold">{totalBonus.toLocaleString()} ₽</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Активных рефералов</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium">Активных рефералов</CardTitle>
+            <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="text-xl sm:text-2xl font-bold">
               {referrals.filter(ref => ref.is_active).length}
             </div>
           </CardContent>
@@ -427,27 +453,27 @@ export const ReferralSystem = () => {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Ваши рефералы</CardTitle>
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Ваши рефералы</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 sm:p-6 pt-0">
           {referrals.length === 0 ? (
-            <p className="text-muted-foreground text-center py-4">
+            <p className="text-muted-foreground text-center py-4 text-xs sm:text-sm">
               У вас пока нет приглашенных друзей
             </p>
           ) : (
             <div className="space-y-2">
               {referrals.map((referral) => (
-                <div key={referral.id} className="flex justify-between items-center p-3 border rounded-lg">
+                <div key={referral.id} className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0 p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">{referral.nickname || 'Игрок'}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-sm sm:text-base">{referral.nickname || 'Игрок'}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       Присоединился {new Date(referral.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">{referral.bonus_earned.toLocaleString()} ₽</p>
-                    <Badge variant={referral.is_active ? "default" : "secondary"}>
+                  <div className="flex items-center justify-between sm:text-right gap-2">
+                    <p className="font-medium text-sm sm:text-base">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
                   </div>
@@ -459,29 +485,29 @@ export const ReferralSystem = () => {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Реферальные награды</CardTitle>
-          <CardDescription>
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Реферальные награды</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             Награды выдаются только за рефералов, которые пополнили счет
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <div className="flex justify-between p-2 border rounded">
-              <span>5 рефералов с пополнением</span>
-              <Badge>5,000 ₽</Badge>
+        <CardContent className="p-4 sm:p-6 pt-0">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
+              <span className="text-xs sm:text-sm">5 рефералов с пополнением</span>
+              <Badge className="self-start sm:self-auto text-xs">5,000 ₽</Badge>
             </div>
-            <div className="flex justify-between p-2 border rounded">
-              <span>15 рефералов с пополнением</span>
-              <Badge>15,000 ₽</Badge>
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
+              <span className="text-xs sm:text-sm">15 рефералов с пополнением</span>
+              <Badge className="self-start sm:self-auto text-xs">15,000 ₽</Badge>
             </div>
-            <div className="flex justify-between p-2 border rounded">
-              <span>50 рефералов с пополнением</span>
-              <Badge>50,000 ₽</Badge>
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
+              <span className="text-xs sm:text-sm">50 рефералов с пополнением</span>
+              <Badge className="self-start sm:self-auto text-xs">50,000 ₽</Badge>
             </div>
-            <div className="flex justify-between p-2 border rounded">
-              <span>100 рефералов</span>
-              <Badge variant="secondary">VIP статус</Badge>
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
+              <span className="text-xs sm:text-sm">100 рефералов</span>
+              <Badge variant="secondary" className="self-start sm:self-auto text-xs">VIP статус</Badge>
             </div>
           </div>
         </CardContent>

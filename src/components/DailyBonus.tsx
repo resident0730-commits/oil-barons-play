@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Gift, Clock, Coins, CheckCircle, Flame, Calendar, Star, Gem, Trophy, Crown, Zap, Sparkles } from 'lucide-react';
+import { Gift, Clock, Coins, Star, Flame, Calendar, Gem, Trophy, Crown, Zap, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
@@ -244,7 +244,7 @@ export function DailyBonus() {
 
         <CardContent className="relative z-10 space-y-8 pb-8">
           {/* Календарь наград с улучшенными эффектами */}
-          <div className="grid grid-cols-7 gap-2 sm:gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-7 gap-3 sm:gap-4">
             {DAILY_REWARDS.map((reward) => {
               const isCompleted = currentStreak >= reward.day;
               const isCurrent = !canClaim && currentStreak === reward.day;
@@ -254,7 +254,7 @@ export function DailyBonus() {
                 <div
                   key={reward.day}
                   className={`
-                    relative p-3 sm:p-5 rounded-2xl border-2 transition-all duration-500 transform
+                    relative p-4 sm:p-5 rounded-2xl border-2 transition-all duration-500 transform
                     ${isCompleted ? 'bg-gradient-to-br from-green-500/30 via-emerald-500/20 to-green-400/20 border-green-400/70 shadow-lg shadow-green-500/30 scale-105' : ''}
                     ${isCurrent ? 'bg-gradient-to-br from-primary/30 via-accent/20 to-primary/20 border-primary/70 ring-4 ring-primary/40 shadow-xl shadow-primary/40 scale-110' : ''}
                     ${isNext ? 'bg-gradient-to-br from-yellow-500/30 via-orange-500/20 to-yellow-400/20 border-yellow-400/70 ring-4 ring-yellow-400/50 animate-pulse shadow-xl shadow-yellow-500/40 scale-110' : ''}
@@ -263,8 +263,8 @@ export function DailyBonus() {
                   `}
                 >
                   {isCompleted && (
-                    <div className="absolute -top-2 -right-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full p-1.5 shadow-lg shadow-green-500/50 animate-bounce">
-                      <CheckCircle className="h-4 w-4 text-white" />
+                    <div className="absolute -top-2 -right-2 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-full p-1.5 shadow-lg shadow-amber-500/50 animate-bounce">
+                      <Star className="h-4 w-4 text-white fill-white" />
                     </div>
                   )}
                   {isNext && (
@@ -275,7 +275,7 @@ export function DailyBonus() {
                       <reward.icon className="h-8 sm:h-10 w-8 sm:w-10 mx-auto" strokeWidth={2.5} />
                     </div>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-wide">День {reward.day}</div>
-                    <div className={`text-base sm:text-lg font-bold ${isNext ? 'text-yellow-300' : isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground'}`}>
+                    <div className={`text-sm sm:text-lg font-bold ${isNext ? 'text-yellow-300' : isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground'}`}>
                       {reward.amount} OC
                     </div>
                   </div>
@@ -377,7 +377,7 @@ export function DailyBonus() {
                         </>
                       ) : (
                         <>
-                          <CheckCircle className="h-4 w-4" />
+                          <Star className="h-4 w-4" />
                           Ты уже получил награду за день {currentStreak}
                         </>
                       )}
