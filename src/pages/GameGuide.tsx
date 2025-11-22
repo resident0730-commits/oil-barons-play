@@ -930,22 +930,22 @@ const GameGuide = () => {
         <div className="text-center space-y-8 animate-fade-in">
           <Card className="max-w-4xl mx-auto relative overflow-hidden bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent backdrop-blur-xl border-2 border-yellow-500/50">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/30 to-amber-600/20 opacity-70"></div>
-            <CardContent className="relative p-12 text-center space-y-6">
+            <CardContent className="relative p-6 sm:p-12 text-center space-y-6">
               <div className="flex justify-center">
-                <div className="p-6 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.8)]">
-                  <Rocket className="h-16 w-16 text-white" />
+                <div className="p-4 sm:p-6 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.8)]">
+                  <Rocket className="h-12 w-12 sm:h-16 sm:w-16 text-white" />
                 </div>
               </div>
-              <h3 className="text-4xl md:text-5xl font-bold text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                 Готовы начать?
               </h3>
-              <p className="text-xl text-yellow-50/90 max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              <p className="text-base sm:text-xl text-yellow-50/90 max-w-2xl mx-auto [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
                 Присоединяйтесь к тысячам игроков и постройте свою нефтяную империю уже сегодня!
               </p>
-              <Link to="/auth">
-                <Button size="lg" className="gradient-luxury shadow-luxury text-xl px-12 py-7 hover-scale animate-glow-pulse">
-                  <Sparkles className="h-6 w-6 mr-2" />
-                  Начать играть бесплатно
+              <Link to="/auth" className="inline-block w-full sm:w-auto">
+                <Button size="lg" className="gradient-luxury shadow-luxury text-base sm:text-xl px-6 sm:px-12 py-5 sm:py-7 hover-scale animate-glow-pulse w-full sm:w-auto">
+                  <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 mr-2 flex-shrink-0" />
+                  <span className="truncate">Начать играть бесплатно</span>
                 </Button>
               </Link>
             </CardContent>
