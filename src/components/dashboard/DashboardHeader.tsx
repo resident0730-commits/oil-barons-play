@@ -45,36 +45,36 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
           </div>
 
           {/* Second Row: Balances */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-1.5">
             <Button
               variant="outline"
               size="sm"
               onClick={onTopUpClick}
-              className="group relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent backdrop-blur-xl border border-primary/40 hover:border-primary transition-all px-2 h-9 justify-start"
+              className="group relative overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent backdrop-blur-xl border border-primary/40 hover:border-primary transition-all px-1 h-8 justify-start min-w-0"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Wallet className="h-4 w-4 text-primary flex-shrink-0 relative z-10" />
-              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatOilCoins(profile.oilcoin_balance)}</span>
+              <Wallet className="h-3.5 w-3.5 text-primary flex-shrink-0 relative z-10" />
+              <span className="font-bold text-[10px] ml-0.5 truncate relative z-10 block overflow-hidden">{formatOilCoins(profile.oilcoin_balance)}</span>
             </Button>
 
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border border-emerald-500/40 hover:border-emerald-400 transition-all px-2 h-9 cursor-default justify-start"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent backdrop-blur-xl border border-emerald-500/40 hover:border-emerald-400 transition-all px-1 h-8 cursor-default justify-start min-w-0"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Droplet className="h-4 w-4 text-emerald-400 flex-shrink-0 relative z-10" />
-              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatBarrels(profile.barrel_balance)}</span>
+              <Droplet className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0 relative z-10" />
+              <span className="font-bold text-[10px] ml-0.5 truncate relative z-10 block overflow-hidden">{formatBarrels(profile.barrel_balance)}</span>
             </Button>
 
             <Button
               variant="outline"
               size="sm"
-              className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border border-amber-500/40 hover:border-amber-400 transition-all px-2 h-9 cursor-default justify-start"
+              className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border border-amber-500/40 hover:border-amber-400 transition-all px-1 h-8 cursor-default justify-start min-w-0"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Coins className="h-4 w-4 text-amber-400 flex-shrink-0 relative z-10" />
-              <span className="font-bold text-xs ml-1 truncate relative z-10">{formatRubles(profile.ruble_balance)}</span>
+              <Coins className="h-3.5 w-3.5 text-amber-400 flex-shrink-0 relative z-10" />
+              <span className="font-bold text-[10px] ml-0.5 truncate relative z-10 block overflow-hidden">{formatRubles(profile.ruble_balance)}</span>
             </Button>
           </div>
 
