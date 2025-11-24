@@ -346,18 +346,23 @@ export const ReferralSystem = () => {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <Card>
-        <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-            Реферальная система
+    <div className="space-y-6 sm:space-y-8">
+      <Card className="group relative overflow-hidden bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent backdrop-blur-xl border-2 border-purple-500/50 hover:border-purple-400 transition-all duration-500 hover:-translate-y-1">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute -right-16 -top-16 w-48 h-48 bg-purple-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-purple-400/40 transition-all duration-500"></div>
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        </div>
+        <CardHeader className="relative p-6 sm:p-8">
+          <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+            <Users className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]" />
+            Ваш реферальный код
           </CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
+          <CardDescription className="text-sm sm:text-base text-purple-50/80 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
             Приглашайте друзей и получайте 10% с их доходов навсегда
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
+        <CardContent className="relative space-y-6 p-6 sm:p-8 pt-0">
           <div>
             <label className="text-xs sm:text-sm font-medium">Ваш реферальный код:</label>
             <div className="flex flex-wrap gap-2 mt-1">
@@ -418,45 +423,80 @@ export const ReferralSystem = () => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">Приглашенных</CardTitle>
-            <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6 pt-0">
-            <div className="text-xl sm:text-2xl font-bold">{referrals.length}</div>
+      <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-3">
+        {/* Приглашенных */}
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-cyan-500/20 via-cyan-500/10 to-transparent backdrop-blur-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all duration-500 hover:-translate-y-2">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-cyan-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-cyan-400/40 transition-all duration-500"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          </div>
+          <CardContent className="relative p-8 sm:p-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-4 bg-cyan-500/30 rounded-2xl backdrop-blur-sm">
+                <Users className="h-10 w-10 sm:h-12 sm:w-12 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
+              </div>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-cyan-100 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Приглашенных</h3>
+            <div className="text-5xl sm:text-6xl font-bold text-cyan-400 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
+              {referrals.length}
+            </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">Заработано бонусов</CardTitle>
-            <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6 pt-0">
-            <div className="text-xl sm:text-2xl font-bold">{totalBonus.toLocaleString()} ₽</div>
+        {/* Заработано бонусов */}
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent backdrop-blur-xl border-2 border-green-500/50 hover:border-green-400 transition-all duration-500 hover:-translate-y-2">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/30 to-emerald-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-green-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-green-400/40 transition-all duration-500"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          </div>
+          <CardContent className="relative p-8 sm:p-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-4 bg-green-500/30 rounded-2xl backdrop-blur-sm">
+                <Gift className="h-10 w-10 sm:h-12 sm:w-12 text-green-400 drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]" />
+              </div>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-green-100 mb-4 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Заработано бонусов</h3>
+            <div className="text-3xl sm:text-4xl font-bold text-green-400 drop-shadow-[0_0_30px_rgba(34,197,94,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
+              {totalBonus.toLocaleString()} ₽
+            </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-            <CardTitle className="text-xs sm:text-sm font-medium">Активных рефералов</CardTitle>
-            <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6 pt-0">
-            <div className="text-xl sm:text-2xl font-bold">
+        {/* Активных рефералов */}
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-pink-500/20 via-pink-500/10 to-transparent backdrop-blur-xl border-2 border-pink-500/50 hover:border-pink-400 transition-all duration-500 hover:-translate-y-2">
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/30 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-pink-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-pink-400/40 transition-all duration-500"></div>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          </div>
+          <CardContent className="relative p-8 sm:p-10">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-4 bg-pink-500/30 rounded-2xl backdrop-blur-sm">
+                <TrendingUp className="h-10 w-10 sm:h-12 sm:w-12 text-pink-400 drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]" />
+              </div>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-pink-100 mb-4 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">Активных</h3>
+            <div className="text-5xl sm:text-6xl font-bold text-pink-400 drop-shadow-[0_0_30px_rgba(236,72,153,0.8)] [text-shadow:_3px_3px_6px_rgb(0_0_0_/_90%)]">
               {referrals.filter(ref => ref.is_active).length}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="text-base sm:text-lg">Ваши рефералы</CardTitle>
+      <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent backdrop-blur-xl border-2 border-blue-500/50 hover:border-blue-400 transition-all duration-500">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-indigo-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute -right-16 -top-16 w-48 h-48 bg-blue-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-blue-400/40 transition-all duration-500"></div>
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        </div>
+        <CardHeader className="relative p-6 sm:p-8">
+          <CardTitle className="text-xl sm:text-2xl text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+            Ваши рефералы
+          </CardTitle>
         </CardHeader>
-        <CardContent className="p-4 sm:p-6 pt-0">
+        <CardContent className="relative p-6 sm:p-8 pt-0">
           {referrals.length === 0 ? (
             <p className="text-muted-foreground text-center py-4 text-xs sm:text-sm">
               У вас пока нет приглашенных друзей
