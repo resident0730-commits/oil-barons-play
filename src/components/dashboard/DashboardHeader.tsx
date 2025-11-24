@@ -84,12 +84,12 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10 h-9 w-9">
-                    <Link to="/referrals">
-                      <Users className="h-4 w-4" />
+                    <Link to="/dashboard">
+                      <BarChart3 className="h-4 w-4" />
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Рефералы</TooltipContent>
+                <TooltipContent>Личный кабинет</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -197,12 +197,12 @@ export const DashboardHeader = ({ profile, isAdmin, onTopUpClick, onSignOut }: D
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="ghost" size="icon" asChild className="hover:bg-primary/10">
-                        <Link to="/referrals">
-                          <Users className="h-5 w-5" />
+                        <Link to="/dashboard">
+                          <BarChart3 className="h-5 w-5" />
                         </Link>
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Рефералы</TooltipContent>
+                    <TooltipContent>Личный кабинет</TooltipContent>
                   </Tooltip>
 
                   <Tooltip>
