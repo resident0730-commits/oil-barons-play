@@ -218,9 +218,19 @@ export const ReferralSystem = () => {
     }
   };
 
+  const getBaseUrl = () => {
+    // Проверяем, есть ли настроенный кастомный домен в localStorage
+    const customDomain = localStorage.getItem('custom_domain');
+    if (customDomain) {
+      return customDomain;
+    }
+    // Иначе используем текущий домен
+    return window.location.origin;
+  };
+
   const copyReferralCode = () => {
     if (referralCode) {
-      const referralLink = `${window.location.origin}/auth?ref=${referralCode}`;
+      const referralLink = `${getBaseUrl()}/auth?ref=${referralCode}`;
       navigator.clipboard.writeText(referralLink);
       toast({
         title: "Реферальная ссылка скопирована!",
@@ -368,7 +378,7 @@ export const ReferralSystem = () => {
             <label className="text-xs sm:text-sm font-medium">Ваша реферальная ссылка:</label>
             <div className="flex flex-wrap gap-2 mt-1">
               <Input 
-                value={referralCode ? `${window.location.origin}/auth?ref=${referralCode}` : ''} 
+                value={referralCode ? `${getBaseUrl()}/auth?ref=${referralCode}` : ''} 
                 readOnly 
                 placeholder="Генерируется автоматически..." 
                 className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
