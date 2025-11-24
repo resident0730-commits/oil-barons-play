@@ -726,6 +726,22 @@ export type Database = {
           total_wells: number
         }[]
       }
+      get_user_transfers: {
+        Args: never
+        Returns: {
+          amount: number
+          created_at: string
+          created_by: string
+          description: string
+          from_user_id: string
+          id: string
+          status: string
+          to_user_id: string
+          transfer_type: string
+          updated_at: string
+          withdrawal_details: Json
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
