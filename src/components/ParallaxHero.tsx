@@ -27,23 +27,15 @@ export const ParallaxHero = () => {
       <div className="relative z-20 container mx-auto px-4 py-32">
         <div className="text-center space-y-12">
           {/* Main Title - Clean & Elegant */}
-          {/* Роскошная золотая надпись с градиентом */}
-          <div style={{ 
-            filter: 'drop-shadow(3px 3px 0 #B8860B) drop-shadow(5px 5px 0 #8B6914) drop-shadow(8px 8px 15px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.7))'
-          }}>
-            <h1 
-              className="font-black leading-none tracking-tight animate-fade-in mb-8"
-              style={{
-                fontSize: 'clamp(4rem, 15vw, 11rem)',
-                background: 'linear-gradient(180deg, #FFEB3B 0%, #FFD700 15%, #FFC107 30%, #FFB300 45%, #FFA000 60%, #D4AF37 75%, #C19A3F 90%, #8B6914 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              OIL TYCOON
-            </h1>
-          </div>
+          <h1 
+            className="font-black leading-none tracking-tight animate-fade-in mb-8 text-primary"
+            style={{
+              fontSize: 'clamp(3rem, 12vw, 11rem)',
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)'
+            }}
+          >
+            OIL TYCOON
+          </h1>
             
           <div className="max-w-4xl mx-auto space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
