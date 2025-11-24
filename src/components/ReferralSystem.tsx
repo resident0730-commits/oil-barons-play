@@ -367,7 +367,7 @@ export const ReferralSystem = () => {
         <CardHeader className="relative p-6 sm:p-8">
           <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
             <Users className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.8)]" />
-            Ваш реферальный код
+            Пригласите друзей
           </CardTitle>
           <CardDescription className="text-sm sm:text-base text-purple-50/80 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
             Приглашайте друзей и получайте 10% с их доходов навсегда
@@ -375,7 +375,46 @@ export const ReferralSystem = () => {
         </CardHeader>
         <CardContent className="relative space-y-6 p-6 sm:p-8 pt-0">
           <div>
-            <label className="text-xs sm:text-sm font-medium">Ваша реферальная ссылка:</label>
+            <label className="text-xs sm:text-sm font-medium">Реферальный код:</label>
+            <div className="flex flex-wrap gap-2 mt-1">
+              <Input 
+                value={referralCode || ''} 
+                readOnly 
+                placeholder="Генерируется автоматически..." 
+                className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
+              />
+              <Button 
+                onClick={() => {
+                  if (referralCode) {
+                    navigator.clipboard.writeText(referralCode);
+                    toast({
+                      title: "Код скопирован!",
+                      description: "Реферальный код скопирован в буфер обмена",
+                    });
+                  }
+                }} 
+                size="sm" 
+                disabled={!referralCode}
+                className="h-10 sm:h-11 px-3 sm:px-4"
+              >
+                <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="ml-2 hidden sm:inline">Копировать</span>
+              </Button>
+              {!referralCode && (
+                <Button 
+                  onClick={generateReferralCodeForUser} 
+                  size="sm" 
+                  variant="outline"
+                  className="h-10 sm:h-11"
+                >
+                  Создать
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs sm:text-sm font-medium">Реферальная ссылка:</label>
             <div className="flex flex-wrap gap-2 mt-1">
               <Input 
                 value={referralCode ? `${getBaseUrl()}/auth?ref=${referralCode}` : ''} 
@@ -390,18 +429,8 @@ export const ReferralSystem = () => {
                 className="h-10 sm:h-11 px-3 sm:px-4"
               >
                 <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="ml-2 hidden sm:inline">Копировать ссылку</span>
+                <span className="ml-2 hidden sm:inline">Копировать</span>
               </Button>
-              {!referralCode && (
-                <Button 
-                  onClick={generateReferralCodeForUser} 
-                  size="sm" 
-                  variant="outline"
-                  className="h-10 sm:h-11"
-                >
-                  Создать
-                </Button>
-              )}
               <Button 
                 onClick={fixMissingReferralRecord} 
                 size="sm" 
