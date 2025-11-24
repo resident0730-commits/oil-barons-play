@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, Shield, TrendingUp, Users, Gift } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const referralCode = searchParams.get('ref');
 
   useEffect(() => {
     if (user && !loading) {
       navigate('/dashboard');
     }
   }, [user, loading, navigate]);
+
+  // Автоматически переключаемся на регистрацию, если есть реферальный код
+  useEffect(() => {
+    if (referralCode && !user) {
+      setIsLogin(false);
+    }
+  }, [referralCode, user]);
 
   if (loading) {
     return (
@@ -110,7 +118,7 @@ const Auth = () => {
           {isLogin ? (
             <LoginForm onSuccess={() => navigate('/dashboard')} />
           ) : (
-            <RegisterForm onSuccess={() => setIsLogin(true)} />
+            <RegisterForm onSuccess={() => setIsLogin(true)} referralCode={referralCode || undefined} />
           )}
 
           {/* Toggle */}
