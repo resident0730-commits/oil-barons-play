@@ -376,12 +376,12 @@ export const ReferralSystem = () => {
         <CardContent className="relative space-y-6 p-6 sm:p-8 pt-0">
           <div>
             <label className="text-xs sm:text-sm font-medium">Реферальный код:</label>
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="flex gap-2 mt-1">
               <Input 
                 value={referralCode || ''} 
                 readOnly 
                 placeholder="Генерируется автоматически..." 
-                className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
+                className="h-10 sm:h-11 text-sm sm:text-base flex-1"
               />
               <Button 
                 onClick={() => {
@@ -400,27 +400,17 @@ export const ReferralSystem = () => {
                 <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="ml-2 hidden sm:inline">Копировать</span>
               </Button>
-              {!referralCode && (
-                <Button 
-                  onClick={generateReferralCodeForUser} 
-                  size="sm" 
-                  variant="outline"
-                  className="h-10 sm:h-11"
-                >
-                  Создать
-                </Button>
-              )}
             </div>
           </div>
 
           <div>
             <label className="text-xs sm:text-sm font-medium">Реферальная ссылка:</label>
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="flex gap-2 mt-1">
               <Input 
                 value={referralCode ? `${getBaseUrl()}/auth?ref=${referralCode}` : ''} 
                 readOnly 
                 placeholder="Генерируется автоматически..." 
-                className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
+                className="h-10 sm:h-11 text-sm sm:text-base flex-1"
               />
               <Button 
                 onClick={copyReferralCode} 
@@ -430,14 +420,6 @@ export const ReferralSystem = () => {
               >
                 <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="ml-2 hidden sm:inline">Копировать</span>
-              </Button>
-              <Button 
-                onClick={fixMissingReferralRecord} 
-                size="sm" 
-                variant="secondary"
-                className="h-10 sm:h-11 hidden sm:inline-flex"
-              >
-                Исправить связи
               </Button>
             </div>
           </div>
