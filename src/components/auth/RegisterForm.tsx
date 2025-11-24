@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,19 +8,33 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface RegisterFormProps {
   onSuccess?: () => void;
+  referralCode?: string;
 }
 
-export function RegisterForm({ onSuccess }: RegisterFormProps) {
+export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [appliedReferralCode, setAppliedReferralCode] = useState(referralCode || "");
   const { signUp } = useAuth();
   const { toast } = useToast();
+
+  // Применяем реферальный код автоматически, если он передан
+  useEffect(() => {
+    if (referralCode) {
+      setAppliedReferralCode(referralCode);
+      toast({
+        title: "Реферальный код применен!",
+        description: `Вы регистрируетесь по приглашению. Код: ${referralCode}`,
+      });
+    }
+  }, [referralCode, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +65,38 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       
       if (error) {
         throw error;
+      }
+
+      // Если есть реферальный код, применяем его после регистрации
+      if (appliedReferralCode && data?.user) {
+        try {
+          // Ищем реферера по коду
+          const { data: referrers, error: referrerError } = await supabase
+            .rpc('lookup_referral_code', { code: appliedReferralCode });
+
+          if (!referrerError && referrers && referrers.length > 0) {
+            const referrer = referrers[0];
+            
+            // Обновляем профиль нового пользователя
+            await supabase
+              .from('profiles')
+              .update({ referred_by: referrer.user_id })
+              .eq('user_id', data.user.id);
+
+            // Создаем запись о реферале
+            await supabase
+              .from('referrals')
+              .insert({
+                referrer_id: referrer.user_id,
+                referred_id: data.user.id,
+                referral_code: appliedReferralCode,
+                is_active: true
+              });
+          }
+        } catch (refError) {
+          console.error('Error applying referral code:', refError);
+          // Не показываем ошибку пользователю, так как регистрация прошла успешно
+        }
       }
 
       toast({

@@ -220,10 +220,11 @@ export const ReferralSystem = () => {
 
   const copyReferralCode = () => {
     if (referralCode) {
-      navigator.clipboard.writeText(referralCode);
+      const referralLink = `${window.location.origin}/auth?ref=${referralCode}`;
+      navigator.clipboard.writeText(referralLink);
       toast({
-        title: "Реферальный код скопирован!",
-        description: "Поделитесь им с друзьями",
+        title: "Реферальная ссылка скопирована!",
+        description: "Поделитесь ей с друзьями",
       });
     }
   };
@@ -364,10 +365,10 @@ export const ReferralSystem = () => {
         </CardHeader>
         <CardContent className="relative space-y-6 p-6 sm:p-8 pt-0">
           <div>
-            <label className="text-xs sm:text-sm font-medium">Ваш реферальный код:</label>
+            <label className="text-xs sm:text-sm font-medium">Ваша реферальная ссылка:</label>
             <div className="flex flex-wrap gap-2 mt-1">
               <Input 
-                value={referralCode} 
+                value={referralCode ? `${window.location.origin}/auth?ref=${referralCode}` : ''} 
                 readOnly 
                 placeholder="Генерируется автоматически..." 
                 className="h-10 sm:h-11 text-sm sm:text-base flex-1 min-w-[200px]"
@@ -379,7 +380,7 @@ export const ReferralSystem = () => {
                 className="h-10 sm:h-11 px-3 sm:px-4"
               >
                 <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="ml-2 hidden sm:inline">Копировать</span>
+                <span className="ml-2 hidden sm:inline">Копировать ссылку</span>
               </Button>
               {!referralCode && (
                 <Button 
