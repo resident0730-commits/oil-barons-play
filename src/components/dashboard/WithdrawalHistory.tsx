@@ -27,16 +27,23 @@ export function WithdrawalHistory() {
     if (!user) return;
 
     try {
+      // Используем безопасную функцию для получения переводов
       const { data, error } = await supabase
-        .from('money_transfers')
-        .select('*')
-        .eq('from_user_id', user.id)
-        .eq('transfer_type', 'withdrawal')
-        .order('created_at', { ascending: false });
+        .rpc('get_user_transfers');
 
       if (error) throw error;
 
-      setWithdrawals(data || []);
+      // Фильтруем только выводы
+      const userWithdrawals = (data || [])
+        .filter((transfer: any) => 
+          transfer.from_user_id === user.id && 
+          transfer.transfer_type === 'withdrawal'
+        )
+        .sort((a: any, b: any) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+
+      setWithdrawals(userWithdrawals);
     } catch (error: any) {
       console.error('Error loading withdrawal history:', error);
       toast({

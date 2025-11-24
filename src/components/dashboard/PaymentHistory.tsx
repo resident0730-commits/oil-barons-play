@@ -59,18 +59,24 @@ export const PaymentHistory = () => {
 
     try {
       setLoading(true);
+      // Используем безопасную функцию для получения переводов
       const { data, error } = await supabase
-        .from('money_transfers')
-        .select('*')
-        .eq('to_user_id', user.id)
-        .in('transfer_type', ['deposit', 'topup', 'payment'])
-        .order('created_at', { ascending: false })
-        .limit(20);
+        .rpc('get_user_transfers');
 
       if (error) {
         setPayments([]);
       } else {
-        setPayments(data || []);
+        // Фильтруем только входящие платежи
+        const incomingPayments = (data || [])
+          .filter((transfer: any) => 
+            transfer.to_user_id === user.id && 
+            ['deposit', 'topup', 'payment'].includes(transfer.transfer_type)
+          )
+          .sort((a: any, b: any) => 
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          )
+          .slice(0, 20);
+        setPayments(incomingPayments);
       }
     } catch (error) {
       setPayments([]);
