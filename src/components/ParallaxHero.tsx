@@ -51,7 +51,7 @@ export const ParallaxHero = () => {
                 textShadow: '1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 15px rgba(0,0,0,0.4)'
               }}
             >
-              От первой капли нефти<br />до нефтяной империи
+              Почувствуйте вес первого заработанного миллиона,<br />пока ваша нефтяная империя растёт
             </h2>
             
             <p className="text-lg md:text-xl lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed text-white"
@@ -59,8 +59,8 @@ export const ParallaxHero = () => {
                 textShadow: '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0 0 10px rgba(0,0,0,0.3)'
               }}
             >
-              Реальный заработок через игровую механику!<br />
-              Управляйте скважинами, развивайте бизнес и выводите заработанные средства.
+              Представьте, как цифры на вашем балансе увеличиваются каждую минуту.<br />
+              Ощутите реальную прибыль через увлекательную игровую механику — управляйте скважинами, наблюдайте за ростом бизнеса и выводите заработанные средства, когда захотите.
             </p>
           </div>
 
@@ -81,14 +81,14 @@ export const ParallaxHero = () => {
                         <div className="relative flex items-center justify-center gap-3">
                           <Zap className="h-7 w-7 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]" />
                           <span className="text-xl font-bold text-amber-100 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                            Продолжить империю
+                            Продолжить строить империю
                           </span>
                         </div>
                       </div>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Вернуться к управлению своими скважинами</p>
+                    <p>Ваши скважины уже ждут вашего возвращения</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
@@ -104,14 +104,14 @@ export const ParallaxHero = () => {
                         <div className="relative flex items-center justify-center gap-3">
                           <Zap className="h-7 w-7 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]" />
                           <span className="text-xl font-bold text-amber-100 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                            Начать зарабатывать
+                            Почувствовать первую прибыль
                           </span>
                         </div>
                       </div>
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Зарегистрируйтесь и начните строить свою нефтяную империю</p>
+                    <p>Зарегистрируйтесь сейчас и почувствуйте, как начинается ваш путь к финансовой свободе</p>
                   </TooltipContent>
                 </Tooltip>
               )}
@@ -128,14 +128,14 @@ export const ParallaxHero = () => {
                       <div className="relative flex items-center justify-center gap-3">
                         <BarChart3 className="h-7 w-7 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
                         <span className="text-xl font-bold text-cyan-100 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-                          Как играть
+                          Узнать секреты успеха
                         </span>
                       </div>
                     </div>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Подробный гайд по игровым механикам и стратегиям</p>
+                  <p>Откройте для себя проверенные стратегии роста и увидьте результаты быстрее</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
