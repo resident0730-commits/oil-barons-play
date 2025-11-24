@@ -19,6 +19,7 @@ import { CompanyContentManager } from '@/components/admin/CompanyContentManager'
 import { DatabaseMigration } from '@/components/admin/DatabaseMigration';
 import { CurrencyManager } from '@/components/admin/CurrencyManager';
 import { PromoCodeManager } from '@/components/admin/PromoCodeManager';
+import { DomainSettings } from '@/components/admin/DomainSettings';
 
 // Admin component for managing game and users
 export default function Admin() {
@@ -111,8 +112,9 @@ export default function Admin() {
 
           {/* Page Visibility Management */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Управление страницами</h2>
+            <h2 className="text-2xl font-semibold mb-4">Управление страницами и доменом</h2>
             <div className="space-y-6">
+              <DomainSettings />
               <PageVisibilityManager />
               <CompanyContentManager />
             </div>
