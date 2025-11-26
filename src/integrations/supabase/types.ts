@@ -684,22 +684,6 @@ export type Database = {
           status_titles: string[] | null
           user_id: string | null
         }
-        Insert: {
-          created_at?: string | null
-          id?: string | null
-          is_banned?: boolean | null
-          nickname?: string | null
-          status_titles?: string[] | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string | null
-          is_banned?: boolean | null
-          nickname?: string | null
-          status_titles?: string[] | null
-          user_id?: string | null
-        }
         Relationships: []
       }
     }
@@ -740,6 +724,17 @@ export type Database = {
           daily_income: number
           nickname: string
           player_type: string
+        }[]
+      }
+      get_public_profiles: {
+        Args: never
+        Returns: {
+          created_at: string
+          id: string
+          is_banned: boolean
+          nickname: string
+          status_titles: string[]
+          user_id: string
         }[]
       }
       get_user_statistics: {
