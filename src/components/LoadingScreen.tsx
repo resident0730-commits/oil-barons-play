@@ -25,19 +25,38 @@ const loadingTips = [
 export const LoadingScreen = ({ user, profile }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [currentTip, setCurrentTip] = useState(0);
+  const [loadingStuck, setLoadingStuck] = useState(false);
   const { currentPlayers, progressPercentage, loading: limitLoading } = usePlayerLimit();
   const { statistics, loading: statsLoading } = useGameStatistics();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prev) => {
+        // Complete to 100% if we have profile data
+        if (profile && prev >= 95) {
+          return 100;
+        }
+        // Stop at 95% while waiting for data
         if (prev >= 95) return 95;
         return prev + Math.random() * 15;
       });
     }, 200);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [profile]);
+
+  // Detect stuck loading after 20 seconds
+  useEffect(() => {
+    const stuckTimer = setTimeout(() => {
+      if (!profile) {
+        console.error('⚠️ Loading stuck: Profile not loaded after 20 seconds');
+        setLoadingStuck(true);
+        setProgress(100); // Force complete
+      }
+    }, 20000);
+
+    return () => clearTimeout(stuckTimer);
+  }, [profile]);
 
   useEffect(() => {
     const tipTimer = setInterval(() => {
@@ -104,15 +123,27 @@ export const LoadingScreen = ({ user, profile }: LoadingScreenProps) => {
               </p>
             </div>
 
-            {/* Loading Tip */}
+            {/* Loading Tip or Error */}
             <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-transparent rounded-lg p-4 border border-primary/20 min-h-[70px] flex items-center justify-center">
               <div className="absolute top-0 left-0 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
               <div className="absolute bottom-0 right-0 w-20 h-20 bg-accent/10 rounded-full blur-2xl"></div>
               <div className="relative z-10 flex items-center gap-3">
-                <Lightbulb className="h-5 w-5 text-primary flex-shrink-0" />
-                <p className="text-sm text-center text-foreground/90 font-medium animate-fade-in">
-                  {loadingTips[currentTip]}
-                </p>
+                {loadingStuck ? (
+                  <>
+                    <Lightbulb className="h-5 w-5 text-destructive flex-shrink-0" />
+                    <div className="text-sm text-center">
+                      <p className="text-destructive font-medium">Медленное соединение</p>
+                      <p className="text-xs text-muted-foreground mt-1">Попробуйте обновить страницу</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Lightbulb className="h-5 w-5 text-primary flex-shrink-0" />
+                    <p className="text-sm text-center text-foreground/90 font-medium animate-fade-in">
+                      {loadingTips[currentTip]}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </CardContent>
