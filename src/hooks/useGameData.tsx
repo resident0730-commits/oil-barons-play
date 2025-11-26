@@ -468,38 +468,53 @@ export function useGameData() {
     }
   }, [user?.id, statusMultiplier, calculateBoosterMultiplier]);
 
-  const loadGameData = useCallback(async (forceRefresh = false) => {
+  const loadGameData = useCallback(async (forceRefresh = false, retryCount = 0) => {
     if (!user) {
       setLoading(false);
       return;
     }
 
     try {
-      console.log('🔍 Loading game data for user:', user.id, forceRefresh ? '(forced refresh)' : '');
+      console.log('🔍 Loading game data for user:', user.id, forceRefresh ? '(forced refresh)' : '', retryCount > 0 ? `(retry ${retryCount})` : '');
       console.log('📱 User agent:', navigator.userAgent);
       console.log('📶 Connection:', navigator.onLine ? 'Online' : 'Offline');
+      
+      // Detect mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const timeout = isMobile ? 20000 : 15000; // 20s for mobile, 15s for desktop
+      
+      console.log('📱 Device type:', isMobile ? 'Mobile' : 'Desktop', 'Timeout:', timeout, 'ms');
       
       // Load profile with extended timeout for mobile devices
       const profileStartTime = Date.now();
       
-      // Add cache-busting header if force refresh
       const query = supabase
         .from('profiles')
         .select('*')
         .eq('user_id', user.id);
       
-      const result = await Promise.race([
-        forceRefresh 
-          ? query.maybeSingle() 
-          : query.maybeSingle(),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Profile load timeout')), 15000) // Increased to 15 seconds
-        )
-      ]).catch(err => {
+      let result: { data: any; error: any };
+      
+      try {
+        result = await Promise.race([
+          query.maybeSingle(),
+          new Promise<never>((_, reject) => 
+            setTimeout(() => reject(new Error('Profile load timeout')), timeout)
+          )
+        ]) as { data: any; error: any };
+      } catch (err) {
         console.error('❌ Profile loading error:', err);
         console.error('⏱️ Profile load time:', Date.now() - profileStartTime, 'ms');
-        return { data: null, error: err };
-      }) as { data: any; error: any };
+        
+        // Retry on mobile if first attempt fails
+        if (isMobile && retryCount < 2 && navigator.onLine) {
+          console.log('🔄 Retrying profile load on mobile (attempt', retryCount + 1, ')...');
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s before retry
+          return loadGameData(true, retryCount + 1);
+        }
+        
+        result = { data: null, error: err };
+      }
       
       console.log('⏱️ Profile load time:', Date.now() - profileStartTime, 'ms');
 
