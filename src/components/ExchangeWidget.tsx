@@ -29,11 +29,9 @@ export const ExchangeWidget = ({
 
   const [barrelAmount, setBarrelAmount] = useState('');
   const [oilcoinToRubleAmount, setOilcoinToRubleAmount] = useState('');
-  const [rubleToOilcoinAmount, setRubleToOilcoinAmount] = useState('');
   
   const [barrelRate, setBarrelRate] = useState<number>(0);
   const [oilcoinToRubleRate, setOilcoinToRubleRate] = useState<number>(0);
-  const [rubleToOilcoinRate, setRubleToOilcoinRate] = useState<number>(0);
   
   const [history, setHistory] = useState<ExchangeTransaction[]>([]);
 
@@ -45,11 +43,9 @@ export const ExchangeWidget = ({
   const loadRates = async () => {
     const barrelToOilcoin = await getExchangeRate('BARREL', 'OILCOIN');
     const oilcoinToRuble = await getExchangeRate('OILCOIN', 'RUBLE');
-    const rubleToOilcoin = await getExchangeRate('RUBLE', 'OILCOIN');
     
     if (barrelToOilcoin) setBarrelRate(barrelToOilcoin);
     if (oilcoinToRuble) setOilcoinToRubleRate(oilcoinToRuble);
-    if (rubleToOilcoin) setRubleToOilcoinRate(rubleToOilcoin);
   };
 
   const loadHistory = async () => {
@@ -95,25 +91,6 @@ export const ExchangeWidget = ({
     }
   };
 
-  const handleRubleToOilcoinExchange = async () => {
-    const amount = parseFloat(rubleToOilcoinAmount);
-    if (isNaN(amount) || amount <= 0) {
-      toast.error('Введите корректную сумму');
-      return;
-    }
-    if (amount > rubleBalance) {
-      toast.error('Недостаточно рублей');
-      return;
-    }
-
-    const success = await exchangeCurrency(userId, 'RUBLE', 'OILCOIN', amount);
-    if (success) {
-      setRubleToOilcoinAmount('');
-      onExchangeComplete();
-      loadHistory();
-    }
-  };
-
   const calculateBarrelOutput = () => {
     const amount = parseFloat(barrelAmount);
     return isNaN(amount) ? 0 : Math.floor(amount * barrelRate);
@@ -122,11 +99,6 @@ export const ExchangeWidget = ({
   const calculateOilcoinToRubleOutput = () => {
     const amount = parseFloat(oilcoinToRubleAmount);
     return isNaN(amount) ? 0 : Math.floor(amount * oilcoinToRubleRate);
-  };
-
-  const calculateRubleToOilcoinOutput = () => {
-    const amount = parseFloat(rubleToOilcoinAmount);
-    return isNaN(amount) ? 0 : Math.floor(amount * rubleToOilcoinRate);
   };
 
   return (
@@ -176,8 +148,8 @@ export const ExchangeWidget = ({
                 <span className="sm:hidden">BBL → OC</span>
               </TabsTrigger>
               <TabsTrigger value="oilcoin" className="text-xs sm:text-sm md:text-base data-[state=active]:bg-purple-500/30 data-[state=active]:text-purple-100 truncate">
-                <span className="hidden sm:inline">{currencyConfig.oilcoin_symbol} ⇄ {currencyConfig.ruble_symbol}</span>
-                <span className="sm:hidden">OC ⇄ ₽</span>
+                <span className="hidden sm:inline">{currencyConfig.oilcoin_symbol} → {currencyConfig.ruble_symbol}</span>
+                <span className="sm:hidden">OC → ₽</span>
               </TabsTrigger>
             </TabsList>
 
@@ -254,45 +226,6 @@ export const ExchangeWidget = ({
                   >
                     <ArrowRightLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
                     <span className="truncate">Обменять {currencyConfig.oilcoin_symbol} на {currencyConfig.ruble_symbol}</span>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Ruble to OilCoin */}
-              <Card className="bg-gradient-to-br from-purple-500/5 to-pink-500/5 backdrop-blur-sm border border-purple-500/20">
-                <CardContent className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                    <div className="p-2 sm:p-3 bg-purple-500/20 rounded-lg flex-shrink-0">
-                      <ArrowRightLeft className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-purple-100 truncate">{currencyConfig.ruble_symbol} → {currencyConfig.oilcoin_symbol}</h3>
-                  </div>
-                  <div className="space-y-3 sm:space-y-4">
-                    <Label className="text-purple-100 font-medium text-sm sm:text-base md:text-lg">Количество {currencyConfig.ruble_symbol}</Label>
-                    <Input
-                      type="number"
-                      placeholder={`Введите количество ${currencyConfig.ruble_symbol}`}
-                      value={rubleToOilcoinAmount}
-                      onChange={(e) => setRubleToOilcoinAmount(e.target.value)}
-                      min="1"
-                      className="bg-black/30 border-purple-500/30 text-foreground placeholder:text-muted-foreground focus:border-purple-400 text-base sm:text-lg h-10 sm:h-12"
-                    />
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                      <span className="text-sm sm:text-base text-purple-200/80">Курс обмена:</span>
-                      <span className="text-sm sm:text-base font-bold text-purple-100">1 {currencyConfig.ruble_symbol} = 1 {currencyConfig.oilcoin_symbol}</span>
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                      <span className="text-sm sm:text-base text-purple-200/80">Вы получите:</span>
-                      <span className="text-lg sm:text-xl font-bold text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">{calculateRubleToOilcoinOutput()} {currencyConfig.oilcoin_symbol}</span>
-                    </div>
-                  </div>
-                  <Button 
-                    onClick={handleRubleToOilcoinExchange} 
-                    disabled={loading}
-                    className="w-full h-10 sm:h-12 text-sm sm:text-base md:text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all duration-300"
-                  >
-                    <ArrowRightLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
-                    <span className="truncate">Обменять {currencyConfig.ruble_symbol} на {currencyConfig.oilcoin_symbol}</span>
                   </Button>
                 </CardContent>
               </Card>
