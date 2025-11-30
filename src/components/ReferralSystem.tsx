@@ -15,6 +15,7 @@ interface Referral {
   created_at: string;
   is_active: boolean;
   nickname?: string;
+  level?: number; // Уровень реферала (1, 2, или 3)
 }
 
 export const ReferralSystem = () => {
@@ -24,6 +25,9 @@ export const ReferralSystem = () => {
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [referralInput, setReferralInput] = useState("");
   const [totalBonus, setTotalBonus] = useState(0);
+  const [level1Referrals, setLevel1Referrals] = useState<Referral[]>([]);
+  const [level2Referrals, setLevel2Referrals] = useState<Referral[]>([]);
+  const [level3Referrals, setLevel3Referrals] = useState<Referral[]>([]);
 
   useEffect(() => {
     if (user) {
@@ -93,56 +97,95 @@ export const ReferralSystem = () => {
     if (!user) return;
 
     console.log('🔍 Fetching referrals for user:', user.id);
-    const { data, error } = await supabase
+    
+    // Получаем рефералов 1-го уровня (прямые рефералы)
+    const { data: level1Data, error: level1Error } = await supabase
       .from('referrals')
       .select('*')
       .eq('referrer_id', user.id)
       .order('created_at', { ascending: false });
 
-    console.log('📊 Referrals data:', data);
-    console.log('❓ Referrals error:', error);
+    console.log('📊 Level 1 Referrals:', level1Data);
 
-    // Also check if current user is someone's referral
-    const { data: asReferral, error: asRefError } = await supabase
-      .from('referrals')
-      .select('*')
-      .eq('referred_id', user.id);
+    // Собираем всех рефералов для получения их никнеймов
+    let allReferrals: Referral[] = [];
+    let level1List: Referral[] = [];
+    let level2List: Referral[] = [];
+    let level3List: Referral[] = [];
+
+    if (level1Data && level1Data.length > 0) {
+      const level1Ids = level1Data.map(ref => ref.referred_id);
       
-    console.log('👤 Current user as referral:', asReferral);
-    console.log('❓ As referral error:', asRefError);
-
-    // Check Alexandr's referrals specifically if we know his ID
-    if (user.id === 'd41e012f-b980-48d5-8d73-9ffbff0a408c') {
-      console.log('🔍 Checking Alexandr referrals (6aa50831-acdc-42d9-87bb-67899957712a)...');
-      const { data: alexandrRefs } = await supabase
+      // Получаем рефералов 2-го уровня (рефералы моих рефералов)
+      const { data: level2Data } = await supabase
         .from('referrals')
         .select('*')
-        .eq('referrer_id', '6aa50831-acdc-42d9-87bb-67899957712a');
-      console.log('👥 Alexandr referrals:', alexandrRefs);
-    }
+        .in('referrer_id', level1Ids)
+        .order('created_at', { ascending: false });
 
-    if (data && data.length > 0) {
-      // Получаем nicknames для всех referred_id
-      const referredIds = data.map(ref => ref.referred_id);
+      console.log('📊 Level 2 Referrals:', level2Data);
+
+      if (level2Data && level2Data.length > 0) {
+        const level2Ids = level2Data.map(ref => ref.referred_id);
+        
+        // Получаем рефералов 3-го уровня
+        const { data: level3Data } = await supabase
+          .from('referrals')
+          .select('*')
+          .in('referrer_id', level2Ids)
+          .order('created_at', { ascending: false });
+
+        console.log('📊 Level 3 Referrals:', level3Data);
+
+        if (level3Data && level3Data.length > 0) {
+          level3List = level3Data.map(ref => ({ ...ref, level: 3 }));
+        }
+
+        level2List = level2Data.map(ref => ({ ...ref, level: 2 }));
+      }
+
+      level1List = level1Data.map(ref => ({ ...ref, level: 1 }));
+      allReferrals = [...level1List, ...level2List, ...level3List];
+
+      // Получаем nicknames для всех рефералов
+      const allReferredIds = allReferrals.map(ref => ref.referred_id);
       const { data: profiles } = await supabase
         .from('profiles')
         .select('user_id, nickname')
-        .in('user_id', referredIds);
+        .in('user_id', allReferredIds);
       
-      // Создаем map для быстрого доступа к nickname
       const nicknameMap = new Map(profiles?.map(p => [p.user_id, p.nickname]) || []);
       
       // Добавляем nickname к каждому рефералу
-      const transformedData = data.map(ref => ({
+      level1List = level1List.map(ref => ({
         ...ref,
         nickname: nicknameMap.get(ref.referred_id) || 'Игрок'
       }));
       
-      setReferrals(transformedData);
-      const total = transformedData.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
+      level2List = level2List.map(ref => ({
+        ...ref,
+        nickname: nicknameMap.get(ref.referred_id) || 'Игрок'
+      }));
+      
+      level3List = level3List.map(ref => ({
+        ...ref,
+        nickname: nicknameMap.get(ref.referred_id) || 'Игрок'
+      }));
+
+      allReferrals = [...level1List, ...level2List, ...level3List];
+      
+      setLevel1Referrals(level1List);
+      setLevel2Referrals(level2List);
+      setLevel3Referrals(level3List);
+      setReferrals(allReferrals);
+      
+      const total = allReferrals.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
       setTotalBonus(total);
-      console.log('✅ Loaded referrals count:', transformedData.length, 'Total bonus:', total);
+      console.log('✅ Loaded referrals - L1:', level1List.length, 'L2:', level2List.length, 'L3:', level3List.length, 'Total bonus:', total);
     } else {
+      setLevel1Referrals([]);
+      setLevel2Referrals([]);
+      setLevel3Referrals([]);
       setReferrals([]);
       setTotalBonus(0);
     }
@@ -370,7 +413,7 @@ export const ReferralSystem = () => {
             Пригласите друзей
           </CardTitle>
           <CardDescription className="text-sm sm:text-base text-purple-50/80 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-            Приглашайте друзей и получайте 10% с их доходов навсегда
+            Многоуровневая система: 10% от 1-го уровня, 5% от 2-го, 3% от 3-го
           </CardDescription>
         </CardHeader>
         <CardContent className="relative space-y-6 p-6 sm:p-8 pt-0">
@@ -507,26 +550,68 @@ export const ReferralSystem = () => {
         </Card>
       </div>
 
-      <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent backdrop-blur-xl border-2 border-blue-500/50 hover:border-blue-400 transition-all duration-500">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-indigo-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div className="absolute -right-16 -top-16 w-48 h-48 bg-blue-500/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-blue-400/40 transition-all duration-500"></div>
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-        </div>
+      {/* Реферальные уровни - Информация */}
+      <Card className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         <CardHeader className="relative p-6 sm:p-8">
-          <CardTitle className="text-xl sm:text-2xl text-blue-100 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-            Ваши рефералы
+          <CardTitle className="text-xl sm:text-2xl text-amber-100 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+            Как работает многоуровневая система
           </CardTitle>
         </CardHeader>
+        <CardContent className="relative p-6 sm:p-8 pt-0 space-y-4">
+          <div className="p-4 border-2 border-amber-500/30 rounded-lg bg-amber-500/10">
+            <div className="flex items-center gap-3 mb-2">
+              <Badge className="bg-amber-500 text-white">1-й уровень</Badge>
+              <span className="text-lg font-bold text-amber-400">10%</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Получайте 10% от всех пополнений ваших прямых рефералов (тех, кого вы пригласили лично)
+            </p>
+          </div>
+          
+          <div className="p-4 border-2 border-orange-500/30 rounded-lg bg-orange-500/10">
+            <div className="flex items-center gap-3 mb-2">
+              <Badge className="bg-orange-500 text-white">2-й уровень</Badge>
+              <span className="text-lg font-bold text-orange-400">5%</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Получайте 5% от пополнений рефералов ваших рефералов
+            </p>
+          </div>
+          
+          <div className="p-4 border-2 border-red-500/30 rounded-lg bg-red-500/10">
+            <div className="flex items-center gap-3 mb-2">
+              <Badge className="bg-red-500 text-white">3-й уровень</Badge>
+              <span className="text-lg font-bold text-red-400">3%</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Получайте 3% от пополнений рефералов 3-го уровня
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Рефералы 1-го уровня */}
+      <Card className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <CardHeader className="relative p-6 sm:p-8">
+          <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-amber-100 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+            <Badge className="bg-amber-500 text-white">1-й уровень</Badge>
+            Прямые рефералы (10%)
+          </CardTitle>
+          <CardDescription className="text-sm">
+            {level1Referrals.length} {level1Referrals.length === 1 ? 'реферал' : 'рефералов'}
+          </CardDescription>
+        </CardHeader>
         <CardContent className="relative p-6 sm:p-8 pt-0">
-          {referrals.length === 0 ? (
+          {level1Referrals.length === 0 ? (
             <p className="text-muted-foreground text-center py-4 text-xs sm:text-sm">
-              У вас пока нет приглашенных друзей
+              Пригласите друзей, чтобы они появились здесь
             </p>
           ) : (
             <div className="space-y-2">
-              {referrals.map((referral) => (
-                <div key={referral.id} className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0 p-3 border rounded-lg">
+              {level1Referrals.map((referral) => (
+                <div key={referral.id} className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0 p-3 border border-amber-500/30 rounded-lg bg-amber-500/5">
                   <div>
                     <p className="font-medium text-sm sm:text-base">{referral.nickname || 'Игрок'}</p>
                     <p className="text-xs sm:text-sm text-muted-foreground">
@@ -534,7 +619,7 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <p className="font-medium text-sm sm:text-base text-amber-400">{referral.bonus_earned.toLocaleString()} ₽</p>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
@@ -545,6 +630,78 @@ export const ReferralSystem = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Рефералы 2-го уровня */}
+      {level2Referrals.length > 0 && (
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent backdrop-blur-xl border-2 border-orange-500/50 hover:border-orange-400 transition-all duration-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-red-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <CardHeader className="relative p-6 sm:p-8">
+            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-orange-100 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              <Badge className="bg-orange-500 text-white">2-й уровень</Badge>
+              Рефералы ваших рефералов (5%)
+            </CardTitle>
+            <CardDescription className="text-sm">
+              {level2Referrals.length} {level2Referrals.length === 1 ? 'реферал' : 'рефералов'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="relative p-6 sm:p-8 pt-0">
+            <div className="space-y-2">
+              {level2Referrals.map((referral) => (
+                <div key={referral.id} className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0 p-3 border border-orange-500/30 rounded-lg bg-orange-500/5">
+                  <div>
+                    <p className="font-medium text-sm sm:text-base">{referral.nickname || 'Игрок'}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Присоединился {new Date(referral.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between sm:text-right gap-2">
+                    <p className="font-medium text-sm sm:text-base text-orange-400">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
+                      {referral.is_active ? "Активен" : "Неактивен"}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Рефералы 3-го уровня */}
+      {level3Referrals.length > 0 && (
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent backdrop-blur-xl border-2 border-red-500/50 hover:border-red-400 transition-all duration-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-red-500/30 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <CardHeader className="relative p-6 sm:p-8">
+            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-red-100 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+              <Badge className="bg-red-500 text-white">3-й уровень</Badge>
+              Рефералы 3-го уровня (3%)
+            </CardTitle>
+            <CardDescription className="text-sm">
+              {level3Referrals.length} {level3Referrals.length === 1 ? 'реферал' : 'рефералов'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="relative p-6 sm:p-8 pt-0">
+            <div className="space-y-2">
+              {level3Referrals.map((referral) => (
+                <div key={referral.id} className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0 p-3 border border-red-500/30 rounded-lg bg-red-500/5">
+                  <div>
+                    <p className="font-medium text-sm sm:text-base">{referral.nickname || 'Игрок'}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Присоединился {new Date(referral.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between sm:text-right gap-2">
+                    <p className="font-medium text-sm sm:text-base text-red-400">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
+                      {referral.is_active ? "Активен" : "Неактивен"}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader className="p-4 sm:p-6">

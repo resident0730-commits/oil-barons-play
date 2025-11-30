@@ -705,6 +705,10 @@ export type Database = {
         Returns: undefined
       }
       claim_accumulated_barrels: { Args: { p_user_id: string }; Returns: Json }
+      distribute_referral_bonuses: {
+        Args: { p_amount: number; p_referred_user_id: string }
+        Returns: Json
+      }
       exchange_currency: {
         Args: {
           p_from_amount: number
@@ -735,6 +739,13 @@ export type Database = {
           nickname: string
           status_titles: string[]
           user_id: string
+        }[]
+      }
+      get_referral_chain: {
+        Args: { p_max_levels?: number; p_user_id: string }
+        Returns: {
+          level: number
+          referrer_id: string
         }[]
       }
       get_user_statistics: {
