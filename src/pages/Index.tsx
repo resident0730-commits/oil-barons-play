@@ -14,7 +14,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameReviews } from "@/components/GameReviews";
 import { ParallaxHero } from "@/components/ParallaxHero";
 import { ProfitabilityCalculator } from "@/components/ProfitabilityCalculator";
-import { ReferralBanner } from "@/components/ReferralBanner";
 import { Logo } from "@/components/Logo";
 import {
   Tooltip,
@@ -332,11 +331,6 @@ const Index = () => {
               </Card>
             </div>
           </div>
-        </div>
-
-        {/* Referral Banner */}
-        <div className="container mx-auto px-4 mb-32">
-          <ReferralBanner />
         </div>
 
         {/* Калькулятор доходности */}
