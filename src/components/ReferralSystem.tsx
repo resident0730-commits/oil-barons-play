@@ -553,39 +553,110 @@ export const ReferralSystem = () => {
       {/* Реферальные уровни - Информация */}
       <Card className="group relative overflow-hidden bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent backdrop-blur-xl border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-500">
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/30 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="absolute -right-20 -top-20 w-64 h-64 bg-amber-500/30 rounded-full blur-3xl"></div>
         <CardHeader className="relative p-6 sm:p-8">
           <CardTitle className="text-xl sm:text-2xl text-amber-100 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-            Как работает многоуровневая система
+            💰 Как работает многоуровневая система
           </CardTitle>
+          <CardDescription className="text-amber-200/80 text-sm sm:text-base mt-2 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">
+            Зарабатывайте пассивный доход с каждого пополнения ваших рефералов — до 3-х уровней глубины!
+          </CardDescription>
         </CardHeader>
-        <CardContent className="relative p-6 sm:p-8 pt-0 space-y-4">
-          <div className="p-4 border-2 border-amber-500/30 rounded-lg bg-amber-500/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Badge className="bg-amber-500 text-white">1-й уровень</Badge>
-              <span className="text-lg font-bold text-amber-400">10%</span>
+        <CardContent className="relative p-6 sm:p-8 pt-0 space-y-6">
+          {/* Пример расчета */}
+          <div className="p-5 border-2 border-green-500/40 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/10">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl">🎯</span>
+              <h4 className="text-lg font-bold text-green-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Пример: друг пополнил 10 000 ₽</h4>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Получайте 10% от всех пополнений ваших прямых рефералов (тех, кого вы пригласили лично)
+            <div className="grid sm:grid-cols-3 gap-3 text-center">
+              <div className="p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
+                <div className="text-2xl font-bold text-amber-400">1 000 ₽</div>
+                <div className="text-xs text-amber-200/80">Вы (10%)</div>
+              </div>
+              <div className="p-3 bg-orange-500/20 rounded-lg border border-orange-400/30">
+                <div className="text-2xl font-bold text-orange-400">500 ₽</div>
+                <div className="text-xs text-orange-200/80">Кто пригласил вас (5%)</div>
+              </div>
+              <div className="p-3 bg-red-500/20 rounded-lg border border-red-400/30">
+                <div className="text-2xl font-bold text-red-400">300 ₽</div>
+                <div className="text-xs text-red-200/80">3-й уровень (3%)</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Уровни */}
+          <div className="space-y-4">
+            <div className="p-4 border-2 border-amber-500/30 rounded-xl bg-amber-500/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <Badge className="bg-amber-500 text-white text-sm px-3 py-1">1-й уровень</Badge>
+                  <span className="text-2xl font-bold text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">10%</span>
+                </div>
+                <div className="text-sm font-medium text-amber-300 bg-amber-500/20 px-3 py-1 rounded-full">
+                  Прямые рефералы
+                </div>
+              </div>
+              <p className="text-sm text-amber-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
+                Получайте <span className="font-bold text-amber-300">10%</span> от каждого пополнения друзей, которых вы пригласили лично. 
+                <span className="text-amber-200/70"> Пример: друг пополнил 10 000 ₽ → вы получаете <span className="font-bold text-green-400">1 000 ₽</span></span>
+              </p>
+            </div>
+            
+            <div className="p-4 border-2 border-orange-500/30 rounded-xl bg-orange-500/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <Badge className="bg-orange-500 text-white text-sm px-3 py-1">2-й уровень</Badge>
+                  <span className="text-2xl font-bold text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">5%</span>
+                </div>
+                <div className="text-sm font-medium text-orange-300 bg-orange-500/20 px-3 py-1 rounded-full">
+                  Рефералы рефералов
+                </div>
+              </div>
+              <p className="text-sm text-orange-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
+                Получайте <span className="font-bold text-orange-300">5%</span> от пополнений тех, кого пригласили ваши рефералы.
+                <span className="text-orange-200/70"> Пример: знакомый вашего друга пополнил 10 000 ₽ → вы получаете <span className="font-bold text-green-400">500 ₽</span></span>
+              </p>
+            </div>
+            
+            <div className="p-4 border-2 border-red-500/30 rounded-xl bg-red-500/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <Badge className="bg-red-500 text-white text-sm px-3 py-1">3-й уровень</Badge>
+                  <span className="text-2xl font-bold text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">3%</span>
+                </div>
+                <div className="text-sm font-medium text-red-300 bg-red-500/20 px-3 py-1 rounded-full">
+                  Глубина 3 уровня
+                </div>
+              </div>
+              <p className="text-sm text-red-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
+                Получайте <span className="font-bold text-red-300">3%</span> даже от рефералов третьего уровня.
+                <span className="text-red-200/70"> Пример: пополнение 10 000 ₽ на 3-м уровне → вы получаете <span className="font-bold text-green-400">300 ₽</span></span>
+              </p>
+            </div>
+          </div>
+
+          {/* Важная информация */}
+          <div className="p-5 border-2 border-cyan-500/40 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/10">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl">⚡</span>
+              <h4 className="text-lg font-bold text-cyan-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Моментальное начисление</h4>
+            </div>
+            <p className="text-sm text-cyan-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
+              Реферальные бонусы начисляются <span className="font-bold text-cyan-300">мгновенно</span> на ваш баланс после каждого пополнения реферала. 
+              Вы можете использовать их для покупки скважин или <span className="font-bold text-green-400">вывести на карту</span> в любой момент!
             </p>
           </div>
-          
-          <div className="p-4 border-2 border-orange-500/30 rounded-lg bg-orange-500/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Badge className="bg-orange-500 text-white">2-й уровень</Badge>
-              <span className="text-lg font-bold text-orange-400">5%</span>
+
+          {/* Итого */}
+          <div className="p-5 border-2 border-purple-500/40 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/10">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl">🚀</span>
+              <h4 className="text-lg font-bold text-purple-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Максимальный доход</h4>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Получайте 5% от пополнений рефералов ваших рефералов
-            </p>
-          </div>
-          
-          <div className="p-4 border-2 border-red-500/30 rounded-lg bg-red-500/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Badge className="bg-red-500 text-white">3-й уровень</Badge>
-              <span className="text-lg font-bold text-red-400">3%</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Получайте 3% от пополнений рефералов 3-го уровня
+            <p className="text-sm text-purple-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
+              При активной сети рефералов вы получаете до <span className="font-bold text-purple-300">18%</span> суммарно (10% + 5% + 3%) с каждой цепочки пополнений.
+              <span className="text-purple-200/70"> Чем больше ваша сеть — тем выше пассивный доход!</span>
             </p>
           </div>
         </CardContent>
