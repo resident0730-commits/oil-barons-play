@@ -616,6 +616,9 @@ const Index = () => {
               <Link to="/rules" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 Правила игры
               </Link>
+              <Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
+                FAQ
+              </Link>
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
                 О компании
               </Link>
