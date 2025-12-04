@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Zap, BarChart3 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Zap, BarChart3, Users, Gift, ArrowRight } from 'lucide-react';
 import { OilParticles } from './OilParticles';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -12,6 +12,11 @@ import {
 
 export const ParallaxHero = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleReferralClick = () => {
+    navigate(user ? '/referrals' : '/auth');
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -64,8 +69,56 @@ export const ParallaxHero = () => {
             </p>
           </div>
 
+          {/* Referral Banner */}
+          <div 
+            onClick={handleReferralClick}
+            className="max-w-4xl mx-auto px-4 pt-6 animate-fade-in cursor-pointer" 
+            style={{ animationDelay: '0.35s' }}
+          >
+            <div className="group relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/25 via-orange-500/20 to-yellow-500/25 backdrop-blur-xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-600/30 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+              <div className="absolute inset-0 rounded-2xl border-2 border-amber-500/50 group-hover:border-amber-400 transition-colors duration-300"></div>
+              
+              <div className="relative p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-amber-500/30 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <Users className="h-6 w-6 text-amber-300 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg sm:text-xl font-bold text-amber-100 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
+                      Реферальная система
+                    </h3>
+                    <p className="text-amber-200/80 text-xs sm:text-sm [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">
+                      Приглашай друзей — получай до 18% с их пополнений
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/20 rounded-full border border-amber-400/40">
+                    <Gift className="h-3.5 w-3.5 text-amber-300" />
+                    <span className="text-amber-100 font-semibold text-xs [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">10%</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500/20 rounded-full border border-orange-400/40">
+                    <Gift className="h-3.5 w-3.5 text-orange-300" />
+                    <span className="text-orange-100 font-semibold text-xs [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">5%</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-500/20 rounded-full border border-yellow-400/40">
+                    <Gift className="h-3.5 w-3.5 text-yellow-300" />
+                    <span className="text-yellow-100 font-semibold text-xs [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">3%</span>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-amber-300 group-hover:translate-x-1 transition-transform duration-300 hidden sm:block" />
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* CTA Buttons - Window Card Style */}
-          <div className="max-w-4xl mx-auto px-4 pt-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <div className="max-w-4xl mx-auto px-4 pt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <TooltipProvider>
               {user ? (
