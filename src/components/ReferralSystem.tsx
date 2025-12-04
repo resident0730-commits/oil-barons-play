@@ -637,8 +637,8 @@ export const ReferralSystem = () => {
           <div className="p-5 border-2 border-cyan-500/40 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/10">
             <h4 className="text-lg font-bold text-cyan-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Моментальное начисление</h4>
             <p className="text-sm text-cyan-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
-              Реферальные бонусы начисляются <span className="font-bold text-cyan-300">мгновенно</span> на ваш баланс после каждого пополнения реферала. 
-              Вы можете использовать их для покупки скважин или <span className="font-bold text-green-400">вывести на карту</span> в любой момент!
+              Реферальные бонусы начисляются <span className="font-bold text-cyan-300">мгновенно</span> на ваш рублёвый баланс после каждого пополнения реферала. 
+              Вы можете <span className="font-bold text-green-400">вывести их на карту</span> в любой момент без каких-либо ограничений!
             </p>
           </div>
 
