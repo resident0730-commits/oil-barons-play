@@ -556,7 +556,7 @@ export const ReferralSystem = () => {
         <div className="absolute -right-20 -top-20 w-64 h-64 bg-amber-500/30 rounded-full blur-3xl"></div>
         <CardHeader className="relative p-6 sm:p-8">
           <CardTitle className="text-xl sm:text-2xl text-amber-100 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_90%)]">
-            💰 Как работает многоуровневая система
+            Как работает многоуровневая система
           </CardTitle>
           <CardDescription className="text-amber-200/80 text-sm sm:text-base mt-2 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">
             Зарабатывайте пассивный доход с каждого пополнения ваших рефералов — до 3-х уровней глубины!
@@ -565,10 +565,7 @@ export const ReferralSystem = () => {
         <CardContent className="relative p-6 sm:p-8 pt-0 space-y-6">
           {/* Пример расчета */}
           <div className="p-5 border-2 border-green-500/40 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/10">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🎯</span>
-              <h4 className="text-lg font-bold text-green-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Пример: друг пополнил 10 000 ₽</h4>
-            </div>
+            <h4 className="text-lg font-bold text-green-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Пример: друг пополнил 10 000 ₽</h4>
             <div className="grid sm:grid-cols-3 gap-3 text-center">
               <div className="p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
                 <div className="text-2xl font-bold text-amber-400">1 000 ₽</div>
@@ -638,10 +635,7 @@ export const ReferralSystem = () => {
 
           {/* Важная информация */}
           <div className="p-5 border-2 border-cyan-500/40 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/10">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">⚡</span>
-              <h4 className="text-lg font-bold text-cyan-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Моментальное начисление</h4>
-            </div>
+            <h4 className="text-lg font-bold text-cyan-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Моментальное начисление</h4>
             <p className="text-sm text-cyan-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
               Реферальные бонусы начисляются <span className="font-bold text-cyan-300">мгновенно</span> на ваш баланс после каждого пополнения реферала. 
               Вы можете использовать их для покупки скважин или <span className="font-bold text-green-400">вывести на карту</span> в любой момент!
@@ -650,10 +644,7 @@ export const ReferralSystem = () => {
 
           {/* Итого */}
           <div className="p-5 border-2 border-purple-500/40 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/10">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🚀</span>
-              <h4 className="text-lg font-bold text-purple-300 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Максимальный доход</h4>
-            </div>
+            <h4 className="text-lg font-bold text-purple-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Максимальный доход</h4>
             <p className="text-sm text-purple-100/90 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_70%)]">
               При активной сети рефералов вы получаете до <span className="font-bold text-purple-300">18%</span> суммарно (10% + 5% + 3%) с каждой цепочки пополнений.
               <span className="text-purple-200/70"> Чем больше ваша сеть — тем выше пассивный доход!</span>
