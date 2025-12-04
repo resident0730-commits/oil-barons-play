@@ -563,33 +563,6 @@ export const ReferralSystem = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="relative p-6 sm:p-8 pt-0 space-y-6">
-          {/* Пример расчета */}
-          <div className="p-5 border-2 border-green-500/40 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/10">
-            <h4 className="text-lg font-bold text-green-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Расчёт дохода при пополнении реферала на 10 000 ₽</h4>
-            <div className="grid sm:grid-cols-3 gap-3 text-center mb-4">
-              <div className="p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
-                <div className="text-xs text-amber-200/80 mb-1">Реферал 1-го уровня</div>
-                <div className="text-2xl font-bold text-amber-400">+1 000 ₽</div>
-                <div className="text-xs text-amber-300/70 mt-1">10% от суммы</div>
-              </div>
-              <div className="p-3 bg-orange-500/20 rounded-lg border border-orange-400/30">
-                <div className="text-xs text-orange-200/80 mb-1">Реферал 2-го уровня</div>
-                <div className="text-2xl font-bold text-orange-400">+500 ₽</div>
-                <div className="text-xs text-orange-300/70 mt-1">5% от суммы</div>
-              </div>
-              <div className="p-3 bg-red-500/20 rounded-lg border border-red-400/30">
-                <div className="text-xs text-red-200/80 mb-1">Реферал 3-го уровня</div>
-                <div className="text-2xl font-bold text-red-400">+300 ₽</div>
-                <div className="text-xs text-red-300/70 mt-1">3% от суммы</div>
-              </div>
-            </div>
-            <div className="p-3 bg-green-500/30 rounded-lg border border-green-400/50 text-center">
-              <div className="text-sm text-green-200/80">Суммарный доход</div>
-              <div className="text-3xl font-bold text-green-400">1 800 ₽</div>
-              <div className="text-xs text-green-300/70">при пополнении на 10 000 ₽ по всем уровням</div>
-            </div>
-          </div>
-
           {/* Уровни */}
           <div className="space-y-4">
             <div className="p-4 border-2 border-amber-500/30 rounded-xl bg-amber-500/10">
@@ -657,6 +630,33 @@ export const ReferralSystem = () => {
               При активной сети рефералов вы получаете до <span className="font-bold text-purple-300">18%</span> суммарно (10% + 5% + 3%) с каждой цепочки пополнений.
               <span className="text-purple-200/70"> Чем больше ваша сеть — тем выше пассивный доход!</span>
             </p>
+          </div>
+
+          {/* Пример расчета */}
+          <div className="p-5 border-2 border-green-500/40 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/10">
+            <h4 className="text-lg font-bold text-green-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Расчёт дохода при пополнении реферала на 10 000 ₽</h4>
+            <div className="grid sm:grid-cols-3 gap-3 text-center mb-4">
+              <div className="p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
+                <div className="text-xs text-amber-200/80 mb-1">Реферал 1-го уровня</div>
+                <div className="text-2xl font-bold text-amber-400">+1 000 ₽</div>
+                <div className="text-xs text-amber-300/70 mt-1">10% от суммы</div>
+              </div>
+              <div className="p-3 bg-orange-500/20 rounded-lg border border-orange-400/30">
+                <div className="text-xs text-orange-200/80 mb-1">Реферал 2-го уровня</div>
+                <div className="text-2xl font-bold text-orange-400">+500 ₽</div>
+                <div className="text-xs text-orange-300/70 mt-1">5% от суммы</div>
+              </div>
+              <div className="p-3 bg-red-500/20 rounded-lg border border-red-400/30">
+                <div className="text-xs text-red-200/80 mb-1">Реферал 3-го уровня</div>
+                <div className="text-2xl font-bold text-red-400">+300 ₽</div>
+                <div className="text-xs text-red-300/70 mt-1">3% от суммы</div>
+              </div>
+            </div>
+            <div className="p-3 bg-green-500/30 rounded-lg border border-green-400/50 text-center">
+              <div className="text-sm text-green-200/80">Суммарный доход</div>
+              <div className="text-3xl font-bold text-green-400">1 800 ₽</div>
+              <div className="text-xs text-green-300/70">при пополнении на 10 000 ₽ по всем уровням</div>
+            </div>
           </div>
         </CardContent>
       </Card>
