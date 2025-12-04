@@ -334,6 +334,11 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Referral Banner */}
+        <div className="container mx-auto px-4 mb-32">
+          <ReferralBanner />
+        </div>
+
         {/* Калькулятор доходности */}
         <div className="container mx-auto px-4 mb-32 animate-fade-in">
           <div className="text-center mb-16">
@@ -574,11 +579,6 @@ const Index = () => {
               </Link> */}
             </div>
           </div>
-        </div>
-
-        {/* Referral Banner */}
-        <div className="container mx-auto px-4 mb-32">
-          <ReferralBanner />
         </div>
 
         {/* Reviews Section */}
