@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, Shield, TrendingUp, Users, Gift } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -122,7 +122,7 @@ const Auth = () => {
           )}
 
           {/* Toggle */}
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <Button
               variant="link"
               onClick={() => setIsLogin(!isLogin)}
@@ -130,6 +130,11 @@ const Auth = () => {
             >
               {isLogin ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти"}
             </Button>
+            <div>
+              <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Частые вопросы (FAQ)
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Benefits Preview */}
