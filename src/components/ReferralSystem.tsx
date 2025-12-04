@@ -565,7 +565,7 @@ export const ReferralSystem = () => {
         <CardContent className="relative p-6 sm:p-8 pt-0 space-y-6">
           {/* Пример расчета */}
           <div className="p-5 border-2 border-green-500/40 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/10">
-            <h4 className="text-lg font-bold text-green-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Ваш доход при пополнении 10 000 ₽</h4>
+            <h4 className="text-lg font-bold text-green-300 mb-3 [text-shadow:_1px_1px_2px_rgb(0_0_0_/_80%)]">Пример: сколько вы заработаете, если реферал пополнит 10 000 ₽</h4>
             <div className="grid sm:grid-cols-3 gap-3 text-center mb-4">
               <div className="p-3 bg-amber-500/20 rounded-lg border border-amber-400/30">
                 <div className="text-xs text-amber-200/80 mb-1">Ваш друг пополнил</div>
