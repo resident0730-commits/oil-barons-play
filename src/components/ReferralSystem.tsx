@@ -702,35 +702,6 @@ export const ReferralSystem = () => {
           </CardContent>
         </Card>
       )}
-
-      <Card>
-        <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="text-base sm:text-lg">Реферальные награды</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
-            Награды выдаются только за рефералов, которые пополнили счет
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-4 sm:p-6 pt-0">
-          <div className="space-y-2 sm:space-y-3">
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
-              <span className="text-xs sm:text-sm">5 рефералов с пополнением</span>
-              <Badge className="self-start sm:self-auto text-xs">5,000 ₽</Badge>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
-              <span className="text-xs sm:text-sm">15 рефералов с пополнением</span>
-              <Badge className="self-start sm:self-auto text-xs">15,000 ₽</Badge>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
-              <span className="text-xs sm:text-sm">50 рефералов с пополнением</span>
-              <Badge className="self-start sm:self-auto text-xs">50,000 ₽</Badge>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-1 sm:gap-0 p-2 sm:p-3 border rounded">
-              <span className="text-xs sm:text-sm">100 рефералов</span>
-              <Badge variant="secondary" className="self-start sm:self-auto text-xs">VIP статус</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
