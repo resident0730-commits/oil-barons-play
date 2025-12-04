@@ -36,6 +36,7 @@ import Pipeline from "./pages/Pipeline";
 import SpeedDrill from "./pages/SpeedDrill";
 import LuckyChests from "./pages/LuckyChests";
 // import TowerJumper from "./pages/TowerJumper";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -86,6 +87,7 @@ const App = () => (
           <Route path="/speed-drill" element={<SpeedDrill />} />
           <Route path="/lucky-chests" element={<LuckyChests />} />
           {/* <Route path="/tower-jumper" element={<TowerJumper />} /> */}
+          <Route path="/faq" element={<FAQ />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
