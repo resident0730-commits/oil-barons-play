@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Statistics from "./pages/Statistics";
 import About from "./pages/About";
 import GameGuide from "./pages/GameGuide";
-import Company from "./pages/Company";
+import AboutUs from "./pages/AboutUs";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Requisites from "./pages/Requisites";
@@ -25,7 +25,6 @@ import Leaderboard from "./pages/Leaderboard";
 import Support from "./pages/Support";
 import Referrals from "./pages/Referrals";
 import Achievements from "./pages/Achievements";
-import Careers from "./pages/Careers";
 import Season from "./pages/Season";
 import { NewYearJackpot } from "./pages/NewYearJackpot";
 import GameView from "./pages/GameView";
@@ -74,9 +73,9 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/referrals" element={<Referrals />} />
           <Route path="/achievements" element={<Achievements />} />
-          <Route path="/careers" element={<Careers />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/careers" element={<AboutUs />} />
           <Route path="/season" element={<Season />} />
-          <Route path="/about" element={<Company />} />
           <Route path="/guide" element={<GameGuide />} />
           <Route path="/new-year-jackpot" element={<NewYearJackpot />} />
           <Route path="/telegram-avatar" element={<TelegramAvatar />} />

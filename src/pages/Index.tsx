@@ -620,10 +620,7 @@ const Index = () => {
                 FAQ
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
-                О компании
-              </Link>
-              <Link to="/careers" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
-                Вакансии
+                О нас
               </Link>
               {isPageVisible('terms') && (
                 <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium">
