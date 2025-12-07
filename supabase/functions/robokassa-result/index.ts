@@ -158,20 +158,20 @@ serve(async (req) => {
 
     const rubPaid = parseFloat(outSum) // Сумма в рублях, которую заплатил пользователь
     
-    console.log(`Processing payment for user ${userId}, paid: ${rubPaid}₽, will receive: ${totalAmount}₽ (bonus: ${totalAmount - rubPaid}₽)`)
-    console.log(`Current balance: ${profile.balance}, New balance will be: ${profile.balance + totalAmount}`)
+    console.log(`Processing payment for user ${userId}, paid: ${rubPaid}₽, will receive: ${totalAmount} OilCoins (bonus: ${totalAmount - rubPaid})`)
+    console.log(`Current oilcoin_balance: ${profile.oilcoin_balance}, New balance will be: ${profile.oilcoin_balance + totalAmount}`)
 
-    // Update user balance - зачисляем сумму с бонусом
+    // Update user oilcoin_balance - зачисляем OilCoins с бонусом
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ 
-        balance: profile.balance + totalAmount,
+        oilcoin_balance: profile.oilcoin_balance + totalAmount,
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
 
     if (updateError) {
-      console.error('Error updating balance:', updateError)
+      console.error('Error updating oilcoin_balance:', updateError)
       return new Response('Failed to update balance', { 
         status: 500,
         headers: corsHeaders 
