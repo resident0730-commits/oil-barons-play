@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, nickname: string) => Promise<any>;
+  signUp: (email: string, password: string, nickname: string, referrerData?: { referred_by: string; referral_code: string }) => Promise<any>;
   signIn: (email: string, password: string) => Promise<any>;
   signOut: () => Promise<void>;
   updatePassword: (password: string) => Promise<any>;
@@ -38,13 +38,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, nickname: string) => {
+  const signUp = async (email: string, password: string, nickname: string, referrerData?: { referred_by: string; referral_code: string }) => {
     const result = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { nickname }
+        data: { 
+          nickname,
+          // Передаём данные реферера в метаданные - триггер handle_new_user их обработает
+          ...(referrerData && {
+            referred_by: referrerData.referred_by,
+            referral_code: referrerData.referral_code
+          })
+        }
       }
     });
 

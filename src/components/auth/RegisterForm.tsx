@@ -122,40 +122,26 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
     }
 
     try {
-      const { data, error } = await signUp(email, password, nickname || "Игрок");
+      // Получаем данные реферера перед регистрацией
+      let referrerData: { referred_by: string; referral_code: string } | undefined;
+      
+      if (appliedReferralCode) {
+        const { data: referrers, error: referrerError } = await supabase
+          .rpc('lookup_referral_code', { code: appliedReferralCode.toUpperCase() });
+
+        if (!referrerError && referrers && referrers.length > 0) {
+          referrerData = {
+            referred_by: referrers[0].user_id,
+            referral_code: appliedReferralCode.toUpperCase()
+          };
+        }
+      }
+
+      // Передаём данные реферера в signUp - триггер создаст профиль с referred_by
+      const { data, error } = await signUp(email, password, nickname || "Игрок", referrerData);
       
       if (error) {
         throw error;
-      }
-
-      // Применяем реферальный код после регистрации
-      if (appliedReferralCode && data?.user) {
-        try {
-          const { data: referrers, error: referrerError } = await supabase
-            .rpc('lookup_referral_code', { code: appliedReferralCode.toUpperCase() });
-
-          if (!referrerError && referrers && referrers.length > 0) {
-            const referrer = referrers[0];
-            
-            // Обновляем профиль нового пользователя
-            await supabase
-              .from('profiles')
-              .update({ referred_by: referrer.user_id })
-              .eq('user_id', data.user.id);
-
-            // Создаем запись о реферале
-            await supabase
-              .from('referrals')
-              .insert({
-                referrer_id: referrer.user_id,
-                referred_id: data.user.id,
-                referral_code: appliedReferralCode.toUpperCase(),
-                is_active: true
-              });
-          }
-        } catch (refError) {
-          console.error('Error applying referral code:', refError);
-        }
       }
 
       toast({
