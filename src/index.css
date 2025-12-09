@@ -691,7 +691,7 @@ All colors MUST be HSL.
     transform-style: preserve-3d;
   }
 
-  .game-card-flip:hover .game-card-inner {
+  .game-card-inner.flipped {
     transform: rotateY(180deg);
   }
 

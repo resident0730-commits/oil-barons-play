@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -71,6 +72,7 @@ export const AnimatedShopCard = ({
   calculateProfitMetrics, 
   formatProfitPercent 
 }: AnimatedShopCardProps) => {
+  const [isFlipped, setIsFlipped] = useState(false);
   const { formatBarrels, formatOilCoins } = useCurrency();
   const canAfford = profile.oilcoin_balance >= wellType.price;
   const metrics = calculateProfitMetrics(wellType.baseIncome, wellType.price);
@@ -79,9 +81,13 @@ export const AnimatedShopCard = ({
   
   const isLegendaryOrHigher = wellType.rarity === 'legendary' || wellType.rarity === 'mythic';
 
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div className="game-card-flip">
-      <div className="game-card-inner">
+    <div className="game-card-flip" onClick={handleCardClick}>
+      <div className={`game-card-inner ${isFlipped ? 'flipped' : ''}`}>
         {/* FRONT SIDE */}
         <Card 
           className={`
