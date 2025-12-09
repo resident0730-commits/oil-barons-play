@@ -804,6 +804,19 @@ export type Database = {
         Args: { p_admin_id?: string; p_status: string; p_transfer_id: string }
         Returns: boolean
       }
+      purchase_well: {
+        Args: {
+          p_daily_income: number
+          p_price: number
+          p_user_id: string
+          p_well_type: string
+        }
+        Returns: Json
+      }
+      purchase_well_package: {
+        Args: { p_price: number; p_user_id: string; p_wells: Json }
+        Returns: Json
+      }
       recalculate_well_income: { Args: never; Returns: undefined }
       record_daily_stats: {
         Args: {

@@ -654,33 +654,30 @@ export function useGameData() {
     }
 
     try {
-      // Calculate income for level 1 using the same formula as upgrades
+      // Calculate income for level 1
       const level = 1;
       const dailyIncome = Math.floor(wellType.baseIncome * (1 + (level - 1) * 0.5));
       
-      // Create well record
-      const { error: wellError } = await supabase
-        .from('wells')
-        .insert({
-          user_id: user.id,
-          well_type: wellType.name,
-          level: level,
-          daily_income: dailyIncome
-        });
+      // Use atomic transaction function
+      const { data, error } = await supabase.rpc('purchase_well', {
+        p_user_id: user.id,
+        p_well_type: wellType.name,
+        p_price: wellType.price,
+        p_daily_income: dailyIncome
+      });
 
-      if (wellError) throw wellError;
+      if (error) throw error;
 
-      // Update profile oilcoin_balance
-      const newBalance = profile.oilcoin_balance - wellType.price;
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ oilcoin_balance: newBalance })
-        .eq('user_id', user.id);
+      const result = data as { success: boolean; error?: string; new_balance?: number };
+      
+      if (!result.success) {
+        return { success: false, error: result.error || 'Ошибка покупки' };
+      }
 
-      if (profileError) throw profileError;
-
-      // Update local state
-      setProfile(prev => prev ? { ...prev, oilcoin_balance: newBalance } : null);
+      // Update local state with new balance from server
+      if (result.new_balance !== undefined) {
+        setProfile(prev => prev ? { ...prev, oilcoin_balance: result.new_balance! } : null);
+      }
 
       // Reload game data to get updated wells
       await loadGameData();
@@ -702,38 +699,39 @@ export function useGameData() {
     }
 
     try {
-      // Create wells from package based on WellPackage structure
-      const wellPromises = wellPackage.wells.map(({ type, count }) => {
+      // Prepare wells data for atomic transaction
+      const wellsData = wellPackage.wells.map(({ type, count }) => {
         const wellType = wellTypes.find(wt => wt.name === type);
         if (!wellType) throw new Error(`Well type ${type} not found`);
         
-        // Calculate income for level 1 using the same formula as upgrades
-        const level = 1;
-        const dailyIncome = Math.floor(wellType.baseIncome * (1 + (level - 1) * 0.5));
+        const dailyIncome = Math.floor(wellType.baseIncome * (1 + (1 - 1) * 0.5));
         
-        return Array.from({ length: count }, () =>
-          supabase.from('wells').insert({
-            user_id: user.id,
-            well_type: wellType.name,
-            level: level,
-            daily_income: dailyIncome
-          })
-        );
-      }).flat();
+        return {
+          type: wellType.name,
+          count: count,
+          daily_income: dailyIncome
+        };
+      });
 
-      await Promise.all(wellPromises);
+      // Use atomic transaction function
+      const { data, error } = await supabase.rpc('purchase_well_package', {
+        p_user_id: user.id,
+        p_wells: wellsData,
+        p_price: wellPackage.discountedPrice
+      });
 
-      // Update profile oilcoin_balance
-      const newBalance = profile.oilcoin_balance - wellPackage.discountedPrice;
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ oilcoin_balance: newBalance })
-        .eq('user_id', user.id);
+      if (error) throw error;
 
-      if (profileError) throw profileError;
+      const result = data as { success: boolean; error?: string; new_balance?: number };
+      
+      if (!result.success) {
+        return { success: false, error: result.error || 'Ошибка покупки' };
+      }
 
-      // Update local state
-      setProfile(prev => prev ? { ...prev, oilcoin_balance: newBalance } : null);
+      // Update local state with new balance from server
+      if (result.new_balance !== undefined) {
+        setProfile(prev => prev ? { ...prev, oilcoin_balance: result.new_balance! } : null);
+      }
 
       // Reload game data
       await loadGameData();
