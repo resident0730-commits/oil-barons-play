@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { UserPlus, Shield, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { UserPlus, Shield, CheckCircle, XCircle, Loader2, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -25,6 +26,8 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
   const [referralCodeValid, setReferralCodeValid] = useState<boolean | null>(null);
   const [referralCodeChecking, setReferralCodeChecking] = useState(false);
   const [referrerNickname, setReferrerNickname] = useState<string | null>(null);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   const { signUp } = useAuth();
   const { toast } = useToast();
 
@@ -144,12 +147,9 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
         throw error;
       }
 
-      toast({
-        title: "Регистрация успешна!",
-        description: "Проверьте email для подтверждения аккаунта",
-      });
-
-      onSuccess?.();
+      // Показываем модальное окно вместо toast
+      setRegisteredEmail(email);
+      setShowSuccessDialog(true);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -163,8 +163,36 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
 
   const isFormValid = acceptedTerms && referralCodeValid === true && email && password;
 
+  const handleDialogClose = () => {
+    setShowSuccessDialog(false);
+    onSuccess?.();
+  };
+
   return (
-    <Card className="w-full max-w-md">
+    <>
+      {/* Модальное окно успешной регистрации */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader className="text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <Mail className="h-8 w-8 text-primary" />
+            </div>
+            <DialogTitle className="text-xl">Регистрация успешна!</DialogTitle>
+            <DialogDescription className="text-base pt-2 space-y-2">
+              <p>На вашу почту <strong className="text-foreground">{registeredEmail}</strong> отправлено письмо с подтверждением.</p>
+              <p>Пожалуйста, проверьте входящие сообщения и перейдите по ссылке в письме для активации аккаунта.</p>
+              <p className="text-sm text-muted-foreground">Если письмо не пришло, проверьте папку «Спам».</p>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4">
+            <Button onClick={handleDialogClose} className="w-full gradient-primary">
+              Понятно
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className="flex items-center">
           <UserPlus className="h-5 w-5 mr-2" />
@@ -282,5 +310,6 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
         </form>
       </CardContent>
     </Card>
+    </>
   );
 }
