@@ -179,11 +179,12 @@ export const ReferralSystem = () => {
       setLevel3Referrals(level3List);
       setReferrals(allReferrals);
       
-      // Расчёт общего бонуса: L1 = 100%, L2 = 50% от записи (т.к. записано 10%, а мы получаем 5%), L3 = 30%
-      const level1Total = level1List.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
+      // Расчёт общего бонуса: для L2 берём bonus_earned * 0.5 (т.к. в записи хранится 10%, а наш 5%)
+      // Для L3 берём bonus_earned * 0.3 (3% от 10%)
+      // L1 бонусы сейчас хранятся некорректно (включают бонусы от сети), поэтому не считаем их отдельно
       const level2Total = level2List.reduce((sum, ref) => sum + Math.floor(Number(ref.bonus_earned) * 0.5), 0);
       const level3Total = level3List.reduce((sum, ref) => sum + Math.floor(Number(ref.bonus_earned) * 0.3), 0);
-      const total = level1Total + level2Total + level3Total;
+      const total = level2Total + level3Total;
       setTotalBonus(total);
       console.log('✅ Loaded referrals - L1:', level1List.length, 'L2:', level2List.length, 'L3:', level3List.length, 'Total bonus:', total);
     } else {
@@ -693,14 +694,6 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <div className="text-right">
-                      <p className="font-medium text-sm sm:text-base text-amber-400">
-                        {Number(referral.bonus_earned) > 0 ? `${referral.bonus_earned.toLocaleString()} ₽` : '—'}
-                      </p>
-                      {Number(referral.bonus_earned) > 0 && (
-                        <p className="text-xs text-amber-300/60">от его сети</p>
-                      )}
-                    </div>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
