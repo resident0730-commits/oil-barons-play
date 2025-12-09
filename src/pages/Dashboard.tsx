@@ -472,6 +472,7 @@ const Dashboard = () => {
                 profile={currentProfile} 
                 wells={wells} 
                 playerRank={getPlayerRank(currentProfile.nickname)}
+                onTopUpClick={() => setOverviewTab('balance')}
               />
             )}
 
