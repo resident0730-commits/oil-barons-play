@@ -75,7 +75,7 @@ export const AnimatedPackageCard = ({
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white drop-shadow-2xl truncate">
                 {wellPackage.name}
               </h3>
-              <p className="text-xs sm:text-sm text-white/80 mt-1 line-clamp-1">{wellPackage.description}</p>
+              <p className="text-xs sm:text-sm text-white/80 mt-1">{wellPackage.description}</p>
             </div>
           </div>
 
@@ -134,7 +134,7 @@ export const AnimatedPackageCard = ({
                 </div>
 
                 {/* Description */}
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {wellPackage.description}
                 </p>
 
