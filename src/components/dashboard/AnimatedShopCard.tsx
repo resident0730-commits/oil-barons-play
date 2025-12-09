@@ -160,9 +160,21 @@ export const AnimatedShopCard = ({
               <span className="text-lg sm:text-xl md:text-2xl font-bold text-foreground truncate">{formatOilCoins(wellType.price)}</span>
             </div>
 
-            {/* Hover hint */}
-            <p className="text-center text-xs text-muted-foreground/70 italic hidden sm:block">
-              Наведите для деталей
+            {/* Tips section */}
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 space-y-2">
+              <p className="text-xs font-medium text-primary">Совет:</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {wellType.rarity === 'common' && 'Начните с нескольких скважин этого типа для стабильного дохода. Улучшайте их до максимального уровня!'}
+                {wellType.rarity === 'rare' && 'Редкие скважины окупаются быстрее. Комбинируйте их с бустерами для максимальной прибыли!'}
+                {wellType.rarity === 'epic' && 'Эпические скважины — отличный баланс цены и дохода. Идеальны для среднего этапа игры.'}
+                {wellType.rarity === 'legendary' && 'Легендарные скважины — ключ к большому доходу. Приоритет улучшения — максимальный уровень!'}
+                {wellType.rarity === 'mythic' && 'Мифическая скважина — вершина прогресса! Используйте бустеры для умножения её огромного дохода.'}
+              </p>
+            </div>
+
+            {/* Click hint */}
+            <p className="text-center text-xs text-muted-foreground/70 italic">
+              Нажмите для деталей
             </p>
           </CardContent>
         </Card>
