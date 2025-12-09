@@ -28,6 +28,8 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
   const [referrerNickname, setReferrerNickname] = useState<string | null>(null);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [nicknameValid, setNicknameValid] = useState<boolean | null>(null);
+  const [nicknameChecking, setNicknameChecking] = useState(false);
   const { signUp } = useAuth();
   const { toast } = useToast();
 
@@ -81,6 +83,38 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
     return () => clearTimeout(timer);
   }, [appliedReferralCode]);
 
+  // Проверяем уникальность никнейма
+  useEffect(() => {
+    const checkNickname = async (name: string) => {
+      if (!name || name.trim().length < 2) {
+        setNicknameValid(null);
+        return;
+      }
+
+      setNicknameChecking(true);
+      try {
+        const { data, error } = await supabase
+          .rpc('check_nickname_available', { p_nickname: name.trim() });
+
+        if (!error && data === true) {
+          setNicknameValid(true);
+        } else {
+          setNicknameValid(false);
+        }
+      } catch (error) {
+        setNicknameValid(null);
+      } finally {
+        setNicknameChecking(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      checkNickname(nickname);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [nickname]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -99,6 +133,25 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
         variant: "destructive",
         title: "Требуется реферальный код",
         description: "Регистрация возможна только по приглашению. Введите реферальный код.",
+      });
+      return;
+    }
+
+    // Проверяем никнейм
+    if (nickname.trim().length < 2) {
+      toast({
+        variant: "destructive",
+        title: "Требуется никнейм",
+        description: "Никнейм должен содержать минимум 2 символа.",
+      });
+      return;
+    }
+
+    if (nicknameValid === false) {
+      toast({
+        variant: "destructive",
+        title: "Никнейм занят",
+        description: "Этот никнейм уже используется. Выберите другой.",
       });
       return;
     }
@@ -161,7 +214,7 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
     }
   };
 
-  const isFormValid = acceptedTerms && referralCodeValid === true && email && password;
+  const isFormValid = acceptedTerms && referralCodeValid === true && nicknameValid === true && email && password;
 
   const handleDialogClose = () => {
     setShowSuccessDialog(false);
@@ -249,14 +302,47 @@ export function RegisterForm({ onSuccess, referralCode }: RegisterFormProps) {
             )}
           </div>
 
-          <div>
-            <Label htmlFor="nickname">Никнейм</Label>
-            <Input
-              id="nickname"
-              placeholder="Как вас называть?"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-            />
+          <div className="space-y-2">
+            <Label htmlFor="nickname">
+              Никнейм <span className="text-destructive">*</span>
+            </Label>
+            <div className="relative">
+              <Input
+                id="nickname"
+                placeholder="Как вас называть?"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className={`pr-10 ${
+                  nicknameValid === true 
+                    ? 'border-green-500 focus-visible:ring-green-500' 
+                    : nicknameValid === false 
+                    ? 'border-destructive focus-visible:ring-destructive' 
+                    : ''
+                }`}
+                required
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                {nicknameChecking && (
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                )}
+                {!nicknameChecking && nicknameValid === true && (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
+                {!nicknameChecking && nicknameValid === false && (
+                  <XCircle className="h-4 w-4 text-destructive" />
+                )}
+              </div>
+            </div>
+            {nicknameValid === true && (
+              <p className="text-sm text-green-600">
+                Никнейм свободен
+              </p>
+            )}
+            {nicknameValid === false && (
+              <p className="text-sm text-destructive">
+                Этот никнейм уже занят
+              </p>
+            )}
           </div>
           <div>
             <Label htmlFor="email">Email</Label>

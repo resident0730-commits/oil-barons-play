@@ -704,6 +704,10 @@ export type Database = {
         Args: { p_referrer_id: string }
         Returns: undefined
       }
+      check_nickname_available: {
+        Args: { p_nickname: string }
+        Returns: boolean
+      }
       claim_accumulated_barrels: { Args: { p_user_id: string }; Returns: Json }
       distribute_referral_bonuses: {
         Args: { p_amount: number; p_referred_user_id: string }
