@@ -142,7 +142,7 @@ export const AnimatedShopCard = ({
 
           {/* Content section */}
           <CardContent className="p-3 sm:p-4 md:p-5 space-y-3 sm:space-y-4">
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
               {wellType.description}
             </p>
 
@@ -189,7 +189,7 @@ export const AnimatedShopCard = ({
                 </div>
 
                 {/* Detailed description */}
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {wellType.description}
                 </p>
 
