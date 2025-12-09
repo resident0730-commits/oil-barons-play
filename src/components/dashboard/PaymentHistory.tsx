@@ -17,6 +17,7 @@ interface PaymentRecord {
   transfer_type: string;
   status: string;
   created_at: string;
+  referred_nickname?: string;
 }
 
 export const PaymentHistory = () => {
@@ -59,26 +60,69 @@ export const PaymentHistory = () => {
 
     try {
       setLoading(true);
-      // Используем безопасную функцию для получения переводов
-      const { data, error } = await supabase
+      
+      // Получаем переводы из money_transfers
+      const { data: transfersData } = await supabase
         .rpc('get_user_transfers');
 
-      if (error) {
-        setPayments([]);
-      } else {
-        // Фильтруем входящие платежи и реферальные бонусы
-        const incomingPayments = (data || [])
-          .filter((transfer: any) => 
-            transfer.to_user_id === user.id && 
-            ['deposit', 'topup', 'payment', 'referral_bonus', 'referral_reward'].includes(transfer.transfer_type)
-          )
-          .sort((a: any, b: any) => 
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          )
-          .slice(0, 20);
-        setPayments(incomingPayments);
+      // Получаем реферальные бонусы напрямую из referrals (где текущий пользователь — реферер)
+      const { data: referralsData } = await supabase
+        .from('referrals')
+        .select(`
+          id,
+          referrer_id,
+          referred_id,
+          bonus_earned,
+          created_at,
+          updated_at
+        `)
+        .eq('referrer_id', user.id)
+        .gt('bonus_earned', 0);
+
+      // Получаем никнеймы рефералов
+      let referralRecords: PaymentRecord[] = [];
+      if (referralsData && referralsData.length > 0) {
+        const referredIds = referralsData.map(r => r.referred_id);
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('user_id, nickname')
+          .in('user_id', referredIds);
+
+        const nicknameMap = new Map(
+          (profilesData || []).map(p => [p.user_id, p.nickname])
+        );
+
+        referralRecords = referralsData.map(ref => ({
+          id: ref.id,
+          from_user_id: ref.referred_id,
+          to_user_id: ref.referrer_id,
+          amount: ref.bonus_earned,
+          description: `Бонус от реферала ${nicknameMap.get(ref.referred_id) || 'Игрок'}`,
+          transfer_type: 'referral_bonus',
+          status: 'completed',
+          created_at: ref.updated_at || ref.created_at,
+          referred_nickname: nicknameMap.get(ref.referred_id) || 'Игрок'
+        }));
       }
+
+      // Фильтруем входящие платежи из transfers
+      const incomingPayments = (transfersData || [])
+        .filter((transfer: any) => 
+          transfer.to_user_id === user.id && 
+          ['deposit', 'topup', 'payment'].includes(transfer.transfer_type)
+        )
+        .map((t: any) => ({ ...t, transfer_type: t.transfer_type }));
+
+      // Объединяем и сортируем
+      const allPayments = [...incomingPayments, ...referralRecords]
+        .sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+        .slice(0, 20);
+
+      setPayments(allPayments);
     } catch (error) {
+      console.error('Error loading payment history:', error);
       setPayments([]);
     } finally {
       setLoading(false);
@@ -113,7 +157,9 @@ export const PaymentHistory = () => {
 
   const getPaymentLabel = (payment: PaymentRecord): string => {
     if (payment.transfer_type === 'referral_bonus') {
-      return 'Реферальный бонус';
+      return payment.referred_nickname 
+        ? `Бонус от ${payment.referred_nickname}` 
+        : 'Реферальный бонус';
     }
     if (payment.transfer_type === 'referral_reward') {
       return 'Награда за рефералов';
