@@ -66,6 +66,7 @@ const Dashboard = () => {
   const [activeSection, setActiveSection] = useState<'overview' | 'exchange' | 'shop' | 'daily' | 'calculator'>('overview');
   const [overviewTab, setOverviewTab] = useState<'balance' | 'empire' | 'wells'>('balance');
   const [shopTab, setShopTab] = useState<'wells' | 'boosters'>('wells');
+  const [balanceDefaultTab, setBalanceDefaultTab] = useState<'balance' | 'deposit' | 'withdrawal'>('balance');
 
   // Show loading while checking auth
   if (!user) {
@@ -464,6 +465,7 @@ const Dashboard = () => {
               <BalanceSection 
                 onTopUp={handleTopUp}
                 topUpLoading={false}
+                defaultTab={balanceDefaultTab}
               />
             )}
 
@@ -472,7 +474,10 @@ const Dashboard = () => {
                 profile={currentProfile} 
                 wells={wells} 
                 playerRank={getPlayerRank(currentProfile.nickname)}
-                onTopUpClick={() => setOverviewTab('balance')}
+                onTopUpClick={() => {
+                  setBalanceDefaultTab('deposit');
+                  setOverviewTab('balance');
+                }}
               />
             )}
 
