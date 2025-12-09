@@ -461,6 +461,16 @@ export const WellsSection = ({
             <p className="text-muted-foreground mb-6 max-w-md">
               Начните с покупки первой скважины в магазине. Каждая скважина будет работать и приносить доход 24 часа в сутки.
             </p>
+            <Button 
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigateToShop?.();
+              }}
+              className="gap-2"
+            >
+              <Fuel className="h-4 w-4" />
+              Перейти в магазин
+            </Button>
           </CardContent>
         </Card>
       ) : (
