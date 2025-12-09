@@ -624,17 +624,17 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
                 <span>Произвольная сумма</span>
               </CardTitle>
               <CardDescription className="text-blue-50/80">
-                Введите желаемую сумму для пополнения (минимум 1000 ₽). Для получения бонусов воспользуйтесь готовыми пакетами ниже
+                Пополнение в OilCoins (1₽ = 1 OC). Минимальная сумма — 1000 OC
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 relative">
               <div className="flex space-x-4">
                 <div className="flex-1">
-                  <Label htmlFor="custom-amount" className="text-blue-100">Сумма в рублях (минимум 1000 ₽)</Label>
+                  <Label htmlFor="custom-amount" className="text-blue-100">Сумма в OilCoins (минимум 1000 OC)</Label>
                   <Input
                     id="custom-amount"
                     type="number"
-                    placeholder="Введите сумму от 1000 ₽..."
+                    placeholder="Введите сумму от 1000 OC..."
                     value={customAmount}
                     onChange={(e) => setCustomAmount(e.target.value)}
                     min="1000"
@@ -642,7 +642,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
                   />
                   {customAmount && parseFloat(customAmount) >= 1000 && (
                     <p className="text-sm text-blue-200/80 mt-1">
-                      1 ₽ = 1 ₽
+                      К оплате: {parseFloat(customAmount).toLocaleString()} ₽ → {parseFloat(customAmount).toLocaleString()} OC
                     </p>
                   )}
                 </div>
