@@ -276,11 +276,11 @@ const Dashboard = () => {
   const handleBuyWell = async (wellType: WellType) => {
     if (!currentProfile) return;
     
-    if (currentProfile.balance < wellType.price) {
+    if (currentProfile.oilcoin_balance < wellType.price) {
       handleTopUp();
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки "${wellType.name}" нужно ${formatGameCurrency(wellType.price)}. У вас ${formatGameCurrency(currentProfile.balance)}`,
+        description: `Для покупки "${wellType.name}" нужно ${formatGameCurrency(wellType.price)}. У вас ${formatGameCurrency(currentProfile.oilcoin_balance)}`,
         variant: "destructive"
       });
       return;
