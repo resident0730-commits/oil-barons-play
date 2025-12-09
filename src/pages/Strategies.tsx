@@ -329,58 +329,58 @@ const Strategies = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="border-primary/20">
                 <CardHeader>
-                  <Badge className="w-fit mb-2 bg-primary">Базовый</Badge>
-                  <CardTitle className="text-lg">🚀 Turbo Boost</CardTitle>
-                  <CardDescription>+10% к скорости добычи</CardDescription>
+                  <Badge className="w-fit mb-2 bg-primary">Постоянный</Badge>
+                  <CardTitle className="text-lg">👷 Бригада рабочих</CardTitle>
+                  <CardDescription>+10% за уровень (1,000 OC/уровень)</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="text-sm space-y-2">
                     <p className="font-medium">Когда использовать:</p>
                     <ul className="text-muted-foreground space-y-1 ml-4">
                       <li>• Начало игры для быстрого старта</li>
+                      <li>• Самый доступный постоянный бонус</li>
                       <li>• В комбинации с другими бустерами</li>
-                      <li>• Перед важными покупками</li>
                     </ul>
                   </div>
-                  <Badge variant="outline" className="w-fit">ROI: 15-20 дней</Badge>
+                  <Badge variant="outline" className="w-fit">Окупаемость: при добыче 100,000+ BBL/день</Badge>
                 </CardContent>
               </Card>
 
               <Card className="border-accent/20">
                 <CardHeader>
-                  <Badge className="w-fit mb-2 bg-accent">Средний</Badge>
+                  <Badge className="w-fit mb-2 bg-accent">Постоянный</Badge>
                   <CardTitle className="text-lg">⚙️ Автоматизация</CardTitle>
-                  <CardDescription>+15% эффективность</CardDescription>
+                  <CardDescription>+20% за уровень (4,000 OC/уровень)</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="text-sm space-y-2">
                     <p className="font-medium">Когда использовать:</p>
                     <ul className="text-muted-foreground space-y-1 ml-4">
-                      <li>• При 5+ скважинах</li>
+                      <li>• При стабильном доходе 200,000+ BBL/день</li>
                       <li>• Для пассивного дохода</li>
                       <li>• Долгосрочные инвестиции</li>
                     </ul>
                   </div>
-                  <Badge variant="outline" className="w-fit">ROI: 20-25 дней</Badge>
+                  <Badge variant="outline" className="w-fit">Окупаемость: при добыче 200,000+ BBL/день</Badge>
                 </CardContent>
               </Card>
 
-              <Card className="border-primary/20">
+              <Card className="border-destructive/20">
                 <CardHeader>
-                  <Badge className="w-fit mb-2 bg-primary">Продвинутый</Badge>
-                  <CardTitle className="text-lg">👷 Рабочая бригада</CardTitle>
-                  <CardDescription>+20% производство</CardDescription>
+                  <Badge className="w-fit mb-2 bg-destructive">Временный (24ч)</Badge>
+                  <CardTitle className="text-lg">🚀 Турбо-буст</CardTitle>
+                  <CardDescription>+50% на 24 часа (3,000 OC)</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="text-sm space-y-2">
                     <p className="font-medium">Когда использовать:</p>
                     <ul className="text-muted-foreground space-y-1 ml-4">
-                      <li>• На высокоуровневых скважинах</li>
-                      <li>• Максимальная прибыль</li>
-                      <li>• Перед сезонными событиями</li>
+                      <li>• Только при добыче 6,000,000+ BBL/день</li>
+                      <li>• Перед долгим офлайном</li>
+                      <li>• На пике развития империи</li>
                     </ul>
                   </div>
-                  <Badge variant="outline" className="w-fit">ROI: 25-30 дней</Badge>
+                  <Badge variant="outline" className="w-fit text-destructive">Окупаемость: 6,000,000+ BBL/день</Badge>
                 </CardContent>
               </Card>
             </div>
@@ -396,31 +396,31 @@ const Strategies = () => {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border border-primary/20">
-                    <h4 className="font-semibold mb-2">🔥 Комбо "Быстрый старт"</h4>
-                    <p className="text-sm text-muted-foreground mb-3">Turbo Boost + Автоматизация</p>
+                    <h4 className="font-semibold mb-2">🔥 Комбо "Базовый рост"</h4>
+                    <p className="text-sm text-muted-foreground mb-3">Бригада рабочих + Геологическая разведка</p>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span>Прирост дохода:</span>
-                        <span className="font-semibold text-primary">+28%</span>
+                        <span className="font-semibold text-primary">+25% (при 1 уровне каждого)</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Окупаемость:</span>
-                        <span className="font-semibold">12-15 дней</span>
+                        <span>Стоимость:</span>
+                        <span className="font-semibold">3,000 OC</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-4 bg-gradient-to-br from-accent/10 to-primary/10 rounded-lg border border-accent/20">
                     <h4 className="font-semibold mb-2">⚡ Комбо "Максимум"</h4>
-                    <p className="text-sm text-muted-foreground mb-3">Все три бустера</p>
+                    <p className="text-sm text-muted-foreground mb-3">Все постоянные бустеры 1-го уровня</p>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span>Прирост дохода:</span>
-                        <span className="font-semibold text-accent">+52%</span>
+                        <span className="font-semibold text-accent">+70% (10+15+20+25)</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Окупаемость:</span>
-                        <span className="font-semibold">8-10 дней</span>
+                        <span>Стоимость:</span>
+                        <span className="font-semibold">12,000 OC</span>
                       </div>
                     </div>
                   </div>
