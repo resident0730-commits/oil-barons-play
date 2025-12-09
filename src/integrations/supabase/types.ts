@@ -748,6 +748,13 @@ export type Database = {
           referrer_id: string
         }[]
       }
+      get_referral_ids_in_chain: {
+        Args: { p_user_id: string }
+        Returns: {
+          level: number
+          referred_id: string
+        }[]
+      }
       get_user_statistics: {
         Args: never
         Returns: {
