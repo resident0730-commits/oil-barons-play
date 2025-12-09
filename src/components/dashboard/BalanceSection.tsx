@@ -669,12 +669,6 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
               <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-primary/40 transition-all duration-500"></div>
               <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-accent/30 rounded-full blur-3xl group-hover:blur-2xl group-hover:bg-accent/40 transition-all duration-500"></div>
               
-              {/* Premium badge with enhanced glow */}
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-primary to-accent text-white px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg shadow-xl shadow-primary/60 animate-fade-in z-10">
-                <Star className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
-                <span className="drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]">ПРЕМИУМ ПРЕДЛОЖЕНИЕ</span>
-              </div>
-
               {/* Animated shine overlay */}
               <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
