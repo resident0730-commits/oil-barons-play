@@ -105,9 +105,17 @@ export const AnimatedPackageCard = ({
               </div>
             </div>
 
-            {/* Hover hint */}
-            <p className="text-center text-xs text-muted-foreground/70 italic hidden sm:block">
-              Наведите для деталей
+            {/* Tips section */}
+            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 space-y-2">
+              <p className="text-xs font-medium text-green-600">Выгода пакета:</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Покупка пакета экономит ваши средства! Вы получаете несколько скважин сразу со скидкой и моментально увеличиваете свой доход.
+              </p>
+            </div>
+
+            {/* Click hint */}
+            <p className="text-center text-xs text-muted-foreground/70 italic">
+              Нажмите для деталей
             </p>
           </CardContent>
         </Card>
