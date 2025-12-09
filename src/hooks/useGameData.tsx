@@ -649,7 +649,7 @@ export function useGameData() {
       return { success: false, error: 'Пользователь не авторизован' };
     }
 
-    if (profile.balance < wellType.price) {
+    if (profile.oilcoin_balance < wellType.price) {
       return { success: false, error: 'Недостаточно средств' };
     }
 
@@ -670,17 +670,17 @@ export function useGameData() {
 
       if (wellError) throw wellError;
 
-      // Update profile balance
-      const newBalance = profile.balance - wellType.price;
+      // Update profile oilcoin_balance
+      const newBalance = profile.oilcoin_balance - wellType.price;
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ balance: newBalance })
+        .update({ oilcoin_balance: newBalance })
         .eq('user_id', user.id);
 
       if (profileError) throw profileError;
 
       // Update local state
-      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+      setProfile(prev => prev ? { ...prev, oilcoin_balance: newBalance } : null);
 
       // Reload game data to get updated wells
       await loadGameData();
@@ -697,7 +697,7 @@ export function useGameData() {
       return { success: false, error: 'Пользователь не авторизован' };
     }
 
-    if (profile.balance < wellPackage.discountedPrice) {
+    if (profile.oilcoin_balance < wellPackage.discountedPrice) {
       return { success: false, error: 'Недостаточно средств' };
     }
 
@@ -723,17 +723,17 @@ export function useGameData() {
 
       await Promise.all(wellPromises);
 
-      // Update profile balance
-      const newBalance = profile.balance - wellPackage.discountedPrice;
+      // Update profile oilcoin_balance
+      const newBalance = profile.oilcoin_balance - wellPackage.discountedPrice;
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ balance: newBalance })
+        .update({ oilcoin_balance: newBalance })
         .eq('user_id', user.id);
 
       if (profileError) throw profileError;
 
       // Update local state
-      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+      setProfile(prev => prev ? { ...prev, oilcoin_balance: newBalance } : null);
 
       // Reload game data
       await loadGameData();
@@ -750,7 +750,7 @@ export function useGameData() {
       return { success: false, error: 'Пользователь не авторизован' };
     }
 
-    if (profile.balance < packageType.price) {
+    if (profile.oilcoin_balance < packageType.price) {
       return { success: false, error: 'Недостаточно средств' };
     }
 
@@ -777,17 +777,17 @@ export function useGameData() {
         }
       }
 
-      // Update profile balance
-      const newBalance = profile.balance - packageType.price + balanceBonus;
+      // Update profile oilcoin_balance
+      const newBalance = profile.oilcoin_balance - packageType.price + balanceBonus;
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ balance: newBalance })
+        .update({ oilcoin_balance: newBalance })
         .eq('user_id', user.id);
 
       if (profileError) throw profileError;
 
       // Update local state
-      setProfile(prev => prev ? { ...prev, balance: newBalance } : null);
+      setProfile(prev => prev ? { ...prev, oilcoin_balance: newBalance } : null);
 
       // Reload game data
       await loadGameData();
