@@ -493,6 +493,10 @@ const Dashboard = () => {
                 boosters={boosters || []}
                 getActiveBoosterMultiplier={getActiveBoosterMultiplier}
                 onBarrelsClaimed={() => reload(true)}
+                onNavigateToShop={() => {
+                  setActiveSection('shop');
+                  setShopTab('wells');
+                }}
               />
             )}
           </div>

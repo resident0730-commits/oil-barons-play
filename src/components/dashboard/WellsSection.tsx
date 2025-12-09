@@ -32,6 +32,7 @@ interface WellsSectionProps {
   boosters: UserBooster[];
   getActiveBoosterMultiplier: () => number;
   onBarrelsClaimed?: () => void;
+  onNavigateToShop?: () => void;
 }
 
 export const WellsSection = ({ 
@@ -44,7 +45,8 @@ export const WellsSection = ({
   formatProfitPercent,
   boosters,
   getActiveBoosterMultiplier,
-  onBarrelsClaimed
+  onBarrelsClaimed,
+  onNavigateToShop
 }: WellsSectionProps) => {
   const { formatBarrels, formatOilCoins } = useCurrency();
   const formatGameCurrency = formatOilCoins;
@@ -447,7 +449,10 @@ export const WellsSection = ({
       </div>
 
       {wells.length === 0 ? (
-        <Card className="border-dashed animate-fade-in">
+        <Card 
+          className="border-dashed animate-fade-in cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-all duration-300"
+          onClick={onNavigateToShop}
+        >
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <div className="p-6 bg-muted/50 rounded-full mb-6 animate-pulse">
               <Plus className="h-12 w-12 text-muted-foreground" />
