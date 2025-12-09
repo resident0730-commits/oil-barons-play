@@ -41,6 +41,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface BalanceSectionProps {
   onTopUp?: () => void;
   topUpLoading?: boolean;
+  defaultTab?: 'balance' | 'deposit' | 'withdrawal';
 }
 
 interface TopUpPackage {
@@ -144,7 +145,7 @@ const topUpPackages: TopUpPackage[] = [
   }
 ];
 
-export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) => {
+export const BalanceSection = ({ onTopUp, topUpLoading, defaultTab }: BalanceSectionProps) => {
   const { profile } = useGameData();
   const { user } = useAuth();
   const { formatBarrels, formatOilCoins, formatRubles } = useCurrency();
@@ -475,7 +476,7 @@ export const BalanceSection = ({ onTopUp, topUpLoading }: BalanceSectionProps) =
         </div>
       </div>
 
-      <Tabs defaultValue="balance" className="w-full">
+      <Tabs defaultValue={defaultTab || "balance"} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="balance">Баланс</TabsTrigger>
           <TabsTrigger value="deposit">Пополнение</TabsTrigger>
