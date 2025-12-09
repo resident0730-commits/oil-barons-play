@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,13 +19,18 @@ export const AnimatedPackageCard = ({
   onBuyPackage,
   onTopUpClick
 }: AnimatedPackageCardProps) => {
+  const [isFlipped, setIsFlipped] = useState(false);
   const { formatBarrels, formatOilCoins } = useCurrency();
   const canAfford = profile.oilcoin_balance >= wellPackage.discountedPrice;
   const savings = wellPackage.originalPrice - wellPackage.discountedPrice;
 
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div className="game-card-flip">
-      <div className="game-card-inner">
+    <div className="game-card-flip" onClick={handleCardClick}>
+      <div className={`game-card-inner ${isFlipped ? 'flipped' : ''}`}>
         {/* FRONT SIDE */}
         <Card 
           className={`
