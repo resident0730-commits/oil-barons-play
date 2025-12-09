@@ -162,8 +162,8 @@ const GameGuide = () => {
       effect: "+50%",
       duration: "24 часа",
       price: `3,000 ${currencyConfig.game_currency_symbol}`,
-      description: "Временное, но мощное ускорение всех процессов",
-      example: "За 24 часа добыча 10,000 BBL/день превратится в 15,000 BBL/день (+5,000 BBL дополнительно)",
+      description: "Временное, но мощное ускорение всех процессов. Рекомендуется при высоком уровне добычи.",
+      example: "При добыче 300,000 BBL/день буст даст +150,000 BBL за 24 часа. Окупаемость: при доходе от 6,000,000 BBL/день",
       gradient: "from-yellow-400 to-orange-600",
       color: "yellow",
       icon: <Zap className="h-6 w-6 text-white" />
