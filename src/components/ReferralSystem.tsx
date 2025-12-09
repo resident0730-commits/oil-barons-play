@@ -179,7 +179,11 @@ export const ReferralSystem = () => {
       setLevel3Referrals(level3List);
       setReferrals(allReferrals);
       
-      const total = allReferrals.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
+      // Расчёт общего бонуса: L1 = 100%, L2 = 50% от записи (т.к. записано 10%, а мы получаем 5%), L3 = 30%
+      const level1Total = level1List.reduce((sum, ref) => sum + Number(ref.bonus_earned), 0);
+      const level2Total = level2List.reduce((sum, ref) => sum + Math.floor(Number(ref.bonus_earned) * 0.5), 0);
+      const level3Total = level3List.reduce((sum, ref) => sum + Math.floor(Number(ref.bonus_earned) * 0.3), 0);
+      const total = level1Total + level2Total + level3Total;
       setTotalBonus(total);
       console.log('✅ Loaded referrals - L1:', level1List.length, 'L2:', level2List.length, 'L3:', level3List.length, 'Total bonus:', total);
     } else {
@@ -725,7 +729,10 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base text-orange-400">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <p className="font-medium text-sm sm:text-base text-orange-400">
+                      {Math.floor(referral.bonus_earned * 0.5).toLocaleString()} ₽
+                      <span className="text-xs text-orange-300/70 ml-1">(5%)</span>
+                    </p>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
@@ -761,7 +768,10 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base text-red-400">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <p className="font-medium text-sm sm:text-base text-red-400">
+                      {Math.floor(referral.bonus_earned * 0.3).toLocaleString()} ₽
+                      <span className="text-xs text-red-300/70 ml-1">(3%)</span>
+                    </p>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
