@@ -693,7 +693,14 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base text-amber-400">{referral.bonus_earned.toLocaleString()} ₽</p>
+                    <div className="text-right">
+                      <p className="font-medium text-sm sm:text-base text-amber-400">
+                        {Number(referral.bonus_earned) > 0 ? `${referral.bonus_earned.toLocaleString()} ₽` : '—'}
+                      </p>
+                      {Number(referral.bonus_earned) > 0 && (
+                        <p className="text-xs text-amber-300/60">от его сети</p>
+                      )}
+                    </div>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
@@ -729,10 +736,14 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base text-orange-400">
-                      {Math.floor(referral.bonus_earned * 0.5).toLocaleString()} ₽
-                      <span className="text-xs text-orange-300/70 ml-1">(5%)</span>
-                    </p>
+                    <div className="text-right">
+                      <p className="font-medium text-sm sm:text-base text-orange-400">
+                        {Number(referral.bonus_earned) > 0 ? `${Math.floor(referral.bonus_earned * 0.5).toLocaleString()} ₽` : '—'}
+                      </p>
+                      {Number(referral.bonus_earned) > 0 && (
+                        <p className="text-xs text-orange-300/60">ваш 5% бонус</p>
+                      )}
+                    </div>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
@@ -768,10 +779,14 @@ export const ReferralSystem = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between sm:text-right gap-2">
-                    <p className="font-medium text-sm sm:text-base text-red-400">
-                      {Math.floor(referral.bonus_earned * 0.3).toLocaleString()} ₽
-                      <span className="text-xs text-red-300/70 ml-1">(3%)</span>
-                    </p>
+                    <div className="text-right">
+                      <p className="font-medium text-sm sm:text-base text-red-400">
+                        {Number(referral.bonus_earned) > 0 ? `${Math.floor(referral.bonus_earned * 0.3).toLocaleString()} ₽` : '—'}
+                      </p>
+                      {Number(referral.bonus_earned) > 0 && (
+                        <p className="text-xs text-red-300/60">ваш 3% бонус</p>
+                      )}
+                    </div>
                     <Badge variant={referral.is_active ? "default" : "secondary"} className="text-xs">
                       {referral.is_active ? "Активен" : "Неактивен"}
                     </Badge>
