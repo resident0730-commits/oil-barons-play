@@ -775,6 +775,16 @@ export type Database = {
           referred_id: string
         }[]
       }
+      get_referral_profiles: {
+        Args: { p_user_id: string }
+        Returns: {
+          created_at: string
+          level: number
+          nickname: string
+          status_titles: string[]
+          user_id: string
+        }[]
+      }
       get_user_statistics: {
         Args: never
         Returns: {
