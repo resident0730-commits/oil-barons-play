@@ -684,6 +684,22 @@ export type Database = {
           status_titles: string[] | null
           user_id: string | null
         }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          is_banned?: boolean | null
+          nickname?: string | null
+          status_titles?: string[] | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          is_banned?: boolean | null
+          nickname?: string | null
+          status_titles?: string[] | null
+          user_id?: string | null
+        }
         Relationships: []
       }
     }
