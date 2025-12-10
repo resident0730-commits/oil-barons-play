@@ -702,6 +702,48 @@ export type Database = {
         }
         Relationships: []
       }
+      user_money_transfers: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          from_user_id: string | null
+          id: string | null
+          status: string | null
+          to_user_id: string | null
+          transfer_type: string | null
+          updated_at: string | null
+          withdrawal_details: Json | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          created_by?: never
+          description?: string | null
+          from_user_id?: string | null
+          id?: string | null
+          status?: string | null
+          to_user_id?: string | null
+          transfer_type?: string | null
+          updated_at?: string | null
+          withdrawal_details?: never
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          created_by?: never
+          description?: string | null
+          from_user_id?: string | null
+          id?: string | null
+          status?: string | null
+          to_user_id?: string | null
+          transfer_type?: string | null
+          updated_at?: string | null
+          withdrawal_details?: never
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_user_balance: {
