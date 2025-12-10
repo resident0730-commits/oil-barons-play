@@ -66,18 +66,18 @@ export const PaymentHistory = () => {
       const { data: transfersData } = await supabase
         .rpc('get_user_transfers');
 
-      // Получаем ID рефералов в цепочке (уровни 1, 2, 3)
-      const { data: chainData } = await supabase
-        .rpc('get_referral_ids_in_chain', { p_user_id: user.id });
+      // Получаем данные рефералов через безопасную функцию (только несенситивные поля)
+      const { data: referralProfilesData } = await supabase
+        .rpc('get_referral_profiles', { p_user_id: user.id });
 
       let referralRecords: PaymentRecord[] = [];
 
-      if (chainData && chainData.length > 0) {
-        const level1Ids = chainData.filter((r: any) => r.level === 1).map((r: any) => r.referred_id);
-        const level2Ids = chainData.filter((r: any) => r.level === 2).map((r: any) => r.referred_id);
-        const level3Ids = chainData.filter((r: any) => r.level === 3).map((r: any) => r.referred_id);
+      if (referralProfilesData && referralProfilesData.length > 0) {
+        const level1Ids = referralProfilesData.filter((r: any) => r.level === 1).map((r: any) => r.user_id);
+        const level2Ids = referralProfilesData.filter((r: any) => r.level === 2).map((r: any) => r.user_id);
+        const level3Ids = referralProfilesData.filter((r: any) => r.level === 3).map((r: any) => r.user_id);
 
-        // Получаем все записи referrals для рефералов в цепочке
+        // Получаем все ID рефералов
         const allReferredIds = [...level1Ids, ...level2Ids, ...level3Ids];
         
         if (allReferredIds.length > 0) {
@@ -89,14 +89,9 @@ export const PaymentHistory = () => {
             .gt('bonus_earned', 0);
 
           if (referralsData && referralsData.length > 0) {
-            // Получаем никнеймы
-            const { data: profilesData } = await supabase
-              .from('profiles')
-              .select('user_id, nickname')
-              .in('user_id', allReferredIds);
-
+            // Используем никнеймы из безопасной функции
             const nicknameMap = new Map(
-              (profilesData || []).map(p => [p.user_id, p.nickname])
+              referralProfilesData.map((p: any) => [p.user_id, p.nickname])
             );
 
             // Создаём записи для каждого уровня
