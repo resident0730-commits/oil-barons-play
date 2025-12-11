@@ -62,73 +62,29 @@ export const PaymentHistory = () => {
     try {
       setLoading(true);
       
-      // Получаем переводы из money_transfers
+      // Получаем переводы из money_transfers (включая реферальные бонусы)
       const { data: transfersData } = await supabase
         .rpc('get_user_transfers');
 
-      // Получаем данные рефералов через безопасную функцию (только несенситивные поля)
-      const { data: referralProfilesData } = await supabase
-        .rpc('get_referral_profiles', { p_user_id: user.id });
-
-      let referralRecords: PaymentRecord[] = [];
-
-      if (referralProfilesData && referralProfilesData.length > 0) {
-        const level1Ids = referralProfilesData.filter((r: any) => r.level === 1).map((r: any) => r.user_id);
-        const level2Ids = referralProfilesData.filter((r: any) => r.level === 2).map((r: any) => r.user_id);
-        const level3Ids = referralProfilesData.filter((r: any) => r.level === 3).map((r: any) => r.user_id);
-
-        // Получаем все ID рефералов
-        const allReferredIds = [...level1Ids, ...level2Ids, ...level3Ids];
-        
-        if (allReferredIds.length > 0) {
-          // Получаем referrals записи где referred_id в нашей цепочке и есть бонус
-          const { data: referralsData } = await supabase
-            .from('referrals')
-            .select('id, referrer_id, referred_id, bonus_earned, created_at, updated_at')
-            .in('referred_id', allReferredIds)
-            .gt('bonus_earned', 0);
-
-          if (referralsData && referralsData.length > 0) {
-            // Используем никнеймы из безопасной функции
-            const nicknameMap = new Map(
-              referralProfilesData.map((p: any) => [p.user_id, p.nickname])
-            );
-
-            // Создаём записи для каждого уровня
-            for (const ref of referralsData) {
-              let level = 0;
-              let bonusAmount = 0;
-
-              if (level1Ids.includes(ref.referred_id)) {
-                level = 1;
-                bonusAmount = ref.bonus_earned; // 10% уже записан
-              } else if (level2Ids.includes(ref.referred_id)) {
-                level = 2;
-                bonusAmount = Math.floor(ref.bonus_earned * 0.5); // 5% = 50% от 10%
-              } else if (level3Ids.includes(ref.referred_id)) {
-                level = 3;
-                bonusAmount = Math.floor(ref.bonus_earned * 0.3); // 3% = 30% от 10%
-              }
-
-              if (bonusAmount > 0) {
-                const nickname = nicknameMap.get(ref.referred_id) || 'Игрок';
-                referralRecords.push({
-                  id: `${ref.id}-lvl${level}`,
-                  from_user_id: ref.referred_id,
-                  to_user_id: user.id,
-                  amount: bonusAmount,
-                  description: `Бонус ${level}-го уровня от ${nickname}`,
-                  transfer_type: 'referral_bonus',
-                  status: 'completed',
-                  created_at: ref.updated_at || ref.created_at,
-                  referred_nickname: nickname,
-                  referral_level: level
-                });
-              }
-            }
+      // Фильтруем реферальные бонусы из реальных транзакций
+      const referralBonuses = (transfersData || [])
+        .filter((t: any) => 
+          t.to_user_id === user.id && 
+          ['referral_bonus', 'referral_reward'].includes(t.transfer_type)
+        )
+        .map((t: any) => {
+          // Определяем уровень из описания
+          let level = 1;
+          const levelMatch = t.description?.match(/(\d)-го уровня/);
+          if (levelMatch) {
+            level = parseInt(levelMatch[1]);
           }
-        }
-      }
+          
+          return {
+            ...t,
+            referral_level: level
+          };
+        });
 
       // Фильтруем входящие платежи из transfers
       const incomingPayments = (transfersData || [])
@@ -139,7 +95,7 @@ export const PaymentHistory = () => {
         .map((t: any) => ({ ...t, transfer_type: t.transfer_type }));
 
       // Объединяем и сортируем
-      const allPayments = [...incomingPayments, ...referralRecords]
+      const allPayments = [...incomingPayments, ...referralBonuses]
         .sort((a, b) => 
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         )
