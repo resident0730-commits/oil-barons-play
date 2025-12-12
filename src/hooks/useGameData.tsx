@@ -46,6 +46,7 @@ export interface UserProfile {
   balance: number;
   barrel_balance: number;
   oilcoin_balance: number;
+  purchased_oilcoin_balance: number; // Купленные OC (можно обменять на рубли)
   ruble_balance: number;
   daily_income: number;
   last_login: string;
