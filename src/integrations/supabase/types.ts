@@ -308,6 +308,7 @@ export type Database = {
           last_login: string | null
           nickname: string
           oilcoin_balance: number
+          purchased_oilcoin_balance: number
           referral_bonus_expires_at: string | null
           referral_code: string | null
           referred_by: string | null
@@ -334,6 +335,7 @@ export type Database = {
           last_login?: string | null
           nickname: string
           oilcoin_balance?: number
+          purchased_oilcoin_balance?: number
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null
@@ -360,6 +362,7 @@ export type Database = {
           last_login?: string | null
           nickname?: string
           oilcoin_balance?: number
+          purchased_oilcoin_balance?: number
           referral_bonus_expires_at?: string | null
           referral_code?: string | null
           referred_by?: string | null

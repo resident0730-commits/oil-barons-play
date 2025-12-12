@@ -13,6 +13,7 @@ interface ExchangeWidgetProps {
   userId: string;
   barrelBalance: number;
   oilcoinBalance: number;
+  purchasedOilcoinBalance: number; // Купленные OC (доступны для обмена на рубли)
   rubleBalance: number;
   onExchangeComplete: () => void;
 }
@@ -21,9 +22,13 @@ export const ExchangeWidget = ({
   userId,
   barrelBalance,
   oilcoinBalance,
+  purchasedOilcoinBalance,
   rubleBalance,
   onExchangeComplete
 }: ExchangeWidgetProps) => {
+  // Бонусные OC = общие - купленные
+  const bonusOilcoinBalance = oilcoinBalance - purchasedOilcoinBalance;
+  
   const { loading, getExchangeRate, exchangeCurrency, getExchangeHistory } = useExchange();
   const { formatBarrels, formatOilCoins, formatRubles, currencyConfig } = useCurrency();
 
@@ -78,8 +83,9 @@ export const ExchangeWidget = ({
       toast.error('Введите корректную сумму');
       return;
     }
-    if (amount > oilcoinBalance) {
-      toast.error('Недостаточно ОилКоинов');
+    // Проверяем именно КУПЛЕННЫЕ OC (бонусные нельзя обменять)
+    if (amount > purchasedOilcoinBalance) {
+      toast.error(`Недостаточно купленных OilCoins. Доступно для обмена: ${Math.floor(purchasedOilcoinBalance)} OC`);
       return;
     }
 
@@ -131,6 +137,14 @@ export const ExchangeWidget = ({
               <CardContent className="p-4 sm:p-5 md:p-6">
                 <p className="text-sm sm:text-base text-purple-200/80 mb-1 sm:mb-2 font-medium truncate">{currencyConfig.oilcoin_symbol}</p>
                 <p className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] truncate">{formatOilCoins(oilcoinBalance)}</p>
+                <div className="flex flex-wrap gap-1 mt-2 text-xs">
+                  <span className="px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-green-300" title="Купленные OC - можно обменять на рубли">
+                    💰 {Math.floor(purchasedOilcoinBalance)}
+                  </span>
+                  <span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-yellow-300" title="Бонусные OC - только для покупок">
+                    🎁 {Math.floor(bonusOilcoinBalance)}
+                  </span>
+                </div>
               </CardContent>
             </Card>
             <Card className="relative overflow-hidden bg-gradient-to-br from-purple-500/10 to-pink-500/5 backdrop-blur-sm border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:-translate-y-1">
@@ -201,13 +215,28 @@ export const ExchangeWidget = ({
                     <h3 className="text-lg sm:text-xl font-bold text-purple-100 truncate">{currencyConfig.oilcoin_symbol} → {currencyConfig.ruble_symbol}</h3>
                   </div>
                   <div className="space-y-3 sm:space-y-4">
-                    <Label className="text-purple-100 font-medium text-sm sm:text-base md:text-lg">Количество {currencyConfig.oilcoin_symbol}</Label>
+                    <Label className="text-purple-100 font-medium text-sm sm:text-base md:text-lg">
+                      Количество {currencyConfig.oilcoin_symbol}
+                    </Label>
+                    
+                    {/* Предупреждение о бонусных OC */}
+                    <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                      <p className="text-xs sm:text-sm text-yellow-200">
+                        ⚠️ <strong>Важно:</strong> Только купленные OC можно обменять на рубли. 
+                        Бонусные OC (стартовые 1000 + промокоды) доступны только для покупок в игре.
+                      </p>
+                      <p className="text-xs sm:text-sm text-green-300 mt-2">
+                        💰 Доступно для обмена: <strong>{Math.floor(purchasedOilcoinBalance)} OC</strong>
+                      </p>
+                    </div>
+                    
                     <Input
                       type="number"
-                      placeholder={`Введите количество ${currencyConfig.oilcoin_symbol}`}
+                      placeholder={`Макс. ${Math.floor(purchasedOilcoinBalance)} ${currencyConfig.oilcoin_symbol}`}
                       value={oilcoinToRubleAmount}
                       onChange={(e) => setOilcoinToRubleAmount(e.target.value)}
                       min="1"
+                      max={purchasedOilcoinBalance}
                       className="bg-black/30 border-purple-500/30 text-foreground placeholder:text-muted-foreground focus:border-purple-400 text-base sm:text-lg h-10 sm:h-12"
                     />
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
@@ -221,8 +250,8 @@ export const ExchangeWidget = ({
                   </div>
                   <Button 
                     onClick={handleOilcoinToRubleExchange} 
-                    disabled={loading}
-                    className="w-full h-10 sm:h-12 text-sm sm:text-base md:text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all duration-300"
+                    disabled={loading || purchasedOilcoinBalance <= 0}
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base md:text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all duration-300 disabled:opacity-50"
                   >
                     <ArrowRightLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
                     <span className="truncate">Обменять {currencyConfig.oilcoin_symbol} на {currencyConfig.ruble_symbol}</span>
