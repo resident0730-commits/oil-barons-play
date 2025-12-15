@@ -139,10 +139,10 @@ export const ExchangeWidget = ({
                 <p className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] truncate">{formatOilCoins(oilcoinBalance)}</p>
                 <div className="flex flex-wrap gap-1 mt-2 text-xs">
                   <span className="px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-green-300" title="Заработанные со скважин OC - можно обменять на рубли">
-                    💰 {Math.floor(purchasedOilcoinBalance)}
+                    Заработано: {Math.floor(purchasedOilcoinBalance)}
                   </span>
                   <span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-yellow-300" title="Бонусные OC - только для покупок">
-                    🎁 {Math.floor(bonusOilcoinBalance)}
+                    Бонусы: {Math.floor(bonusOilcoinBalance)}
                   </span>
                 </div>
               </CardContent>
