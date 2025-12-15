@@ -13,7 +13,7 @@ interface ExchangeWidgetProps {
   userId: string;
   barrelBalance: number;
   oilcoinBalance: number;
-  purchasedOilcoinBalance: number; // Купленные OC (доступны для обмена на рубли)
+  purchasedOilcoinBalance: number; // Заработанные со скважин OC (доступны для обмена на рубли)
   rubleBalance: number;
   onExchangeComplete: () => void;
 }
@@ -26,7 +26,7 @@ export const ExchangeWidget = ({
   rubleBalance,
   onExchangeComplete
 }: ExchangeWidgetProps) => {
-  // Бонусные OC = общие - купленные
+  // Бонусные OC = общие - заработанные
   const bonusOilcoinBalance = oilcoinBalance - purchasedOilcoinBalance;
   
   const { loading, getExchangeRate, exchangeCurrency, getExchangeHistory } = useExchange();
@@ -83,9 +83,9 @@ export const ExchangeWidget = ({
       toast.error('Введите корректную сумму');
       return;
     }
-    // Проверяем именно КУПЛЕННЫЕ OC (бонусные нельзя обменять)
+    // Проверяем именно ЗАРАБОТАННЫЕ OC (бонусные нельзя обменять)
     if (amount > purchasedOilcoinBalance) {
-      toast.error(`Недостаточно купленных OilCoins. Доступно для обмена: ${Math.floor(purchasedOilcoinBalance)} OC`);
+      toast.error(`Недостаточно заработанных OilCoins. Доступно для обмена: ${Math.floor(purchasedOilcoinBalance)} OC`);
       return;
     }
 
@@ -138,7 +138,7 @@ export const ExchangeWidget = ({
                 <p className="text-sm sm:text-base text-purple-200/80 mb-1 sm:mb-2 font-medium truncate">{currencyConfig.oilcoin_symbol}</p>
                 <p className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-100 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)] truncate">{formatOilCoins(oilcoinBalance)}</p>
                 <div className="flex flex-wrap gap-1 mt-2 text-xs">
-                  <span className="px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-green-300" title="Купленные OC - можно обменять на рубли">
+                  <span className="px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-green-300" title="Заработанные со скважин OC - можно обменять на рубли">
                     💰 {Math.floor(purchasedOilcoinBalance)}
                   </span>
                   <span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-yellow-300" title="Бонусные OC - только для покупок">
@@ -222,7 +222,7 @@ export const ExchangeWidget = ({
                     {/* Предупреждение о бонусных OC */}
                     <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
                       <p className="text-xs sm:text-sm text-yellow-200">
-                        ⚠️ <strong>Важно:</strong> Только купленные OC можно обменять на рубли. 
+                        ⚠️ <strong>Важно:</strong> Только заработанные со скважин OC можно обменять на рубли. 
                         Бонусные OC (стартовые 1000 + промокоды) доступны только для покупок в игре.
                       </p>
                       <p className="text-xs sm:text-sm text-green-300 mt-2">
